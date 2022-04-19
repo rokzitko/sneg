@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m April 2022";
+snegidstring = "sneg.m 2.0.0 April 2022";
 snegcopyright = "Copyright (C) 2002-2022 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -2299,6 +2299,13 @@ hopphi[op1_?fermionQ[j1___], op2_?fermionQ[j2___], phi_] /;
   (spinof[op1] == spinof[op2] == 1/2) :=
   hopphi[op1[j1], op2[j2], UP, phi] + 
   hopphi[op1[j1], op2[j2], DO, phi];
+
+(* Hopping with spin-flip and phase change *)
+SetAttributes[spinfliphopphi, Listable];
+spinfliphopphi[op1_?fermionQ[j1___], op2_?fermionQ[j2___], phi_] :=
+  Sum[Exp[I phi] op1[CR, j1, sigma]~nc~op2[AN, j2, 1 - sigma] +
+  Exp[-I phi] op2[CR, j2, sigma]~nc~op1[AN, j1, 1 - sigma],
+        {sigma, DO, UP}];
 
 (* Current operator *)
 (* 
