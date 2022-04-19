@@ -1,0 +1,2502 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[    112588,       2405]*)
+(*NotebookOutlinePosition[    113553,       2439]*)
+(*  CellTagsIndexPosition[    113445,       2432]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["bzvc2bzop", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["bzvc2bzop[", "MR"],
+  StyleBox["bzvc", "IT"],
+  StyleBox["]", "MR"],
+  " transforms basis  ",
+  StyleBox["bzvc", "IT"],
+  " in occupation number representation to a basis in creation operator \
+representation.\n\[FilledSmallSquare] ",
+  StyleBox["bzop2bzvc[", "MR"],
+  StyleBox["bzop", "IT"],
+  StyleBox["]", "MR"],
+  " transforms basis  ",
+  StyleBox["bzop", "IT"],
+  " in creation operator representation to a basis in occupation number \
+representation."
+}], "Usage",
+  CellTags->{"bzvc2bzop", "bzop2bzvc"}],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Some operations on basis states can be more easily \
+performed in one representation than the other. In particular, most \
+operations can be performed more efficiently in the occupation number \
+representation, but for some high-level symbolic transformations the creation \
+operator representation is more convenient. Functions ",
+  ButtonBox["bzvc2bzop",
+    ButtonStyle->"AddOnsLink"],
+  " and ",
+  ButtonBox["bzop2bzvc",
+    ButtonStyle->"AddOnsLink"],
+  " allow to easily switch between the two."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["qsbasis",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["qszbasis",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["qszbasisvc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformQStoIS",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformbasis",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformQStoPH",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformtoLR",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["makematricesbzop",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["makematricesbzvc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["makebasis",
+    ButtonStyle->"AddOnsLink"]
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "IT"],
+  " to be a Fermionic operator."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Check for equality: ",
+  Cell[BoxData[
+      \(TraditionalForm\`\((Q, S\_z)\)\)]],
+  " basis"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(qszbasisvc[{c[1]}] \[Equal] 
+      bzop2bzvc[qszbasis[{c[1]}]]\), "\[IndentingNewLine]", 
+    \(\(\(qszbasis[{c[1]}] \[Equal] 
+      bzvc2bzop[qszbasisvc[{c[1]}]]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(qszbasisvc[{c[1], c[2]}] \[Equal] 
+      bzop2bzvc[qszbasis[{c[1], c[2]}]]\), "\n", 
+    \(\(\(qszbasis[{c[1], c[2]}] \[Equal] 
+      bzvc2bzop[qszbasisvc[{c[1], c[2]}]]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(qszbasisvc[{c[1], c[2], c[3]}] \[Equal] 
+      bzop2bzvc[qszbasis[{c[1], c[2], c[3]}]]\), "\n", 
+    \(qszbasis[{c[1], c[2], c[3]}] \[Equal] 
+      bzvc2bzop[qszbasisvc[{c[1], c[2], c[3]}]]\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]],
+
+Cell["Check for equality: (Q,S) basis", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(ident[x_] := bzvc2bzop[bzop2bzvc[x]];\)\), "\[IndentingNewLine]", 
+    \(\(\((ident[#] == #)\) &\)\ \ @\ 
+      qsbasis[{c[1]}]\), "\[IndentingNewLine]", 
+    \(\(\((ident[#] == #)\) &\)\ \ @\ 
+      qsbasis[{c[1], c[2]}]\), "\[IndentingNewLine]", 
+    \(\(\((ident[#] == #)\) &\)\ \ @\ 
+      qsbasis[{c[1], c[2], c[3]}]\), "\[IndentingNewLine]", 
+    \(\(\((ident[#] == #)\) &\)\ \ @\ 
+      qsbasis[{c[1], c[2], c[3], c[4]}]\)}], "Input",
+  CellLabel->"In[9]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[13]="]
+}, Open  ]],
+
+Cell["One way", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(bz = qszbasisvc[{c[1], c[2]}]; 
+    bz // MatrixForm\), "\[IndentingNewLine]", 
+    \(bzvc2bzop[bz] // MatrixForm\)}], "Input",
+  CellLabel->"In[14]:="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({\(-2\), 0}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]},
+            {\({\(-1\), \(-\(1\/2\)\)}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({\(-1\), 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, \(-1\)}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]},
+            {\({0, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 1}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]},
+            {\({1, \(-\(1\/2\)\)}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({1, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({2, 0}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[14]//MatrixForm="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({\(-2\), 0}\), \({1}\)},
+            {\({\(-1\), \(-\(1\/2\)\)}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]},
+            {\({\(-1\), 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]},
+            {\({0, \(-1\)}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}], ",", 
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}], ",", 
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}]}], "}"}]},
+            {\({0, 1}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]},
+            {\({1, \(-\(1\/2\)\)}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}]}], "}"}]},
+            {\({1, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[DownArrow]\"\>",
+                                    FontColor->RGBColor[0, 0, 1]],
+                                  (StyleForm[ #, FontColor -> RGBColor[ 
+                                    0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[DownArrow]", FontColor -> RGBColor[ 
+                                  0, 0, 1]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"1", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {1, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[
+                            SubsuperscriptBox["c", 
+                              RowBox[{"2", 
+                                TagBox[
+                                  StyleBox["\<\"\[UpArrow]\"\>",
+                                    FontColor->RGBColor[1, 0, 0]],
+                                  (
+                                  StyleForm[ #, FontColor -> RGBColor[ 
+                                    1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                            Subsuperscript[ c, 
+                              RowBox[ {2, 
+                                StyleForm[ 
+                                "\[UpArrow]", FontColor -> RGBColor[ 
+                                  1, 0, 0]]}], "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}]}], "}"}]},
+            {\({2, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[15]//MatrixForm="]
+}, Open  ]],
+
+Cell["And another", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(bz = qsbasis[{c[1], c[2]}]; bz // MatrixForm\), "\[IndentingNewLine]", 
+    \(bzop2bzvc[bz] // MatrixForm\)}], "Input",
+  CellLabel->"In[16]:="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({\(-2\), 0}\), \({1}\)},
+            {\({\(-1\), 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}], ",", 
+                  FractionBox[
+                    RowBox[{
+                      RowBox[{
+                        TagBox[
+                          StyleBox[
+                            InterpretationBox[
+                              SubsuperscriptBox["c", 
+                                RowBox[{"1", 
+                                  TagBox[
+                                    StyleBox["\<\"\[DownArrow]\"\>",
+                                      FontColor->RGBColor[0, 0, 1]],
+                                    (
+                                    StyleForm[ #, FontColor -> RGBColor[ 
+                                      0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                              Subsuperscript[ c, 
+                                RowBox[ {1, 
+                                  StyleForm[ 
+                                  "\[DownArrow]", FontColor -> RGBColor[ 
+                                    0, 0, 1]]}], "\[Dagger]"],
+                              Editable->False],
+                            ScriptSizeMultipliers->1,
+                            ScriptBaselineShifts->{1, 1}],
+                          DisplayForm], 
+                        StyleBox["\[CenterDot]",
+                          FontColor->RGBColor[0, 0.392187, 0]], 
+                        TagBox[
+                          StyleBox[
+                            InterpretationBox[
+                              SubsuperscriptBox["c", 
+                                RowBox[{"2", 
+                                  TagBox[
+                                    StyleBox["\<\"\[UpArrow]\"\>",
+                                      FontColor->RGBColor[1, 0, 0]],
+                                    (
+                                    StyleForm[ #, FontColor -> RGBColor[ 
+                                      1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                              Subsuperscript[ c, 
+                                RowBox[ {2, 
+                                  StyleForm[ 
+                                  "\[UpArrow]", FontColor -> RGBColor[ 
+                                    1, 0, 0]]}], "\[Dagger]"],
+                              Editable->False],
+                            ScriptSizeMultipliers->1,
+                            ScriptBaselineShifts->{1, 1}],
+                          DisplayForm]}], "-", 
+                      RowBox[{
+                        TagBox[
+                          StyleBox[
+                            InterpretationBox[
+                              SubsuperscriptBox["c", 
+                                RowBox[{"1", 
+                                  TagBox[
+                                    StyleBox["\<\"\[UpArrow]\"\>",
+                                      FontColor->RGBColor[1, 0, 0]],
+                                    (
+                                    StyleForm[ #, FontColor -> RGBColor[ 
+                                      1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                              Subsuperscript[ c, 
+                                RowBox[ {1, 
+                                  StyleForm[ 
+                                  "\[UpArrow]", FontColor -> RGBColor[ 
+                                    1, 0, 0]]}], "\[Dagger]"],
+                              Editable->False],
+                            ScriptSizeMultipliers->1,
+                            ScriptBaselineShifts->{1, 1}],
+                          DisplayForm], 
+                        StyleBox["\[CenterDot]",
+                          FontColor->RGBColor[0, 0.392187, 0]], 
+                        TagBox[
+                          StyleBox[
+                            InterpretationBox[
+                              SubsuperscriptBox["c", 
+                                RowBox[{"2", 
+                                  TagBox[
+                                    StyleBox["\<\"\[DownArrow]\"\>",
+                                      FontColor->RGBColor[0, 0, 1]],
+                                    (
+                                    StyleForm[ #, FontColor -> RGBColor[ 
+                                      0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                              Subsuperscript[ c, 
+                                RowBox[ {2, 
+                                  StyleForm[ 
+                                  "\[DownArrow]", FontColor -> RGBColor[ 
+                                    0, 0, 1]]}], "\[Dagger]"],
+                              Editable->False],
+                            ScriptSizeMultipliers->1,
+                            ScriptBaselineShifts->{1, 1}],
+                          DisplayForm]}]}], \(\@2\)], ",", 
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}]}], "}"}]},
+            {\({0, 1}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}]}], "}"}]},
+            {\({1, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}], ",", 
+                  RowBox[{
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[DownArrow]\"\>",
+                                  FontColor->RGBColor[0, 0, 1]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[DownArrow]", FontColor -> RGBColor[ 
+                                0, 0, 1]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"1", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {1, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm], 
+                    StyleBox["\[CenterDot]",
+                      FontColor->RGBColor[0, 0.392187, 0]], 
+                    TagBox[
+                      StyleBox[
+                        InterpretationBox[
+                          SubsuperscriptBox["c", 
+                            RowBox[{"2", 
+                              TagBox[
+                                StyleBox["\<\"\[UpArrow]\"\>",
+                                  FontColor->RGBColor[1, 0, 0]],
+                                (
+                                StyleForm[ #, FontColor -> RGBColor[ 
+                                  1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                          Subsuperscript[ c, 
+                            RowBox[ {2, 
+                              StyleForm[ 
+                              "\[UpArrow]", FontColor -> RGBColor[ 
+                                1, 0, 0]]}], "\[Dagger]"],
+                          Editable->False],
+                        ScriptSizeMultipliers->1,
+                        ScriptBaselineShifts->{1, 1}],
+                      DisplayForm]}]}], "}"}]},
+            {\({2, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"1", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {1, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[DownArrow]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[DownArrow]", FontColor -> RGBColor[ 
+                              0, 0, 1]]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[
+                        SubsuperscriptBox["c", 
+                          RowBox[{"2", 
+                            TagBox[
+                              StyleBox["\<\"\[UpArrow]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                        Subsuperscript[ c, 
+                          RowBox[ {2, 
+                            StyleForm[ 
+                            "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                          "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[16]//MatrixForm="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({\(-2\), 0}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]},
+            {\({\(-1\), 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}], ",", 
+                  FractionBox[
+                    RowBox[{
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], "-", 
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm]}], \(\@2\)], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}]}], "}"}]},
+            {\({0, 1}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({1, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}]}], "}"}]},
+            {\({2, 0}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[17]//MatrixForm="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 376}, {Automatic, 262}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "bzvc2bzop"->{
+    Cell[1810, 55, 565, 17, 86, "Usage",
+      CellTags->{"bzvc2bzop", "bzop2bzvc"}]},
+  "bzop2bzvc"->{
+    Cell[1810, 55, 565, 17, 86, "Usage",
+      CellTags->{"bzvc2bzop", "bzop2bzvc"}]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"bzvc2bzop", 113229, 2422},
+  {"bzop2bzvc", 113333, 2425}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 31, 0, 38, "ObjectName"],
+Cell[1810, 55, 565, 17, 86, "Usage",
+  CellTags->{"bzvc2bzop", "bzop2bzvc"}],
+Cell[2378, 74, 554, 12, 88, "Notes"],
+Cell[2935, 88, 739, 31, 56, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3699, 123, 42, 0, 38, "ExampleSection"],
+Cell[3744, 125, 118, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3887, 133, 134, 3, 42, "Input"],
+Cell[4024, 138, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[4142, 143, 131, 5, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4298, 152, 711, 15, 202, "Input"],
+Cell[5012, 169, 62, 2, 25, "Output"],
+Cell[5077, 173, 62, 2, 25, "Output"],
+Cell[5142, 177, 62, 2, 25, "Output"],
+Cell[5207, 181, 62, 2, 25, "Output"],
+Cell[5272, 185, 62, 2, 25, "Output"],
+Cell[5337, 189, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[5414, 194, 54, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5493, 198, 488, 10, 90, "Input"],
+Cell[5984, 210, 63, 2, 25, "Output"],
+Cell[6050, 214, 63, 2, 25, "Output"],
+Cell[6116, 218, 63, 2, 25, "Output"],
+Cell[6182, 222, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[6260, 227, 30, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6315, 231, 173, 4, 42, "Input"],
+Cell[6491, 237, 26746, 526, 210, "Output"],
+Cell[33240, 765, 34911, 720, 250, "Output"]
+}, Open  ]],
+Cell[68166, 1488, 34, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[68225, 1492, 165, 3, 42, "Input"],
+Cell[68393, 1497, 24029, 498, 184, "Output"],
+Cell[92425, 1997, 20123, 403, 158, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

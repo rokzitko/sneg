@@ -1,0 +1,582 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     18864,        516]*)
+(*NotebookOutlinePosition[     19555,        540]*)
+(*  CellTagsIndexPosition[     19511,        536]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["sumExpand", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["sumExpand[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " expands sums in ",
+  StyleBox["expr", "IT"],
+  " over the addends."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["sumExpand", "MR"],
+  " also expands within addends using ",
+  ButtonBox["ExpandAll",
+    ButtonStyle->"RefGuideLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["sum",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumThread",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumFullSimplify",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumCollect",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumSimplifyKD",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumAbstractIndex",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["sumNameIndex",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare some quantities.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c]\), "\n", 
+    \(snegfreeindexes[k, \[Sigma]]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Expands the argument of the sum", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(sum[number[c[k]], {k}]\), "\[IndentingNewLine]", 
+    \(sumExpand[%]\)}], "Input",
+  CellLabel->"In[4]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[DownArrow]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                    "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[DownArrow]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0, 0, 1]]&)]}], "\<\"\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                  
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], "+", 
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[UpArrow]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                    "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[UpArrow]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          1, 0, 0]]&)]}], "\<\"\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ",", \({k}\)}], "]"}]], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"sum", "[", 
+        RowBox[{
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[DownArrow]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                    "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[DownArrow]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0, 0, 1]]&)]}], "\<\"\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                  
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], ",", \({k}\)}], "]"}], "+", 
+      RowBox[{"sum", "[", 
+        RowBox[{
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[UpArrow]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                    "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    RowBox[{"k", 
+                      TagBox[
+                        StyleBox["\<\"\[UpArrow]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          1, 0, 0]]&)]}], "\<\"\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {k, 
+                      StyleForm[ 
+                      "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], ",", \({k}\)}], "]"}]}]], "Output",
+  CellLabel->"Out[5]="]
+}, Open  ]],
+
+Cell["Expands the added, the expands over the expanded arguments", \
+"ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(sum[f[k] \((number[c[k]] - 1)\), {k}]\), "\[IndentingNewLine]", 
+    \(sumExpand[%]\)}], "Input",
+  CellLabel->"In[6]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{\(f[k]\), " ", 
+          RowBox[{"(", 
+            RowBox[{\(-1\), "+", 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k", 
+                          TagBox[
+                            StyleBox["\<\"\[DownArrow]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k, 
+                          StyleForm[ 
+                          "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                        "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k", 
+                          TagBox[
+                            StyleBox["\<\"\[DownArrow]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)]}], "\<\"\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k, 
+                          StyleForm[ 
+                          "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                        ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "+", 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k", 
+                          TagBox[
+                            StyleBox["\<\"\[UpArrow]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k, 
+                          StyleForm[ 
+                          "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                        "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k", 
+                          TagBox[
+                            StyleBox["\<\"\[UpArrow]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)]}], "\<\"\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k, 
+                          StyleForm[ 
+                          "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                        ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], ")"}]}], ",", \({k}\)}], "]"}]], "Output",\
+
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    RowBox[{\(-sum[f[k], {k}]\), "+", 
+      RowBox[{"sum", "[", 
+        RowBox[{
+          RowBox[{\(f[k]\), " ", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k", 
+                        TagBox[
+                          StyleBox["\<\"\[DownArrow]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k, 
+                        StyleForm[ 
+                        "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k", 
+                        TagBox[
+                          StyleBox["\<\"\[DownArrow]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0, 0, 1]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k, 
+                        StyleForm[ 
+                        "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                      ""],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ",", \({k}\)}], "]"}], "+", 
+      RowBox[{"sum", "[", 
+        RowBox[{
+          RowBox[{\(f[k]\), " ", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ",", \({k}\)}], "]"}]}]], "Output",
+  CellLabel->"Out[7]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 309}, {107, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 31, 0, 38, "ObjectName"],
+Cell[1810, 55, 208, 8, 32, "Usage"],
+Cell[2021, 65, 192, 7, 24, "Notes"],
+Cell[2216, 74, 533, 23, 40, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2774, 101, 42, 0, 38, "ExampleSection"],
+Cell[2819, 103, 61, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2905, 107, 179, 4, 58, "Input"],
+Cell[3087, 113, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3205, 118, 54, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3284, 122, 127, 3, 42, "Input"],
+Cell[3414, 127, 3565, 89, 33, "Output"],
+Cell[6982, 218, 3632, 91, 33, "Output"]
+}, Open  ]],
+Cell[10629, 312, 83, 1, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[10737, 317, 142, 3, 42, "Input"],
+Cell[10882, 322, 4016, 93, 33, "Output"],
+Cell[14901, 417, 3923, 94, 58, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

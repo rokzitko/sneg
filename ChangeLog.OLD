@@ -1,0 +1,107 @@
+CHANGE LOG 
+
+cca. 2001 - first version of Mathematica definitions that would one day
+            form the basis of package 'sneg'
+23. 2. 2005 - merging and code beautification
+ 8. 3. 2005 - fixed sorting for different operators: now we also sort
+              alphabetically according to the name/letter designating
+              the operator, number[], spinxyz[], spinss[], spin?[],
+              hop[], snegfermionoperators[], snegrealconstant.
+ 9. 3. 2005 - Fixed conj. Fixed ordering of different operators.
+10. 3. 2005 - SpinPlus, SpinMinus
+ 2. 5. 2005 - Context Sneg, BASIS, ap[]
+ 3. 5. 2005 - basisqs, scalarproduct, matrixrepresentationvc
+ 4. 5. 2005 - ap[] thread over lists
+29. 5. 2005 - spinspin[] function
+            - twohop[] function
+            - ruleCollect
+ 3. 7. 2005 - in-line documentation improved
+            - matrixrepresentationvc[] support for two different sets of states
+11. 8. 2005 - onvac[] function
+22. 8. 2005 - warning about 1 vs 1. in vc[] vectors added            
+30. 8. 2005 - vc2ops[] function
+            - invertspin[] function
+28.11. 2005 - twohop[] bug fix for arguments with non-nil arguments 
+            - hubbard[] operator
+            - spinspinxy[], spinspinz[], chargecharge[]
+            - hamiltonian[] function for rapid Hamiltonian definition
+21. 1. 2006 - antikomutator[], decompose[], orthog[]
+            - zeroonvac bugfix
+23. 1. 2006 - matrixrepresentationop[]
+30. 1. 2006 - spin matrices for arbitrary spin, halfintegerQ[], direct[]
+ 2. 2. 2006 - nambu[] and isospin[] now take parameter 'n'
+ 4. 2. 2006 - transformQStoIS fix
+13. 2. 2006 - snegfreeindexes[], sum[]
+19. 4. 2006 - spinxyzgen
+16. 5. 2006 - projector[.., 6], short-cuts PROJ0, PROJUP, etc.
+18. 5. 2006 - braket notation, step 1
+19. 5. 2006 - advanced braket notation, concatenation, application to a vector in
+              number representation, pattern testing functions
+29. 5. 2006 - transformQStoPH[], mergebasis[], collectvalues[]
+ 8. 6. 2006 - qszbasisvc[], qszbasis[]              
+10. 6. 2006 - projector*[] helper functions
+12. 6. 2006 - spinspinmp[], spinspinpm[]
+13. 6. 2006 - lrmap[], mapbasis[], orthogbasisop[]
+15. 6. 2006 - appendquantumnumber[], dropemptysubspaces[], transformtoLR[]
+            - transformtoLRvc[]
+30. 6. 2006 - NHoldAll for operators, so that indeces are not converted into
+              numerical values.
+ 3. 7. 2006 - merged sneg.m and sneg-sum.m
+ 4. 7. 2006 - renamerule[] moved to version dependant file sneg-mma5.1.m
+ 5. 7. 2006 - invertspin[] bug fixes
+ 1. 9. 2006 - listoperators, listrealconstants, etc. 
+ 9. 9. 2006 - improved vc2ops
+23. 2. 2007 - makeallmatrics[]
+            - expvvc[], braket[]
+11. 3. 2007 - isnumericQ[] function
+18. 3. 2007 - onvac removed, zeroonvac has the same purpose
+            - maskOp
+	    - onvac[] removed
+20. 3. 2007 - PrettyPrinting enhancements
+22. 3. 2007 - Baker-Hausdorff and Mendas-Milutinovic relations
+            - snegSeries[]
+23. 3. 2007 - Grassman variables, Berezin integrals
+            - coherent states
+24. 3. 2007 - new default behaviour for acmt: compare using Kronecker delta
+            - snegAssuming[]
+25. 3. 2007 - SimplifyKD[]
+26. 3. 2007 - much improved sumFullSimplify
+            - automatic index renaming when a conflict is detected
+28. 3. 2007 - major code cleanup
+29. 3. 2007 - mdot obsoleted, isospinxyz
+            - improved ruleSimplifySpin
+30. 3. 2007 - new definition of snegOrdered and acmt
+31. 3. 2007 - improved handling of Majorana fermions
+            - matrixrepresentationvcfast[]
+ 1. 4. 2007 - manyisospin generalization
+            - isospinx, isospiny, isospinz
+            - sumSimplifyKD
+ 3. 4. 2007 - use CenterDot for output of nc multiplication
+            - isospinplus
+ 8. 4. 2007 - vevwick used in scalarproductop
+13. 4. 2007 - UsageNotes
+15. 4. 2007 - qszbasis, qszbasisvc, .. automatically call makebasis[]
+16. 4. 2007 - snegAssuming
+19. 4. 2007 - made functions Listable
+            - phononx, zeroonvac[...,ket], ap[..,vc] --> nc[..,vc]
+            - largely finished writing help pages
+20. 4. 2007 - support for bosonic operators
+22. 4. 2007 - qsbasisvc[]
+14. 5. 2007 - generalized hop[], number[] and spinspin[] functions
+23. 5. 2007 - op Exp -> Exp op transformation Baker-Campbell rules
+ 4. 6. 2007 - isannihilation[] etc. for bosonic operators
+ 5. 6. 2007 - bug fix in mambpair[]
+ 3. 7. 2007 - matrixrepresentationvcfast[] (experimental)
+14.11. 2007 - support for fermionic operators in arbitrary spin representation
+14.11. 2007 - qszbasis[] for arbitrary spin fermionic operators
+            - basistensorproduct[] for combining basis sets by forming 
+	      tensor product
+19.11. 2007 - nonebasis[], nonebasisvc[]: basis with no conserved quantum numbers
+19.11. 2007 - qbasis[], qbasisvc[]: basis with conserved total charge
+22.11. 2007  - spinlessbasis[] for producing basis for spinless Fermions
+30.11. 2007 - support for spin operators: snegspinoperators[]
+10.12. 2007 - sbasis[], sbasisvc[]: basis with conserved total spin only
+ 3.12. 2007 - support for Mathematica 6
+            - snegorthog[] for Mathematica-version-independent 
+	      orthogonalisation
+14. 2. 2008 - Mathematica-6 compatible pretty output 

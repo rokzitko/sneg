@@ -1,0 +1,316 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      5743,        226]*)
+(*NotebookOutlinePosition[      6726,        260]*)
+(*  CellTagsIndexPosition[      6618,        253]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["isannihilation", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["isannihilation[", "MR"],
+  StyleBox["op", "TI"],
+  StyleBox["]", "MR"],
+  " returns True if op is an annihilation operator.\n\[FilledSmallSquare] ",
+  StyleBox["iscreation[", "MR"],
+  StyleBox["op", "TI"],
+  StyleBox["]", "MR"],
+  " returns True if op is a creation operator."
+}], "Usage",
+  CellTags->{"isannihilation", "iscreation"}],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["isannihilation", "MR"],
+  " and ",
+  StyleBox["iscreation", "MR"],
+  " are used to determine how the operators should be reordered (see ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ")."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["ordering",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["vev",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["vevwick",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["zeroonv",
+    ButtonStyle->"AddOnsLinkText"],
+  ButtonBox["\[Placeholder]",
+    ButtonStyle->"AddOnsLink"],
+  ButtonBox["ac",
+    ButtonStyle->"AddOnsLinkText"],
+  ", ",
+  ButtonBox["VACUUM",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " and ",
+  StyleBox["d", "IT"],
+  " to be fermionic operators."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c, d];\)\), "\[IndentingNewLine]", 
+    \(\(ordering[c] = EMPTY;\)\), "\[IndentingNewLine]", 
+    \(\(ordering[d] = SEA;\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["\<\
+Simple case: for ordering=EMPTY, the first index fully determines \
+whether the operator is annihilation or creation operator.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(iscreation[c[CR]]\), "\[IndentingNewLine]", 
+    \(isannihilation[c[AN]]\), "\n", 
+    \(isannihilation[c[CR]]\), "\[IndentingNewLine]", 
+    \(iscreation[c[AN]]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]],
+
+Cell["\<\
+More complex case: for ordering=SEA, the creation or annihilation \
+character of an operator depends on the value of its indexes.\
+\>", \
+"ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(iscreation[d[CR, k]]\), "\[IndentingNewLine]", 
+    \(isannihilation[d[AN, k]]\), "\n", 
+    \(isannihilation[d[CR, k]]\), "\[IndentingNewLine]", 
+    \(iscreation[d[AN, k]]\)}], "Input",
+  CellLabel->"In[9]:="],
+
+Cell[BoxData[
+    \(k > 0\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(k > 0\)], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(k < 0\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    \(k < 0\)], "Output",
+  CellLabel->"Out[12]="]
+}, Open  ]],
+
+Cell["For bosons, the first index determines the operator type.", \
+"ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegbosonoperators[a];\)\), "\[IndentingNewLine]", 
+    \(iscreation[a[CR]]\), "\[IndentingNewLine]", 
+    \(isannihilation[a[AN]]\), "\[IndentingNewLine]", 
+    \(iscreation[a[AN]]\), "\n", 
+    \(isannihilation[a[CR]]\)}], "Input",
+  CellLabel->"In[13]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[17]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 394}, {204, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "isannihilation"->{
+    Cell[1815, 55, 390, 11, 54, "Usage",
+      CellTags->{"isannihilation", "iscreation"}]},
+  "iscreation"->{
+    Cell[1815, 55, 390, 11, 54, "Usage",
+      CellTags->{"isannihilation", "iscreation"}]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"isannihilation", 6389, 243},
+  {"iscreation", 6500, 246}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 36, 0, 38, "ObjectName"],
+Cell[1815, 55, 390, 11, 54, "Usage",
+  CellTags->{"isannihilation", "iscreation"}],
+Cell[2208, 68, 273, 9, 40, "Notes"],
+Cell[2484, 79, 562, 24, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3071, 107, 42, 0, 38, "ExampleSection"],
+Cell[3116, 109, 151, 6, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3292, 119, 256, 5, 74, "Input"],
+Cell[3551, 126, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3669, 131, 157, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3851, 138, 220, 5, 74, "Input"],
+Cell[4074, 145, 62, 2, 25, "Output"],
+Cell[4139, 149, 62, 2, 25, "Output"],
+Cell[4204, 153, 63, 2, 25, "Output"],
+Cell[4270, 157, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[4348, 162, 162, 4, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4535, 170, 232, 5, 74, "Input"],
+Cell[4770, 177, 63, 2, 25, "Output"],
+Cell[4836, 181, 64, 2, 25, "Output"],
+Cell[4903, 185, 64, 2, 25, "Output"],
+Cell[4970, 189, 64, 2, 25, "Output"]
+}, Open  ]],
+Cell[5049, 194, 82, 1, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5156, 199, 281, 6, 90, "Input"],
+Cell[5440, 207, 63, 2, 25, "Output"],
+Cell[5506, 211, 63, 2, 25, "Output"],
+Cell[5572, 215, 64, 2, 25, "Output"],
+Cell[5639, 219, 64, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

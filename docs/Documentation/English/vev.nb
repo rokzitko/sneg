@@ -1,0 +1,449 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     10178,        350]*)
+(*NotebookOutlinePosition[     11106,        384]*)
+(*  CellTagsIndexPosition[     11010,        377]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["vev", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["vev[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " returns the vacuum expectation value (vev) of an operator expression.\n\
+\[FilledSmallSquare] ",
+  StyleBox["vevwick[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " calculates the vacuum expectation value of an operator expression using \
+Wick's theorem."
+}], "Usage",
+  CellTags->{"vev", "vevwick"}],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["vev", "MR"],
+  " and ",
+  StyleBox["vevwick", "MR"],
+  " take into account the type of the vacuum associated with a group of \
+operators as defined by ",
+  ButtonBox["ordering",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] It is assumed that the vacuum state has well \
+defined number of particles. This implies that the vev of an odd number of \
+operators is zero by definition.\
+\>", "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] The vev of a canonically normal ordered \
+product of operators is zero.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By definition, ",
+  StyleBox["vev[nc[conj[VACUUM],VACUUM]]=1", "MR"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["ordering",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["normalorder",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["normalorderwick",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare some quantities.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c, d]\), "\n", 
+    \(\(ordering[c] = SEA;\)\), "\[IndentingNewLine]", 
+    \(\(ordering[d] = EMPTY;\)\), "\n", 
+    \(snegfreeindexes[k, \[Sigma]]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["\<\
+Simple cases: odd number of operators or an annihilation operator \
+applied on the vacuum state.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(vev[c[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(vev[c[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(vev[d[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(vev[d[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(vev[nc[c[CR, 1], c[CR, 2], c[CR, 3]]] \[Equal] 
+      0\), "\[IndentingNewLine]", 
+    \(vev[nc[d[CR, 1], d[CR, 2], d[CR, 3]]] \[Equal] 
+      0\), "\[IndentingNewLine]", 
+    \(vev[nc[expr, d[AN]]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(vev[nc[d[CR], expr]] \[Equal] 0\)}], "Input",
+  CellLabel->"In[6]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[13]="]
+}, Open  ]],
+
+Cell["\<\
+In the case of the Fermi sea vacuum state, information about the \
+true annihilation/creation nature of an operators is required.\
+\>", \
+"ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(vev[nc[expr, c[AN, k, \[Sigma]]]]\), "\[IndentingNewLine]", 
+    \(snegAssuming[k /: k > 0 = True, %] \[Equal] 
+      0\), "\[IndentingNewLine]", 
+    \(vev[nc[expr, c[CR, k, \[Sigma]]]]\), "\n", 
+    \(snegAssuming[k /: k < 0 = True, %] \[Equal] 
+      0\), "\[IndentingNewLine]", 
+    \(vev[nc[c[CR, k, \[Sigma]], expr]]\), "\n", 
+    \(snegAssuming[k /: k > 0 = True, %] \[Equal] 
+      0\), "\[IndentingNewLine]", 
+    \(vev[nc[c[AN, k, \[Sigma]], expr]]\), "\[IndentingNewLine]", 
+    \(snegAssuming[k /: k < 0 = True, %] \[Equal] 0\)}], "Input",
+  CellLabel->"In[22]:="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{"expr", 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[22]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[23]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{"expr", 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[24]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[25]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], "expr"}], "]"}]], "Output",
+  CellLabel->"Out[26]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[27]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], "expr"}], "]"}]], "Output",
+  CellLabel->"Out[28]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[29]="]
+}, Open  ]],
+
+Cell["\<\
+vev of a sum is defined to be a sum of the vacuum expectation \
+values of the addends.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(SetAttributes[eps, NumericFunction]\), "\[IndentingNewLine]", 
+    \(\(Conjugate[eps[k_]] ^= eps[k];\)\), "\[IndentingNewLine]", 
+    \(H = 
+      sum[eps[k]\ number[
+            c[k], \[Sigma]], {k, \[Sigma]}]\), "\[IndentingNewLine]", 
+    \(vev[H]\)}], "Input",
+  CellLabel->"In[30]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{\(eps[k]\), " ", 
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k, \[Sigma]}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}]], "Output",
+  CellLabel->"Out[32]="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{\(eps[k]\), " ", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Theta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k\), ")"}],
+            DisplayForm]}], ",", \({k, \[Sigma]}\)}], "]"}]], "Output",
+  CellLabel->"Out[33]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 458}, {Automatic, 82}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "vev"->{
+    Cell[1804, 55, 437, 13, 70, "Usage",
+      CellTags->{"vev", "vevwick"}]},
+  "vevwick"->{
+    Cell[1804, 55, 437, 13, 70, "Usage",
+      CellTags->{"vev", "vevwick"}]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"vev", 10812, 367},
+  {"vevwick", 10906, 370}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 25, 0, 38, "ObjectName"],
+Cell[1804, 55, 437, 13, 70, "Usage",
+  CellTags->{"vev", "vevwick"}],
+Cell[2244, 70, 283, 10, 40, "Notes"],
+Cell[2530, 82, 202, 4, 40, "Notes"],
+Cell[2735, 88, 117, 3, 24, "Notes"],
+Cell[2855, 93, 128, 4, 24, "Notes"],
+Cell[2986, 99, 265, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3276, 114, 42, 0, 38, "ExampleSection"],
+Cell[3321, 116, 61, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3407, 120, 279, 6, 90, "Input"],
+Cell[3689, 128, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3807, 133, 127, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3959, 140, 553, 11, 138, "Input"],
+Cell[4515, 153, 62, 2, 25, "Output"],
+Cell[4580, 157, 62, 2, 25, "Output"],
+Cell[4645, 161, 62, 2, 25, "Output"],
+Cell[4710, 165, 62, 2, 25, "Output"],
+Cell[4775, 169, 63, 2, 25, "Output"],
+Cell[4841, 173, 63, 2, 25, "Output"],
+Cell[4907, 177, 63, 2, 25, "Output"],
+Cell[4973, 181, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[5051, 186, 162, 4, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5238, 194, 597, 12, 138, "Input"],
+Cell[5838, 208, 512, 14, 32, "Output"],
+Cell[6353, 224, 63, 2, 25, "Output"],
+Cell[6419, 228, 520, 14, 33, "Output"],
+Cell[6942, 244, 63, 2, 25, "Output"],
+Cell[7008, 248, 520, 14, 33, "Output"],
+Cell[7531, 264, 63, 2, 25, "Output"],
+Cell[7597, 268, 512, 14, 32, "Output"],
+Cell[8112, 284, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[8190, 289, 117, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8332, 296, 310, 7, 74, "Input"],
+Cell[8645, 305, 998, 25, 33, "Output"],
+Cell[9646, 332, 492, 13, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

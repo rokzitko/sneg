@@ -1,0 +1,1679 @@
+\documentclass[3p,number,preprint]{elsarticle}
+
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{url}
+
+\begin{document}
+
+\title{SNEG - Mathematica package for symbolic calculations with
+second-quantization-operator expressions}
+
+\author[rz]{Rok \v{Z}itko}
+\ead{rok.zitko@ijs.si}
+
+\address[rz]{J. Stefan Institute, Jamova 39, SI-1000 Ljubljana, Slovenia}
+
+\date{\today}
+
+\begin{keyword}
+symbolic manipulation 
+\sep
+second quantization operators
+\sep 
+Wick's theorem
+\sep
+occupation number representation
+\sep
+bra-ket notation
+\end{keyword}
+
+\begin{abstract}
+In many-particle problems involving interacting fermions or bosons,
+the most natural language for expressing the Hamiltonian, the
+observables, and the basis states is that of the second-quantization
+operators. It thus appears advantageous to write numerical computer
+codes which allow one to define the problem and the quantities of
+interest directly in terms of operator strings, rather than in some
+low-level programming language. Here I describe a Mathematica package
+which provides a flexible framework for performing the required
+symbolic calculations. It consists of a collection of transformation
+rules that define the algebra of operators and a comprehensive library
+of utility functions. While the emphasis is given on the problems from
+solid-state and atomic physics, the package can be easily adapted to
+any given problem involving non-commuting operators.
+\end{abstract}
+
+
+\maketitle
+
+{\bf PROGRAM SUMMARY}
+
+\begin{small}
+\noindent
+{\em Manuscript Title:} 
+SNEG - Mathematica package for symbolic calculations with
+second-quantization-operator expressions \\
+{\em Author:}
+Rok \v{Z}itko\\
+{\em Progam Title:}
+SNEG \\
+{\em Journal Reference:}
+\\
+{\em Catalogue identifier:}
+\\
+{\em Licensing provisions:}
+GNU Public License\\
+{\em Programming language:}
+Mathematica\\
+{\em Computer:}
+any computer which runs Mathematica\\
+{\em Operating system:}
+any OS which runs Mathematica\\
+{\em RAM:}
+problem dependent\\
+{\em Number of processors used:}
+1\\
+{\em Supplementary material:}
+\\
+{\em Keywords:}
+second quantization, non-commuting operators, commutators,
+Wick's theorem, Dirac bra-ket notation\\
+{\em Classification:}
+2.9 Theoretical methods, 5 Computer algebra, 6.2 Languages\\
+{\em External routines/libraries:}
+\\
+{\em Subprograms used:}
+\\
+{\em Nature of problem:} 
+Manipulation of expressions involving second quantization operators
+and other non-commuting objects. Calculation of commutators,
+anticommutators, expectation values. Generation of matrix
+representations of the Hamiltonians expressed in the second quantization
+language.\\
+{\em Solution method:}
+Automatic reordering of operator strings in some well specified
+canonical order; (anti)commutation rules are used where needed.
+States may be represented in occupation-number representation.
+Dirac bra-ket notation may be intermixed with non-commuting operator
+expressions.\\
+{\em Restrictions:}
+For long operator strings, the brute-force automatic reordering becomes
+slow, but it can be turned off. In such cases, the expectation values
+may still be evaluated using Wick's theorem.\\
+{\em Unusual features:}
+SNEG also provides the natural notation of second-quantization operators
+(dagger for creation operators, etc.) when used
+interactively using the Mathematica notebook interface.\\
+{\em Additional comments:}
+\\
+{\em Running time:}
+problem dependent\\
+\end{small}
+
+\newcommand{\vc}[1]{\boldsymbol{#1}}
+\newcommand{\ket}[1]{\left| #1 \right\rangle}
+\newcommand{\bra}[1]{\left\langle #1 \right|}
+\newcommand{\vev}[1]{\left\langle #1 \right\rangle}
+\newcommand{\braket}[1]{\langle #1 \rangle}
+
+%\renewcommand{\Im}{\mathrm{Im}}
+%\renewcommand{\Re}{\mathrm{Re}}
+
+\newcommand{\mma}[1]{{\tt #1}}
+
+\bibliographystyle{unsrt} %plain
+
+\section{Introduction}
+
+Computational science has emerged as the third paradigm of science,
+complementing experiments and theory. Computers are now used to 
+simulate realistic physical systems which are not accessible to
+experiments or would be simply too expensive to study directly. They
+also allow numerical treatment of theoretical models which cannot be
+solved by analytical means nor by simple approximations. In this
+field, it is still common practice to quickly write ad-hoc computer
+codes for performing calculations for specific problems. In these
+rapidly developed computer programs the problem definition and the
+quantities of interest are typically hard-coded using the same
+low-level programming language which is also used to implement the
+method of solution. In more technical terms, the problem-domain and
+the solution-domain languages tend to coincide. As the scientific
+interests change with time, such codes often undergo successive
+modifications and adaptations, often leading to maintainability issues
+or even bugs. In software engineering, the proposed solution to such
+difficulties is to use a domain-specific language (DSL), i.e., a
+specification language adapted to a particular problem domain. Using a
+DSL, the problem can be expressed significantly more clearly than
+allowed by low-level languages. In the field of many-particle physics,
+such a language already exists: the language of strings of
+second-quantization operators (particle creation and annihilation
+operators) in terms of which it possible to express the problem (the
+Hamiltonian), the quantities of interest (the observables), and the
+domain of definition (the basis states defined by the creation
+operators applied to some vacuum state). Using an appropriate notation
+is equally important: the operators are usually expressed as
+single-character symbols, possibly with further indexes, and a dagger
+is used to distinguish creation from annihilation operators. The
+computer algebra system Mathematica makes it possible to both easily
+define the DSLs and to establish a suitable notation for these DSLs.
+In this article I describe package SNEG, which implements a DSL for
+second-quantization expressions and provides the corresponding natural
+notation. In addition to facilitating the representation of the input
+to numerical codes, the package is powerful enough to perform some
+calculations directly (e.g., evaluation of the expectation values
+using Wick's theorem, calculation and simplification of operator
+commutators, etc.).
+
+This paper is structured as follows. Section~\ref{sec1} is devoted to
+the specification of basic elements (operators), their concatenation
+(non-commutative multiplication) and their automatic reordering
+(according to the canonical commutation/anticommutation rules or some
+other specification); it also introduces the Dirac bra-ket notation
+which can be mixed with the second-quantization operator expressions,
+and the occupation-number-representation vectors. Section~\ref{sec2}
+describes a number of higher-level routines for generating
+second-quantization expression (particle number and spin operators,
+etc.) and their manipulation (commutators and anticommutators, etc.).
+Section~\ref{sec3} details the utility routines for generating basis
+states which satisfy chosen symmetries (particle number conservation,
+rotational invariance in the spin space) as well as the routines for
+generating the matrix representations of operator expressions in given
+basis space; these routines are crucial for the applications of SNEG
+as an input preprocessor for lower-level numerical computer codes. The
+focus of Section~\ref{sec4} are symbolic sums with dummy indexes and
+their automated simplification using pattern matching. Finally,
+Section~\ref{sec5} describes a successful use of SNEG in the numerical
+renormalization group package ``NRG Ljubljana''.
+
+The package SNEG comes with detailed documentation which integrates in
+the Mathematica interactive help system. Each SNEG function is
+carefully documented and examples are provided. For this reason, the
+syntax of function calls is not described in this article; instead,
+the focus here is on the basic concepts, design choices, conventions
+followed, and applications.
+
+SNEG is released under the GNU Public License (GPL) and the most
+recently updated version is available from
+\url{http://nrgljubljana.ijs.si/sneg}. The package comes with a
+standard battery of test cases which may be used as a regression test,
+but also to verify that the possible user's custom extensions do not
+interfere with the expected behavior of the library. 
+
+% Other packages \cite{supercalc}
+
+% see calmet.pdf for further references.
+
+While there are other packages for symbolic calculations with
+non-commuting objects for Mathematica and for other computer algebra
+systems (supercalc \cite{supercalc}, ccr\_car\_algebra \cite{ccrcar},
+NCComAlgebra \cite{nccomalgebra}, grassmann.m \cite{grassmann},
+grassmannOps.m \cite{grassmannOps}), none appears to have the scope or
+generality of SNEG. Furthermore, the goal of SNEG is different from
+more specialized symbolic manipulation packages such as TCE \cite{tce,
+hirata2006} for performing many-body perturbation theory in quantum
+chemistry or FormCalc \cite{formcalc} for calculations in theoretical
+high-energy physics. Instead, SNEG is principally intended to provide
+a general framework in which more sophisticated solutions can be
+implemented or as a tool that provides a more natural interface to the
+user.
+
+% -----------------  11111111111111111111 ----------------
+
+\section{Foundations}
+\label{sec1}
+
+The cornerstone of SNEG is a definition of non-commutative
+multiplication with automatic reordering of operators in some standard
+form (usually the conventional normal ordering with creation operators
+preceding the annihilation operators) which takes into account
+selected (anti)commutation rules. Use of the standard form reordering
+allows automatic simplifications of expressions. This section
+describes the low-level aspects of the library: objects representing
+operators and numbers (constants), non-commutative multiplication,
+expression reordering, vacuum state objects,
+occupation-number-representation objects, and support for the Dirac's
+bra-ket notation.
+
+
+\subsection{Operator objects and numeric objects}
+
+In SNEG, operators are represented as Mathematica expressions (lists)
+with a chosen head (typically a single-letter symbol) and containing
+the necessary indexes as list elements, for example
+%
+\begin{equation}
+\mma{a[\,]},\quad
+\mma{c[k,sigma]}.
+\end{equation}
+%
+The symbols need to be explicitly declared before they are used with 
+one of the declaration routines: \mma{snegbosonoperators},
+\mma{snegfermionoperators}, \mma{snegmajoranaoperators}, or
+\mma{snegspinoperators}. The declaration routines define the default
+(anti)commutation properties of the objects. They also establish the
+natural on-screen notation (``pretty-printing'') when the package is
+used interactively using the Mathematica notebook interface. Both the
+(anti)commutation properties and the pretty-printing can be later
+modified according to the user's requirements. For operators declared
+to be bosons or fermions, the first element of the list (i.e., the
+first ``index'') has a special role: it distinguishes creation
+operators (\mma{CR}=0) and annihilation operators (\mma{AN}=1):
+%
+\begin{equation}
+\mma{c[CR,k]} \to c^\dag_{k}, \quad
+\mma{c[AN,k]} \to c_{k}.
+\end{equation}
+%
+In addition, for fermions, by default SNEG follows the convention that
+the last index is interpreted as the particle spin
+(\mma{DO}=$\downarrow$=0 and \mma{UP}=$\uparrow$=1); this convention
+is used when generating operator expressions using higher-level
+functions (see below) and when pretty-printing the expressions on 
+computer display:
+%
+\begin{equation}
+\mma{c[CR,k,UP]} \to c^\dag_{k\uparrow}, \quad
+\mma{c[CR,k,DO]} \to c^\dag_{k\downarrow}.
+\end{equation}
+%
+A similar convention is applied to operators that are declared to be
+spin operators: the last index denotes the spin component (\mma{x}=1,
+\mma{y}=2, \mma{z}=3, \mma{p}=4, \mma{m}=5; the latter two denote the
+spin-raising and spin-lowering operators). The operator nature of
+operator objects can be tested using function \mma{operatorQ}, and
+more specifically with \mma{fermionQ}, \mma{bosonQ}, \mma{majoranaQ},
+and \mma{spinQ}.
+
+Fermionic operators with different symbols are assumed to anticommute,
+bosonic operators with different symbols are assumed to commute, and
+bosonic and fermionic are assumed to commute. If necessary, this
+default behavior can be overridden.
+
+SNEG allows to explicitly declare certain symbols to be numeric
+quantities of specific kinds; this information is used to correctly
+factor out numeric objects from the operator strings. The related
+functions are \mma{snegintegerconstants}, \mma{snegrealconstants},
+\mma{snegcomplexconstants}, \mma{sneggrassmanconstants}, and
+\mma{snegfreeindexes}. The first four are self-explaining, while the
+last one declares indexes which are allowed to appear as dummy
+summation indexes in symbolic sum expressions; this is required to
+facilitate the automatic simplification of such expressions. The
+numeric nature of declared symbols can be tested using the function
+\mma{isnumericQ}. The distinction between real and complex numeric
+quantities is used in the function \mma{conj} to correctly conjugate
+an operator expression. Finally, it should be noted that the Grassman
+variables are correctly anticommuted and that $z^2=0$.
+
+
+\subsection{Non-commutative multiplication}
+
+In SNEG, the non-commutative multiplication is denoted by \mma{nc}. In
+interactive sessions \mma{nc} multiplications are pretty printed with 
+centered dots between the terms, for example:
+%
+\begin{equation}
+\mma{nc[c[CR,k,UP], c[AN,k,UP]]} \to c^\dag_{k\uparrow} \cdot
+c_{k\uparrow}.
+\end{equation}
+%
+The dot is displayed in order to permit easy detection of possible
+errors arising from an inadvertent replacement of non-commutative
+with the usual commutative multiplication. (In this article, the
+centered dot will be used for a similar purpose: to indicate places
+where noncommutitave multiplication is performed. This will only be
+done, however, where this is necessary for clarity or in order to
+avoid any possible confusion.) Function \mma{nc} is linear in all its
+arguments, for example:
+%
+\begin{equation}
+\mma{nc[a+b,c]} = \mma{nc[a,c]}+\mma{nc[b,c]}, \quad
+\mma{nc[z\ a,b]} = \mma{z}\ \mma{nc[a,b]},
+\end{equation}
+%
+where \mma{z} is a numeric quantity, and it is associative: 
+%
+\begin{equation}
+\mma{nc[nc[a,b],c]} = \mma{nc[a,b,c]}.
+\end{equation}
+%
+Furthermore, \mma{nc[\ ]}=1 and \mma{nc[c]}=\mma{c}; these two rules
+mimic the behavior of the standard Mathematica product function
+\mma{Times} and imply the property of idempotency of multiplication.
+Note that \mma{nc}, unlike \mma{Times}, does not have the attributes
+\mma{Flat} and \mma{OneIdentity}. Instead, the associativity property
+is explicitly implemented. This design choice was motivated by reasons
+of efficiency in the pattern matching. Unlike \mma{Times}, \mma{nc}
+also does not have the attribute \mma{Orderless}, for obvious reasons.
+
+Finally, it should be mentioned that the exponentiation of
+an operator should be performed using the SNEG function \mma{pow}, rather
+than with the Mathematica built-in \mma{Power}, i.e. one should write
+\mma{pow[a[],2]} rather than \mma{a[]\^2}.
+
+
+\subsection{Expression reordering}
+
+Computer algebra systems simplify expressions by ordering them in some
+canonical manner; in this way, the equivalent parts can be combined (or
+canceled out, if the prefactors sum to zero). This is how some
+simplifications are automatically effected in Mathematica. For this
+reason, SNEG also attempts to reorder multiplicands in the \mma{nc}
+operator strings according to some canonical order, using the
+associated canonical anticommutation and commutation rules for the
+operators.
+
+By default, fermionic operators are sorted canonically (in the sense
+that creation operators are permuted to the left and annihilation
+operators to the right -- note that this simply corresponds to sorting
+according to the first index, \mma{CR=0} or \mma{AN=1}) and then by
+the remaining indexes, including spin as the last index.  It has to be
+remarked, however, that the canonical order depends on the definition
+of the vacuum state. SNEG supports either an ``empty band'' vacuum
+with no particles present, or a ``Fermi sea'' vacuum with levels
+filled up to the Fermi level; this is controlled by setting the value
+of \mma{ordering} to \mma{EMPTY} or \mma{SEA} for the specific
+symbol. The ``Fermi sea'' case can also be applied to atomic systems
+where one distinguishes between core, virtual and valence orbitals,
+and a quasi-vacuum state with occupied core orbitals is used.
+
+The default ordering is that of an ``empty band'', thus the value of
+the first index (\mma{CR} or \mma{AN}) fully determines whether an
+operator is a creation or an annihilation operator. The type
+(annihilation vs. creation) of the operator can be tested using the
+functions \mma{isannihilation} and \mma{iscreation}. In the case of
+``Fermi sea'' ordering, the second index of the operator is tested by
+default. This index is assumed to be a ``momentum'' or ``energy''
+index, with the Fermi sea fixed at zero. Thus
+%
+\begin{equation}
+\begin{split}
+\mma{iscreation[c[CR,k]]} &\to \mma{True},\quad k>0, \\
+\mma{iscreation[c[CR,k]]} &\to \mma{False},\quad k<0.
+\end{split}
+\end{equation}
+%
+If a different convention is required, the user has to redefine
+the functions \mma{isannihilation} and \mma{iscreation}. If necessary, it
+is also possible to turn off the automatic reordering for a fermionic
+operator by setting \mma{ordering} to \mma{NONE}. This is useful for
+very long expressions which can be simplified more efficiently by
+explicitly using Wick's theorem (see below) rather than by
+automatic operator reordering.
+
+Internally, the operator ordering is tested with \mma{snegOrderedQ},
+while the necessary transformations on the operator strings (when
+out-of-order parts are detected) are implemented as transformation
+rules for the function \mma{nc}. 
+
+By default, the canonical commutation relations (CCR) apply for
+bosonic operators:
+%
+\begin{equation}
+[a_i,a_j]=0,\quad [a_i^\dag,a_j^\dag]=0,\quad
+[a_i,a_j^\dag]=\delta_{i,j},
+\end{equation}
+%
+while the canonical anti-commutation relations (CAR) apply for fermionic
+operators:
+%
+\begin{equation}
+\{a_i,a_j\}=0,
+\quad
+\{a_i^\dag,a_j^\dag\}=0,
+\quad
+\{a_i,a_j^\dag\}=\delta_{i,j}.
+\end{equation}
+%
+These can be overridden by redefining SNEG functions \mma{cmt} and
+\mma{acmt}, for example to generalize the relations to the case
+of non-orthonormal basis sets.
+
+The Pauli rule for (complex) Dirac fermionic operators is implemented
+as a pattern which sets to zero all expressions in which two identical
+fermionic operators appear consecutively. For (real) Majorana
+fermionic operators, the default behavior is to replace pairs of
+identical consecutive operators by 1/2. It should be noted that
+$\psi^2=1/2$ is not the only convention and that, instead, some people
+define $\psi^2=1$.
+
+Bosonic and spin operators are reordered according to the indexes; for
+bosons, this implies canonical ordering with the creation operators to
+the left of the annihilation operators. When operators of different
+types appear in the same product, they are disentangled. For example,
+bosonic operators are by default always commuted to the left of
+fermionic operators, Majorana fermionic operators are anti-commuted to
+the left of the Dirac fermionic operators, etc.
+
+Finally, it should be recalled that automatic reordering is also
+implemented for the anti-commuting Grassman numbers if they
+are declared using \mma{sneggrassmanconstants}.
+
+
+\subsection{Advanced automatic simplifications}
+
+SNEG will attempt to simplify expressions involving exponential
+functions of operators. Using the Baker-Hausdorff relations, one has
+for example
+%
+\begin{equation}
+\begin{split}
+e^A e^B \to e^{A+B} \quad \text{if}\ [A,B]=0,\\
+e^A e^B \to e^{A+B} e^{[A,B]/2} \quad \text{if}\ [A,[A,B]]=0
+\ \text{and}\ [B,[B,A]]=0,\\
+e^A B e^{-A} \to B \quad \text{if}\ [A,B]=0,\\
+e^A B e^{-A} \to B + [A,B] \quad \text{if}\ [A,[A,B]]=0,\\
+e^A B e^{-A} \to e^c B \quad \text{if}\ [A,B]=cB\ \text{and}\ c\
+\text{is numeric},\\
+e^A B e^{-A} = \cos(i \sqrt{c}) B + \left[\sin(i \sqrt{c})\right]/(i
+\sqrt{c})  [A,B],
+\quad \text{if}\ [A,[A,B]]=cB\ \text{and}\ c\ \text{is numeric}.
+\end{split}
+\end{equation}
+%
+while using the Menda\v{s}-Milutinovi\'c relations \cite{mendas1989}
+one has
+%
+\begin{equation}
+\begin{split}
+e^A B e^{-A} \to B e^{-2A} \quad \text{if}\ \{A,B\}=0, \\
+e^A B e^{-A} \to B e^{-2A} + \{A,B\} e^{-2A} \quad 
+\text{if}\ \{A,\{A,B\}\}=0.
+\end{split}
+\end{equation}
+%
+In addition
+%
+\begin{equation}
+\begin{split}
+e^B \to 1+B \quad \text{if}\ c=B^2=0,\\
+e^B \to \cosh{\sqrt{c}} + B \sinh{\sqrt{c}}/\sqrt{c}
+\quad \text{if}\ c=B^2\neq0.
+\end{split}
+\end{equation}
+
+
+\subsection{Occupation-number representation}
+
+For fermionic operators, SNEG allows working with the
+occupation-number representation (ONR) of the states in a given Fock
+space. Second-quantized expressions can be applied to these states,
+one can compute the matrix elements of operators between pairs of
+states, etc.
+
+
+The single-particle Hilbert space is defined by a call to function
+\mma{makebasis}, which takes as the argument a list of all orbitals
+(without spin indexes, expansion over spin is performed automatically)
+that appear in the problem, for example
+%
+\begin{equation}
+\label{eqbas}
+\mma{makebasis[\{c[1],c[2]\}]} \to \left\{ c^\dag_{1,\uparrow},
+c^\dag_{1,\downarrow}, c^\dag_{2,\uparrow}, c^\dag_{2,\downarrow}
+\right\}.
+\end{equation}
+%
+The resulting list of all creation operators is stored in a global
+variable \mma{BASIS}. It is equally possible to define \mma{BASIS}
+directly, or to manipulate \mma{BASIS} later on, for example to
+project out certain parts of the space. [The basis from
+Eq.~\eqref{eqbas} will be used throughout this subsection for all
+examples.]
+
+The states in the ONR are expressed in the form of Mathematica lists
+(``vectors'') with head \mma{vc}, which contain the occupancies of all
+orbitals represented by zeros and ones. For example,\mma{vc[0,1,0,1]}
+corresponds to a state with one particle with spin down in orbital 1,
+and one particle with spin down in orbital 2. In interactive
+Mathematica notebooks, the ONR vectors are shown in the Dirac-ket-like
+format with boxes which are either empty or filled, according to the
+occupancy of various orbitals:
+%
+\begin{equation}
+\mma{vc[0,1,0,1]} \to \ket{\square \blacksquare \square \blacksquare}.
+\end{equation}
+%
+If a vector is conjugated using \mma{conj}, it behaves as the
+corresponding bra. If a bra and a ket are multiplied by \mma{nc}, the
+corresponding scalar product is computed.
+
+The vacuum state is generated by a call to SNEG function \mma{vacuum}.
+Alternatively, one may use the nonspecific form, \mma{VACUUM}, which
+corresponds to a generic state with no particles. By definition,
+%
+\begin{equation}
+\mma{nc[conj[VACUUM], VACUUM]} = 1.
+\end{equation}
+
+Function \mma{ap} can be used to apply a second-quantization operator
+(or a full operator expression) to a vector:
+%
+\begin{equation}
+\begin{split}
+\mma{ap[1, VACUUM]} &\to \mma{vc[0,0,0,0]}, \\
+\mma{ap[c[CR,1,UP],vacuum[]]} &\to \mma{vc[1,0,0,0]}, \\
+\mma{ap[c[CR,1,UP],vc[0,1,0,1]]} &\to \mma{vc[1,1,0,1]}, \\
+\mma{ap[c[CR,1,UP],vc[1,0,0,0]]} &\to 0.
+\end{split}
+\end{equation}
+%
+It should be noted that
+%
+\begin{equation}
+\begin{split}
+\mma{ap[nc[c[CR, 1, UP], c[CR, 1, DO]], VACUUM]} &\to \mma{vc[1,1,0,0]}, \\
+\mma{ap[nc[c[CR, 1, DO], c[CR, 1, UP]], VACUUM]} &\to -\mma{vc[1,1,0,0]},
+\end{split}
+\end{equation}
+%
+i.e., the fermionic sign is correctly evaluated. If one attempts to
+apply an operator which does not correspond to one of the orbitals in
+the single-particle basis, the function call is returned unevaluated.
+
+In addition, \mma{ap} is automatically called when an ONR vector
+appears as the last element of a non-commutative multiplication
+expression:
+%
+\begin{equation}
+\mma{nc[c[CR,1,UP],vc[0,0,0,0]]} \to \mma{vc[1,0,0,0]}.
+\end{equation}
+
+It is possible to convert an ONR vector to the string of creation
+operators which, applied to the VACUUM state, would give back the same
+vector:
+%
+\begin{equation}
+\mma{vc2ops[vc[1,1,0,0]]} \to -c^\dag_\downarrow c^\dag_\uparrow.
+\end{equation}
+
+\subsection{Dirac's bra-ket notation}
+
+SNEG provides support for calculations with the Dirac bra-ket
+notation, which can be intermixed with the second-quantization
+expressions. This is convenient, for example, for mixed
+electron-phonon systems, where the fermions can be described using the
+second-quantization language, but the oscillator using some other
+convenient representation, such as coherent states. In mixed
+expressions, the bras and kets are by default always commuted to the
+right of the fermionic operators. In interactive Mathematica sessions,
+the bras and kets are displayed enclosed by appropriate angled
+brackets and bars.
+
+A ket can be expressed using function \mma{ket}, which can take one or
+several arguments (quantum numbers):
+%
+\begin{equation}
+\begin{split}
+\mma{ket[m]} &\to \ket{m},\\
+\mma{ket[m,n]} &\to \ket{m,n}.
+\end{split}
+\end{equation}
+%
+Quantum numbers may also remain unspecified; this is signaled by the
+value \mma{Null}; in interactive sessions it is displayed as a small
+centered circle:
+%
+\begin{equation}
+\mma{ket[m,Null,n]} \to \ket{m,\circ,n}.
+\end{equation}
+%
+This functionality can be used to multiply kets from orthogonal
+Hilbert spaces, as in the following example:
+%
+\begin{equation}
+\mma{nc[ket[m,Null], ket[Null,n]]} \to \ket{m,n}.
+\end{equation}
+%
+If the patterns of specified arguments are such that a conflict
+arises, as in \mma{nc[ket[m,Null], ket[n,Null]]}, the expression is
+returned unevaluated.
+
+All the preceding rules also apply to bras, defined using \mma{bra}.
+With the Hermitian conjugation function \mma{conj}, a bra can be
+transformed into ket and vice versa. It should be noted that the order
+of quantum numbers in the argument is maintained, rather than reversed:
+%
+\begin{equation}
+\mma{conj[ket[m,n]]} \to \bra{m,n}.
+\end{equation}
+
+When a bra and a ket are multiplied by \mma{nc}, a scalar product is
+computed by comparing the quantum numbers in equivalent positions
+using the Kronecker delta:
+%
+\begin{equation}
+\mma{nc[bra[m,n],ket[i,j]]} \to \delta_{m,i} \delta_{n,j},
+\end{equation}
+%
+If necessary, this default behavior can be altered by redefining the
+function \mma{braketrule}. Unspecified arguments are ignored in
+evaluations of scalar products if they occur in equivalent positions
+in bra and ket, as in
+%
+\begin{equation}
+\mma{nc[bra[m,Null,n],ket[i,Null,j]]} \to \delta_{m,i} \delta_{n,j},
+\end{equation}
+%
+otherwise the scalar product remains unevaluated
+%
+\begin{equation}
+\mma{nc[bra[m,Null],ket[i,j]]} \to \braket{m,\circ|i,j}.
+\end{equation}
+%
+%An exception is made for the case of bra and ket from orthogonal
+%Hilber spaces, in which case it is possible to commute them:
+%
+
+In the bra-ket notation, the operators may be expressed as
+products of kets and bras, for example:
+%
+\begin{equation}
+\mma{nc[ket[1],bra[1]]-nc[ket[-1],bra[-1]]}
+\to \ket{1}\bra{1} - \ket{-1}\bra{-1}.
+\end{equation}
+
+It is possible to mix occupation-number-representation vectors and
+Dirac bra-ket vectors. The two subspaces are assumed to be unrelated
+(i.e., tensor product space). SNEG embeds the Dirac kets inside ONR
+vectors as the last element. When \mma{ap} is used to apply an
+operator featuring both non-commuting operators and Dirac ket-bras,
+the operators are applied to the ONR part of the vector, and the
+ket-bras to the ket only.
+
+
+\subsubsection{Bra-ket notation for spin operators}
+
+SNEG includes functions for performing calculations with spin
+operators in the bra-ket notation. The spin kets and bras for an
+arbitrary spin $S$ are generated using functions \mma{spinket} and
+\mma{spinbra}:
+%
+\begin{equation}
+\mma{spinket[3/2]} \to \left\{ \ket{3/2}, \ket{1/2}, \ket{-1/2},
+\ket{-3/2} \right\}.
+\end{equation}
+%
+If there is more than one Hilbert space, the position of the spin
+operator may be specified as the second argument to \mma{spinket} and
+\mma{spinbra} by a position list with number one indicating the chosen
+position, and zeros elsewhere:
+%
+\begin{equation}
+\mma{spinket[1/2,\{0,1,0\}]} \to \left\{ \ket{\circ,1/2,\circ},
+\ket{\circ,-1/2,\circ}
+\right\}.
+\end{equation}
+
+Spin operators may be generated using functions \mma{spinketbra?},
+where the question mark stands for X,Y,Z,P,M, i.e., X, Y, or Z
+component of spin, or the spin raising (Plus) or lowering (Minus)
+operator. The first argument is the spin $S$, while the second is
+the optional position list. For example
+%
+\begin{equation}
+\begin{split}
+\mma{spinketbraX[1/2]} &\to \frac{1}{2} \ket{-1/2} \bra{1/2}
++\frac{1}{2} \ket{1/2}\bra{-1/2}, \\
+\mma{spinketbraY[1/2]} &\to \frac{i}{2} \ket{-1/2} \bra{1/2}
+-\frac{i}{2} \ket{1/2}\bra{-1/2}, \\
+\mma{spinketbraZ[1/2]} &\to \frac{1}{2} \ket{1/2} \bra{1/2}
+-\frac{1}{2} \ket{-1/2}\bra{-1/2}, \\
+\mma{spinketbraP[1/2]} &\to \ket{1/2} \bra{-1/2}, \\
+\mma{spinketbraM[1/2]} &\to \ket{-1/2} \bra{1/2}.
+\end{split}
+\end{equation}
+%
+For completeness, there is also a function for generating the identity
+operator, \mma{spinketbraI}.
+
+The spin-spin coupling (exchange interaction) operator $\vc{S}_1 \cdot
+\vc{S}_2$ can be generated using SNEG function
+\mma{spinketbraspinspin}. As an example, to generate the Hamiltonian
+for a two-site Heisenberg model in external magnetic field, one could
+write
+%
+\begin{equation}
+\begin{split}
+\mma{H}&=\mma{J\ spinketbraspinspin[\{1/2,1/2\}]} \\
+&\mma{+ B (nc[spinketbraZ[1/2,\{1,0\}], spinketbraI[1/2,\{0,1\}]]}\\
+&+\mma{nc[spinketbraZ[1/2,\{0,1\}], spinketbraI[1/2,\{1,0\}]])}.
+\end{split}
+\end{equation}
+
+
+\subsubsection{Bra-ket notation for phonon operators}
+
+For convenience, SNEG also includes a small number of functions for
+calculations with oscillators (phonons). Since oscillator states are
+unbounded, all functions take an argument which specifies the phonon
+cutoff \mma{Nph}. A set of states up to \mma{Nph} is generated, for
+example, as
+%
+\begin{equation}
+\mma{phononbasis[2]} \to \left\{ \ket{0}, \ket{1}, \ket{2} \right\}.
+\end{equation}
+%
+The phonon number, raising, lowering, and displacement operators are
+generated as follows:
+%
+\begin{equation}
+\begin{split}
+\mma{phononnumber[2]} &\to \ket{1} \bra{1} + 2 \ket{2}\bra{2}, \\
+\mma{phononplus[2]} &\to \ket{1}\bra{0} + \sqrt{2} \ket{2} \bra{1}, \\
+\mma{phononminus[2]} &\to \ket{0}\bra{1} + \sqrt{2} \ket{1}\bra{2}, \\
+\mma{phononx[2]} &\to \ket{1}\bra{0} + \ket{0}\bra{1} + \sqrt{2} 
+\left( \ket{2}\bra{1} + \ket{1}\bra{2} \right).
+\end{split}
+\end{equation}
+
+
+
+\subsection{Miscellaneous}
+
+There is some rudimentary support for calculating Berezin integrals
+over Grassman numbers: \mma{int[z]} stands for $\int{\mathrm{d}z}$
+and one has, for example,
+%
+\begin{equation}
+\mma{nc[int[z1]]}=0,
+\quad
+\mma{nc[int[z1],z1]}=1,
+\quad
+\mma{nc[int[z1,z2],z1,z2]=1}.
+\end{equation}
+
+
+% ---------------------- 2222222222222222 ----------------------------
+
+\section{Generation of expressions and operations on expressions}
+\label{sec2}
+
+In this section I describe the higher-level SNEG functions for
+generating various operators which can be expressed in terms of the
+second-quantization operators (occupancy, spin, on-site
+electron-electron repulsion, exchange coupling, etc.) and for
+performing various operations upon the expressions (calculation of the
+expectation values, Hermitian conjugation, etc.). In many of the
+application of SNEG, the library can be used at this higher level and the
+user does not need to be concerned with the inner working of the
+library at the lower levels.
+
+
+\subsection{Number (level occupancy) operator}
+
+The number (occupancy) operator $n=c^\dag c$ can be generated with the
+function \mma{number} which comes in different flavors depending on
+the function argument(s). The simplest case is the generation of the
+number operator corresponding to an operator pair $c^\dag$, $c$ using
+%
+\begin{equation}
+\mma{number[c]} \to \sum_\sigma c^\dag_\sigma \cdot c_\sigma.
+\end{equation}
+%
+Note that the appropriate product of creation and annihilation
+operators is returned and that a summation of the spin degrees of
+freedom is performed. This behavior corresponds to fermionic operators
+declared to be spin-$1/2$ operators (this is the default behavior for
+operators declared using \mma{snegfermionoperators}; see the
+documentiation of \mma{spinof} for a way to redefine the
+spin of the operator). More generally, if additional indexes are
+required, one may use
+%
+\begin{equation}
+\mma{number[c[k]]} \to \sum_{\sigma} c^\dag_{k,\sigma} \cdot
+c_{k,\sigma}.
+\end{equation}
+%
+If a single spin component is required, it may be specified as the
+second argument:
+%
+\begin{equation}
+\mma{number[c, UP]} \to c^\dag_\uparrow \cdot c_\uparrow.
+\end{equation}
+%
+For bosonic operators, there is no sum over spin components:
+%
+\begin{equation}
+\mma{number[a]} \to a^\dag \cdot a.
+\end{equation}
+
+It is also possible to generate the number operator for more complex
+objects such as linear combinations of levels. As an example, if the
+even (bonding) orbital is defined to be $\ket{e} = \frac{1}{2}
+\left(\ket{1} + \ket{2}\right)$, the corresponding occupancy operator
+may be generated using an abstract-function argument to \mma{number}:
+%
+\begin{equation}
+\mma{number[ (c[\#1,1,\#2]+c[\#1,2,\#2])/Sqrt[2] \&]}
+\to \frac{1}{2} \sum_\sigma \left( c^\dag_{1\sigma} c_{1\sigma}
++ c^\dag_{1\sigma} c_{2\sigma} + c^\dag_{2\sigma} c_{1\sigma}
++ c^\dag_{2\sigma} c_{2\sigma} \right).
+\end{equation}
+
+
+\subsection{Hopping operator}
+
+The inter-site hopping operator may be generated using \mma{hop}:
+%
+\begin{equation}
+\mma{hop[c[1], c[2]]} \to \sum_\sigma c^\dag_{1,\sigma} c_{2,\sigma}
++ c^\dag_{2,\sigma} c_{1,\sigma}.
+\end{equation}
+%
+If a single spin component is required, it may be specified as
+the third argument:
+%
+\begin{equation}
+\mma{hop[c[1], c[2], UP]} \to c^\dag_{1,\uparrow} c_{2,\uparrow}
++ c^\dag_{2,\uparrow} c_{1,\uparrow}.
+\end{equation}
+%
+Furthermore, there is a function \mma{spinfliphop} which generates an
+operator that describes a process where the electron's spin is flipped
+as it hops between the sites, and a function \mma{hopphi}, where a
+given phase change is associated with hopping (as in the Peierls
+substitution for describing the effect of a magnetic field piercing
+the plaquettes).
+
+
+\subsection{Hubbard's local electron-electron repulsion operator}
+
+The electron-electron repulsion operator $n_\downarrow n_\uparrow$ may
+be generated using the SNEG function \mma{hubbard}:
+%
+\begin{equation}
+\mma{hubbard[c]} \to -c^\dag_\downarrow c^\dag_\uparrow c_\downarrow
+c_\uparrow.
+\end{equation}
+%
+Notice that due to the automatic operator reordering in SNEG, the
+creation operator $c^\dag_\uparrow$ is anticommuted to the left of the
+annihilation operator $c_\downarrow$. There is also a closely
+associated function \mma{isozsq}, defined as $(n-1)^2$ with
+$n=n_\uparrow+n_\downarrow$, i.e., the square of the isospin operator
+along the $z$-axis (see below for more details on the isospin
+operators).
+
+For operators with spin different from $1/2$, the definition of
+\mma{hubbard} is
+%
+\begin{equation}
+\mma{hubbard[c]} \to \sum_{s_1=-S}^S \sum_{s_2=s_1+1}^S n_{s_1}
+n_{s_2},
+\end{equation}
+%
+where $S$ is the spin.
+
+To describe inter-orbital and inter-site electron-electron charge
+repulsion, one can use function \mma{chargecharge}:
+%
+\begin{equation}
+\mma{chargecharge[d[m],d[n]]} \to n_{m} n_{n},
+\end{equation}
+%
+where $n_i$ is the occupancy operator of orbital annihilated by the
+operator $d_i$.
+
+
+\subsection{Spin operators}
+
+Spin operator for orbitals described by fermionic operators can be
+generated by SNEG functions \mma{snegx}, \mma{snegy}, and \mma{snegz},
+which are defined for all values of particle spin (parameter
+\mma{spinof}). For example:
+%
+\begin{equation}
+\mma{spinx[c]} \to 
+\frac{1}{2} \left( c^\dag_\downarrow c_\uparrow + c^\dag_\uparrow
+c_\downarrow \right)
+\end{equation}
+%
+for a spin-$1/2$ operators (\mma{spinof[c] \^= 1/2}), and
+%
+\begin{equation}
+\mma{spinx[d]} \to
+\frac{\sqrt{3}}{2} \left( d^\dag_{-3/2} d_{-1/2} + d^\dag_{-1/2}
+d_{-3/2} + d^\dag_{1/2} d_{3/2} + d^\dag_{3/2} d_{1/2} \right)
++ d^\dag_{-1/2} d_{1/2} + d^\dag_{1/2} d_{-1/2}
+\end{equation}
+%
+for a spin-$3/2$ operators (\mma{spinof[d] \^= 3/2}). The spin raising
+and spin lowering operators can be generated with \mma{spinplus} and
+\mma{spinminus}, respectively, while the total spin squared operator
+$S^2$ can be obtained using \mma{spinss}. It is also possible to
+generate all three Cartesian spin operators at the same time using
+\mma{spinxyz}.
+
+The spin operator generation functions use low-level routines for the
+generation of spin matrices (\mma{spinmatrixX}, \mma{spinmatrixY},
+etc.) which are defined for any (half-)integer spin and may also be
+used to other purposes.
+
+
+\subsection{Exchange coupling operators}
+
+The exchange coupling (i.e., the scalar product of two spin operators,
+$\vc{S}_1 \cdot \vc{S}_2$) can be generated using
+\mma{spinspin}:
+%
+\begin{equation}
+\begin{split}
+\mma{spinspin[c[1],c[2]]} &\to \frac{1}{4} (-c^\dag_{1,\downarrow}
+c^\dag_{2,\downarrow} \
+c_{1,\downarrow} c_{2,\downarrow}+c^\dag_{1,\downarrow} \
+c^\dag_{2,\uparrow} c_{1,\downarrow} \
+c_{2,\uparrow}-2c^\dag_{1,\downarrow} c^\dag_{2,\uparrow} \
+c_{1,\uparrow} c_{2,\downarrow}-2c^\dag_{1,\uparrow} \
+c^\dag_{2,\downarrow} c_{1,\downarrow} \
+c_{2,\uparrow} \\
+&+c^\dag_{1,\uparrow} c^\dag_{2,\downarrow} \
+c_{1,\uparrow} c_{2,\downarrow}-c^\dag_{1,\uparrow} \
+c^\dag_{2,\uparrow} c_{1,\uparrow} c_{2,\uparrow}).
+\end{split}
+\end{equation}
+%
+It is also possible to separately generate the transverse and the
+longitudinal parts (that is, xx+yy and zz components, respectively) of
+the spin coupling, as well as the $S_1^- S_2^+$ and $S_1^- S_2^+$
+terms:
+%
+\begin{equation}
+\begin{split}
+\mma{spinspinxy[c[1],c[2]]} &\to \frac{1}{2} (-c^\dag_{1,\downarrow}
+c^\dag_{2,\uparrow} c_{1,\uparrow}
+c_{2,\downarrow}-c^\dag_{1,\uparrow} \
+c^\dag_{2,\downarrow} c_ {1,\downarrow} c_ {2,\uparrow}), \\
+%
+\mma{spinspinz[c[1],c[2]]} &\to
+\frac{1}{4} (-c^\dag_{1,\downarrow} c^\dag_{2,\downarrow} \
+c_{1,\downarrow} c_{2,\downarrow}+c^\dag_{1,\downarrow} \
+c^\dag_{2,\uparrow} c_{1,\downarrow} \
+c_{2,\uparrow}+c^\dag_{1,\uparrow} c^\dag_{2,\downarrow} \
+c_{1,\uparrow} c_{2,\downarrow}-c^\dag_{1,\uparrow} \
+c^\dag_{2,\uparrow} c_{1,\uparrow} c_{2,\uparrow}), \\
+%
+\mma{spinspinpm[c[1],c[2]]} &\to
+-c^\dag_{1,\uparrow} c^\dag_{2,\downarrow} c_{1,\downarrow} \
+c_{2,\uparrow}, \\
+%
+\mma{spinspinmp[c[1],c[2]]} &\to
+-c^\dag_{1,\uparrow} c^\dag_{2,\downarrow} c_{1,\downarrow} \
+c_{2,\uparrow}.
+%
+\end{split}
+\end{equation}
+
+
+\subsection{Nambu spinors and isospin operators}
+
+The Nambu spinor can be generated using \mma{nambu}:
+%
+\begin{equation}
+\begin{split}
+\mma{nambu[c[i]]} &\to \begin{pmatrix} c^\dag_{i,\uparrow} \\
+c_{i,\downarrow}
+\end{pmatrix} \\
+\mma{nambu[c[i],i]} &\to \begin{pmatrix}
+c^\dag_{i,\uparrow} \\ (-1)^i c_{i,\downarrow} 
+\end{pmatrix}
+\end{split}
+\end{equation}
+%
+The parity of the optional second argument, which must be an integer,
+specifies the sign of the isospin-down component of the Nambu spinor.
+The isospin operators may be generated as
+%
+\begin{equation}
+\begin{split}
+\mma{isospinx[c]} &\to 
+\frac {1}{2} (c_{\downarrow} c_{\uparrow}-c^\dag_{\downarrow} 
+c^\dag_{\uparrow}), \\
+%
+\mma{isospiny[c]} &\to
+\frac{1}{2} (ic^\dag_{\downarrow} c^\dag_{\uparrow}+ic_{\downarrow} \
+c_{\uparrow}), \\
+%
+\mma{isospinz[c]} &\to
+\frac{1}{2} (c^\dag_{\downarrow} c_{\downarrow}+c^\dag_{\uparrow} \
+c_{\uparrow}-1), \\
+%
+\mma{isospinplus[c]} &\to
+-c^\dag_{\downarrow} c^\dag_{\uparrow}, \\
+%
+\mma{isospinminus[c]} &\to c_{\downarrow} c_{\uparrow}.
+\end{split}
+\end{equation}
+%
+Like \mma{nambu}, these five functions can take a sign-specifying
+second argument.
+
+
+\subsection{Vacuum expectation values}
+
+An important application area of SNEG is the computation of the vacuum
+expectation values (VEV) of second-quantization-operator strings. Two
+main functions are provided for this purpose, \mma{vev} and
+\mma{vevwick}.
+
+To speed up the evaluations, a number of simplification rules are
+defined in SNEG. For example, terms with an odd number of operators in
+a string will always give zero when the VEV is calculated, thus such
+terms are immediately dropped. Furthermore, the VEV of a normal
+ordered expression is zero by definition. The terms where the
+right-most operator annihilates the vacuum (or the left-most operators
+annihilates the vacuum when applied to the left, i.e. to the bra) are
+also discarded. For the ``Fermi sea'' ordering, a similar rule is
+defined for the action of the two-operator occupancy expressions
+$n_k=c^\dag_k c_k$ and $1-n_k=1-c^\dag_k c_k$ to the left and to the
+right, where the result depends on the value of the momentum index
+$k$. Finally, since it assumed that the vacuum state for the ``Fermi
+sea'' ordering has a well defined number of particles and
+magnetization, SNEG tests if the charge and spin quantum numbers are
+conserved; it not, such terms are dropped when the VEV is computed.
+The user can also provide additionnal simplification rules if further
+symmetries are known to be present in the problem being studied.
+
+For the ``empty band'' ordering of fermionic operators, the VEV of an
+expression is trivially given by the possible remaining purely numeric
+term after all the operators in the strings had been fully ordered,
+since all other terms that involve some operators are (by the very
+definition of this ordering type) such that they annihilate the vacuum
+to the right. This is, in fact, the rationale for using this ordering
+type by default in SNEG.
+
+For the ``Fermi sea'' ordering, the default rule for the VEV of bilinear
+forms is
+%
+\begin{equation}
+\begin{split}
+\vev{c^\dag_{k,m} c_{k',m'}} &\to \theta(-k) \delta_{k,k'}
+\delta_{m,m'}, \\ 
+\vev{c_{k,m} c^\dag_{k',m'}} &\to \theta(k)
+\delta_{k,k'} \delta_{m,m'}.
+\end{split}
+\end{equation}
+
+
+\subsection{Other applications of Wick's theorem}
+
+The function \mma{wick} may be used to rewrite an expression in terms of
+normal ordered products and contractions using Wick's theorem
+\cite{wick1950}. Contraction are evaluated using
+\mma{contraction}, which is defined as $\overline{AB}=AB-:AB:$, where
+double dots denote the normal ordering. The results depend, of course,
+on the vacuum state, i.e., on the chosen ordering of the fermionic
+operators (see above). For ``Fermi sea ordering'', we have, for
+example:
+%
+\begin{equation}
+\begin{split}
+\mma{wick[nc[c[CR,k],c[AN,k]]]} &\to : c^\dag_k c_k : + \theta(-k),\\
+\mma{wick[nc[c[CR,k],c[CR,l],c[AN,m],c[AN,n]]]}
+&\to 
+:c^\dag_k c^\dag_l c_m c_n:
+-
+:c^\dag_l c_n: \delta_{km} \theta(-k) \\
++
+:c^\dag_l c_m: \delta_{kn} \theta(-k)
++
+:c^\dag_k c_n: \delta_{lm} \theta(-l)
+&-
+c^\dag_k c_m: \delta_{ln} \theta(-l)
++
+\delta_{kn} \delta_{lm} \theta(-k)\theta(-l)
+-
+\delta_{km} \delta_{ln} \theta(-k)\theta(-l).
+\end{split}
+\end{equation}
+
+
+
+\subsection{Conjugation}
+
+Hermitian conjugates of operator strings can be computed using the
+function \mma{conj}. The numerical constants and parameters are
+handled correctly depending on their nature (real or complex commuting
+numbers, or Grassman anticommuting numbers). For complex fermionic and
+bosonic operator objects, the first index is modified (creation to
+annihilation, and vice versa), while real fermionic operator objects
+are left unchanged. Exponential functions is conjugated according to
+the rule
+%
+\begin{equation}
+\left( e^{A} \right)^\dag = e^{A^\dag}.
+\end{equation}
+%
+SNEG also performs the simplification
+%
+\begin{equation}
+\left(A^\dag\right)^\dag = A.
+\end{equation}
+%
+This rule is usually valid, since a continuous linear operator defined
+on all of a Hilbert space has a unique adjoint operator, however the
+rule does not hold for operators that are defined on a subset of a
+Hilbert space and for unbounded operators. In the case of
+finite-dimensional Hilbert space, which are the main application area
+of SNEG, there is no difference between adjoint operators and
+Hermitian conjugate operators, thus there are no reasons for concern
+and the repeated conjugation may be automatically eliminated. These
+issues are discussed in depth in Ref.~\cite{gieres1999}.
+
+
+\subsection{(Anti)commutators}
+
+Commutators and anticommutators can be computed trivially by forming
+the sums or differences of the products, or with the help of the
+provided auxiliary functions \mma{commutator} and
+\mma{anticommutator}. To obtain the final results, it is often
+necessary to expand and recollect the common terms, for example by
+using the \mma{Simplify} function. Nested (anti)commutators can be
+computed using \mma{supercommutator} and \mma{superanticommutator};
+for efficiency, at each order of the iterative calculation the
+expression is simplified to avoid redundant computations.
+
+For example:
+%
+\begin{equation}
+\begin{split}
+\mma{commutator[spinx[c],spiny[c]]} &\to i \frac{1}{2}
+\left( c^\dag_\uparrow c_\uparrow - c^\dag_\downarrow c_\downarrow
+\right), \\
+\mma{supercommutator[spinx[c],spiny[c],2]} &\to
+\frac{1}{2} \left( i c^\dag_\downarrow c_\uparrow
+- i c^\dag_\uparrow c_\downarrow \right).
+\end{split}
+\end{equation}
+
+
+\subsection{Normal ordering}
+
+Expressions can be ``normal ordered'' by subtracting their vacuum
+expectation values. Two functions are provided for this purpose:
+\mma{normalorder} and \mma{normalorderwick}. As indicated by the name,
+they differ in how the vacuum expectation value is computed (function
+\mma{vev} or \mma{vevwick}, see above). For convenience, SNEG also
+allows to mark expressions as ``normal ordered'' without actually
+performing the evaluation. The conventional double dot notation is
+used for this purpose; to surround a (sub)expression with double dots,
+\mma{dd} has to be applied to the string:
+%
+\begin{equation}
+\mma{dd[nc[c[CR],c[AN]]]} \to : c^\dag c :.
+\end{equation}
+
+
+\subsection{Operations with states}
+
+As discussed previously, the states can be represented in SNEG either
+as strings of second-quantization operators (implicitly applied to a
+vacuum state in which no particles are present) or as
+occupation-number-representation vectors. To compute a matrix element
+of an operator between two states, $\bra{a} O \ket{b}$ one can use
+SNEG functions \mma{braketop} or \mma{braketvc}, depending on the
+representation used. To compute diagonal matrix elements (i.e., the
+expectation values), one can also use functions \mma{expvop} and
+\mma{expvvc}. For example, the expression
+%
+\begin{equation}
+\mma{expvop[spinss[c],c[CR,UP]]} \to 3/4
+\end{equation}
+%
+calculates the expectation value of the spin squared operator
+$\vc{S}^2$ in the doublet state $c^\dag_\uparrow \ket{0}$, i.e.,
+$S(S+1)=3/4$. Finally, there are two ``norm'' functions that compute
+$\sqrt{\braket{\psi|\psi}}$, \mma{normop} and \mma{normvc}; these are
+useful to generate (ortho)normalized sets of states.
+
+The braket calculations can be generalized to lists of states to
+generate matrix representations of operators; the corresponding
+functions are named \mma{matrixrepresentationvc} and
+\mma{matrixrepresentationop}.
+
+A state may be decomposed into components with respect to a given
+basis (list of states) using \mma{decomposevc} and
+\mma{decomposeop}. Furthermore, a list of states may be orthogonalized
+using \mma{orthogvc} and \mma{orthogop}.
+
+
+\subsection{Projection operators}
+
+A number of projection operators can be generated by SNEG:
+%
+\begin{equation}
+\begin{split}
+\mma{projector0[c]} &\to (1-n_\uparrow)(1-n_\downarrow), \\
+\mma{projectorUP[c]} &\to n_\uparrow(1-n_\downarrow), \\
+\mma{projectorDO[c]} &\to n_\downarrow(1-n_\uparrow), \\
+\mma{projector2[c]} &\to n_\uparrow n_\downarrow, \\
+\mma{projector1[c]} &\to n_\uparrow(1-n_\downarrow) +
+n_\downarrow(1-n_\uparrow), \\
+\mma{projector02[c]} &\to (1-n_\uparrow)(1-n_\downarrow) + n_\uparrow
+n_\downarrow.
+\end{split}
+\end{equation}
+%
+In calculations involving projection operators, it is often useful to 
+simplify expression by dropping terms which would yield zero when
+applied to a vacuum state; the SNEG function to achieve this is called
+\mma{zeroonvac}. For example:
+%
+\begin{equation}
+\begin{split}
+\mma{nc[projector1[c],c[CR,UP]]} &\to c^\dag_\uparrow +
+c^\dag_\downarrow
+c^\dag_\uparrow c_\downarrow, \\
+\mma{zeroonvac[nc[projector1[c],c[CR,UP]]]} &\to c^\dag_\uparrow.
+\end{split}
+\end{equation}
+
+
+\subsection{Simplification of expressions}
+
+Previously in this section I have described a number of function for
+generating operators in the form of strings of second-quantization
+operators. Often it is necessary to proceed in the opposite direction:
+given a long complex expression, one has to rewrite it in terms of
+higher-level functions, such as number, hopping, repulsion, or spin
+operators. This might be used, for example, after performing a
+change-of-basis transformation on the creation and annihilation
+operators, if one requires a physical interpretation of the resulting
+expression.
+
+There is, clearly, no unique mapping from an expression to the 
+corresponding generation functions. Therefore, there are several
+specialized routines which apply heuristic rules in an attempt to
+rewrite the expression: \mma{SnegSimplifyNumber} identifies parts of
+the expression which may be rewritten in terms of \mma{number},
+\mma{SnegSimplifyHubbard} does the same for \mma{hubbard} and
+\mma{SnegSimplifyHop} for \mma{hop}, while \mma{SnegSimplifySpin}
+will find instances of \mma{spinx}, \mma{spiny}, \mma{spinz} and some
+of their products (including \mma{spinspin} expressions). The whole
+set of the rules can also be applied by \mma{SnegSimplify} and
+\mma{SnegFullSimplify}, although experience shows that such
+brute-force approach is not very efficient and that a guided
+consecutive application of suitably chosen specialized routines gives
+better results.
+
+\subsection{Miscellaneous}
+
+Operators can be raised to the $n$-th power using
+the function \mma{pow}, for example
+%
+\begin{equation}
+\mma{pow[number[a],3]} \to a^\dag a + 3(a^\dag)^2 a^2
++ (a^\dag)^3 a^3,
+\end{equation}
+%
+for a bosonic operator $a$. There is an additional function,
+\mma{fastpow}, which performs a simplification of the intermediate
+expression at each step of the iterative calculation.
+
+Series expansions of functions with operator arguments can be
+performed using \mma{snegSeries}. For example,
+%
+\begin{equation}
+\mma{snegSeries[Exp,nc[c[CR],c[AN]],10]}
+\to 1 + \frac{6235301}{3628800} c^\dag_\uparrow c,
+\end{equation}
+%
+which is a good approximation to $e^{c^\dag c} = 1+(e-1)c^\dag c$.
+
+For convenience, the inner and outer products of vectors of operator
+expressions can be calculated using the SNEG functions \mma{inner} and
+\mma{outer}, which are the analogues of the Mathematica functions
+\mma{Inner} and \mma{Outer} with \mma{nc} playing the role of
+multiplication. For example, the function \mma{spinspin} (see above)
+for calculating $\vc{S}_1\cdot\vc{S}_2$ is implemented as
+\mma{inner[spinxyz[c[1]],spinxyz[c[2]]]}. Furthermore, function
+\mma{VMV} can be used to calculate the vector-matrix-vector products
+using the \mma{nc} multiplication. This function is very useful for
+generating operator expressions and it is frequently used internally
+in the package SNEG. Finally, the cross product between two vectors
+using the \mma{nc} multiplication can be calculated using
+\mma{mcross}. For example, $\vc{S}_1 \times \vc{S}_2$ can be generated
+using \mma{mcross[spinxyz[c[1]], spinxyz[c[2]]]}.
+
+Function \mma{SimplifyKD} can be used to simplify expressions
+involving Kronecker delta function (\mma{KroneckerDelta}) and the unit
+step function (\mma{UnitStep}). The following rules are implemented:
+%
+\begin{equation}
+\begin{split}
+\theta(k) + \theta(-k) &\to 1, \\
+1-\theta(-k) &\to \theta(k), \\
+\theta(k) \theta(-k) &\to 0, \\
+\delta_{k,l} \theta(k) \theta(-l) &\to 0, \\
+(\delta_{i,j})^n &\to \delta_{i,j}, \quad n \in \mathcal{N}, \\
+\theta(k)^n &\to \theta(k), \quad n \in \mathcal{N}.
+\end{split}
+\end{equation}
+%
+(See below for simplification of symbolic sum expressions featuring
+Kronecker deltas and unit steps.)
+
+
+% ------------------------- 33333333333333333 -------------------------
+
+\section{Generation of sets of basis states}
+\label{sec3}
+
+One of the principal application areas of SNEG is the transformation
+of the operators expressed in the second-quantized notation into the
+corresponding matrix representation in a given Hilbert space. To
+simplify numerics, it is often important to take into account various
+symmetries of the problem, i.e., to determine the Hamiltonian matrices
+in the different invariant Hilbert subspaces. SNEG provides a number
+of functions for generating the basis-state sets with chosen
+well-defined quantum numbers (charge conservation, etc.). In this
+section we describe both the low-level functions for basis-set
+manipulation, as well as the higher-level routines which provide
+``canned solution'' for a number of different symmetry-adapted basis
+sets. These are convenvient for calculations defined on finite
+clusters, such as small Hubbard chains.
+
+\subsection{Full Fock space basis set representation}
+
+The basis-state set that spans the full Fock space is represented in
+SNEG as a list of pairs -- the first member of each pair is a list of
+quantum numbers which fully characterizes the invariant subspace,
+while the second member of the pair is a list of all the basis states
+in the given subspace. The basis states can be specified either as
+operator expressions (which are to be applied on the vacuum state) or
+as occupation-number-representation (ONR) vectors. An example of a
+basis with well-defined charge and spin for a single-orbital problem
+is
+%
+\begin{equation}
+\left\{
+\quad
+ \left\{
+  \left\{ -1,0 \right\},\, \left\{ 1 \right\}
+ \right\}, \quad
+%
+ \left\{ 
+  \left\{ 0,1/2 \right\},\, \left\{ c^\dag_\uparrow \right\}
+ \right\}, \quad
+%
+ \left\{ 
+  \left\{ 1,0 \right\},\, \left\{ c^\dag_\downarrow c^\dag_\uparrow \right\}
+ \right\}
+ \quad
+\right\}.
+\end{equation}
+%
+The first quantum number is the charge (with respect to half filling),
+while the second is the spin. If the states in a subspace have
+multiplicity higher than 1, only a single representative state appears
+for each multiplet. In the last example, the spin doublet is
+represented, e.g., by $c^\dag_\uparrow$.
+
+It is possible to transform from the creation-operator representation
+to the occupation-number representation and back using functions
+\mma{bzop2bzvc} and \mma{bzvc2bzop}. These functions can be used to
+perform the manipulations of basis states in the representation where
+the implementation is easier and/or the calculation is faster.
+
+There is a number of functions for manipulating the sets of states:
+\mma{basistensorproduct} combines two basis sets by generatic all
+possible combinations (i.e., a tensor product basis),
+\mma{transformbasis} applies a given rule (a transformation) to each
+state, \mma{mergebasis} can be used to collect states in subspaces
+with equivalent quantum numbers, and \mma{dropemptysubspaces}
+truncates subspaces containing no states (which may arise from
+projecting out states according to some chosen rule).
+
+
+
+\subsection{High-level basis generation functions}
+
+SNEG functions for generation of basis sets are tabulated in
+Table~\ref{tab1}. These functions generate basis sets in the
+creation-operator representation. There are also corresponding
+functions which generate basis sets in the occupation-number
+representation; their names are suffixed by \mma{vc}.
+
+\begin{table}
+\caption{\label{tab1} Basis-set-generation functions in SNEG. $Q$
+stands for the total occupancy (charge) quantum number, $S_z$ is the
+projection of total spin along the $z$-axis, while $S$ is the total
+spin quantum number. Function \mma{spinlessbasis} generates states for
+a problem without spin, while all other functions pertain to
+spin-$1/2$ problems.}
+%
+\begin{center}
+\begin{tabular}{ll}
+\hline
+Function & Conserved quantum numbers \\
+\hline
+\mma{nonebasis} & $-$ \\
+\mma{qbasis}    & $Q$ \\
+\mma{szbasis}   & $S_z$ \\
+\mma{sbasis}    & $S$ \\
+\mma{qszbasis}  & $Q,S_z$ \\
+\mma{qsbasis}   & $Q,S$ \\
+\hline
+\mma{spinlessbasis} & $Q$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+From the basis sets for the cases with conserved charge ($Q$) quantum
+number, one can generate basis sets with conserved isospin quantum
+number $I$ using \mma{transformQStoIS}.
+
+In addition, there is support for generating basis states for
+calculations with spin objects in the bra-ket notation. The relevant
+SNEG function is named \mma{spinbasis}.
+
+
+\subsection{Generation of operator matrices}
+
+Once the desired basis sets have been generated, the operators in the
+second-quantization language can be transformed into the corresponding
+matrix representations using the functions \mma{makematricesbzop} and
+\mma{makematricesbzvc}. It should be remarked that the latter function
+is typically much faster and, in fact, it is often advantageous to
+transform the basis set from the creation-operator to the
+occupation-number representation in order to use it. These functions
+generate matrices only within the invariant subspaces, i.e., it is
+assumed that the operator in question commutes with the Hamiltonian.
+There are also more general functions, \mma{makeallmatricesbzop} and
+\mma{makeallmatricesbzvc}, which generate matrices between all paris
+of invariant subspaces.
+
+
+% ------------------ 4444444444444444444444444444444 ----------------
+
+\section{Symbolic sums}
+\label{sec4}
+
+SNEG allows calculations with symbolic sums over dummy indexes, which
+remain in their unevaluated forms. They are defined using the
+function \mma{sum} taking two arguments: the first one is the
+expression that is being summed over, while the second one is the list
+of all summation indexes. For example
+%
+\begin{equation}
+\begin{split}
+\mma{sum[c[CR,k],\{k\}]} &\to \sum_k c^\dag_k, \\
+\mma{sum[nc[c[CR,k,sigma],c[AN,k,sigma]],\{k,sigma\}]} 
+&\to \sum_{k,\sigma} c^\dag_{k,\sigma} c_{k,\sigma}.
+\end{split}
+\end{equation}
+%
+The list of indexes is automatically sorted; this allows some
+automatic simplifications. Numeric quantities which do not depend on
+any of the summation indexes are factored out of the \mma{sum}
+expression. While not strictly necessary, it is good practice to
+declare the symbols which will be used as summation indexes using
+\mma{snegfreeindexes}.
+
+A comment is in order about the design choice to introduce a new
+symbolic sum function \mma{sum} instead of using the Mathematica
+built-in \mma{Sum}, which can also be used to define indefinite sums
+as \mma{Sum[f,i]}. The reason is that Mathematica \mma{Sum} attempts
+to evaluate indefinite summations where it can, while \mma{sum} is
+merely a notation for symbolic sums which remain unevaluated at all
+times. This is especially important in situations where the operator
+expression can be simplified to a constant value $x$. While
+\mma{Sum[x,k,sigma]} evaluates to $x k \sigma$, which is meaningless,
+\mma{sum[x,\{k,sigma\}]} evaluates to $x \sum_{k,\sigma} 1$, which can
+be be naturally interpreted as the number of states, including the
+spin degeneracy, multipled by a constant $x$.
+
+
+\subsection{Operations on symbolic sums}
+
+Products of sums can be calculated using \mma{nc}. SNEG automatically
+handles summation index collisions and renames the duplicated indexes
+by appending a number to the name symbol (and automatically declaring
+the new name using \mma{snegfreeindexes}). It is thus perfectly safe
+to use the same dummy index in different expressions:
+%
+\begin{equation}
+\label{eqnc}
+\mma{nc[sum[number[c[k], UP], \{k\}], sum[number[c[k], DO], \{k\}]]}
+\to
+-\mma{sum}[c^\dag_{k,\uparrow} c^\dag_{k1,\downarrow}
+c_{k,\uparrow} c_{k1,\downarrow}, \mma{\{k,k1\}}].
+\end{equation}
+%
+When commutators of sums are computed, the name replacement is always
+performed on the same sum in order to maximize the opportunities for
+automatic cancellation of equal terms.
+
+Conjugation (\mma{conj}) and VEV operation (\mma{vev} and
+\mma{vevwick}) can be applied to a symbolic sum:
+%
+\begin{equation}
+\mma{vevwick[expr]} \to \mma{sum}[\theta(-k)\theta(-k1),\mma{\{k,k1\}}],
+\end{equation}
+%
+where \mma{expr} is the expression in Eq.~\eqref{eqnc}.
+
+\subsection{Manipulation of symbolic sum expressions}
+
+There is a number of SNEG functions for symbolic
+manipulation of sum expressions. Lists of expressions in the first
+argument can be ``threaded'' over using \mma{sumThread}:
+%
+\begin{equation}
+\mma{sumThread[sum[{c[CR,k,UP],c[CR,k,DO]},\{k\}]]}
+\to \left\{\sum_k c^\dag_{k\uparrow}, \sum_k c^\dag_{k\downarrow}\right\}.
+\end{equation}
+%
+Explicit sums in the first argument can be expanded using 
+\mma{sumExpand}:
+%
+\begin{equation}
+\mma{sumExpand[sum[a+b,\{k\}]]} \to \sum_k a + \sum_k b,
+\end{equation}
+%
+and expression with (partially) overlapping index lists can be
+collected using \mma{sumCollect}:
+%
+\begin{equation}
+\begin{split}
+\mma{sumCollect[2 sum[a,\{k\}] + 3 sum[b,\{k\}]]}
+&\to \sum_k 2a+3b,\\
+\mma{sumCollect[2 sum[a,\{k,m\}] + 3 sum[b,\{k,n\}]]}
+& \to \sum_k \left(\sum_m 2a + \sum_n 3b\right).
+\end{split}
+\end{equation}
+%
+It should be also noted that \mma{sumCollect} puts possible leading
+or trailing operators inside the summation argument:
+%
+\begin{equation}
+\mma{sumCollect[nc[a,sum[b,\{k\}],c]]} \to \sum_k a \cdot b \cdot c.
+\end{equation}
+%
+For convenience, a set of rules for simplifying expressions featuring
+Kronecker delta $\delta_{n_1,n_2}$ are defined as
+\mma{rulesumSimplifyKD}; they can be applied using 
+\mma{sumSimplifyKD}. They handle situations where the Kronecker delta
+picks out elements from the sum:
+%
+\begin{equation}
+\mma{sumSimplifyKD[sum[KroneckerDelta[sigma,UP] c[CR,sigma],\{sigma\}]]}
+\to c^\dag_\uparrow,
+\end{equation}
+%
+and work even for more complex expressions. Furthermore, products and
+sums over non-overlapping index sets are automatically
+factored/distributed out, for example:
+%
+\begin{equation}
+\mma{sumSimplifyKD[sum[a[k]\ b[l], \{k,l\}]]} \to \sum_k a[k] \sum_l
+b[l],
+\end{equation}
+%
+where $a$ is assumed to depend only on $k$, and $b$ only on $l$.
+
+Finally, expressions with symbolic sums can be automatically
+simplified using \mma{sumSimplify} which uses Mathematica function
+\mma{Simplify} with additional transformation functions for
+expanding, simplifying, and collecting the terms.
+
+
+
+
+% -------------------- 55555555555555555555555555555555 --------------
+
+\section{Applications}
+\label{sec5}
+
+SNEG has found many applications in the field of
+theoretical condensed matter physics. It has been applied to perform
+exact diagonalizations on Hubbard clusters, small Heisenberg chains
+and similar lattice models, calculation of commutators of complex
+operator expressions (to establish the presence of various symmetries,
+in the equation of motion method, etc.), and perturbation theory to
+higher orders. It is best suited for problems where the complexity is
+too high for paper and pencil calculations, yet still sufficiently low
+for a brute-force computer algebra approach (which SNEG essentially
+is). The package makes otherwise tedious calculations a routine
+operation. Most importantly, it prevents inauspicious sign errors
+which commonly arrise when fermionic operators are (anti)commuted. For
+this reason, the package is also suitable for educational purposes,
+i.e., as a way of verifying the correctness of elementary
+calculations with operator quantities.
+
+The main major application of SNEG in its role of an ``interface''
+between the user and the low-level numerical codes is the
+package ``NRG Ljubljana'' for performing the numerical renormalization
+group (NRG) calculations for quantum impurity models
+\cite{wilson1975, krishna1980a, bulla2008}. Using SNEG as the
+underlying library, both the model (Hamiltonian) and the observables
+(operators) may be defined in terms of high-level expressions. This
+enabled a clear separation between the problem domain (coded in
+Mathematica and SNEG) and the solution domain (coded in C++). This is
+advantageous not only for reasons of performance, but especially for
+maintainability of the code. During the lifetime of the project, no
+major rewrites or design changes were necessary in either part of the
+code and the development could proceed incrementally without breaking
+the existing features. Furthermore, adapting the package to different
+problems and symmetries, or to calculate new quantities, is rather
+trivial.
+
+
+\section{Conclusion}
+
+The natural language of many-particle physics is the quantum field
+theory, more particularly the formalism of the second quantization. I
+have argued that the computational many-body physics should strive
+towards creating computer codes which would allow defining problems --
+whenever possible -- in their natural problem-domain language. It is
+hoped that the approach (and the specific implementation, SNEG) will
+improve the productivity of users and the quality of scientific
+software (in particular reliability, reusability, maintainability, and
+correctness).
+
+\bibliography{paper}
+
+\end{document}

@@ -1,0 +1,431 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      9923,        342]*)
+(*NotebookOutlinePosition[     10614,        366]*)
+(*  CellTagsIndexPosition[     10570,        362]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["snegAssuming", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["snegAssuming[assumption, expr]", "MR"],
+  " evaluates ",
+  StyleBox["expr", "MR"],
+  " assuming that ",
+  StyleBox["assumption", "MR"],
+  " holds."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The assumption must be given in the form ",
+  StyleBox["TagSet[_,__].", "MR"],
+  " More then one assumption may be given."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " to be a fermionic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c];\)\), "\[IndentingNewLine]", 
+    \(\(ordering[c] = SEA;\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(snegfreeindexes[k, \[Sigma]]\), "\[IndentingNewLine]", 
+    \(nc[c[CR, k, \[Sigma]], VACUUM]\), "\[IndentingNewLine]", 
+    \(snegAssuming[k /: k < 0 = True, %] \[Equal] 0\)}], "Input",
+  CellLabel->"In[37]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox["\<\"\[LeftDoubleBracketingBar]\[Diameter]\
+\[RightAngleBracket]\"\>",
+          FontColor->RGBColor[1, 0, 1]],
+        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 1]]&)]}]], "Output",
+  CellLabel->"Out[38]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[39]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[c[AN, k1], c[CR, k2]]\), "\[IndentingNewLine]", 
+    \(snegAssuming[{k1 /: k1 < 0 = True, k2 /: k2 < 0 = True}, 
+      Print[%]]\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_k2\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k2}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_k1\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k1\%\(\*"\<\"\"\>"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k1}], ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k2\%\("\[Dagger]"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k2}], "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Print",
+  CellLabel->"From In[7]:="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(snegAssuming[k /: k < 0 = True, c[CR, k]\[CenterDot]VACUUM] \[Equal] 
+      0\), "\n", 
+    \(snegAssuming[k /: k > 0 = True, c[AN, k]\[CenterDot]VACUUM] \[Equal] 
+      0\[IndentingNewLine]\), "\n", 
+    \(snegAssuming[k /: k > 0 = True, 
+        conj[VACUUM]\[CenterDot]c[CR, k]] \[Equal] 0\), "\n", 
+    \(snegAssuming[k /: k < 0 = True, 
+        conj[VACUUM]\[CenterDot]c[AN, k]] \[Equal] 0\), "\n", 
+    \(\)}], "Input",
+  CellLabel->"In[13]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[16]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(vev[nc[expr, c[AN, k, \[Sigma]]]]\), "\n", 
+    \(snegAssuming[k /: k > 0 = True, %] \[Equal] 0\), "\n", 
+    \(vev[nc[expr, c[CR, k, \[Sigma]]]]\), "\n", 
+    \(snegAssuming[k /: k < 0 = True, %] \[Equal] 0\), "\n", 
+    \(vev[nc[c[CR, k, \[Sigma]], expr]]\), "\n", 
+    \(snegAssuming[k /: k > 0 = True, %] \[Equal] 0\), "\n", 
+    \(vev[nc[c[AN, k, \[Sigma]], expr]]\), "\n", 
+    \(snegAssuming[k /: k < 0 = True, %] \[Equal] 0\)}], "Input",
+  CellLabel->"In[25]:="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{"expr", 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[25]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[26]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{"expr", 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[27]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[28]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], "expr"}], "]"}]], "Output",
+  CellLabel->"Out[29]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[30]="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], "expr"}], "]"}]], "Output",
+  CellLabel->"Out[31]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[32]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(snegAssuming[k /: k > 0 = True, zeroonvac[c[AN, k]]] \[Equal] 
+      0\), "\n", 
+    \(snegAssuming[k /: k < 0 = True, zeroonvac[c[CR, k]]] \[Equal] 
+      0\)}], "Input",
+  CellLabel->"In[35]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[35]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[36]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 758},
+WindowMargins->{{Automatic, 127}, {Automatic, 205}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 34, 0, 38, "ObjectName"],
+Cell[1813, 55, 215, 8, 48, "Usage"],
+Cell[2031, 65, 175, 4, 40, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2231, 73, 42, 0, 38, "ExampleSection"],
+Cell[2276, 75, 117, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2418, 83, 195, 4, 58, "Input"],
+Cell[2616, 89, 103, 2, 21, "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[2756, 96, 231, 4, 58, "Input"],
+Cell[2990, 102, 660, 18, 33, "Output"],
+Cell[3653, 122, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3753, 129, 190, 4, 58, "Input"],
+Cell[3946, 135, 1186, 35, 33, "Output"],
+Cell[5135, 172, 722, 22, 29, "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5894, 199, 471, 10, 106, "Input"],
+Cell[6368, 211, 63, 2, 25, "Output"],
+Cell[6434, 215, 63, 2, 25, "Output"],
+Cell[6500, 219, 63, 2, 25, "Output"],
+Cell[6566, 223, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6666, 230, 491, 9, 138, "Input"],
+Cell[7160, 241, 512, 14, 32, "Output"],
+Cell[7675, 257, 63, 2, 25, "Output"],
+Cell[7741, 261, 520, 14, 33, "Output"],
+Cell[8264, 277, 63, 2, 25, "Output"],
+Cell[8330, 281, 520, 14, 33, "Output"],
+Cell[8853, 297, 63, 2, 25, "Output"],
+Cell[8919, 301, 512, 14, 32, "Output"],
+Cell[9434, 317, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9534, 324, 217, 5, 42, "Input"],
+Cell[9754, 331, 63, 2, 25, "Output"],
+Cell[9820, 335, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

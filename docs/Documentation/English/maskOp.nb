@@ -1,0 +1,272 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      5634,        200]*)
+(*NotebookOutlinePosition[      6322,        224]*)
+(*  CellTagsIndexPosition[      6278,        220]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["maskOp", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["maskOp[", "MR"],
+  StyleBox["op", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["args", "TI"],
+  StyleBox["]", "MR"],
+  " calls function ",
+  StyleBox["op", "IT"],
+  "[",
+  StyleBox["args", "IT"],
+  "] while all constants declared to sneg are masked."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["maskOp", "MR"],
+  " prevents some interferences between sneg and certain ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " functions."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegrealconstants",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegcomplexconstants",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegintegerconstants",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegfreeindexes",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare some quantities", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegrealconstants[t, U];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Some of the problematic functions are  ",
+  ButtonBox["Series",
+    ButtonStyle->"RefGuideLink"],
+  ", ",
+  ButtonBox["Integrate",
+    ButtonStyle->"RefGuideLink"],
+  " and ",
+  ButtonBox["Eigensystem",
+    ButtonStyle->"RefGuideLink"],
+  "."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(Series[Sqrt[1 + t^2], {t, 0, 2}]\), "\[IndentingNewLine]", 
+    \(maskOp[Series, Sqrt[1 + t^2], {t, 0, 2}]\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    RowBox[{\(General::"ivar"\), \(\(:\)\(\ \)\), "\<\"\\!\\(t\\) is not a \
+valid variable. \\!\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", \
+ButtonStyle->\\\"RefGuideLinkText\\\", ButtonFrame->None, \
+ButtonData:>\\\"General::ivar\\\"]\\)\"\>"}]], "Message",
+  CellLabel->"From In[3]:="],
+
+Cell[BoxData[
+    \(Series[\@\(1 + t\^2\), {t, 0, 2}]\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    InterpretationBox[
+      RowBox[{"1", "+", \(t\^2\/2\), "+", 
+        InterpretationBox[\(O[t]\^3\),
+          SeriesData[ t, 0, {}, 0, 3, 1],
+          Editable->False]}],
+      SeriesData[ t, 0, {1, 0, 
+        Rational[ 1, 2]}, 0, 3, 1],
+      Editable->False]], "Output",
+  CellLabel->"Out[4]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(Integrate[t^2, t]\), "\[IndentingNewLine]", 
+    \(maskOp[Integrate, t^2, t]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    RowBox[{\(Integrate::"ilim"\), \(\(:\)\(\ \)\), "\<\"Invalid integration \
+variable or limit(s) in \\!\\(t\\). \
+\\!\\(\\*ButtonBox[\\\"More\[Ellipsis]\\\", ButtonStyle->\\\"RefGuideLinkText\
+\\\", ButtonFrame->None, ButtonData:>\\\"Integrate::ilim\\\"]\\)\"\>"}]], \
+"Message",
+  CellLabel->"From In[5]:="],
+
+Cell[BoxData[
+    \(\[Integral]\(t\^2\) \[DifferentialD]t\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(t\^3\/3\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      The\ following\ line\ would\ crash\ Mathematica\ \(kernel!\)\ *) \)\(\
+\[IndentingNewLine]\)\( (*\ 
+      Eigensystem[{{U, \(-t\)}, {\(-t\), 
+            0}}]\ *) \)\(\[IndentingNewLine]\)\(maskOp[
+      Eigensystem, {{U, \(-t\)}, {\(-t\), 0}}]\)\)\)], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \({{1\/2\ \((U - \@\(4\ t\^2 + U\^2\))\), 
+        1\/2\ \((U + \@\(4\ t\^2 + U\^2\))\)}, {{\(-\(\(U - \@\(4\ t\^2 + \
+U\^2\)\)\/\(2\ t\)\)\), 1}, {\(-\(\(U + \@\(4\ t\^2 + U\^2\)\)\/\(2\ t\)\)\), 
+          1}}}\)], "Output",
+  CellLabel->"Out[7]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{646, 600},
+WindowMargins->{{Automatic, 42}, {Automatic, 0}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 28, 0, 38, "ObjectName"],
+Cell[1807, 55, 315, 12, 32, "Usage"],
+Cell[2125, 69, 211, 7, 24, "Notes"],
+Cell[2339, 78, 359, 14, 40, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2723, 96, 42, 0, 38, "ExampleSection"],
+Cell[2768, 98, 60, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2853, 102, 139, 3, 42, "Input"],
+Cell[2995, 107, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3113, 112, 280, 11, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3418, 127, 165, 3, 42, "Input"],
+Cell[3586, 132, 299, 5, 18, "Message"],
+Cell[3888, 139, 91, 2, 36, "Output"],
+Cell[3982, 143, 317, 9, 44, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4336, 157, 135, 3, 42, "Input"],
+Cell[4474, 162, 325, 6, 18, "Message"],
+Cell[4802, 170, 95, 2, 39, "Output"],
+Cell[4900, 174, 65, 2, 44, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5002, 181, 321, 7, 58, "Input"],
+Cell[5326, 190, 268, 5, 87, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

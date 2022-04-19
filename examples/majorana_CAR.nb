@@ -1,0 +1,227 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      6855,        218]
+NotebookOptionsPosition[      5932,        183]
+NotebookOutlinePosition[      6287,        199]
+CellTagsIndexPosition[      6244,        196]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "sneg`"}], ";"}]], "Input",
+ CellChangeTimes->{{3.5889972648476677`*^9, 3.5889972733266077`*^9}}],
+
+Cell[BoxData["\<\"sneg 1.234 Copyright (C) 2013 Rok Zitko\"\>"], "Print",
+ CellChangeTimes->{3.588997273999536*^9, 3.588997717976815*^9, 
+  3.588997855864553*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"snegmajoranaoperators", "[", 
+   RowBox[{"w1", ",", "w2"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"nc", "[", 
+  RowBox[{"w1", ",", "w1"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"anticommutator", "[", 
+  RowBox[{"w1", ",", "w1"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"nc", "[", 
+  RowBox[{"w1", ",", "w2"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"nc", "[", 
+  RowBox[{"w2", ",", "w1"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"anticommutator", "[", 
+  RowBox[{"w1", ",", "w2"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.588997317345539*^9, 3.588997331722292*^9}, {
+  3.588997384276273*^9, 3.58899741780459*^9}}],
+
+Cell[BoxData[
+ FractionBox["1", "2"]], "Output",
+ CellChangeTimes->{{3.588997328170578*^9, 3.5889973319744368`*^9}, {
+   3.5889973887064342`*^9, 3.588997409547254*^9}, 3.588997719042893*^9, 
+   3.588997857606634*^9}],
+
+Cell[BoxData["1"], "Output",
+ CellChangeTimes->{{3.588997328170578*^9, 3.5889973319744368`*^9}, {
+   3.5889973887064342`*^9, 3.588997409547254*^9}, 3.588997719042893*^9, 
+   3.588997857608818*^9}],
+
+Cell[BoxData[
+ RowBox[{"w1", 
+  StyleBox["\[CenterDot]",
+   FontColor->RGBColor[0, 1, 0]], "w2"}]], "Output",
+ CellChangeTimes->{{3.588997328170578*^9, 3.5889973319744368`*^9}, {
+   3.5889973887064342`*^9, 3.588997409547254*^9}, 3.588997719042893*^9, 
+   3.58899785761056*^9}],
+
+Cell[BoxData[
+ RowBox[{"-", 
+  RowBox[{"(", 
+   RowBox[{"w1", 
+    StyleBox["\[CenterDot]",
+     FontColor->RGBColor[0, 1, 0]], "w2"}], ")"}]}]], "Output",
+ CellChangeTimes->{{3.588997328170578*^9, 3.5889973319744368`*^9}, {
+   3.5889973887064342`*^9, 3.588997409547254*^9}, 3.588997719042893*^9, 
+   3.588997857612336*^9}],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.588997328170578*^9, 3.5889973319744368`*^9}, {
+   3.5889973887064342`*^9, 3.588997409547254*^9}, 3.588997719042893*^9, 
+   3.5889978576140203`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"snegmajoranaoperators", "[", "w", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.588997277509973*^9, 3.58899728111948*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"snegfreeindexes", "[", 
+   RowBox[{"j1", ",", "j2", ",", "q1", ",", "q2"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.588997283232561*^9, 3.588997289864648*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"nc", "[", 
+  RowBox[{
+   RowBox[{"w", "[", "q1", "]"}], ",", 
+   RowBox[{"w", "[", "q1", "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"anticommutator", "[", 
+  RowBox[{
+   RowBox[{"w", "[", "q1", "]"}], ",", 
+   RowBox[{"w", "[", "q1", "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"nc", "[", 
+  RowBox[{
+   RowBox[{"w", "[", "q1", "]"}], ",", 
+   RowBox[{"w", "[", "q2", "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"nc", "[", 
+  RowBox[{
+   RowBox[{"w", "[", "q2", "]"}], ",", 
+   RowBox[{"w", "[", "q1", "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"anticommutator", "[", 
+  RowBox[{
+   RowBox[{"w", "[", "q1", "]"}], ",", 
+   RowBox[{"w", "[", "q2", "]"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.588997291425232*^9, 3.588997303138892*^9}, {
+   3.588997427429522*^9, 3.588997461896175*^9}, 3.588997506584733*^9}],
+
+Cell[BoxData[
+ FractionBox["1", "2"]], "Output",
+ CellChangeTimes->{
+  3.5889973032940083`*^9, {3.588997433821143*^9, 3.588997462187045*^9}, 
+   3.588997507087097*^9, 3.58899772435122*^9, 3.588997863589471*^9}],
+
+Cell[BoxData["1"], "Output",
+ CellChangeTimes->{
+  3.5889973032940083`*^9, {3.588997433821143*^9, 3.588997462187045*^9}, 
+   3.588997507087097*^9, 3.58899772435122*^9, 3.588997863591013*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"w", "[", "q1", "]"}], 
+  StyleBox["\[CenterDot]",
+   FontColor->RGBColor[0, 1, 0]], 
+  RowBox[{"w", "[", "q2", "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.5889973032940083`*^9, {3.588997433821143*^9, 3.588997462187045*^9}, 
+   3.588997507087097*^9, 3.58899772435122*^9, 3.588997863592204*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[
+   StyleBox[
+    SubscriptBox[
+     TagBox[
+      StyleBox["\<\"\[Delta]\"\>",
+       FontColor->RGBColor[0, 1, 0]],
+      StyleForm[#, FontColor -> RGBColor[0, 1, 0]]& ], 
+     RowBox[{"q1", "q2"}]],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm], "-", 
+  RowBox[{
+   RowBox[{"w", "[", "q1", "]"}], 
+   StyleBox["\[CenterDot]",
+    FontColor->RGBColor[0, 1, 0]], 
+   RowBox[{"w", "[", "q2", "]"}]}]}]], "Output",
+ CellChangeTimes->{
+  3.5889973032940083`*^9, {3.588997433821143*^9, 3.588997462187045*^9}, 
+   3.588997507087097*^9, 3.58899772435122*^9, 3.588997863593564*^9}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   SubscriptBox[
+    TagBox[
+     StyleBox["\<\"\[Delta]\"\>",
+      FontColor->RGBColor[0, 1, 0]],
+     StyleForm[#, FontColor -> RGBColor[0, 1, 0]]& ], 
+    RowBox[{"q1", "q2"}]],
+   ScriptSizeMultipliers->1,
+   ScriptBaselineShifts->{1, 1}],
+  DisplayForm]], "Output",
+ CellChangeTimes->{
+  3.5889973032940083`*^9, {3.588997433821143*^9, 3.588997462187045*^9}, 
+   3.588997507087097*^9, 3.58899772435122*^9, 3.588997863594858*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 862},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 137, 3, 28, "Input"],
+Cell[719, 27, 162, 2, 22, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[918, 34, 663, 15, 114, "Input"],
+Cell[1584, 51, 216, 4, 47, "Output"],
+Cell[1803, 57, 196, 3, 28, "Output"],
+Cell[2002, 62, 276, 6, 28, "Output"],
+Cell[2281, 70, 323, 8, 28, "Output"],
+Cell[2607, 80, 198, 3, 28, "Output"]
+}, Open  ]],
+Cell[2820, 86, 157, 3, 28, "Input"],
+Cell[2980, 91, 200, 4, 28, "Input"],
+Cell[CellGroupData[{
+Cell[3205, 99, 858, 22, 97, "Input"],
+Cell[4066, 123, 210, 4, 47, "Output"],
+Cell[4279, 129, 190, 3, 28, "Output"],
+Cell[4472, 134, 327, 8, 28, "Output"],
+Cell[4802, 144, 643, 20, 37, "Output"],
+Cell[5448, 166, 468, 14, 37, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

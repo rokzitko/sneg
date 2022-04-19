@@ -1,0 +1,483 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     13076,        406]*)
+(*NotebookOutlinePosition[     13767,        430]*)
+(*  CellTagsIndexPosition[     13723,        426]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["nambu", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["nambu[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["i", "TI"],
+  StyleBox["]", "MR"],
+  " returns the Nambu spinor components corresponding to a fermionic operator \
+",
+  StyleBox["c", "IT"],
+  ". The phase in the spin-down component of the spinor is ",
+  Cell[BoxData[
+      \(TraditionalForm\`\(\(\((\(-1\))\)\^i\)\(.\)\)\)]]
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operator ",
+  StyleBox["c", "TI",
+    FontSize->10],
+  " must be expressed in the stripped form, i.e. a form which excludes the \
+first index (creation/annihilation) and the last index (spin). "
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The default value for ",
+  StyleBox["i", "IT"],
+  " is 0."
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] The spin up version of the Nambu spinor is \
+returned.\
+\>", "Notes"],
+
+Cell[TextData[{
+  StyleBox["\[FilledSmallSquare]", "MR"],
+  " ",
+  StyleBox["nambu", "MR"],
+  " is used in the construction of the isospin operators."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["isospinxyz",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " to be a fermionic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Nambu spinor \[Xi]", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(\[Xi] = nambu[c[]];\)\), "\[IndentingNewLine]", 
+    \(MatrixForm[\[Xi]]\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", 
+        TagBox[GridBox[{
+              {
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)], "\<\"\[Dagger]\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {
+                          StyleForm[ 
+                          "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                        "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]},
+              {
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        TagBox[
+                          StyleBox["\<\"\[DownArrow]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0, 0, 1]]&)], "\<\"\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {
+                          StyleForm[ 
+                          "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                        ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}
+              },
+            RowSpacings->1,
+            ColumnAlignments->{Left}],
+          Column], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[4]//MatrixForm="]
+}, Open  ]],
+
+Cell[TextData[{
+  "The first component of \[Xi] has ",
+  Cell[BoxData[
+      \(TraditionalForm\`I\_z = 1/2, \ S\_z = 1/2\)]],
+  ", the second component of \[Xi] has ",
+  Cell[BoxData[
+      \(TraditionalForm\`I\_z = \(-1\)/2, \ S\_z = 1/2. \)]],
+  " The Nambu spinor is a spherical tensor operator with respect both to spin \
+SU(2) group and to isospin SU(2) group."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(sz = spinz[c[]];\)\), "\[IndentingNewLine]", 
+    \(komutator[sz, \[Xi]] // Expand\), "\[IndentingNewLine]", 
+    \(% \[Equal] 1/2  \[Xi]\), "\[IndentingNewLine]", 
+    \(\(iz = isospinz[c[]];\)\), "\[IndentingNewLine]", 
+    \(komutator[iz, \[Xi]] // Expand\), "\[IndentingNewLine]", 
+    \(% \[Equal] {1/2, \(-1\)/2} \[Xi]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        FractionBox[
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], "2"], ",", 
+        FractionBox[
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {
+                    StyleForm[ 
+                    "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], "2"]}], "}"}]], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        FractionBox[
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], "2"], ",", 
+        RowBox[{"-", 
+          FractionBox[
+            TagBox[
+              StyleBox[
+                InterpretationBox[
+                  SubsuperscriptBox["c", 
+                    TagBox[
+                      StyleBox["\<\"\[DownArrow]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0, 0, 1]]&)], "\<\"\"\>"],
+                  Subsuperscript[ c, 
+                    RowBox[ {
+                      StyleForm[ 
+                      "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                  
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], "2"]}]}], "}"}]], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell["\<\
+Note that the sign of the isospin down component of the Nambu \
+spinor depends on a phase index.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nambu[c[], 0]\), "\[IndentingNewLine]", 
+    \(nambu[c[], 1]\)}], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                TagBox[
+                  StyleBox["\<\"\[UpArrow]\"\>",
+                    FontColor->RGBColor[1, 0, 0]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    1, 0, 0]]&)], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], ",", 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                TagBox[
+                  StyleBox["\<\"\[DownArrow]\"\>",
+                    FontColor->RGBColor[0, 0, 1]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    0, 0, 1]]&)], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "}"}]], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                TagBox[
+                  StyleBox["\<\"\[UpArrow]\"\>",
+                    FontColor->RGBColor[1, 0, 0]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    1, 0, 0]]&)], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], ",", 
+        RowBox[{"-", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {
+                    StyleForm[ 
+                    "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "}"}]], "Output",
+  CellLabel->"Out[12]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 540}, {Automatic, 104}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 27, 0, 38, "ObjectName"],
+Cell[1806, 55, 418, 13, 48, "Usage"],
+Cell[2227, 70, 247, 6, 40, "Notes"],
+Cell[2477, 78, 111, 4, 24, "Notes"],
+Cell[2591, 84, 100, 3, 24, "Notes"],
+Cell[2694, 89, 163, 5, 24, "Notes"],
+Cell[2860, 96, 129, 5, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3014, 105, 42, 0, 38, "ExampleSection"],
+Cell[3059, 107, 117, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3201, 115, 139, 3, 42, "Input"],
+Cell[3343, 120, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3461, 125, 41, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3527, 129, 133, 3, 42, "Input"],
+Cell[3663, 134, 2016, 50, 70, "Output"]
+}, Open  ]],
+Cell[5694, 187, 385, 9, 66, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6104, 200, 385, 7, 106, "Input"],
+Cell[6492, 209, 1567, 42, 49, "Output"],
+Cell[8062, 253, 62, 2, 25, "Output"],
+Cell[8127, 257, 1648, 44, 49, "Output"],
+Cell[9778, 303, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[9856, 308, 127, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[10008, 315, 120, 3, 42, "Input"],
+Cell[10131, 320, 1421, 39, 33, "Output"],
+Cell[11555, 361, 1481, 40, 33, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

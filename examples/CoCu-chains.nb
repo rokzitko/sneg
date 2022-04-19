@@ -1,0 +1,3161 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[    127730,       3098]*)
+(*NotebookOutlinePosition[    128360,       3120]*)
+(*  CellTagsIndexPosition[    128316,       3116]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(<< Graphics`MultipleListPlot`\)}], "Input"],
+
+Cell[BoxData[
+    \("sneg 1.116 Copyright (C) 2007 Rok Zitko"\)], "Print"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(snegfermionoperators[c]\), "\[IndentingNewLine]", 
+    \(snegrealconstants[tCoCu, tCuCu, \[Epsilon]Co, \[Epsilon]Cu]\)}], "Input"],
+
+Cell[BoxData[
+    \(\(params = {\[Epsilon]Co \[Rule] \(-0.9\), \[Epsilon]Cu \[Rule] \
+\(-1.9\), tCoCu \[Rule] \(-0.2\), tCuCu \[Rule] \(-0.2\)};\)\)], "Input"],
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      Diagonalize\ the\ Hamiltonian\ *) \)\(\[IndentingNewLine]\)\(\(diag[] := 
+        Module[{}, \[IndentingNewLine]basis = 
+            Table[c[CR, i, UP], {i, len}]; \[IndentingNewLine]Print[
+            H]; \[IndentingNewLine]matrix = 
+            matrixrepresentationop[H, basis, 
+              basis]; \[IndentingNewLine]Print\ @\ 
+            MatrixForm[matrix]; \[IndentingNewLine]matrix = 
+            matrix /. params; \[IndentingNewLine]mysort[eig_] := 
+            Transpose\ @\ \(Reverse\ @\ \(Sort\ @\ 
+                  Transpose[eig]\)\); \[IndentingNewLine]{val, vec} = 
+            mysort\ @\ Eigensystem[matrix]; \[IndentingNewLine]Print[
+            val];\[IndentingNewLine]];\)\[IndentingNewLine] (*\ 
+      Plot\ the\ charge\ density\ of\ three\ eigenstates\ closest\ to\ the\ \
+Fermi\ level\ *) \[IndentingNewLine]
+    \(plot[] := 
+        Module[{}, \[IndentingNewLine]MultipleListPlot[vec[\([1]\)]^2, 
+            vec[\([2]\)]^2, vec[\([3]\)]^2, PlotJoined \[Rule] True, 
+            PlotStyle \[Rule] {{Thickness[0.01], Black}, 
+                RGBColor[0.75, 0, 0], 
+                RGBColor[0.5, 0, 0]}, \[IndentingNewLine]PlotRange \[Rule] 
+              All]\[IndentingNewLine]];\)\)\)\)], "Input"],
+
+Cell["", "Text",
+  Editable->False,
+  Selectable->False,
+  CellFrame->{{0, 0}, {0, 3}},
+  ShowCellBracket->False,
+  CellMargins->{{0, 0}, {1, 1}},
+  CellElementSpacings->{"CellMinHeight"->1},
+  CellFrameMargins->False,
+  CellFrameColor->RGBColor[0, 0, 1],
+  CellSize->{Inherited, 5}],
+
+Cell[BoxData[
+    \(CoCu\_6\)], "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      Length\ of\ chain\ *) \)\(\[IndentingNewLine]\)\(\(len = 
+        7;\)\[IndentingNewLine] (*\ Level\ energies\ *) \[IndentingNewLine]
+    \(H = \[Epsilon]Co\ number[c[1], UP] + \[Epsilon]Cu\ Sum[
+              number[c[i], UP], {i, 2, len}];\)\[IndentingNewLine] (*\ 
+      Hopping\ terms\ *) \[IndentingNewLine]
+    \(H = 
+        H + tCoCu\ hop[c[1], c[2], UP] + 
+          tCuCu\ Sum[
+              hop[c[i], c[i + 1], UP], {i, 2, 
+                len - 1}];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(diag[];\)\[IndentingNewLine]
+    \(plot[];\)\)\)\)], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\[Epsilon]Co", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"1", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {1, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"1", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {1, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{"tCoCu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}], "+", 
+      RowBox[{"tCuCu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}], "+", 
+      RowBox[{"\[Epsilon]Cu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}]}]], "Print"],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {"\[Epsilon]Co", "tCoCu", "0", "0", "0", "0", "0"},
+            {"tCoCu", "\[Epsilon]Cu", "tCuCu", "0", "0", "0", "0"},
+            {"0", "tCuCu", "\[Epsilon]Cu", "tCuCu", "0", "0", "0"},
+            {"0", "0", "tCuCu", "\[Epsilon]Cu", "tCuCu", "0", "0"},
+            {"0", "0", "0", "tCuCu", "\[Epsilon]Cu", "tCuCu", "0"},
+            {"0", "0", "0", "0", "tCuCu", "\[Epsilon]Cu", "tCuCu"},
+            {"0", "0", "0", "0", "0", "tCuCu", "\[Epsilon]Cu"}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Print"],
+
+Cell[BoxData[
+    \({\(-0.8600000001509949`\), \(-1.5423492255130327`\), \
+\(-1.6587020557332317`\), \(-1.8222443979820002`\), \(-1.9991469525043761`\), \
+\(-2.15540911116275`\), \(-2.262148256953614`\)}\)], "Print"],
+
+Cell[GraphicsData["PostScript", "\<\
+%!
+%%Creator: Mathematica
+%%AspectRatio: .61803 
+MathPictureStart
+/Mabs {
+Mgmatrix idtransform
+Mtmatrix dtransform
+} bind def
+/Mabsadd { Mabs
+3 -1 roll add
+3 1 roll add
+exch } bind def
+%% Graphics
+%%IncludeResource: font Courier
+%%IncludeFont: Courier
+/Courier findfont 10  scalefont  setfont
+% Scaling calculations
+-0.134921 0.15873 0.0147151 0.613129 [
+[.18254 .00222 -3 -9 ]
+[.18254 .00222 3 0 ]
+[.34127 .00222 -3 -9 ]
+[.34127 .00222 3 0 ]
+[.5 .00222 -3 -9 ]
+[.5 .00222 3 0 ]
+[.65873 .00222 -3 -9 ]
+[.65873 .00222 3 0 ]
+[.81746 .00222 -3 -9 ]
+[.81746 .00222 3 0 ]
+[.97619 .00222 -3 -9 ]
+[.97619 .00222 3 0 ]
+[.01131 .13734 -18 -4.5 ]
+[.01131 .13734 0 4.5 ]
+[.01131 .25997 -18 -4.5 ]
+[.01131 .25997 0 4.5 ]
+[.01131 .38259 -18 -4.5 ]
+[.01131 .38259 0 4.5 ]
+[.01131 .50522 -18 -4.5 ]
+[.01131 .50522 0 4.5 ]
+[ 0 0 0 0 ]
+[ 1 .61803 0 0 ]
+] MathScale
+% Start of Graphics
+1 setlinecap
+1 setlinejoin
+newpath
+0 g
+.25 Mabswid
+[ ] 0 setdash
+.18254 .01472 m
+.18254 .02097 L
+s
+[(2)] .18254 .00222 0 1 Mshowa
+.34127 .01472 m
+.34127 .02097 L
+s
+[(3)] .34127 .00222 0 1 Mshowa
+.5 .01472 m
+.5 .02097 L
+s
+[(4)] .5 .00222 0 1 Mshowa
+.65873 .01472 m
+.65873 .02097 L
+s
+[(5)] .65873 .00222 0 1 Mshowa
+.81746 .01472 m
+.81746 .02097 L
+s
+[(6)] .81746 .00222 0 1 Mshowa
+.97619 .01472 m
+.97619 .02097 L
+s
+[(7)] .97619 .00222 0 1 Mshowa
+.125 Mabswid
+.05556 .01472 m
+.05556 .01847 L
+s
+.0873 .01472 m
+.0873 .01847 L
+s
+.11905 .01472 m
+.11905 .01847 L
+s
+.15079 .01472 m
+.15079 .01847 L
+s
+.21429 .01472 m
+.21429 .01847 L
+s
+.24603 .01472 m
+.24603 .01847 L
+s
+.27778 .01472 m
+.27778 .01847 L
+s
+.30952 .01472 m
+.30952 .01847 L
+s
+.37302 .01472 m
+.37302 .01847 L
+s
+.40476 .01472 m
+.40476 .01847 L
+s
+.43651 .01472 m
+.43651 .01847 L
+s
+.46825 .01472 m
+.46825 .01847 L
+s
+.53175 .01472 m
+.53175 .01847 L
+s
+.56349 .01472 m
+.56349 .01847 L
+s
+.59524 .01472 m
+.59524 .01847 L
+s
+.62698 .01472 m
+.62698 .01847 L
+s
+.69048 .01472 m
+.69048 .01847 L
+s
+.72222 .01472 m
+.72222 .01847 L
+s
+.75397 .01472 m
+.75397 .01847 L
+s
+.78571 .01472 m
+.78571 .01847 L
+s
+.84921 .01472 m
+.84921 .01847 L
+s
+.88095 .01472 m
+.88095 .01847 L
+s
+.9127 .01472 m
+.9127 .01847 L
+s
+.94444 .01472 m
+.94444 .01847 L
+s
+.25 Mabswid
+0 .01472 m
+1 .01472 L
+s
+.02381 .13734 m
+.03006 .13734 L
+s
+[(0.2)] .01131 .13734 1 0 Mshowa
+.02381 .25997 m
+.03006 .25997 L
+s
+[(0.4)] .01131 .25997 1 0 Mshowa
+.02381 .38259 m
+.03006 .38259 L
+s
+[(0.6)] .01131 .38259 1 0 Mshowa
+.02381 .50522 m
+.03006 .50522 L
+s
+[(0.8)] .01131 .50522 1 0 Mshowa
+.125 Mabswid
+.02381 .04537 m
+.02756 .04537 L
+s
+.02381 .07603 m
+.02756 .07603 L
+s
+.02381 .10668 m
+.02756 .10668 L
+s
+.02381 .168 m
+.02756 .168 L
+s
+.02381 .19865 m
+.02756 .19865 L
+s
+.02381 .22931 m
+.02756 .22931 L
+s
+.02381 .29062 m
+.02756 .29062 L
+s
+.02381 .32128 m
+.02756 .32128 L
+s
+.02381 .35194 m
+.02756 .35194 L
+s
+.02381 .41325 m
+.02756 .41325 L
+s
+.02381 .44391 m
+.02756 .44391 L
+s
+.02381 .47456 m
+.02756 .47456 L
+s
+.02381 .53587 m
+.02756 .53587 L
+s
+.02381 .56653 m
+.02756 .56653 L
+s
+.02381 .59719 m
+.02756 .59719 L
+s
+.25 Mabswid
+.02381 0 m
+.02381 .61803 L
+s
+.01 w
+.02381 .60332 m
+.18254 .03826 L
+.34127 .01566 L
+.5 .01475 L
+.65873 .01472 L
+.81746 .01472 L
+.97619 .01472 L
+s
+.0001 w
+.02381 .60332 -1.875 0 Mabsadd m
+.02381 .60332 0 2.5 Mabsadd L
+.02381 .60332 1.875 0 Mabsadd L
+.02381 .60332 0 -2.5 Mabsadd L
+.02381 .60332 -1.875 0 Mabsadd L closepath F
+.18254 .03826 -1.875 0 Mabsadd m
+.18254 .03826 0 2.5 Mabsadd L
+.18254 .03826 1.875 0 Mabsadd L
+.18254 .03826 0 -2.5 Mabsadd L
+.18254 .03826 -1.875 0 Mabsadd L closepath F
+.34127 .01566 -1.875 0 Mabsadd m
+.34127 .01566 0 2.5 Mabsadd L
+.34127 .01566 1.875 0 Mabsadd L
+.34127 .01566 0 -2.5 Mabsadd L
+.34127 .01566 -1.875 0 Mabsadd L closepath F
+.5 .01475 -1.875 0 Mabsadd m
+.5 .01475 0 2.5 Mabsadd L
+.5 .01475 1.875 0 Mabsadd L
+.5 .01475 0 -2.5 Mabsadd L
+.5 .01475 -1.875 0 Mabsadd L closepath F
+.65873 .01472 -1.875 0 Mabsadd m
+.65873 .01472 0 2.5 Mabsadd L
+.65873 .01472 1.875 0 Mabsadd L
+.65873 .01472 0 -2.5 Mabsadd L
+.65873 .01472 -1.875 0 Mabsadd L closepath F
+.81746 .01472 -1.875 0 Mabsadd m
+.81746 .01472 0 2.5 Mabsadd L
+.81746 .01472 1.875 0 Mabsadd L
+.81746 .01472 0 -2.5 Mabsadd L
+.81746 .01472 -1.875 0 Mabsadd L closepath F
+.97619 .01472 -1.875 0 Mabsadd m
+.97619 .01472 0 2.5 Mabsadd L
+.97619 .01472 1.875 0 Mabsadd L
+.97619 .01472 0 -2.5 Mabsadd L
+.97619 .01472 -1.875 0 Mabsadd L closepath F
+.75 0 0 r
+.001 w
+.02381 .01684 m
+.18254 .03659 L
+.34127 .11116 L
+.5 .18073 L
+.65873 .18949 L
+.81746 .13042 L
+.97619 .0509 L
+s
+0 g
+.0001 w
+.02381 .01684 0 2.5 Mabsadd m
+.02381 .01684 -0.56518 .7779 Mabsadd L
+.02381 .01684 -2.37764 .77254 Mabsadd L
+.02381 .01684 -0.91448 -0.29713 Mabsadd L
+.02381 .01684 -1.46946 -2.02254 Mabsadd L
+.02381 .01684 0 -0.96154 Mabsadd L
+.02381 .01684 1.46946 -2.02254 Mabsadd L
+.02381 .01684 .91448 -0.29713 Mabsadd L
+.02381 .01684 2.37764 .77254 Mabsadd L
+.02381 .01684 .56518 .7779 Mabsadd L
+.02381 .01684 0 2.5 Mabsadd L closepath F
+.18254 .03659 0 2.5 Mabsadd m
+.18254 .03659 -0.56518 .7779 Mabsadd L
+.18254 .03659 -2.37764 .77254 Mabsadd L
+.18254 .03659 -0.91448 -0.29713 Mabsadd L
+.18254 .03659 -1.46946 -2.02254 Mabsadd L
+.18254 .03659 0 -0.96154 Mabsadd L
+.18254 .03659 1.46946 -2.02254 Mabsadd L
+.18254 .03659 .91448 -0.29713 Mabsadd L
+.18254 .03659 2.37764 .77254 Mabsadd L
+.18254 .03659 .56518 .7779 Mabsadd L
+.18254 .03659 0 2.5 Mabsadd L closepath F
+.34127 .11116 0 2.5 Mabsadd m
+.34127 .11116 -0.56518 .7779 Mabsadd L
+.34127 .11116 -2.37764 .77254 Mabsadd L
+.34127 .11116 -0.91448 -0.29713 Mabsadd L
+.34127 .11116 -1.46946 -2.02254 Mabsadd L
+.34127 .11116 0 -0.96154 Mabsadd L
+.34127 .11116 1.46946 -2.02254 Mabsadd L
+.34127 .11116 .91448 -0.29713 Mabsadd L
+.34127 .11116 2.37764 .77254 Mabsadd L
+.34127 .11116 .56518 .7779 Mabsadd L
+.34127 .11116 0 2.5 Mabsadd L closepath F
+.5 .18073 0 2.5 Mabsadd m
+.5 .18073 -0.56518 .7779 Mabsadd L
+.5 .18073 -2.37764 .77254 Mabsadd L
+.5 .18073 -0.91448 -0.29713 Mabsadd L
+.5 .18073 -1.46946 -2.02254 Mabsadd L
+.5 .18073 0 -0.96154 Mabsadd L
+.5 .18073 1.46946 -2.02254 Mabsadd L
+.5 .18073 .91448 -0.29713 Mabsadd L
+.5 .18073 2.37764 .77254 Mabsadd L
+.5 .18073 .56518 .7779 Mabsadd L
+.5 .18073 0 2.5 Mabsadd L closepath F
+.65873 .18949 0 2.5 Mabsadd m
+.65873 .18949 -0.56518 .7779 Mabsadd L
+.65873 .18949 -2.37764 .77254 Mabsadd L
+.65873 .18949 -0.91448 -0.29713 Mabsadd L
+.65873 .18949 -1.46946 -2.02254 Mabsadd L
+.65873 .18949 0 -0.96154 Mabsadd L
+.65873 .18949 1.46946 -2.02254 Mabsadd L
+.65873 .18949 .91448 -0.29713 Mabsadd L
+.65873 .18949 2.37764 .77254 Mabsadd L
+.65873 .18949 .56518 .7779 Mabsadd L
+.65873 .18949 0 2.5 Mabsadd L closepath F
+.81746 .13042 0 2.5 Mabsadd m
+.81746 .13042 -0.56518 .7779 Mabsadd L
+.81746 .13042 -2.37764 .77254 Mabsadd L
+.81746 .13042 -0.91448 -0.29713 Mabsadd L
+.81746 .13042 -1.46946 -2.02254 Mabsadd L
+.81746 .13042 0 -0.96154 Mabsadd L
+.81746 .13042 1.46946 -2.02254 Mabsadd L
+.81746 .13042 .91448 -0.29713 Mabsadd L
+.81746 .13042 2.37764 .77254 Mabsadd L
+.81746 .13042 .56518 .7779 Mabsadd L
+.81746 .13042 0 2.5 Mabsadd L closepath F
+.97619 .0509 0 2.5 Mabsadd m
+.97619 .0509 -0.56518 .7779 Mabsadd L
+.97619 .0509 -2.37764 .77254 Mabsadd L
+.97619 .0509 -0.91448 -0.29713 Mabsadd L
+.97619 .0509 -1.46946 -2.02254 Mabsadd L
+.97619 .0509 0 -0.96154 Mabsadd L
+.97619 .0509 1.46946 -2.02254 Mabsadd L
+.97619 .0509 .91448 -0.29713 Mabsadd L
+.97619 .0509 2.37764 .77254 Mabsadd L
+.97619 .0509 .56518 .7779 Mabsadd L
+.97619 .0509 0 2.5 Mabsadd L closepath F
+.5 0 0 r
+.001 w
+.02381 .02038 m
+.18254 .0962 L
+.34127 .19082 L
+.5 .06349 L
+.65873 .03819 L
+.81746 .17929 L
+.97619 .12778 L
+s
+0 g
+.0001 w
+.02381 .02038 -2.5 2.5 Mabsadd m
+.02381 .02038 2.5 2.5 Mabsadd L
+.02381 .02038 2.5 -2.5 Mabsadd L
+.02381 .02038 -2.5 -2.5 Mabsadd L
+.02381 .02038 -2.5 2.5 Mabsadd L closepath F
+.18254 .0962 -2.5 2.5 Mabsadd m
+.18254 .0962 2.5 2.5 Mabsadd L
+.18254 .0962 2.5 -2.5 Mabsadd L
+.18254 .0962 -2.5 -2.5 Mabsadd L
+.18254 .0962 -2.5 2.5 Mabsadd L closepath F
+.34127 .19082 -2.5 2.5 Mabsadd m
+.34127 .19082 2.5 2.5 Mabsadd L
+.34127 .19082 2.5 -2.5 Mabsadd L
+.34127 .19082 -2.5 -2.5 Mabsadd L
+.34127 .19082 -2.5 2.5 Mabsadd L closepath F
+.5 .06349 -2.5 2.5 Mabsadd m
+.5 .06349 2.5 2.5 Mabsadd L
+.5 .06349 2.5 -2.5 Mabsadd L
+.5 .06349 -2.5 -2.5 Mabsadd L
+.5 .06349 -2.5 2.5 Mabsadd L closepath F
+.65873 .03819 -2.5 2.5 Mabsadd m
+.65873 .03819 2.5 2.5 Mabsadd L
+.65873 .03819 2.5 -2.5 Mabsadd L
+.65873 .03819 -2.5 -2.5 Mabsadd L
+.65873 .03819 -2.5 2.5 Mabsadd L closepath F
+.81746 .17929 -2.5 2.5 Mabsadd m
+.81746 .17929 2.5 2.5 Mabsadd L
+.81746 .17929 2.5 -2.5 Mabsadd L
+.81746 .17929 -2.5 -2.5 Mabsadd L
+.81746 .17929 -2.5 2.5 Mabsadd L closepath F
+.97619 .12778 -2.5 2.5 Mabsadd m
+.97619 .12778 2.5 2.5 Mabsadd L
+.97619 .12778 2.5 -2.5 Mabsadd L
+.97619 .12778 -2.5 -2.5 Mabsadd L
+.97619 .12778 -2.5 2.5 Mabsadd L closepath F
+0 0 m
+1 0 L
+1 .61803 L
+0 .61803 L
+closepath
+clip
+newpath
+% End of Graphics
+MathPictureEnd
+\
+\>"], "Graphics",
+  ImageSize->{288, 177.938},
+  ImageMargins->{{43, 0}, {0, 0}},
+  ImageRegion->{{0, 1}, {0, 1}},
+  ImageCache->GraphicsData["Bitmap", "\<\
+CF5dJ6E]HGAYHf4PAg9QL6QYHg<PAVmbKF5d0`40004P0000/B000`400?l00000o`00003oo`3ooolQ
+0?ooo`00o`3ooolQ0?ooo`00?P3oool4000002P0oooo0P00000Z0?ooo`030000003oool0oooo02L0
+oooo0`00000Y0?ooo`800000:@3oool00`000000oooo0?ooo`060?ooo`00?P3oool00`000000oooo
+0?ooo`0X0?ooo`040000003oool0oooo000002T0oooo00<000000?ooo`3oool0:P3oool00`000000
+oooo0?ooo`0U0?ooo`040000003oool0oooo000002P0oooo00<000000?ooo`3oool01P3oool003l0
+oooo00<000000?ooo`3oool0:P3oool00`000000oooo0?ooo`0T0?ooo`D00000:`3oool00`000000
+oooo0?ooo`0U0?ooo`040000003oool0oooo000002T0oooo00<000000?ooo`3oool01@3oool00400
+oooo00<000000?ooo`3oool09`3oool2000002L0oooo00@000000?ooo`3oool00000:@3oool30000
+02P0oooo0`00000Z0?ooo`030000003oool0oooo00D0oooo00110?ooo`030000003oool0oooo02P0
+oooo00<000000?ooo`3oool09@3oool00`000000oooo0000000Y0?ooo`030000003oool0oooo02P0
+oooo00<000000?ooo`3oool0:`3oool00`000000oooo0?ooo`040?ooo`00?P3oool010000000oooo
+0?ooo`00000W0?ooo`040000003oool0oooo000002P0oooo0P00000Y0?ooo`030000003oool0oooo
+02P0oooo00<000000?ooo`3oool0:03oool010000000oooo0?ooo`0000060?ooo`005@3oool00`00
+0000oooo0?ooo`0W0?ooo`800000:@3oool2000002X0oooo00<000000?ooo`3oool09`3oool40000
+02P0oooo0`00000W0?ooo`@000001P3oool001D0oooo00<000000?ooo`3oool0o`3oool90?ooo`00
+5@3oool00`000000oooo0?ooo`3o0?ooo`T0oooo000E0?ooo`030000003oool0oooo0580oooo0P00
+000Z0?ooo`030000003oool0oooo02P0oooo0P00000Y0?ooo`800000:@3oool2000000L0oooo000>
+0?ooool000004`0000000180oooo1@0000030;l000@0oooo00<000000?ooo`3oool01@3oool00`00
+0000oooo0?ooo`060?ooo`030000003oool0oooo00D0oooo00<000000?ooo`3oool01P3oool00`00
+0000oooo0?ooo`060?ooo`030000003oool0oooo00D0oooo00<000000?ooo`3oool01P3oool00`00
+0000oooo0?ooo`020?oook/000001P3oool00180oooo1@0000030?ooo`P0_`007P3oool00`000000
+oooo0?ooo`0F0?ooo``000001P3oool00`000000oooo0?ooo`0X0?ooo`030000003oool0oooo02T0
+oooo00<000000?ooo`3oool0:03oool00`000000oooo0?ooo`0X0?ooo`030000003oool0oooo00D0
+oooo000B0?ooo`D000000P1o00090?ooo`T0_`00:03oool<00000<40oooo000B0?ooo`D000000P3o
+ool207l00100oooo2@2o000I0?ooo``00000a`3oool001D0oooo00<000000?ooo`3oool00`3oool2
+07l001L0oooo202o00030?ooo`<000001@3oool<000006`0oooo1@00001L0?ooo`005@3oool00`00
+0000oooo0?ooo`050?ooo`80O`007@3oool30;l00080000000<0_`000000000000002@00001b0?oo
+o`D00000G03oool001D0oooo00<000000?ooo`3oool01`3oool207l001d0oooo100000020;l000<0
+0000N03oool5000005`0oooo000E0?ooo`8000002P3oool207l001`0oooo0P0000030?ooo`80_`00
+LP3oool707l000D00000G03oool001D0oooo00<000000?ooo`3oool02`3oool307l001T0oooo0P00
+00050?ooo`80_`00J03oool807l000L0oooo1@0000000`1o0000oooo0?ooo`1@0?ooo`8000001`3o
+ool001D0oooo00<000000?ooo`3oool03P3oool207l001L0oooo0P0000070?ooo`80_`00G`3oool7
+07l001D0oooo00<0O`000?ooo`3oool0C`3oool2000000L0oooo000E0?ooo`030000003oool0oooo
+0100oooo0P1o000D0?ooo`8000002P3oool20;l005H0oooo1`1o000M0?ooo`80O`00CP3oool40000
+00H0oooo000E0?ooo`030000003oool0oooo0180oooo0P1o000B0?ooo`800000303oool20;l004H0
+oooo1@0000000`3oool0O`0007l0000607l002H0oooo00<0O`000?ooo`3oool0B@3oool20;l00080
+oooo00<000000?ooo`3oool01@3oool001D0oooo00<000000?ooo`3oool0503oool207l00100oooo
+0P00000>0?ooo`<0_`00@`3oool50000000307l0003oool0oooo02d0oooo00<0O`000?ooo`3oool0
+AP3oool20;l000`0oooo000E0?ooo`030000003oool0oooo01H0oooo0P1o000=0?ooo`<000004@3o
+ool20;l00440oooo1@00000a0?ooo`0307l0003oool0oooo04<0oooo0P2o000>0?ooo`005@3oool0
+0`000000oooo0?ooo`0H0?ooo`<0O`002P3oool2000001@0oooo0P2o000n0?ooo`0307l000000000
+000000<00000<P3oool00`1o0000oooo0?ooo`100?ooo`80_`00403oool001D0oooo00<000000?oo
+o`3oool06`3oool207l000P0oooo0P00000F0?ooo`80_`00>`3oool00`1o0000oooo000000040000
+03<0oooo00<0O`000?ooo`3oool0?@3oool20;l00180oooo000E0?ooo`8000007P3oool207l000H0
+oooo0P00000H0?ooo`80_`00>03oool00`1o0000oooo0?ooo`0i0?ooo`0307l0003oool0oooo03X0
+oooo0P2o000D0?ooo`005@3oool00`000000oooo0?ooo`0O0?ooo`80O`000`3oool2000001/0oooo
+0P2o000e0?ooo`0307l0003oool0oooo03/0oooo0P1o000h0?ooo`80_`005P3oool001D0oooo00<0
+00000?ooo`3oool08@3oool207l000030?ooo`000000000001d0oooo0`2o000a0?ooo`0307l0003o
+ool0oooo03h0oooo00<0O`000?ooo`3oool0<`3oool20;l001P0oooo000E0?ooo`030000003oool0
+oooo02<0oooo0P1o00000`000000oooo0?ooo`0N0?ooo`80_`00;@3oool207l00480oooo00<0O`00
+0?ooo`3oool0<03oool20;l001X0oooo000E0?ooo`030000003oool0oooo02@0oooo00<0000007l0
+000000001000000M0?ooo`80_`00:P3oool00`1o0000oooo0?ooo`130?ooo`0307l0003oool0oooo
+02d0oooo0P2o000L0?ooo`005@3oool00`000000oooo0?ooo`0S0?ooo`80000000<0oooo00000000
+00000`00000O0?ooo`80_`009`3oool00`1o0000oooo0?ooo`150?ooo`0307l0003oool0oooo02X0
+oooo0P2o000N0?ooo`005@3oool00`000000oooo0?ooo`0S0?ooo`80000000<0oooo000000000000
+0`00000Q0?ooo`80_`00903oool00`1o0000oooo0?ooo`170?ooo`0307l0003oool0oooo02L0oooo
+0P2o000P0?ooo`005@3oool00`000000oooo0?ooo`0S0?ooo`80000000<0oooo0000000000000`00
+000207l00240oooo0P2o000P0?ooo`80O`00B`3oool00`1o0000oooo0?ooo`0T0?ooo`80_`008P3o
+ool001D0oooo0P00000S0?ooo`8000000P3oool500000080oooo00<0O`000?ooo`3oool0803oool2
+0;l000<000006P3oool00`1o0000oooo0?ooo`1<0?ooo`0307l0003oool0oooo0240oooo0P2o000T
+0?ooo`005@3oool00`000000oooo0?ooo`0R0?ooo`8000002P3oool207l00280oooo0P0000000`2o
+0000oooo0?ooo`0G0?ooo`0307l0003oool0oooo04h0oooo0P1o000O0?ooo`80_`009P3oool001D0
+oooo00<000000?ooo`3oool08P3oool2000000`0oooo0P1o000O0?ooo`D0000000<0_`000?ooo`3o
+ool0503oool00`1o0000oooo0?ooo`1A0?ooo`0307l0003oool0oooo01X0oooo0P2o000X0?ooo`00
+5@3oool00`000000oooo0?ooo`0R0?ooo`8000003P3oool00`1o0000oooo0?ooo`0N0?ooo`040000
+003oool0oooo0?ooo`80_`004P3oool207l005D0oooo00<0O`000?ooo`3oool05`3oool20;l002X0
+oooo000E0?ooo`030000003oool0oooo0240oooo0P00000@0?ooo`80O`00903oool20;l000l0oooo
+00<0O`000?ooo`3oool0EP3oool00`1o0000oooo0?ooo`0D0?ooo`80_`008P3oool5000000D0oooo
+000E0?ooo`030000003oool0oooo0240oooo0P00000B0?ooo`80O`00903oool30;l000/0oooo00<0
+O`000?ooo`3oool0F03oool00`1o0000oooo0?ooo`0A0?ooo`80_`00903oool5000000D0oooo000E
+0?ooo`030000003oool0oooo0240oooo0P00000D0?ooo`0307l0003oool0oooo02@0oooo0P2o0008
+0?ooo`0307l0003oool0oooo05X0oooo00<0O`000?ooo`3oool0303oool200000080_`009P3oool5
+000000D0oooo00020?ooo`800000103oool00`000000oooo0?ooo`020?ooo`@00000103oool00`00
+0000oooo0?ooo`0P0?ooo`<000005@3oool207l002H0oooo0P2o00050?ooo`0307l0003oool0oooo
+05`0oooo00<0O`000?ooo`3oool02@3oool5000002D0oooo0P1o0005000000D0oooo00001@3oool0
+00000?ooo`3oool0000000P0oooo00<000000?ooo`3oool01@3oool00`000000oooo0?ooo`0P0?oo
+o`800000603oool207l002H0oooo0P2o00000`3oool0O`0007l0001P0?ooo`0307l0003oool0oooo
+00L0oooo0`2o000U0?ooo`<0O`000P3oool5000000D0oooo00001@3oool000000?ooo`3oool00000
+00T0oooo00<000000?ooo`3oool0103oool300000200oooo0P00000J0?ooo`0307l0003oool0oooo
+02D0oooo00<0O`000;l0002o0000H@3oool207l000D0oooo0P2o000U0?ooo`<0O`003`3oool00005
+0?ooo`000000oooo0?ooo`0000002P3oool00`000000oooo0?ooo`030?ooo`030000003oool0oooo
+0200oooo0P00000K0?ooo`80O`00903oool0101o0000oooo0?ooo`3oool20;l00640oooo00<0O`00
+0?ooo`2o00000P2o000T0?ooo`<0O`004P3oool000050?ooo`000000oooo0?ooo`0000002`3oool0
+0`000000oooo0?ooo`020?ooo`030000003oool0oooo01l0oooo0P00000N0?ooo`0307l0003oool0
+oooo0200oooo00<0O`000?ooo`3oool0103oool20;l005h0oooo0P2o00000`1o0000oooo0?ooo`0R
+0?ooo`<0O`005@3oool000050?ooo`000000oooo0?ooo`000000203oool010000000oooo0?ooo`00
+00040?ooo`030000003oool0oooo01l0oooo0P00000O0?ooo`80O`007P3oool207l000T0oooo0`2o
+001I0?ooo`80_`000`3oool00`1o0000oooo0?ooo`0N0?ooo`<0O`00603oool00080oooo0P00000:
+0?ooo`8000001@3oool00`000000oooo0?ooo`0O0?ooo`8000008@3oool207l001/0oooo00<0O`00
+0?ooo`3oool0303oool20;l005@0oooo0`2o00060?ooo`0307l0003oool0oooo01T0oooo101o000K
+0?ooo`005@3oool00`000000oooo0?ooo`0N0?ooo`<000008`3oool00`1o0000oooo0?ooo`0G0?oo
+o`0307l0003oool0oooo00l0oooo0P2o001?0?ooo`<0_`002P3oool00`1o0000oooo0?ooo`0E0?oo
+o`<0O`007`3oool001D0oooo00<000000?ooo`3oool07P3oool2000002D0oooo0P1o000F0?ooo`03
+07l0003oool0oooo0180oooo0P2o001;0?ooo`80_`003P3oool00`1o0000oooo0?ooo`0A0?ooo`<0
+O`008P3oool001D0oooo00<000000?ooo`3oool07P3oool2000002L0oooo0P1o000B0?ooo`80O`00
+5`3oool30;l004D0oooo0`2o000A0?ooo`80O`003P3oool307l002D0oooo000E0?ooo`8000007`3o
+ool2000002T0oooo00<0O`000?ooo`3oool03P3oool00`1o0000oooo0?ooo`0J0?ooo`80_`00@03o
+ool30;l001H0oooo00<0O`000?ooo`3oool0203oool307l002P0oooo000E0?ooo`030000003oool0
+oooo01d0oooo0P00000[0?ooo`80O`003@3oool00`1o0000oooo0?ooo`0M0?ooo`80_`00?03oool2
+0;l001T0oooo1@0000030?ooo`<0O`00:`3oool001D0oooo00<000000?ooo`3oool07@3oool20000
+02d0oooo0P1o000:0?ooo`0307l0003oool0oooo0200oooo0P2o00000`3oool000000000000d0?oo
+o`<0_`006`3oool5000000<0O`00;P3oool001D0oooo00<000000?ooo`3oool07@3oool2000002l0
+oooo00<0O`000?ooo`3oool01P3oool00`1o0000oooo0?ooo`0S0?ooo`030;l000000000_`0000H0
+_`00:`3oool30;l001h0oooo1@00000a0?ooo`005@3oool00`000000oooo0?ooo`0M0?ooo`800000
+<03oool207l000@0oooo0P1o000U0?ooo`D000001@3oool>0;l001/0oooo0P2o000Q0?ooo`D00000
+<@3oool001D0oooo00<000000?ooo`3oool0703oool2000003<0oooo1@00000X0?ooo`030000003o
+ool0oooo01<0oooo3`2o00060?ooo`80000000@0oooo0;l0002o0000_`008`3oool500000340oooo
+000E0?ooo`030000003oool0oooo01`0oooo0P00000c0?ooo`D00000C@3oool40;l000D00000G03o
+ool001D0oooo00<000000?ooo`3oool0703oool2000003<0oooo1@00002b0?ooo`005@3oool20000
+01`0oooo0P00000d0?ooo`D00000/P3oool001D0oooo00<000000?ooo`3oool06`3oool2000003@0
+oooo1@00002b0?ooo`005@3oool00`000000oooo0?ooo`0K0?ooo`800000j`3oool001D0oooo00<0
+00000?ooo`3oool06`3oool200000>/0oooo000E0?ooo`030000003oool0oooo01X0oooo0P00003/
+0?ooo`005@3oool00`000000oooo0?ooo`0J0?ooo`800000k03oool001D0oooo00<000000?ooo`3o
+ool06P3oool200000>`0oooo000E0?ooo`030000003oool0oooo01T0oooo0P00003]0?ooo`005@3o
+ool00`000000oooo0?ooo`0I0?ooo`800000k@3oool001D0oooo0P00000J0?ooo`800000k@3oool0
+01D0oooo00<000000?ooo`3oool06@3oool200000>d0oooo000E0?ooo`030000003oool0oooo01P0
+oooo0P00003^0?ooo`005@3oool00`000000oooo0?ooo`0H0?ooo`800000kP3oool001D0oooo00<0
+00000?ooo`3oool0603oool200000>h0oooo000E0?ooo`030000003oool0oooo01L0oooo0`00003^
+0?ooo`000P3oool2000000@0oooo00<000000?ooo`3oool0103oool00`000000oooo0?ooo`030?oo
+o`030000003oool0oooo01L0oooo0P00003_0?ooo`0000D0oooo0000003oool0oooo0000000:0?oo
+o`030000003oool0oooo00<0oooo00<000000?ooo`3oool05`3oool200000>l0oooo00001@3oool0
+00000?ooo`3oool0000000L0oooo1@0000040?ooo`<000005`3oool200000>l0oooo00001@3oool0
+00000?ooo`3oool0000000L0oooo00@000000?ooo`3oool000001@3oool00`000000oooo0?ooo`0F
+0?ooo`800000l03oool000050?ooo`000000oooo0?ooo`000000203oool00`000000oooo00000005
+0?ooo`030000003oool0oooo01H0oooo0P00003`0?ooo`0000D0oooo0000003oool0oooo00000009
+0?ooo`8000001@3oool00`000000oooo0?ooo`0F0?ooo`800000l03oool00080oooo0P00000;0?oo
+o`030000003oool0oooo00<0oooo00<000000?ooo`3oool05@3oool300000?00oooo000E0?ooo`03
+0000003oool0oooo01D0oooo0P00003a0?ooo`005@3oool00`000000oooo0?ooo`0E0?ooo`800000
+l@3oool001D0oooo00<000000?ooo`3oool05@3oool200000?40oooo000E0?ooo`8000005@3oool2
+00000?80oooo000E0?ooo`030000003oool0oooo01@0oooo0P00003b0?ooo`005@3oool00`000000
+oooo0?ooo`0D0?ooo`800000lP3oool001D0oooo00<000000?ooo`3oool0503oool200000?80oooo
+000E0?ooo`030000003oool0oooo01<0oooo0P00003c0?ooo`005@3oool00`000000oooo0?ooo`0C
+0?ooo`800000l`3oool001D0oooo00<000000?ooo`3oool04`3oool200000?<0oooo000E0?ooo`03
+0000003oool0oooo0180oooo0P00003d0?ooo`005@3oool00`000000oooo0?ooo`0B0?ooo`800000
+m03oool001D0oooo0P00000C0?ooo`800000m03oool001D0oooo00<000000?ooo`3oool04P3oool2
+00000?@0oooo000E0?ooo`030000003oool0oooo0140oooo0P00003e0?ooo`005@3oool00`000000
+oooo0?ooo`0A0?ooo`800000m@3oool001D0oooo00<000000?ooo`3oool04@3oool200000?D0oooo
+000E0?ooo`030000003oool0oooo0100oooo0P00003f0?ooo`005@3oool00`000000oooo0?ooo`0@
+0?ooo`800000mP3oool001D0oooo00<000000?ooo`3oool0403oool200000?H0oooo000E0?ooo`80
+00004@3oool200000?H0oooo000E0?ooo`030000003oool0oooo00l0oooo0P00003g0?ooo`005@3o
+ool00`000000oooo0?ooo`0?0?ooo`800000m`3oool001D0oooo00<000000?ooo`3oool03`3oool2
+00000?L0oooo000E0?ooo`030000003oool0oooo00h0oooo0`00003g0?ooo`005@3oool00`000000
+oooo0?ooo`0>0?ooo`800000n03oool00080oooo0P0000040?ooo`030000003oool0oooo00<0oooo
+0P0000050?ooo`030000003oool0oooo00h0oooo0P00003h0?ooo`0000D0oooo0000003oool0oooo
+000000080?ooo`040000003oool0oooo000000@0oooo00<000000?ooo`3oool03P3oool200000?P0
+oooo00001@3oool000000?ooo`3oool0000000P0oooo00@000000?ooo`3oool00000103oool30000
+00d0oooo0P00003i0?ooo`0000D0oooo0000003oool0oooo000000080?ooo`<000001@3oool00`00
+0000oooo0?ooo`0=0?ooo`800000n@3oool000050?ooo`000000oooo0?ooo`000000203oool00`00
+0000oooo0?ooo`050?ooo`030000003oool0oooo00d0oooo0P00003i0?ooo`0000D0oooo0000003o
+ool0oooo000000080?ooo`030000003oool0oooo00D0oooo00<000000?ooo`3oool0303oool30000
+0?T0oooo00020?ooo`8000002P3oool3000000@0oooo00<000000?ooo`3oool0303oool200000?X0
+oooo000E0?ooo`030000003oool0oooo00`0oooo0P00003j0?ooo`005@3oool00`000000oooo0?oo
+o`0<0?ooo`800000nP3oool001D0oooo00<000000?ooo`3oool02`3oool200000?/0oooo000E0?oo
+o`030000003oool0oooo00/0oooo0P00003k0?ooo`005@3oool2000000`0oooo0P00003k0?ooo`00
+5@3oool00`000000oooo0?ooo`0;0?ooo`800000n`3oool001D0oooo00<000000?ooo`3oool02P3o
+ool200000?`0oooo000E0?ooo`030000003oool0oooo00X0oooo0P00003l0?ooo`005@3oool00`00
+0000oooo0?ooo`0:0?ooo`800000o03oool001D0oooo00<000000?ooo`3oool02@3oool200000?d0
+oooo000E0?ooo`030000003oool0oooo00T0oooo0P00003m0?ooo`005@3oool00`000000oooo0?oo
+o`090?ooo`800000o@3oool001D0oooo0P00000:0?ooo`800000o@3oool001D0oooo00<000000?oo
+o`3oool0203oool200000?h0oooo000E0?ooo`030000003oool0oooo00P0oooo0P00003n0?ooo`00
+5@3oool00`000000oooo0?ooo`080?ooo`800000oP3oool001D0oooo00<000000?ooo`3oool01`3o
+ool200000?l0oooo000E0?ooo`030000003oool0oooo00L0oooo0P00003o0?ooo`005@3oool00`00
+0000oooo0?ooo`070?ooo`800000o`3oool001D0oooo00<000000?ooo`3oool01`3oool200000?l0
+oooo000E0?ooo`8000001`3oool200000?l0oooo0@3oool001D0oooo00<000000?ooo`3oool01P3o
+ool200000?l0oooo0@3oool001D0oooo00<000000?ooo`3oool01P3oool200000?l0oooo0@3oool0
+01D0oooo00<000000?ooo`3oool01@3oool300000?l0oooo0@3oool001D0oooo00<000000?ooo`3o
+ool01@3oool200000?l0oooo0P3oool001D0oooo00<000000?ooo`3oool01@3oool200000?l0oooo
+0P3oool001D0oooo00<000000?ooo`3oool01@3oool200000?l0oooo0P3oool00080oooo0P000004
+0?ooo`030000003oool0oooo00<0oooo0P0000050?ooo`030000003oool0oooo00@0oooo0P00003o
+0?ooo`<0oooo00001@3oool000000?ooo`3oool0000000P0oooo00@000000?ooo`3oool00000103o
+ool00`000000oooo0?ooo`040?ooo`800000o`3oool30?ooo`0000D0oooo0000003oool0oooo0000
+00080?ooo`040000003oool0oooo000000@0oooo0`0000040?ooo`800000o`3oool30?ooo`0000D0
+oooo0000003oool0oooo000000090?ooo`8000001@3oool00`000000oooo0?ooo`030?ooo`<00000
+o`3oool30?ooo`0000D0oooo0000003oool0oooo000000080?ooo`040000003oool0oooo000000@0
+oooo00<000000?ooo`3oool00`3oool200000?l0oooo103oool000050?ooo`000000oooo0?ooo`00
+0000203oool010000000oooo0?ooo`0000040?ooo`030000003oool0oooo00<0oooo0P00003o0?oo
+o`@0oooo00020?ooo`8000002P3oool2000000D0oooo00<000000?ooo`3oool00`3oool200000?l0
+oooo103oool001D0oooo00<000000?ooo`3oool00P3oool200000?l0oooo1@3oool001D0oooo00<0
+00000?ooo`3oool00P3oool200000?l0oooo1@3oool001D0oooo00<000000?ooo`3oool00P3oool2
+00000?l0oooo1@3oool001D0oooo0P0000030?ooo`800000o`3oool50?ooo`005@3oool010000000
+oooo0?ooo`3oool200000?l0oooo1P3oool001D0oooo00@000000?ooo`3oool0oooo0P00003o0?oo
+o`H0oooo000E0?ooo`040000003oool0oooo0?ooo`800000o`3oool60?ooo`005@3oool00`000000
+oooo0?ooo`0200000?l0oooo1`3oool001D0oooo00<000000?ooo`3oool00P00003o0?ooo`L0oooo
+000E0?ooo`030000003oool0oooo00800000o`3oool70?ooo`005@3oool00`000000oooo0?ooo`02
+00000?l0oooo1`3oool001D0oooo1000003o0?ooo`P0oooo000E0?ooo`040000003oool000000000
+0?l0oooo203oool001D0oooo00@000000?ooo`0000000000o`3oool80?ooo`005@3oool400000?l0
+oooo203oool001D0oooo0`00003o0?ooo`T0oooo000E0?ooo`<00000o`3oool90?ooo`005@3oool3
+00000?l0oooo2@3oool001D0oooo0P00003o0?ooo`X0oooo000E0?ooo`800000o`3oool:0?ooo`00
+503oool300000?l0oooo2P3oool001<0oooo1000003o0?ooo`X0oooo000D0?ooo`<00000o`3oool:
+0?ooo`005@3oool00`000000oooo0?ooo`3o0?ooo`T0oooo000E0?ooo`030000003oool0oooo0?l0
+oooo2@3oool001D0oooo00<000000?ooo`3oool0o`3oool90?ooo`00\
+\>"],
+  ImageRangeCache->{{{0, 287}, {176.938, 0}} -> {0.504427, -0.0755036, \
+0.0231554, 0.0059946}}]
+}, Open  ]],
+
+Cell["", "Text",
+  Editable->False,
+  Selectable->False,
+  CellFrame->{{0, 0}, {0, 3}},
+  ShowCellBracket->False,
+  CellMargins->{{0, 0}, {1, 1}},
+  CellElementSpacings->{"CellMinHeight"->1},
+  CellFrameMargins->False,
+  CellFrameColor->RGBColor[0, 0, 1],
+  CellSize->{Inherited, 5}],
+
+Cell[BoxData[
+    \(\(Cu\_3\) Co\ Cu\_3\)], "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      Length\ of\ chain\ *) \)\(\[IndentingNewLine]\)\(\(len = 
+        7;\)\[IndentingNewLine] (*\ Energies\ *) \[IndentingNewLine]
+    \(posCo = \((len + 1)\)/2;\)\[IndentingNewLine]
+    \(H = \[Epsilon]Co\ number[c[posCo], UP] + \[Epsilon]Cu\ Sum[
+              If[i \[NotEqual] posCo, number[c[i], UP], 0], {i, 1, 
+                len}];\)\[IndentingNewLine] (*\ 
+      Hopping\ terms\ *) \[IndentingNewLine]
+    \(H = 
+        H + tCoCu\ \((hop[c[posCo], c[posCo + 1], UP] + 
+                hop[c[posCo], c[posCo - 1], UP])\) + 
+          tCuCu\ Sum[
+              If[i \[NotEqual] \((posCo - 1)\)\  && \ i \[NotEqual] posCo, 
+                hop[c[i], c[i + 1], UP], 0], {i, 1, 
+                len - 1}];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(diag[];\)\[IndentingNewLine]
+    \(plot[];\)\)\)\)], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\[Epsilon]Co", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"4", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {4, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"4", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {4, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{"tCoCu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"4", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {4, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}], "+", 
+      RowBox[{"tCuCu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}], "+", 
+      RowBox[{"\[Epsilon]Cu", " ", 
+        RowBox[{"(", 
+          RowBox[{
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"3", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {3, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"5", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {5, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"6", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {6, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"7", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {7, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}], ")"}]}]}]], "Print"],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {"\[Epsilon]Cu", "tCuCu", "0", "0", "0", "0", "0"},
+            {"tCuCu", "\[Epsilon]Cu", "tCuCu", "0", "0", "0", "0"},
+            {"0", "tCuCu", "\[Epsilon]Cu", "tCoCu", "0", "0", "0"},
+            {"0", "0", "tCoCu", "\[Epsilon]Co", "tCoCu", "0", "0"},
+            {"0", "0", "0", "tCoCu", "\[Epsilon]Cu", "tCuCu", "0"},
+            {"0", "0", "0", "0", "tCuCu", "\[Epsilon]Cu", "tCuCu"},
+            {"0", "0", "0", "0", "0", "tCuCu", "\[Epsilon]Cu"}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Print"],
+
+Cell[BoxData[
+    \({\(-0.8229705521146594`\), \(-1.6171572875253806`\), \
+\(-1.638696701694781`\), \(-1.9000000000000004`\), \(-1.9378392412637544`\), \
+\(-2.1828427124746193`\), \(-2.2004935049268046`\)}\)], "Print"],
+
+Cell[GraphicsData["PostScript", "\<\
+%!
+%%Creator: Mathematica
+%%AspectRatio: .61803 
+MathPictureStart
+/Mabs {
+Mgmatrix idtransform
+Mtmatrix dtransform
+} bind def
+/Mabsadd { Mabs
+3 -1 roll add
+3 1 roll add
+exch } bind def
+%% Graphics
+%%IncludeResource: font Courier
+%%IncludeFont: Courier
+/Courier findfont 10  scalefont  setfont
+% Scaling calculations
+-0.134921 0.15873 0.0147151 0.633931 [
+[.18254 .00222 -3 -9 ]
+[.18254 .00222 3 0 ]
+[.34127 .00222 -3 -9 ]
+[.34127 .00222 3 0 ]
+[.5 .00222 -3 -9 ]
+[.5 .00222 3 0 ]
+[.65873 .00222 -3 -9 ]
+[.65873 .00222 3 0 ]
+[.81746 .00222 -3 -9 ]
+[.81746 .00222 3 0 ]
+[.97619 .00222 -3 -9 ]
+[.97619 .00222 3 0 ]
+[.01131 .1415 -18 -4.5 ]
+[.01131 .1415 0 4.5 ]
+[.01131 .26829 -18 -4.5 ]
+[.01131 .26829 0 4.5 ]
+[.01131 .39507 -18 -4.5 ]
+[.01131 .39507 0 4.5 ]
+[.01131 .52186 -18 -4.5 ]
+[.01131 .52186 0 4.5 ]
+[ 0 0 0 0 ]
+[ 1 .61803 0 0 ]
+] MathScale
+% Start of Graphics
+1 setlinecap
+1 setlinejoin
+newpath
+0 g
+.25 Mabswid
+[ ] 0 setdash
+.18254 .01472 m
+.18254 .02097 L
+s
+[(2)] .18254 .00222 0 1 Mshowa
+.34127 .01472 m
+.34127 .02097 L
+s
+[(3)] .34127 .00222 0 1 Mshowa
+.5 .01472 m
+.5 .02097 L
+s
+[(4)] .5 .00222 0 1 Mshowa
+.65873 .01472 m
+.65873 .02097 L
+s
+[(5)] .65873 .00222 0 1 Mshowa
+.81746 .01472 m
+.81746 .02097 L
+s
+[(6)] .81746 .00222 0 1 Mshowa
+.97619 .01472 m
+.97619 .02097 L
+s
+[(7)] .97619 .00222 0 1 Mshowa
+.125 Mabswid
+.05556 .01472 m
+.05556 .01847 L
+s
+.0873 .01472 m
+.0873 .01847 L
+s
+.11905 .01472 m
+.11905 .01847 L
+s
+.15079 .01472 m
+.15079 .01847 L
+s
+.21429 .01472 m
+.21429 .01847 L
+s
+.24603 .01472 m
+.24603 .01847 L
+s
+.27778 .01472 m
+.27778 .01847 L
+s
+.30952 .01472 m
+.30952 .01847 L
+s
+.37302 .01472 m
+.37302 .01847 L
+s
+.40476 .01472 m
+.40476 .01847 L
+s
+.43651 .01472 m
+.43651 .01847 L
+s
+.46825 .01472 m
+.46825 .01847 L
+s
+.53175 .01472 m
+.53175 .01847 L
+s
+.56349 .01472 m
+.56349 .01847 L
+s
+.59524 .01472 m
+.59524 .01847 L
+s
+.62698 .01472 m
+.62698 .01847 L
+s
+.69048 .01472 m
+.69048 .01847 L
+s
+.72222 .01472 m
+.72222 .01847 L
+s
+.75397 .01472 m
+.75397 .01847 L
+s
+.78571 .01472 m
+.78571 .01847 L
+s
+.84921 .01472 m
+.84921 .01847 L
+s
+.88095 .01472 m
+.88095 .01847 L
+s
+.9127 .01472 m
+.9127 .01847 L
+s
+.94444 .01472 m
+.94444 .01847 L
+s
+.25 Mabswid
+0 .01472 m
+1 .01472 L
+s
+.02381 .1415 m
+.03006 .1415 L
+s
+[(0.2)] .01131 .1415 1 0 Mshowa
+.02381 .26829 m
+.03006 .26829 L
+s
+[(0.4)] .01131 .26829 1 0 Mshowa
+.02381 .39507 m
+.03006 .39507 L
+s
+[(0.6)] .01131 .39507 1 0 Mshowa
+.02381 .52186 m
+.03006 .52186 L
+s
+[(0.8)] .01131 .52186 1 0 Mshowa
+.125 Mabswid
+.02381 .04641 m
+.02756 .04641 L
+s
+.02381 .07811 m
+.02756 .07811 L
+s
+.02381 .1098 m
+.02756 .1098 L
+s
+.02381 .1732 m
+.02756 .1732 L
+s
+.02381 .20489 m
+.02756 .20489 L
+s
+.02381 .23659 m
+.02756 .23659 L
+s
+.02381 .29998 m
+.02756 .29998 L
+s
+.02381 .33168 m
+.02756 .33168 L
+s
+.02381 .36338 m
+.02756 .36338 L
+s
+.02381 .42677 m
+.02756 .42677 L
+s
+.02381 .45847 m
+.02756 .45847 L
+s
+.02381 .49016 m
+.02756 .49016 L
+s
+.02381 .55356 m
+.02756 .55356 L
+s
+.02381 .58525 m
+.02756 .58525 L
+s
+.02381 .61695 m
+.02756 .61695 L
+s
+.25 Mabswid
+.02381 0 m
+.02381 .61803 L
+s
+.01 w
+.02381 .01474 m
+.18254 .01552 L
+.34127 .03654 L
+.5 .60332 L
+.65873 .03654 L
+.81746 .01552 L
+.97619 .01474 L
+s
+.0001 w
+.02381 .01474 -1.875 0 Mabsadd m
+.02381 .01474 0 2.5 Mabsadd L
+.02381 .01474 1.875 0 Mabsadd L
+.02381 .01474 0 -2.5 Mabsadd L
+.02381 .01474 -1.875 0 Mabsadd L closepath F
+.18254 .01552 -1.875 0 Mabsadd m
+.18254 .01552 0 2.5 Mabsadd L
+.18254 .01552 1.875 0 Mabsadd L
+.18254 .01552 0 -2.5 Mabsadd L
+.18254 .01552 -1.875 0 Mabsadd L closepath F
+.34127 .03654 -1.875 0 Mabsadd m
+.34127 .03654 0 2.5 Mabsadd L
+.34127 .03654 1.875 0 Mabsadd L
+.34127 .03654 0 -2.5 Mabsadd L
+.34127 .03654 -1.875 0 Mabsadd L closepath F
+.5 .60332 -1.875 0 Mabsadd m
+.5 .60332 0 2.5 Mabsadd L
+.5 .60332 1.875 0 Mabsadd L
+.5 .60332 0 -2.5 Mabsadd L
+.5 .60332 -1.875 0 Mabsadd L closepath F
+.65873 .03654 -1.875 0 Mabsadd m
+.65873 .03654 0 2.5 Mabsadd L
+.65873 .03654 1.875 0 Mabsadd L
+.65873 .03654 0 -2.5 Mabsadd L
+.65873 .03654 -1.875 0 Mabsadd L closepath F
+.81746 .01552 -1.875 0 Mabsadd m
+.81746 .01552 0 2.5 Mabsadd L
+.81746 .01552 1.875 0 Mabsadd L
+.81746 .01552 0 -2.5 Mabsadd L
+.81746 .01552 -1.875 0 Mabsadd L closepath F
+.97619 .01474 -1.875 0 Mabsadd m
+.97619 .01474 0 2.5 Mabsadd L
+.97619 .01474 1.875 0 Mabsadd L
+.97619 .01474 0 -2.5 Mabsadd L
+.97619 .01474 -1.875 0 Mabsadd L closepath F
+.75 0 0 r
+.001 w
+.02381 .09396 m
+.18254 .1732 L
+.34127 .09396 L
+.5 .01472 L
+.65873 .09396 L
+.81746 .1732 L
+.97619 .09396 L
+s
+0 g
+.0001 w
+.02381 .09396 0 2.5 Mabsadd m
+.02381 .09396 -0.56518 .7779 Mabsadd L
+.02381 .09396 -2.37764 .77254 Mabsadd L
+.02381 .09396 -0.91448 -0.29713 Mabsadd L
+.02381 .09396 -1.46946 -2.02254 Mabsadd L
+.02381 .09396 0 -0.96154 Mabsadd L
+.02381 .09396 1.46946 -2.02254 Mabsadd L
+.02381 .09396 .91448 -0.29713 Mabsadd L
+.02381 .09396 2.37764 .77254 Mabsadd L
+.02381 .09396 .56518 .7779 Mabsadd L
+.02381 .09396 0 2.5 Mabsadd L closepath F
+.18254 .1732 0 2.5 Mabsadd m
+.18254 .1732 -0.56518 .7779 Mabsadd L
+.18254 .1732 -2.37764 .77254 Mabsadd L
+.18254 .1732 -0.91448 -0.29713 Mabsadd L
+.18254 .1732 -1.46946 -2.02254 Mabsadd L
+.18254 .1732 0 -0.96154 Mabsadd L
+.18254 .1732 1.46946 -2.02254 Mabsadd L
+.18254 .1732 .91448 -0.29713 Mabsadd L
+.18254 .1732 2.37764 .77254 Mabsadd L
+.18254 .1732 .56518 .7779 Mabsadd L
+.18254 .1732 0 2.5 Mabsadd L closepath F
+.34127 .09396 0 2.5 Mabsadd m
+.34127 .09396 -0.56518 .7779 Mabsadd L
+.34127 .09396 -2.37764 .77254 Mabsadd L
+.34127 .09396 -0.91448 -0.29713 Mabsadd L
+.34127 .09396 -1.46946 -2.02254 Mabsadd L
+.34127 .09396 0 -0.96154 Mabsadd L
+.34127 .09396 1.46946 -2.02254 Mabsadd L
+.34127 .09396 .91448 -0.29713 Mabsadd L
+.34127 .09396 2.37764 .77254 Mabsadd L
+.34127 .09396 .56518 .7779 Mabsadd L
+.34127 .09396 0 2.5 Mabsadd L closepath F
+.5 .01472 0 2.5 Mabsadd m
+.5 .01472 -0.56518 .7779 Mabsadd L
+.5 .01472 -2.37764 .77254 Mabsadd L
+.5 .01472 -0.91448 -0.29713 Mabsadd L
+.5 .01472 -1.46946 -2.02254 Mabsadd L
+.5 .01472 0 -0.96154 Mabsadd L
+.5 .01472 1.46946 -2.02254 Mabsadd L
+.5 .01472 .91448 -0.29713 Mabsadd L
+.5 .01472 2.37764 .77254 Mabsadd L
+.5 .01472 .56518 .7779 Mabsadd L
+.5 .01472 0 2.5 Mabsadd L closepath F
+.65873 .09396 0 2.5 Mabsadd m
+.65873 .09396 -0.56518 .7779 Mabsadd L
+.65873 .09396 -2.37764 .77254 Mabsadd L
+.65873 .09396 -0.91448 -0.29713 Mabsadd L
+.65873 .09396 -1.46946 -2.02254 Mabsadd L
+.65873 .09396 0 -0.96154 Mabsadd L
+.65873 .09396 1.46946 -2.02254 Mabsadd L
+.65873 .09396 .91448 -0.29713 Mabsadd L
+.65873 .09396 2.37764 .77254 Mabsadd L
+.65873 .09396 .56518 .7779 Mabsadd L
+.65873 .09396 0 2.5 Mabsadd L closepath F
+.81746 .1732 0 2.5 Mabsadd m
+.81746 .1732 -0.56518 .7779 Mabsadd L
+.81746 .1732 -2.37764 .77254 Mabsadd L
+.81746 .1732 -0.91448 -0.29713 Mabsadd L
+.81746 .1732 -1.46946 -2.02254 Mabsadd L
+.81746 .1732 0 -0.96154 Mabsadd L
+.81746 .1732 1.46946 -2.02254 Mabsadd L
+.81746 .1732 .91448 -0.29713 Mabsadd L
+.81746 .1732 2.37764 .77254 Mabsadd L
+.81746 .1732 .56518 .7779 Mabsadd L
+.81746 .1732 0 2.5 Mabsadd L closepath F
+.97619 .09396 0 2.5 Mabsadd m
+.97619 .09396 -0.56518 .7779 Mabsadd L
+.97619 .09396 -2.37764 .77254 Mabsadd L
+.97619 .09396 -0.91448 -0.29713 Mabsadd L
+.97619 .09396 -1.46946 -2.02254 Mabsadd L
+.97619 .09396 0 -0.96154 Mabsadd L
+.97619 .09396 1.46946 -2.02254 Mabsadd L
+.97619 .09396 .91448 -0.29713 Mabsadd L
+.97619 .09396 2.37764 .77254 Mabsadd L
+.97619 .09396 .56518 .7779 Mabsadd L
+.97619 .09396 0 2.5 Mabsadd L closepath F
+.5 0 0 r
+.001 w
+.02381 .11135 m
+.18254 .17967 L
+.34127 .06302 L
+.5 .02888 L
+.65873 .06302 L
+.81746 .17967 L
+.97619 .11135 L
+s
+0 g
+.0001 w
+.02381 .11135 -2.5 2.5 Mabsadd m
+.02381 .11135 2.5 2.5 Mabsadd L
+.02381 .11135 2.5 -2.5 Mabsadd L
+.02381 .11135 -2.5 -2.5 Mabsadd L
+.02381 .11135 -2.5 2.5 Mabsadd L closepath F
+.18254 .17967 -2.5 2.5 Mabsadd m
+.18254 .17967 2.5 2.5 Mabsadd L
+.18254 .17967 2.5 -2.5 Mabsadd L
+.18254 .17967 -2.5 -2.5 Mabsadd L
+.18254 .17967 -2.5 2.5 Mabsadd L closepath F
+.34127 .06302 -2.5 2.5 Mabsadd m
+.34127 .06302 2.5 2.5 Mabsadd L
+.34127 .06302 2.5 -2.5 Mabsadd L
+.34127 .06302 -2.5 -2.5 Mabsadd L
+.34127 .06302 -2.5 2.5 Mabsadd L closepath F
+.5 .02888 -2.5 2.5 Mabsadd m
+.5 .02888 2.5 2.5 Mabsadd L
+.5 .02888 2.5 -2.5 Mabsadd L
+.5 .02888 -2.5 -2.5 Mabsadd L
+.5 .02888 -2.5 2.5 Mabsadd L closepath F
+.65873 .06302 -2.5 2.5 Mabsadd m
+.65873 .06302 2.5 2.5 Mabsadd L
+.65873 .06302 2.5 -2.5 Mabsadd L
+.65873 .06302 -2.5 -2.5 Mabsadd L
+.65873 .06302 -2.5 2.5 Mabsadd L closepath F
+.81746 .17967 -2.5 2.5 Mabsadd m
+.81746 .17967 2.5 2.5 Mabsadd L
+.81746 .17967 2.5 -2.5 Mabsadd L
+.81746 .17967 -2.5 -2.5 Mabsadd L
+.81746 .17967 -2.5 2.5 Mabsadd L closepath F
+.97619 .11135 -2.5 2.5 Mabsadd m
+.97619 .11135 2.5 2.5 Mabsadd L
+.97619 .11135 2.5 -2.5 Mabsadd L
+.97619 .11135 -2.5 -2.5 Mabsadd L
+.97619 .11135 -2.5 2.5 Mabsadd L closepath F
+0 0 m
+1 0 L
+1 .61803 L
+0 .61803 L
+closepath
+clip
+newpath
+% End of Graphics
+MathPictureEnd
+\
+\>"], "Graphics",
+  ImageSize->{288, 177.938},
+  ImageMargins->{{43, 0}, {0, 0}},
+  ImageRegion->{{0, 1}, {0, 1}},
+  ImageCache->GraphicsData["Bitmap", "\<\
+CF5dJ6E]HGAYHf4PAg9QL6QYHg<PAVmbKF5d0`40004P0000/B000`400?l00000o`00003oo`3ooolQ
+0?ooo`00o`3ooolQ0?ooo`00?P3oool4000002P0oooo0P00000Z0?ooo`030000003oool0oooo02L0
+oooo0`00000Y0?ooo`800000:@3oool00`000000oooo0?ooo`060?ooo`00?P3oool00`000000oooo
+0?ooo`0X0?ooo`040000003oool0oooo000002T0oooo00<000000?ooo`3oool0:P3oool00`000000
+oooo0?ooo`0U0?ooo`040000003oool0oooo000002P0oooo00<000000?ooo`3oool01P3oool003l0
+oooo00<000000?ooo`3oool0:P3oool00`000000oooo0?ooo`0T0?ooo`D00000:`3oool00`000000
+oooo0?ooo`0U0?ooo`040000003oool0oooo000002T0oooo00<000000?ooo`3oool01@3oool00400
+oooo00<000000?ooo`3oool09`3oool2000002L0oooo00@000000?ooo`3oool00000:@3oool30000
+02P0oooo0`00000Z0?ooo`030000003oool0oooo00D0oooo00110?ooo`030000003oool0oooo02P0
+oooo00<000000?ooo`3oool09@3oool00`000000oooo0000000Y0?ooo`030000003oool0oooo02P0
+oooo00<000000?ooo`3oool0:`3oool00`000000oooo0?ooo`040?ooo`00?P3oool010000000oooo
+0?ooo`00000W0?ooo`040000003oool0oooo000002P0oooo0P00000Y0?ooo`030000003oool0oooo
+02P0oooo00<000000?ooo`3oool0:03oool010000000oooo0?ooo`0000060?ooo`005@3oool00`00
+0000oooo0?ooo`0W0?ooo`800000:@3oool2000002X0oooo00<000000?ooo`3oool09`3oool40000
+02P0oooo0`00000W0?ooo`@000001P3oool001D0oooo00<000000?ooo`3oool0o`3oool90?ooo`00
+5@3oool00`000000oooo0?ooo`3o0?ooo`T0oooo000D0?ooo`800000:@3oool2000005D0oooo0P00
+001D0?ooo`800000:@3oool2000000L0oooo000>0?ooool000004`00000001@0oooo>`0000020?oo
+o`030000003oool0oooo00H0oooo00<000000?ooo`3oool01P3oool00`000000oooo0?ooo`050?oo
+o`030000003oool0oooo00H0oooo00<000000?ooo`3oool01P3oool00`000000oooo0?ooo`050?oo
+o`030000003oool0oooo00H0oooo00<000000?ooo`3oool00`3oool5000000H0oooo00<000000?oo
+o`3oool01P3oool00`000000oooo0?ooo`050?ooo`030000003oool0oooo00H0oooo00<000000?oo
+o`3oool01P3oool00`000000oooo0?ooo`050?ooo`030000003oool0oooo00H0oooo00<000000?oo
+o`3oool01P3oool00`000000oooo0?ooo`0k000000H0oooo000E0?ooo`030000003oool0oooo02P0
+oooo00<000000?ooo`3oool01@3oool>000001D0oooo00<000000?ooo`3oool0903oool20;l00080
+oooo00<000000?ooo`3oool00P2o000W0?ooo`030000003oool0oooo01<0oooo3P0000070?ooo`03
+0000003oool0oooo02P0oooo00<000000?ooo`3oool01@3oool001D0oooo00<000000?ooo`3oool0
+=`3oool>000003<0oooo0P2o00020?ooo`D000000P3oool20;l003@0oooo3P0000110?ooo`005@3o
+ool00`000000oooo0?ooo`0n0?ooo`h00000:P3oool20;l000@0oooo1@0000040?ooo`80_`00:`3o
+ool>000004P0oooo000E0?ooo`030000003oool0oooo04D0oooo3`00000P0?ooo`80_`0000<0oooo
+07l0001o00000`1o0005000000D0O`0000<0oooo0;l0002o0000803oool@000004l0oooo000E0?oo
+o`030000003oool0oooo04`0oooo2@00000M0?ooo`030;l0001o0000O`000080O`001@3oool50000
+00D0oooo1@1o000M0?ooo`X00000EP3oool001D0oooo00<000000?ooo`3oool0DP3oool3000001T0
+oooo1@1o00090?ooo`D000002P3oool507l001T0oooo0`00001L0?ooo`005@3oool00`000000oooo
+0?ooo`1C0?ooo`800000503oool507l00080_`007@3oool20;l000030?ooo`1o0000O`000080O`00
+5@3oool2000005d0oooo000E0?ooo`800000E03oool2000000l0oooo1@1o00030?ooo`80_`008@3o
+ool20;l000<0oooo1@1o000@0?ooo`800000G@3oool001D0oooo00<000000?ooo`3oool0E03oool2
+000000T0oooo1@1o00060?ooo`80_`009@3oool20;l000H0oooo1@1o000:0?ooo`800000GP3oool0
+01D0oooo00<000000?ooo`3oool0E03oool2000000D0oooo101o00090?ooo`80_`00:@3oool20;l0
+00T0oooo1@1o00050?ooo`800000GP3oool001D0oooo00<000000?ooo`3oool0D@3oool5000000D0
+O`002`3oool20;l002d0oooo0P2o000<0?ooo`@0O`001@00001L0?ooo`005@3oool00`000000oooo
+0?ooo`1A0?ooo`D000003P3oool20;l00340oooo0P2o000>0?ooo`D00000G03oool001D0oooo00<0
+00000?ooo`3oool0D@3oool6000000/0oooo0P2o000e0?ooo`80_`00303oool50000000307l0003o
+ool0oooo05T0oooo000E0?ooo`030000003oool0oooo0500oooo00<0O`0000000000000010000009
+0?ooo`80_`00>@3oool20;l000X0oooo1@0000000`3oool0O`000?ooo`1I0?ooo`005@3oool00`00
+0000oooo0?ooo`1?0?ooo`0307l0003oool0000000D000001`3oool20;l003d0oooo0P2o00080?oo
+o`D000000P3oool00`1o0000oooo0?ooo`1G0?ooo`005@3oool2000004h0oooo0P1o00070?ooo`80
+0000103oool20;l00440oooo0P2o00050?ooo`8000001`3oool207l005L0oooo000E0?ooo`030000
+003oool0oooo04`0oooo00<0O`000?ooo`3oool01`3oool200000080oooo0P2o00150?ooo`80_`00
+0`3oool2000000T0oooo00<0O`000?ooo`3oool0E03oool001D0oooo00<000000?ooo`3oool0B`3o
+ool00`1o0000oooo0?ooo`080?ooo`8000000P2o00190?ooo`80_`0000<0oooo0000000000002P3o
+ool00`1o0000oooo0?ooo`1C0?ooo`005@3oool00`000000oooo0?ooo`190?ooo`80O`002`3oool2
+0;l004d0oooo0P2o00000`000000oooo0?ooo`090?ooo`80O`00D`3oool001@0oooo0P00001:0?oo
+o`0307l0003oool0oooo00L0oooo0P0000020;l000030?ooo`000000000004`0oooo0P0000020;l0
+008000002P3oool00`1o0000oooo0?ooo`170?ooo`8000001`3oool001<0oooo100000180?ooo`03
+07l0003oool0oooo00L0oooo1@0000000`3oool000000000001<0?ooo`L000002P3oool00`1o0000
+oooo0?ooo`150?ooo`@000001P3oool001D0oooo00@000000?ooo`2o0000_`00A03oool207l000T0
+oooo0P2o00000`3oool000000?ooo`020?ooo`800000C03oool2000000D0oooo0P2o00090?ooo`80
+O`00A03oool20;l000030?ooo`000000oooo00H0oooo000E0?ooo`040000003oool0oooo0?ooo`80
+_`00@@3oool00`1o0000oooo0?ooo`070?ooo`80_`001`3oool3000004X0oooo0P0000080?ooo`80
+_`002@3oool00`1o0000oooo0?ooo`0o0?ooo`80_`002`3oool00180oooo1@0000040?ooo`80_`00
+?P3oool00`1o0000oooo0?ooo`060?ooo`80_`002P3oool2000004X0oooo0P00000:0?ooo`80_`00
+203oool00`1o0000oooo0?ooo`0l0?ooo`80_`000`3oool5000000D0oooo000B0?ooo`D000001P3o
+ool20;l003X0oooo0P1o00070?ooo`80_`00303oool2000004X0oooo0P00000<0?ooo`80_`001`3o
+ool207l003X0oooo0P2o00050?ooo`D000001@3oool00180oooo1@00000207l000H0oooo0P2o000g
+0?ooo`0307l0003oool0oooo00D0oooo0P2o000>0?ooo`800000B@3oool3000000h0oooo0P2o0007
+0?ooo`0307l0003oool0oooo03D0oooo0P2o00060?ooo`0307l000000000000000<000001@3oool0
+0180oooo1@0000020?ooo`80O`001P3oool20;l003@0oooo00<0O`000?ooo`3oool0103oool20;l0
+0140oooo0P0000180?ooo`8000004@3oool20;l000H0oooo00<0O`000?ooo`3oool0<P3oool20;l0
+00H0oooo0P1o00000`3oool0000000000003000000D0oooo000B0?ooo`D00000103oool207l000H0
+oooo0P2o000`0?ooo`80O`001@3oool20;l001<0oooo0P0000180?ooo`8000004`3oool20;l000D0
+oooo0P1o000`0?ooo`80_`001P3oool207l000<0oooo1@0000050?ooo`005@3oool00`000000oooo
+0?ooo`050?ooo`<0O`001@3oool20;l002d0oooo00<0O`000?ooo`3oool00`3oool20;l001D0oooo
+0P0000180?ooo`8000005@3oool20;l000D0oooo00<0O`000?ooo`3oool0:`3oool20;l000D0oooo
+0`1o000?0?ooo`005@3oool00`000000oooo0?ooo`080?ooo`80O`001@3oool20;l002X0oooo00<0
+O`000?ooo`3oool00P3oool20;l001L0oooo0`0000160?ooo`800000603oool20;l000@0oooo00<0
+O`000?ooo`3oool0:03oool20;l000D0oooo0P1o000B0?ooo`005@3oool00`000000oooo0?ooo`0:
+0?ooo`80O`001@3oool20;l002H0oooo0P1o00030?ooo`80_`006P3oool2000004H0oooo0P00000J
+0?ooo`80_`000`3oool207l002H0oooo0P2o00050?ooo`80O`00503oool00080oooo0P0000040?oo
+o`030000003oool0oooo0080oooo100000040?ooo`030000003oool0oooo00`0oooo0P1o00050?oo
+o`80_`008`3oool0101o0000oooo0?ooo`3oool20;l001`0oooo0P0000160?ooo`800000703oool2
+0;l000<0oooo00<0O`000?ooo`3oool08@3oool20;l000D0oooo0P1o000F0?ooo`0000D0oooo0000
+003oool0oooo000000080?ooo`030000003oool0oooo00D0oooo00<000000?ooo`3oool03P3oool3
+07l000@0oooo0P2o000P0?ooo`0307l0003oool0oooo0080_`007P3oool2000004D0oooo0`00000N
+0?ooo`80_`000P3oool00`1o0000oooo0?ooo`0N0?ooo`80_`00103oool307l001P0oooo00001@3o
+ool000000?ooo`3oool0000000T0oooo00<000000?ooo`3oool0103oool300000140oooo0P1o0004
+0?ooo`80_`00703oool207l000030?ooo`2o0000_`000240oooo0P0000140?ooo`8000008@3oool2
+0;l000030?ooo`1o0000O`0001`0oooo0P2o00040?ooo`80O`006`3oool000050?ooo`000000oooo
+0?ooo`0000002P3oool00`000000oooo0?ooo`030?ooo`030000003oool0oooo01<0oooo0P1o0004
+0?ooo`80_`006@3oool0101o0000oooo0;l0002o000S0?ooo`800000A03oool2000002<0oooo0P2o
+00000`3oool0O`000?ooo`0H0?ooo`80_`00103oool207l001d0oooo00001@3oool000000?ooo`3o
+ool0000000/0oooo00<000000?ooo`3oool00P3oool00`000000oooo0?ooo`0E0?ooo`<0O`000`3o
+ool20;l001H0oooo00<0O`000;l0002o00009@3oool2000004@0oooo0P00000U0?ooo`80_`0000<0
+O`000?ooo`3oool0503oool20;l000<0oooo0`1o000O0?ooo`0000D0oooo0000003oool0oooo0000
+00080?ooo`040000003oool0oooo000000@0oooo00<000000?ooo`3oool0603oool207l000<0oooo
+0P2o000B0?ooo`80O`0000<0_`000?ooo`3oool09@3oool2000004<0oooo0P00000X0?ooo`030;l0
+001o0000O`000180oooo0P2o00030?ooo`80O`008P3oool00080oooo0P00000:0?ooo`8000001@3o
+ool00`000000oooo0?ooo`0J0?ooo`80O`000`3oool20;l000l0oooo00<0O`000;l0003oool0:@3o
+ool200000480oooo0P00000Z0?ooo`030;l0001o0000oooo00h0oooo0P2o00030?ooo`80O`00903o
+ool001D0oooo00<000000?ooo`3oool0703oool207l000<0oooo0P2o000;0?ooo`030;l0001o0000
+oooo02/0oooo0P0000120?ooo`800000;03oool00`1o0000_`000?ooo`0:0?ooo`80_`000`3oool2
+07l002H0oooo000E0?ooo`030000003oool0oooo01h0oooo0`1o00020?ooo`80_`001`3oool00`2o
+0000O`0007l0000]0?ooo`800000@@3oool3000002d0oooo0P1o00000`2o0000oooo0?ooo`050?oo
+o`80_`000P3oool307l002P0oooo000E0?ooo`030000003oool0oooo0240oooo0P1o00020?ooo`80
+_`000`0000020;l0000307l0003oool0oooo02h0oooo0P0000100?ooo`800000<03oool00`1o0000
+_`000;l00002000000030?ooo`2o0000_`000080oooo0P1o000[0?ooo`005@3oool2000002@0oooo
+0P1o00020?ooo`80000000<0_`000?ooo`1o0000<@3oool200000400oooo0P00000a0?ooo`0507l0
+003oool000000000002o00000P3oool207l002d0oooo000E0?ooo`030000003oool0oooo02D0oooo
+00<0O`000000000000000`00000b0?ooo`800000@03oool200000340oooo1@00000207l002l0oooo
+000E0?ooo`030000003oool0oooo02H0oooo1@00000b0?ooo`800000?`3oool200000380oooo1@00
+000a0?ooo`005@3oool00`000000oooo0?ooo`0V0?ooo`D00000<`3oool2000003h0oooo0P00000b
+0?ooo`D00000<@3oool001D0oooo00<000000?ooo`3oool09P3oool5000003<0oooo0P00000n0?oo
+o`800000<P3oool500000340oooo000E0?ooo`030000003oool0oooo02H0oooo1@00000c0?ooo`80
+0000?@3oool300000380oooo1@00000a0?ooo`005@3oool00`000000oooo0?ooo`1N0?ooo`<00000
+?03oool2000006T0oooo000E0?ooo`030000003oool0oooo05l0oooo0P00000l0?ooo`800000J@3o
+ool001D0oooo00<000000?ooo`3oool0G`3oool2000003`0oooo0P00001Y0?ooo`005@3oool20000
+0600oooo0P00000k0?ooo`800000JP3oool001D0oooo00<000000?ooo`3oool0H03oool2000003X0
+oooo0P00001Z0?ooo`005@3oool00`000000oooo0?ooo`1P0?ooo`800000>P3oool2000006X0oooo
+000E0?ooo`030000003oool0oooo0600oooo0P00000i0?ooo`<00000JP3oool001D0oooo00<00000
+0?ooo`3oool0H03oool2000003T0oooo0P00001[0?ooo`005@3oool00`000000oooo0?ooo`1Q0?oo
+o`800000>03oool2000006/0oooo000E0?ooo`030000003oool0oooo0640oooo0P00000h0?ooo`80
+0000J`3oool001D0oooo00<000000?ooo`3oool0H@3oool2000003L0oooo0P00001/0?ooo`005@3o
+ool00`000000oooo0?ooo`1R0?ooo`800000=P3oool2000006`0oooo000E0?ooo`800000H`3oool2
+000003H0oooo0P00001/0?ooo`005@3oool00`000000oooo0?ooo`1R0?ooo`800000=@3oool30000
+06`0oooo000E0?ooo`030000003oool0oooo0680oooo0P00000e0?ooo`800000K@3oool001D0oooo
+00<000000?ooo`3oool0H`3oool2000003@0oooo0P00001]0?ooo`005@3oool00`000000oooo0?oo
+o`1S0?ooo`800000=03oool2000006d0oooo000E0?ooo`030000003oool0oooo06<0oooo0P00000c
+0?ooo`800000KP3oool00080oooo0P0000040?ooo`030000003oool0oooo00@0oooo00<000000?oo
+o`3oool00`3oool00`000000oooo0?ooo`1S0?ooo`<00000<P3oool2000006h0oooo00001@3oool0
+00000?ooo`3oool0000000X0oooo00<000000?ooo`3oool00`3oool00`000000oooo0?ooo`1T0?oo
+o`800000<P3oool2000006h0oooo00001@3oool000000?ooo`3oool0000000L0oooo1@0000040?oo
+o`<00000I03oool200000340oooo0`00001^0?ooo`0000D0oooo0000003oool0oooo000000070?oo
+o`040000003oool0oooo000000D0oooo00<000000?ooo`3oool0I03oool200000340oooo0P00001_
+0?ooo`0000D0oooo0000003oool0oooo000000080?ooo`030000003oool0000000D0oooo00<00000
+0?ooo`3oool0I@3oool200000300oooo0P00001_0?ooo`0000D0oooo0000003oool0oooo00000009
+0?ooo`8000001@3oool00`000000oooo0?ooo`1U0?ooo`800000<03oool2000006l0oooo00020?oo
+o`8000002`3oool00`000000oooo0?ooo`030?ooo`030000003oool0oooo06D0oooo0P00000_0?oo
+o`800000L03oool001D0oooo00<000000?ooo`3oool0I@3oool3000002h0oooo0P00001`0?ooo`00
+5@3oool00`000000oooo0?ooo`1V0?ooo`800000;P3oool200000700oooo000E0?ooo`030000003o
+ool0oooo06H0oooo0P00000]0?ooo`<00000L03oool001D0oooo00<000000?ooo`3oool0IP3oool2
+000002d0oooo0P00001a0?ooo`005@3oool2000006P0oooo0P00000/0?ooo`800000L@3oool001D0
+oooo00<000000?ooo`3oool0I`3oool2000002`0oooo0P00001a0?ooo`005@3oool00`000000oooo
+0?ooo`1W0?ooo`800000:`3oool200000780oooo000E0?ooo`030000003oool0oooo06L0oooo0P00
+000[0?ooo`800000LP3oool001D0oooo00<000000?ooo`3oool0J03oool2000002X0oooo0P00001b
+0?ooo`005@3oool00`000000oooo0?ooo`1X0?ooo`800000:@3oool300000780oooo000E0?ooo`03
+0000003oool0oooo06P0oooo0P00000Y0?ooo`800000L`3oool001D0oooo00<000000?ooo`3oool0
+J@3oool2000002P0oooo0P00001c0?ooo`005@3oool2000006X0oooo0P00000X0?ooo`800000L`3o
+ool001D0oooo00<000000?ooo`3oool0J@3oool2000002L0oooo0P00001d0?ooo`005@3oool00`00
+0000oooo0?ooo`1Y0?ooo`8000009`3oool2000007@0oooo000E0?ooo`030000003oool0oooo06X0
+oooo0P00000V0?ooo`800000M03oool001D0oooo00<000000?ooo`3oool0JP3oool2000002D0oooo
+0`00001d0?ooo`005@3oool00`000000oooo0?ooo`1Z0?ooo`8000009@3oool2000007D0oooo000E
+0?ooo`030000003oool0oooo06X0oooo0`00000T0?ooo`800000M@3oool001D0oooo00<000000?oo
+o`3oool0J`3oool2000002@0oooo0P00001e0?ooo`005@3oool00`000000oooo0?ooo`1[0?ooo`80
+00008`3oool2000007H0oooo000E0?ooo`800000K03oool2000002<0oooo0P00001f0?ooo`005@3o
+ool00`000000oooo0?ooo`1/0?ooo`8000008P3oool2000007H0oooo000E0?ooo`030000003oool0
+oooo06`0oooo0P00000Q0?ooo`<00000MP3oool001D0oooo00<000000?ooo`3oool0K03oool20000
+0240oooo0P00001g0?ooo`005@3oool00`000000oooo0?ooo`1/0?ooo`<00000803oool2000007L0
+oooo000E0?ooo`030000003oool0oooo06d0oooo0P00000P0?ooo`800000M`3oool001D0oooo00<0
+00000?ooo`3oool0K@3oool2000001l0oooo0P00001h0?ooo`000P3oool2000000@0oooo00<00000
+0?ooo`3oool00`3oool2000000D0oooo00<000000?ooo`3oool0K@3oool2000001l0oooo0P00001h
+0?ooo`0000D0oooo0000003oool0oooo000000080?ooo`040000003oool0oooo000000@0oooo00<0
+00000?ooo`3oool0KP3oool2000001h0oooo0P00001h0?ooo`0000D0oooo0000003oool0oooo0000
+00080?ooo`040000003oool0oooo000000@0oooo0`00001^0?ooo`8000007@3oool3000007P0oooo
+00001@3oool000000?ooo`3oool0000000P0oooo0`0000050?ooo`030000003oool0oooo06h0oooo
+0P00000M0?ooo`800000N@3oool000050?ooo`000000oooo0?ooo`000000203oool00`000000oooo
+0?ooo`050?ooo`030000003oool0oooo06h0oooo0P00000M0?ooo`800000N@3oool000050?ooo`00
+0000oooo0?ooo`000000203oool00`000000oooo0?ooo`050?ooo`030000003oool0oooo06l0oooo
+0P00000L0?ooo`800000N@3oool00080oooo0P00000:0?ooo`<00000103oool00`000000oooo0?oo
+o`1_0?ooo`8000006`3oool2000007X0oooo000E0?ooo`030000003oool0oooo06l0oooo0P00000K
+0?ooo`800000NP3oool001D0oooo00<000000?ooo`3oool0L03oool2000001X0oooo0P00001j0?oo
+o`005@3oool00`000000oooo0?ooo`1`0?ooo`8000006@3oool3000007X0oooo000E0?ooo`800000
+L@3oool2000001T0oooo0P00001k0?ooo`005@3oool00`000000oooo0?ooo`1`0?ooo`8000006@3o
+ool2000007/0oooo000E0?ooo`030000003oool0oooo0740oooo0P00000H0?ooo`800000N`3oool0
+01D0oooo00<000000?ooo`3oool0L@3oool2000001L0oooo0P00001l0?ooo`005@3oool00`000000
+oooo0?ooo`1a0?ooo`8000005`3oool2000007`0oooo000E0?ooo`030000003oool0oooo0740oooo
+0`00000F0?ooo`800000O03oool001D0oooo00<000000?ooo`3oool0LP3oool2000001D0oooo0`00
+001l0?ooo`005@3oool00`000000oooo0?ooo`1b0?ooo`8000005@3oool2000007d0oooo000E0?oo
+o`030000003oool0oooo0780oooo0P00000E0?ooo`800000O@3oool001D0oooo0P00001d0?ooo`80
+0000503oool2000007d0oooo000E0?ooo`030000003oool0oooo07<0oooo0P00000C0?ooo`800000
+OP3oool001D0oooo00<000000?ooo`3oool0L`3oool2000001<0oooo0P00001n0?ooo`005@3oool0
+0`000000oooo0?ooo`1c0?ooo`8000004`3oool2000007h0oooo000E0?ooo`030000003oool0oooo
+07@0oooo0P00000A0?ooo`<00000OP3oool001D0oooo00<000000?ooo`3oool0M03oool200000140
+oooo0P00001o0?ooo`005@3oool00`000000oooo0?ooo`1d0?ooo`8000004@3oool2000007l0oooo
+000E0?ooo`030000003oool0oooo07D0oooo0P00000@0?ooo`800000O`3oool001D0oooo00<00000
+0?ooo`3oool0M@3oool2000000l0oooo0P0000200?ooo`005@3oool2000007H0oooo0P00000?0?oo
+o`800000P03oool001D0oooo00<000000?ooo`3oool0M@3oool2000000l0oooo0P0000200?ooo`00
+5@3oool00`000000oooo0?ooo`1f0?ooo`8000003@3oool300000800oooo000E0?ooo`030000003o
+ool0oooo07H0oooo0P00000=0?ooo`800000P@3oool001D0oooo00<000000?ooo`3oool0MP3oool2
+000000d0oooo0P0000210?ooo`005@3oool00`000000oooo0?ooo`1f0?ooo`<00000303oool20000
+0840oooo00020?ooo`800000103oool00`000000oooo0?ooo`030?ooo`8000001@3oool00`000000
+oooo0?ooo`1g0?ooo`8000002`3oool200000880oooo00001@3oool000000?ooo`3oool0000000P0
+oooo00@000000?ooo`3oool00000103oool00`000000oooo0?ooo`1g0?ooo`8000002`3oool20000
+0880oooo00001@3oool000000?ooo`3oool0000000P0oooo00@000000?ooo`3oool00000103oool3
+000007L0oooo0P00000;0?ooo`800000PP3oool000050?ooo`000000oooo0?ooo`0000002@3oool2
+000000D0oooo00<000000?ooo`3oool0N03oool2000000T0oooo0`0000220?ooo`0000D0oooo0000
+003oool0oooo000000080?ooo`040000003oool0oooo000000@0oooo00<000000?ooo`3oool0N03o
+ool2000000T0oooo0P0000230?ooo`0000D0oooo0000003oool0oooo000000080?ooo`040000003o
+ool0oooo000000@0oooo00<000000?ooo`3oool0N03oool2000000T0oooo0P0000230?ooo`000P3o
+ool2000000X0oooo0P0000050?ooo`030000003oool0oooo07P0oooo0`0000080?ooo`800000P`3o
+ool001D0oooo00<000000?ooo`3oool0N@3oool2000000L0oooo0P0000240?ooo`005@3oool00`00
+0000oooo0?ooo`1i0?ooo`8000001`3oool2000008@0oooo000E0?ooo`030000003oool0oooo07T0
+oooo0P0000070?ooo`800000Q03oool001D0oooo00<000000?ooo`3oool0NP3oool2000000D0oooo
+0`0000240?ooo`005@3oool2000007/0oooo0P0000050?ooo`800000Q@3oool001D0oooo00<00000
+0?ooo`3oool0NP3oool2000000D0oooo0P0000250?ooo`005@3oool00`000000oooo0?ooo`1j0?oo
+o`8000001@3oool2000008D0oooo000E0?ooo`030000003oool0oooo07/0oooo0P0000030?ooo`80
+0000QP3oool001D0oooo00<000000?ooo`3oool0N`3oool2000000<0oooo0P0000260?ooo`005@3o
+ool00`000000oooo0?ooo`1k0?ooo`8000000`3oool2000008H0oooo000E0?ooo`030000003oool0
+oooo07`0oooo0P000000103oool000000000000000260?ooo`005@3oool00`000000oooo0?ooo`1l
+0?ooo`80000000<0oooo000000000000Q`3oool001D0oooo0P00001m0?ooo`80000000<0oooo0000
+00000000Q`3oool001D0oooo00<000000?ooo`3oool0O03oool2000000030?ooo`000000000008L0
+oooo000E0?ooo`030000003oool0oooo07d0oooo0`0000280?ooo`005@3oool00`000000oooo0?oo
+o`1m0?ooo`<00000R03oool001D0oooo00<000000?ooo`3oool0O@3oool3000008P0oooo000E0?oo
+o`030000003oool0oooo07d0oooo0`0000280?ooo`005@3oool00`000000oooo0?ooo`1n0?ooo`80
+0000R03oool001D0oooo00<000000?ooo`3oool0OP3oool00`000000oooo0?ooo`270?ooo`005@3o
+ool00`000000oooo0?ooo`3o0?ooo`T0oooo000E0?ooo`800000o`3oool:0?ooo`00\
+\>"],
+  ImageRangeCache->{{{0, 287}, {176.938, 0}} -> {0.504427, -0.073026, \
+0.0231554, 0.00579789}}]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{891, 957},
+WindowMargins->{{Automatic, 302}, {Automatic, 0}}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 116, 2, 43, "Input"],
+Cell[1895, 57, 74, 1, 23, "Print"]
+}, Open  ]],
+Cell[1984, 61, 151, 2, 43, "Input"],
+Cell[2138, 65, 159, 2, 27, "Input"],
+Cell[2300, 69, 1259, 22, 283, "Input"],
+Cell[3562, 93, 283, 9, 10, "Text"],
+Cell[3848, 104, 39, 1, 29, "Text"],
+
+Cell[CellGroupData[{
+Cell[3912, 109, 605, 13, 155, "Input"],
+Cell[4520, 124, 34527, 826, 81, "Print"],
+Cell[39050, 952, 737, 15, 131, "Print"],
+Cell[39790, 969, 216, 3, 23, "Print"],
+Cell[40009, 974, 24560, 605, 186, 8870, 407, "GraphicsData", "PostScript", \
+"Graphics"]
+}, Open  ]],
+Cell[64584, 1582, 283, 9, 10, "Text"],
+Cell[64870, 1593, 51, 1, 29, "Text"],
+
+Cell[CellGroupData[{
+Cell[64946, 1598, 850, 17, 187, "Input"],
+Cell[65799, 1617, 34527, 826, 81, "Print"],
+Cell[100329, 2445, 737, 15, 131, "Print"],
+Cell[101069, 2462, 218, 3, 23, "Print"],
+Cell[101290, 2467, 26424, 628, 186, 8859, 407, "GraphicsData", "PostScript", \
+"Graphics"]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

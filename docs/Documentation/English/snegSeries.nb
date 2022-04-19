@@ -1,0 +1,384 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     10196,        315]*)
+(*NotebookOutlinePosition[     10886,        339]*)
+(*  CellTagsIndexPosition[     10842,        335]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["snegSeries", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["snegSeries[", "MR"],
+  StyleBox["f", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["arg", "IT"],
+  StyleBox[", ", "MR"],
+  StyleBox["n", "TI"],
+  StyleBox["]", "MR"],
+  " expands function ",
+  StyleBox["f", "IT"],
+  " into a series of order ",
+  StyleBox["n", "IT"],
+  " around 0. The argument of the expansion is ",
+  StyleBox["arg", "IT"],
+  " and the powers are computed using ",
+  StyleBox["pow", "MR"],
+  "."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The default value for ",
+  StyleBox["n", "IT"],
+  " is 5."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["snegSeries[f[arg]]", "MR"],
+  " is evaluated as ",
+  StyleBox["snegSeries[f,arg]", "MR"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["pow",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["superkomutator",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["superantikomutator",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " to be a fermionic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Table[{i, \(snegSeries[Sin, I\ Pi/2 \((c[CR] - c[AN])\), i] // N\) // 
+            Expand}, {i, 1, 9, 2}] // TableForm\)], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    TagBox[GridBox[{
+          {"1", 
+            RowBox[{
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.5707963267948966`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^"\[Dagger]"\),
+                      Superscript[ c, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "-", 
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.5707963267948966`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^\*"\<\"\"\>"\),
+                      Superscript[ c, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]},
+          {"3", 
+            RowBox[{
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    0.9248322292886504`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^"\[Dagger]"\),
+                      Superscript[ c, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "-", 
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    0.9248322292886504`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^\*"\<\"\"\>"\),
+                      Superscript[ c, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]},
+          {"5", 
+            RowBox[{
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.0045248555348174`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^"\[Dagger]"\),
+                      Superscript[ c, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "-", 
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.0045248555348174`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^\*"\<\"\"\>"\),
+                      Superscript[ c, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]},
+          {"7", 
+            RowBox[{
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    0.9998431013994987`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^"\[Dagger]"\),
+                      Superscript[ c, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "-", 
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    0.9998431013994987`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^\*"\<\"\"\>"\),
+                      Superscript[ c, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]},
+          {"9", 
+            RowBox[{
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.0000035425842861`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^"\[Dagger]"\),
+                      Superscript[ c, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], "-", 
+              
+              RowBox[{\((\(\(0.`\)\(\[InvisibleSpace]\)\) + 
+                    1.0000035425842861`\ \[ImaginaryI])\), " ", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(c\^\*"\<\"\"\>"\),
+                      Superscript[ c, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}
+          },
+        RowSpacings->1,
+        ColumnSpacings->3,
+        RowAlignments->Baseline,
+        ColumnAlignments->{Left}],
+      Function[ BoxForm`e$, 
+        TableForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[3]//TableForm="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Table[{i, \(snegSeries[Cos, I\ Pi/2 \((c[CR] - c[AN])\), i] // N\) // 
+            Expand}, {i, 1, 13, 2}] // TableForm\)], "Input",
+  CellLabel->"In[4]:="],
+
+Cell[BoxData[
+    TagBox[GridBox[{
+          {"1", "1.`"},
+          {"3", \(-0.23370055013616975`\)},
+          {"5", "0.01996895776487817`"},
+          {"7", \(-0.0008945229984747873`\)},
+          {"9", "0.00002473727636463901`"},
+          {"11", \(-4.647660084215841`*^-7\)},
+          {"13", "6.321469460232812`*^-9"}
+          },
+        RowSpacings->1,
+        ColumnSpacings->3,
+        RowAlignments->Baseline,
+        ColumnAlignments->{Left}],
+      Function[ BoxForm`e$, 
+        TableForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[4]//TableForm="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(sneggrassmanconstants[z]\), "\[IndentingNewLine]", 
+    \(a = Exp[\(-nc[conj[z], z]\)/2]\), "\n", 
+    \(snegSeries[a]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    SuperscriptBox["\[ExponentialE]", 
+      RowBox[{\(1\/2\), 
+        RowBox[{"z", 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], \(z\&_\)}]}]]], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    RowBox[{"1", "+", 
+      RowBox[{\(1\/2\), 
+        RowBox[{"z", 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], \(z\&_\)}]}]}]], "Output",
+  CellLabel->"Out[7]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 172}, {94, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 32, 0, 38, "ObjectName"],
+Cell[1811, 55, 477, 18, 48, "Usage"],
+Cell[2291, 75, 111, 4, 24, "Notes"],
+Cell[2405, 81, 163, 6, 24, "Notes"],
+Cell[2571, 89, 266, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2862, 104, 42, 0, 38, "ExampleSection"],
+Cell[2907, 106, 117, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3049, 114, 139, 3, 42, "Input"],
+Cell[3191, 119, 103, 2, 21, "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3331, 126, 175, 3, 42, "Input"],
+Cell[3509, 131, 5194, 128, 134, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8740, 264, 176, 3, 42, "Input"],
+Cell[8919, 269, 564, 16, 150, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9520, 290, 177, 4, 58, "Input"],
+Cell[9700, 296, 234, 6, 33, "Output"],
+Cell[9937, 304, 219, 6, 42, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

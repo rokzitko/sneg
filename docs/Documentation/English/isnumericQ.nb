@@ -1,0 +1,330 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      6548,        250]*)
+(*NotebookOutlinePosition[      7239,        274]*)
+(*  CellTagsIndexPosition[      7195,        270]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["isnumericQ", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["isnumericQ[", "MR"],
+  StyleBox["x", "TI"],
+  StyleBox["]", "MR"],
+  " returns ",
+  StyleBox["True", "MR"],
+  " if ",
+  StyleBox["x", "IT"],
+  " is a numeric quantity which may be factored out in front of a ",
+  StyleBox["nc", "MR"],
+  " multiplication."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Constants and parameters need to be defined as \
+numeric quantities using ",
+  ButtonBox["snegrealconstants",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegcomplexconstants",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegintegerconstants",
+    ButtonStyle->"AddOnsLink"],
+  " or ",
+  ButtonBox["snegfreeindexes",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] In addition, numericity of an expression is checked \
+using ",
+  ButtonBox["NumericQ",
+    ButtonStyle->"RefGuideLink"],
+  " and ",
+  ButtonBox["NumberQ",
+    ButtonStyle->"RefGuideLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["isnumericQ", "MR"],
+  " is used in all functions which behave as linear operators."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare some quantities.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegrealconstants[x]\), "\[IndentingNewLine]", 
+    \(snegcomplexconstants[z]\), "\[IndentingNewLine]", 
+    \(snegintegerconstants[i]\), "\[IndentingNewLine]", 
+    \(\(\(snegfreeindexes[k]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Verify definitions.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(isnumericQ[x]\), "\[IndentingNewLine]", 
+    \(x\[CenterDot]c[CR]\), "\[IndentingNewLine]", 
+    \(isnumericQ[z]\), "\[IndentingNewLine]", 
+    \(z\[CenterDot]c[CR]\), "\[IndentingNewLine]", 
+    \(isnumericQ[i]\), "\[IndentingNewLine]", 
+    \(i\[CenterDot]c[CR]\), "\[IndentingNewLine]", 
+    \(isnumericQ[k]\), "\[IndentingNewLine]", 
+    \(k\[CenterDot]c[CR]\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    RowBox[{"x", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^"\[Dagger]"\),
+            Superscript[ c, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    RowBox[{"z", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^"\[Dagger]"\),
+            Superscript[ c, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    RowBox[{"i", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^"\[Dagger]"\),
+            Superscript[ c, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    RowBox[{"k", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^"\[Dagger]"\),
+            Superscript[ c, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[14]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(isnumericQ[2]\), "\[IndentingNewLine]", 
+    \(isnumericQ[Pi]\), "\[IndentingNewLine]", 
+    \(isnumericQ[E]\)}], "Input",
+  CellLabel->"In[15]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[17]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(isnumericQ[2  x]\), "\[IndentingNewLine]", 
+    \(isnumericQ[Pi\ x]\), "\[IndentingNewLine]", 
+    \(isnumericQ[E\ x]\)}], "Input",
+  CellLabel->"In[18]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[18]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[20]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 244}, {213, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 32, 0, 38, "ObjectName"],
+Cell[1811, 55, 322, 12, 48, "Usage"],
+Cell[2136, 69, 425, 15, 56, "Notes"],
+Cell[2564, 86, 247, 9, 24, "Notes"],
+Cell[2814, 97, 151, 4, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2990, 105, 42, 0, 38, "ExampleSection"],
+Cell[3035, 107, 61, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3121, 111, 390, 8, 122, "Input"],
+Cell[3514, 121, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3632, 126, 42, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3699, 130, 421, 9, 138, "Input"],
+Cell[4123, 141, 62, 2, 25, "Output"],
+Cell[4188, 145, 324, 10, 29, "Output"],
+Cell[4515, 157, 62, 2, 25, "Output"],
+Cell[4580, 161, 325, 10, 29, "Output"],
+Cell[4908, 173, 63, 2, 25, "Output"],
+Cell[4974, 177, 325, 10, 29, "Output"],
+Cell[5302, 189, 63, 2, 25, "Output"],
+Cell[5368, 193, 325, 10, 29, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5730, 208, 168, 4, 58, "Input"],
+Cell[5901, 214, 63, 2, 25, "Output"],
+Cell[5967, 218, 63, 2, 25, "Output"],
+Cell[6033, 222, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6133, 229, 177, 4, 58, "Input"],
+Cell[6313, 235, 63, 2, 25, "Output"],
+Cell[6379, 239, 63, 2, 25, "Output"],
+Cell[6445, 243, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

@@ -1,0 +1,2413 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[    109466,       2333]*)
+(*NotebookOutlinePosition[    110157,       2357]*)
+(*  CellTagsIndexPosition[    110113,       2353]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["transformQStoIS", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["transformQStoIS[", "MR"],
+  StyleBox["bzop", "IT"],
+  StyleBox["]", "MR"],
+  " transforms basis ",
+  StyleBox["bzop", "IT"],
+  " with well defined charge ",
+  StyleBox["Q", "IT"],
+  " and spin ",
+  StyleBox["S", "IT"],
+  ", to a basis with well defined isospin ",
+  StyleBox["I", "IT"],
+  " and spin ",
+  StyleBox["S", "IT"],
+  " quantum numbers."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The input to ",
+  StyleBox["transformQStoIS", "MR"],
+  " may be obtained using ",
+  ButtonBox["qsbasisvc",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Prior to calling ",
+  StyleBox["transformQStoIS", "MR"],
+  ", ",
+  StyleBox["Tminus", "MR"],
+  " (isospin lowering) operator must be globally defined. Alternatively, the \
+isospin lowering may be provided as in ",
+  StyleBox["transformQStoIS[", "MR"],
+  StyleBox["bzop", "IT"],
+  StyleBox[", ", "MR"],
+  StyleBox["Tminus", "MR"],
+  StyleBox["].", "MR"]
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also:  ",
+  ButtonBox["qsbasisvc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformbasis",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["transformQStoPH",
+    ButtonStyle->"AddOnsLink"],
+  ",  ",
+  ButtonBox["makebasis",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["bzvc2bzop",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["bzop2bzvc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["isospinminus",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "IT"],
+  " to be a Fermionic operator."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["One-site basis", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(ops = {c[1]};\)\), "\[IndentingNewLine]", 
+    \(\(bzop = qsbasisvc[ops];\)\), "\[IndentingNewLine]", 
+    \(Tminus = 
+      Total[isospinminus /@ ops] // Expand\), "\[IndentingNewLine]", 
+    \(transformQStoIS[bzop, Tminus] // MatrixForm\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[
+            SubsuperscriptBox["c", 
+              RowBox[{"1", 
+                TagBox[
+                  StyleBox["\<\"\[DownArrow]\"\>",
+                    FontColor->RGBColor[0, 0, 1]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    0, 0, 1]]&)]}], "\<\"\"\>"],
+            Subsuperscript[ c, 
+              RowBox[ {1, 
+                StyleForm[ "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}],
+               ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[
+            SubsuperscriptBox["c", 
+              RowBox[{"1", 
+                TagBox[
+                  StyleBox["\<\"\[UpArrow]\"\>",
+                    FontColor->RGBColor[1, 0, 0]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    1, 0, 0]]&)]}], "\<\"\"\>"],
+            Subsuperscript[ c, 
+              RowBox[ {1, 
+                StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+              ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({1\/2, 0}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 1\/2}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[EmptyRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[6]//MatrixForm="]
+}, Open  ]],
+
+Cell["Two-site basis", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(ops = {c[1], c[2]};\)\), "\n", 
+    \(\(bzop = qsbasisvc[ops];\)\), "\n", 
+    \(Tminus = Total[isospinminus /@ ops] // Expand\), "\n", 
+    \(transformQStoIS[bzop, Tminus] // MatrixForm\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"1", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {1, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"2", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {2, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"2", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {2, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({1, 0}\), 
+              RowBox[{"{", 
+                TagBox[
+                  RowBox[{
+                    TagBox[
+                      StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[FilledRectangle]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                    TagBox[
+                      StyleBox["\<\"\[RightAngleBracket]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)]}],
+                  DisplayForm], "}"}]},
+            {\({1\/2, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}], ",", 
+                  RowBox[{"\<\"-\"\>", 
+                    TagBox[
+                      RowBox[{
+                        TagBox[
+                          StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)], 
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[FilledRectangle]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[EmptyRectangle]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                        
+                        TagBox[
+                          StyleBox["\<\"\[RightAngleBracket]\"\>",
+                            FontColor->RGBColor[0, 0.392187, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0.0, 0.39219300000000001, 0.0]]&)]}],
+                      DisplayForm]}]}], "}"}]},
+            {\({0, 1}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)], "-", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}]}], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[10]//MatrixForm="]
+}, Open  ]],
+
+Cell["Three-site basis", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(ops = {c[1], c[2], c[3]};\)\), "\n", 
+    \(\(bzop = qsbasisvc[ops];\)\), "\n", 
+    \(Tminus = Total[isospinminus /@ ops] // Expand\), "\n", 
+    \(\(bzis = transformQStoIS[bzop, Tminus];\)\), "\[IndentingNewLine]", 
+    \(bzis // MatrixForm\)}], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"1", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {1, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"2", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {2, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"2", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {2, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"3", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {3, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"3", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {3, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {\({3\/2, 0}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({1, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({1\/2, 1}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm], ",", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({1\/2, 0}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{
+                    RowBox[{\(\@\(2\/3\)\), " ", 
+                      RowBox[{"(", 
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], ")"}]}], "-", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@6\)], "-", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@6\)]}], ",", 
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)], "-", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}]}], "}"}]},
+            {\({0, 3\/2}\), 
+              RowBox[{"{", 
+                RowBox[{"\<\"-\"\>", 
+                  TagBox[
+                    RowBox[{
+                      TagBox[
+                        StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[FilledRectangle]\"\>",
+                          FontColor->RGBColor[1, 0, 0]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[EmptyRectangle]\"\>",
+                          FontColor->RGBColor[0, 0, 1]],
+                        (StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)], 
+                      TagBox[
+                        StyleBox["\<\"\[RightAngleBracket]\"\>",
+                          FontColor->RGBColor[0, 0.392187, 0]],
+                        (
+                        StyleForm[ #, FontColor -> RGBColor[ 
+                          0.0, 0.39219300000000001, 0.0]]&)]}],
+                    DisplayForm]}], "}"}]},
+            {\({0, 1\/2}\), 
+              RowBox[{"{", 
+                RowBox[{
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    RowBox[{"-", 
+                      FractionBox[
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], \(\@2\)]}], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)], "-", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@2\)]}], ",", 
+                  RowBox[{
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@6\)], "+", 
+                    FractionBox[
+                      TagBox[
+                        RowBox[{
+                          TagBox[
+                            StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 1, 0, 0]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[FilledRectangle]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)], 
+                          TagBox[
+                            StyleBox["\<\"\[EmptyRectangle]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 0, 0, 1]]&)],
+                           
+                          TagBox[
+                            StyleBox["\<\"\[RightAngleBracket]\"\>",
+                              FontColor->RGBColor[0, 0.392187, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0.0, 0.39219300000000001, 0.0]]&)]}],
+                        DisplayForm], \(\@6\)], "-", 
+                    RowBox[{\(\@\(2\/3\)\), " ", 
+                      RowBox[{"(", 
+                        TagBox[
+                          RowBox[{
+                            TagBox[
+                              StyleBox["\<\"\[LeftDoubleBracketingBar]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[EmptyRectangle]\"\>",
+                                FontColor->RGBColor[1, 0, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                1, 0, 0]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[FilledRectangle]\"\>",
+                                FontColor->RGBColor[0, 0, 1]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0, 0, 1]]&)], 
+                            TagBox[
+                              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                                FontColor->RGBColor[0, 0.392187, 0]],
+                              (
+                              StyleForm[ #, FontColor -> RGBColor[ 
+                                0.0, 0.39219300000000001, 0.0]]&)]}],
+                          DisplayForm], ")"}]}]}]}], "}"}]}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[15]//MatrixForm="]
+}, Open  ]],
+
+Cell["\<\
+Count the total number of states: \[Sum] degeneracy \[Cross] number \
+of states\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Map[\((2  First[First[#]] + 1)\) \((2  Last[First[#]] + 1)\) 
+            Length[Last[#]] &, bzis] // Total\)], "Input",
+  CellLabel->"In[16]:="],
+
+Cell[BoxData[
+    \(64\)], "Output",
+  CellLabel->"Out[16]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 224}, {Automatic, 217}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 37, 0, 38, "ObjectName"],
+Cell[1816, 55, 415, 16, 48, "Usage"],
+Cell[2234, 73, 197, 7, 24, "Notes"],
+Cell[2434, 82, 405, 12, 56, "Notes"],
+Cell[2842, 96, 534, 23, 40, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3401, 123, 42, 0, 38, "ExampleSection"],
+Cell[3446, 125, 118, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3589, 133, 134, 3, 42, "Input"],
+Cell[3726, 138, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3844, 143, 37, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3906, 147, 299, 6, 74, "Input"],
+Cell[4208, 155, 1464, 42, 32, "Output"],
+Cell[5675, 199, 2769, 60, 70, "Output"]
+}, Open  ]],
+Cell[8459, 262, 37, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8521, 266, 247, 5, 74, "Input"],
+Cell[8771, 273, 3069, 84, 32, "Output"],
+Cell[11843, 359, 15734, 316, 114, "Output"]
+}, Open  ]],
+Cell[27592, 678, 39, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[27656, 682, 304, 6, 90, "Input"],
+Cell[27963, 690, 4576, 125, 32, "Output"],
+Cell[32542, 817, 76505, 1494, 208, "Output"]
+}, Open  ]],
+Cell[109062, 2314, 110, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[109197, 2321, 165, 3, 42, "Input"],
+Cell[109365, 2326, 61, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

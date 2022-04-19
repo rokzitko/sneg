@@ -1,0 +1,214 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      3651,        147]*)
+(*NotebookOutlinePosition[      4321,        170]*)
+(*  CellTagsIndexPosition[      4277,        166]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["halfintegerQ", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["halfintegerQ[", "MR"],
+  StyleBox["z", "IT"],
+  StyleBox["]", "MR"],
+  " returns True if ",
+  StyleBox["z", "IT"],
+  " is an integer or a half-integer."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  Cell[BoxData[
+      FormBox[
+        ButtonBox["IntegerQ",
+          ButtonStyle->"RefGuideLink"], TraditionalForm]]],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load Package sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Some tests", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(halfintegerQ[0]\), "\[IndentingNewLine]", 
+    \(halfintegerQ[1/2]\), "\[IndentingNewLine]", 
+    \(halfintegerQ[1]\), "\[IndentingNewLine]", 
+    \(halfintegerQ[3/2]\), "\n", 
+    \(halfintegerQ[2]\)}], "Input",
+  CellLabel->"In[2]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[2]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(halfintegerQ[1/3]\), "\[IndentingNewLine]", 
+    \(halfintegerQ[1. ]\), "\[IndentingNewLine]", 
+    \(halfintegerQ[Pi]\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(False\)], "Output",
+  CellLabel->"Out[9]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{746, 600},
+WindowMargins->{{Automatic, 286}, {Automatic, 251}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 34, 0, 38, "ObjectName"],
+Cell[1813, 55, 220, 8, 32, "Usage"],
+Cell[2036, 65, 192, 7, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2253, 76, 42, 0, 38, "ExampleSection"],
+Cell[2298, 78, 40, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2363, 82, 75, 2, 26, "Input"],
+Cell[2441, 86, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[2559, 91, 33, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2617, 95, 257, 6, 90, "Input"],
+Cell[2877, 103, 62, 2, 25, "Output"],
+Cell[2942, 107, 62, 2, 25, "Output"],
+Cell[3007, 111, 62, 2, 25, "Output"],
+Cell[3072, 115, 62, 2, 25, "Output"],
+Cell[3137, 119, 62, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3236, 126, 177, 4, 58, "Input"],
+Cell[3416, 132, 63, 2, 25, "Output"],
+Cell[3482, 136, 63, 2, 25, "Output"],
+Cell[3548, 140, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

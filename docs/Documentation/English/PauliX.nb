@@ -1,0 +1,318 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      6363,        227]*)
+(*NotebookOutlinePosition[      7862,        273]*)
+(*  CellTagsIndexPosition[      7684,        263]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["PauliX", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["PauliX", "MR"],
+  " is Pauli's ",
+  Cell[BoxData[
+      \(TraditionalForm\`\[Sigma]\_x\)]],
+  " matrix.\n\[FilledSmallSquare] ",
+  StyleBox["PauliY", "MR"],
+  " is Pauli's ",
+  Cell[BoxData[
+      \(TraditionalForm\`\[Sigma]\_y\)]],
+  " matrix.\n\[FilledSmallSquare] ",
+  StyleBox["PauliZ", "MR"],
+  " is Pauli's ",
+  Cell[BoxData[
+      \(TraditionalForm\`\[Sigma]\_z\)]],
+  " matrix.\n\[FilledSmallSquare] ",
+  StyleBox["PauliPlus", "MR"],
+  " is Pauli's ",
+  Cell[BoxData[
+      \(TraditionalForm\`\(\[Sigma]\_+\)\)]],
+  " (spin raising) matrix.\n\[FilledSmallSquare] ",
+  StyleBox["PauliMinus", "MR"],
+  " is Pauli's ",
+  Cell[BoxData[
+      \(TraditionalForm\`\(\[Sigma]\_-\)\)]],
+  " (spin lowering) matrix."
+}], "Usage",
+  CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["spinx",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spiny",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinz",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinplus",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinminus",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["The Pauli matrixes", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(MatrixForm /@ {PauliX, PauliY, PauliZ, PauliPlus, 
+        PauliMinus}\)], "Input",
+  CellLabel->"In[2]:="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", "1"},
+                {"1", "0"}
+                },
+              RowSpacings->1,
+              ColumnSpacings->1,
+              ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+          Function[ BoxForm`e$, 
+            MatrixForm[ BoxForm`e$]]], ",", 
+        TagBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", \(-\[ImaginaryI]\)},
+                {"\[ImaginaryI]", "0"}
+                },
+              RowSpacings->1,
+              ColumnSpacings->1,
+              ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+          Function[ BoxForm`e$, 
+            MatrixForm[ BoxForm`e$]]], ",", 
+        TagBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"1", "0"},
+                {"0", \(-1\)}
+                },
+              RowSpacings->1,
+              ColumnSpacings->1,
+              ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+          Function[ BoxForm`e$, 
+            MatrixForm[ BoxForm`e$]]], ",", 
+        TagBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", "2"},
+                {"0", "0"}
+                },
+              RowSpacings->1,
+              ColumnSpacings->1,
+              ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+          Function[ BoxForm`e$, 
+            MatrixForm[ BoxForm`e$]]], ",", 
+        TagBox[
+          RowBox[{"(", "\[NoBreak]", GridBox[{
+                {"0", "0"},
+                {"2", "0"}
+                },
+              RowSpacings->1,
+              ColumnSpacings->1,
+              ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+          Function[ BoxForm`e$, 
+            MatrixForm[ BoxForm`e$]]]}], "}"}]], "Output",
+  CellLabel->"Out[2]="]
+}, Open  ]],
+
+Cell["Some relations", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(PauliX . PauliY \[Equal] I\ PauliZ\), "\[IndentingNewLine]", 
+    \(PauliY . PauliZ \[Equal] I\ PauliX\), "\[IndentingNewLine]", 
+    \(PauliZ . PauliX \[Equal] I\ PauliY\), "\[IndentingNewLine]", 
+    \(PauliZ . PauliPlus \[Equal] PauliPlus\), "\[IndentingNewLine]", 
+    \(PauliZ . PauliMinus \[Equal] \(-PauliMinus\)\), "\[IndentingNewLine]", 
+    \(PauliPlus . PauliMinus - PauliMinus . PauliPlus \[Equal] 
+      4  PauliZ\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 306}, {Automatic, 287}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "PauliX"->{
+    Cell[1807, 55, 853, 28, 120, "Usage",
+      CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}]},
+  "PauliY"->{
+    Cell[1807, 55, 853, 28, 120, "Usage",
+      CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}]},
+  "PauliZ"->{
+    Cell[1807, 55, 853, 28, 120, "Usage",
+      CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}]},
+  "PauliPlus"->{
+    Cell[1807, 55, 853, 28, 120, "Usage",
+      CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}]},
+  "PauliMinus"->{
+    Cell[1807, 55, 853, 28, 120, "Usage",
+      CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"PauliX", 7001, 244},
+  {"PauliY", 7134, 247},
+  {"PauliZ", 7267, 250},
+  {"PauliPlus", 7403, 253},
+  {"PauliMinus", 7540, 256}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 28, 0, 38, "ObjectName"],
+Cell[1807, 55, 853, 28, 120, "Usage",
+  CellTags->{"PauliX", "PauliY", "PauliZ", "PauliPlus", "PauliMinus"}],
+Cell[2663, 85, 375, 17, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3063, 106, 42, 0, 38, "ExampleSection"],
+Cell[3108, 108, 32, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3165, 112, 75, 2, 26, "Input"],
+Cell[3243, 116, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3361, 121, 41, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3427, 125, 127, 3, 42, "Input"],
+Cell[3557, 130, 1814, 53, 43, "Output"]
+}, Open  ]],
+Cell[5386, 186, 37, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5448, 190, 485, 8, 106, "Input"],
+Cell[5936, 200, 62, 2, 25, "Output"],
+Cell[6001, 204, 62, 2, 25, "Output"],
+Cell[6066, 208, 62, 2, 25, "Output"],
+Cell[6131, 212, 62, 2, 25, "Output"],
+Cell[6196, 216, 62, 2, 25, "Output"],
+Cell[6261, 220, 62, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

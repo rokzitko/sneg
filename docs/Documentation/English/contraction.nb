@@ -1,0 +1,618 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     15499,        525]*)
+(*NotebookOutlinePosition[     16188,        549]*)
+(*  CellTagsIndexPosition[     16144,        545]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["contraction", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["contraction[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  " contracts ",
+  StyleBox["a", "IT"],
+  " and ",
+  StyleBox["b", "IT"],
+  "."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Contraction ",
+  Cell[BoxData[
+      \(TraditionalForm\`ab\&\[OverBracket]\)]],
+  "=ab-:ab:, where :ab: denotes normal ordered product :ab:=ab-\
+\[LeftAngleBracket]ab\[RightAngleBracket], i.e. contraction is just the \
+vacuum expectation value, ",
+  Cell[BoxData[
+      \(TraditionalForm\`ab\&\[OverBracket]\)]],
+  "=\[LeftAngleBracket]ab\[RightAngleBracket]."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["wick",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["normalorder",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["normalorderwick",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["vev",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["vevwick",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["contraction",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare some quantities", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c, d];\)\), "\[IndentingNewLine]", 
+    \(\(ordering[d] = SEA;\)\), "\[IndentingNewLine]", 
+    \(\(Off[General::spell];\)\), "\[IndentingNewLine]", 
+    \(\(snegfreeindexes[i, j, \[Sigma]i, \[Sigma]j];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Test the function for ",
+  StyleBox["ordering=VACUUM", "MR"]
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(contraction[c[CR], c[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(contraction[c[CR], c[CR]] \[Equal] 0\), "\n", 
+    \(contraction[c[AN], c[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(contraction[c[CR, i], c[AN, j]] \[Equal] 0\), "\n", 
+    \(contraction[c[CR, i, \[Sigma]i], c[AN, j, \[Sigma]j]] \[Equal] 
+      0\)}], "Input",
+  CellLabel->"In[6]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(contraction[c[AN], c[CR]] \[Equal] 1\), "\[IndentingNewLine]", 
+    \(contraction[c[AN, i], c[CR, j]]\), "\[IndentingNewLine]", 
+    \(contraction[c[AN, i, \[Sigma]i], c[CR, j, \[Sigma]j]]\)}], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        SubscriptBox[
+          TagBox[
+            StyleBox["\<\"\[Delta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]i  \[Sigma]j\)],
+          
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[13]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Test the function for ",
+  StyleBox["ordering=SEA", "MR"]
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(contraction[d[CR], d[AN]]\), "\[IndentingNewLine]", 
+    \(contraction[d[CR], d[CR]] \[Equal] 0\), "\n", 
+    \(contraction[d[AN], d[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(contraction[d[CR, i], d[AN, j]]\), "\n", 
+    \(contraction[d[CR, i, \[Sigma]i], d[AN, j, \[Sigma]j]]\)}], "Input",
+  CellLabel->"In[14]:="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^"\[Dagger]"\),
+              Superscript[ d, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^\*"\<\"\"\>"\),
+              Superscript[ d, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-i\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[17]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]i  \[Sigma]j\)],
+          
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-i\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[18]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(contraction[d[AN], d[CR]]\), "\[IndentingNewLine]", 
+    \(contraction[d[AN, i], d[CR, j]] // 
+      SimplifyKD\), "\[IndentingNewLine]", 
+    \(contraction[d[AN, i, \[Sigma]i], d[CR, j, \[Sigma]j]] // 
+      SimplifyKD\)}], "Input",
+  CellLabel->"In[19]:="],
+
+Cell[BoxData[
+    RowBox[{"1", "-", 
+      RowBox[{"vev", "[", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^"\[Dagger]"\),
+                Superscript[ d, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^\*"\<\"\"\>"\),
+                Superscript[ d, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "]"}]}]], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", "j", ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[20]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]i  \[Sigma]j\)],
+          
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", "j", ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[21]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(contraction[d[CR], d[AN]]\), "\[IndentingNewLine]", 
+    \(contraction[d[CR, i], d[AN, j]] // 
+      SimplifyKD\), "\[IndentingNewLine]", 
+    \(contraction[d[CR, i, \[Sigma]i], d[AN, j, \[Sigma]j]] // 
+      SimplifyKD\)}], "Input",
+  CellLabel->"In[22]:="],
+
+Cell[BoxData[
+    RowBox[{"vev", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^"\[Dagger]"\),
+              Superscript[ d, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^\*"\<\"\"\>"\),
+              Superscript[ d, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "]"}]], "Output",
+  CellLabel->"Out[22]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-i\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[23]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(i  j\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]i  \[Sigma]j\)],
+          
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-i\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[24]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{646, 600},
+WindowMargins->{{Automatic, 430}, {Automatic, 0}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 33, 0, 38, "ObjectName"],
+Cell[1812, 55, 262, 12, 32, "Usage"],
+Cell[2077, 69, 413, 10, 44, "Notes"],
+Cell[2493, 81, 450, 20, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2968, 105, 42, 0, 38, "ExampleSection"],
+Cell[3013, 107, 60, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3098, 111, 338, 6, 90, "Input"],
+Cell[3439, 119, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3557, 124, 98, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3680, 131, 382, 7, 90, "Input"],
+Cell[4065, 140, 62, 2, 25, "Output"],
+Cell[4130, 144, 62, 2, 25, "Output"],
+Cell[4195, 148, 62, 2, 25, "Output"],
+Cell[4260, 152, 62, 2, 25, "Output"],
+Cell[4325, 156, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4425, 163, 248, 4, 58, "Input"],
+Cell[4676, 169, 63, 2, 25, "Output"],
+Cell[4742, 173, 428, 13, 32, "Output"],
+Cell[5173, 188, 903, 27, 32, "Output"]
+}, Open  ]],
+Cell[6091, 218, 95, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6211, 225, 343, 6, 90, "Input"],
+Cell[6557, 233, 707, 21, 31, "Output"],
+Cell[7267, 256, 63, 2, 25, "Output"],
+Cell[7333, 260, 63, 2, 25, "Output"],
+Cell[7399, 264, 771, 23, 32, "Output"],
+Cell[8173, 289, 1207, 36, 32, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9417, 330, 279, 6, 58, "Input"],
+Cell[9699, 338, 772, 22, 31, "Output"],
+Cell[10474, 362, 768, 23, 32, "Output"],
+Cell[11245, 387, 1204, 36, 32, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12486, 428, 279, 6, 58, "Input"],
+Cell[12768, 436, 707, 21, 31, "Output"],
+Cell[13478, 459, 771, 23, 32, "Output"],
+Cell[14252, 484, 1207, 36, 32, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

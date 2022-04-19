@@ -1,0 +1,9 @@
+CPC_paper is a preprint of a manuscript about SNEG published in Computer Physics Communications.
+
+Documentation is available in the form of Mathematica notebooks in Documentation/English/ and it
+may be incorporated in Mathematica's help system. (Addendum: This is no longer the case in
+recent version of Mathematica which have a redesigned help system.)
+
+announcements contains some early announcements of the package submitted to mathgroup mailing list.
+
+manual contains an early (2006) minimalist user's manual for sneg.

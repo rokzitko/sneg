@@ -1,0 +1,275 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      6289,        203]*)
+(*NotebookOutlinePosition[      6978,        227]*)
+(*  CellTagsIndexPosition[      6934,        223]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["spinspinsymmetric", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["spinspinsymmetric[{", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox[",...}]", "MR"],
+  " returns the symmetrized spin-spin scalar product 1/N \[Sum]",
+  Cell[BoxData[
+      FormBox[
+        RowBox[{
+          SubscriptBox[
+            StyleBox["S",
+              FontWeight->"Bold"], "a"], "\[CenterDot]", 
+          SubscriptBox[
+            StyleBox["S",
+              FontWeight->"Bold"], "b"], " "}], TraditionalForm]]],
+  "between pairs of S=1/2 spin operators corresponding to the levels \
+described by the operators ",
+  StyleBox["a", "TI"],
+  " and ",
+  StyleBox["b", "TI"],
+  StyleBox[",...", "MR"],
+  " Here N is the number of pairs."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operators ",
+  StyleBox["a", "TI",
+    FontSize->10],
+  " and ",
+  StyleBox["b", "TI"],
+  StyleBox[",...", "MR"],
+  " must be expressed in a form which excludes the first index \
+(creation/annihilation) and the last index (spin). "
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] The expression is symmetric with respect to \
+operator permutations.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["spinspin",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg and declare operators", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[a, b, c, d, e];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Verify definitions", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(expr1 = 
+        1/10 \((spinspin[a[], b[]] + spinspin[a[], c[]] + 
+                spinspin[a[], d[]] + spinspin[a[], e[]] + 
+                spinspin[b[], c[]] + spinspin[b[], d[]] + 
+                spinspin[b[], e[]] + spinspin[c[], d[]] + 
+                spinspin[c[], e[]] + spinspin[d[], e[]])\) // 
+          Simplify;\)\), "\[IndentingNewLine]", 
+    \(\(spinspin\  @@@ \ 
+        Subsets[{a[], b[], c[], d[], e[]}, {2}];\)\), "\[IndentingNewLine]", 
+    \(\(expr2 = Total[%]/Length[%] // Simplify;\)\), "\[IndentingNewLine]", 
+    \(\(expr3 = 
+        spinspinsymmetric[{a[], b[], c[], d[], 
+            e[]}];\)\), "\[IndentingNewLine]", 
+    \(expr1 \[Equal] expr2 \[Equal] expr3\)}], "Input",
+  CellLabel->"In[13]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[17]="]
+}, Open  ]],
+
+Cell["\<\
+The expression is symmetric with respect to operator permutations\
+\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(expr1 === \((expr1 /. {a \[Rule] b, 
+            b \[Rule] a})\)\), "\[IndentingNewLine]", 
+    \(expr1 === \((expr1 /. {a \[Rule] b, b \[Rule] c, 
+            c \[Rule] a})\)\), "\[IndentingNewLine]", 
+    \(expr1 === \((expr1 /. {a \[Rule] b, b \[Rule] c, c \[Rule] d, 
+            d \[Rule] e, e \[Rule] a})\)\)}], "Input",
+  CellLabel->"In[8]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(permuts = 
+        Map[Thread[{a, b, c, d, e} \[Rule] #] &, 
+          Permutations[{a, b, c, d, e}]];\)\), "\[IndentingNewLine]", 
+    \(Map[expr1 === \((expr1 /. #)\) &, permuts]\)}], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    \({True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True, True, True, True, True, True, True, True, True, True, True, True, 
+      True}\)], "Output",
+  CellLabel->"Out[12]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{664, 802},
+WindowMargins->{{Automatic, 284}, {Automatic, 0}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 39, 0, 38, "ObjectName"],
+Cell[1818, 55, 754, 24, 64, "Usage"],
+Cell[2575, 81, 284, 9, 40, "Notes"],
+Cell[2862, 92, 114, 3, 24, "Notes"],
+Cell[2979, 97, 127, 5, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3131, 106, 42, 0, 38, "ExampleSection"],
+Cell[3176, 108, 54, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3255, 112, 151, 3, 42, "Input"],
+Cell[3409, 117, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3527, 122, 41, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3593, 126, 754, 15, 138, "Input"],
+Cell[4350, 143, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[4428, 148, 98, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4551, 155, 371, 7, 58, "Input"],
+Cell[4925, 164, 62, 2, 25, "Output"],
+Cell[4990, 168, 62, 2, 25, "Output"],
+Cell[5055, 172, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5155, 179, 242, 5, 42, "Input"],
+Cell[5400, 186, 849, 12, 169, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

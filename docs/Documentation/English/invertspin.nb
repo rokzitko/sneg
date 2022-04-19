@@ -1,0 +1,189 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      3580,        129]*)
+(*NotebookOutlinePosition[      4270,        153]*)
+(*  CellTagsIndexPosition[      4226,        149]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["invertspin", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["invertspin[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " inverts the spin of the operator expression ",
+  StyleBox["expr", "IT"],
+  ". The spin index must be the last index of each operator appearing in ",
+  StyleBox["expr", "IT"],
+  "."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["spinxyz",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " to be a fermionic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Verify the definition", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(invertspin\ @\ c[CR, UP] \[Equal] c[CR, DO]\), "\[IndentingNewLine]", 
+    \(invertspin\ @\ c[AN, UP] \[Equal] c[AN, DO]\), "\[IndentingNewLine]", 
+    \(invertspin\ @\ \((c[CR, UP]\[CenterDot]c[CR, DO])\) \[Equal] 
+      c[CR, DO]\[CenterDot]c[CR, UP]\), "\[IndentingNewLine]", 
+    \(invertspin\ @\ \((c[AN, UP]\[CenterDot]c[AN, DO])\) \[Equal] 
+      c[AN, DO]\[CenterDot]c[AN, UP]\), "\[IndentingNewLine]", 
+    \(\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 414}, {Automatic, 84}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 32, 0, 38, "ObjectName"],
+Cell[1811, 55, 322, 10, 48, "Usage"],
+Cell[2136, 67, 126, 5, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2287, 76, 42, 0, 38, "ExampleSection"],
+Cell[2332, 78, 117, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2474, 86, 139, 3, 42, "Input"],
+Cell[2616, 91, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[2734, 96, 44, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2803, 100, 477, 8, 106, "Input"],
+Cell[3283, 110, 62, 2, 25, "Output"],
+Cell[3348, 114, 62, 2, 25, "Output"],
+Cell[3413, 118, 62, 2, 25, "Output"],
+Cell[3478, 122, 62, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

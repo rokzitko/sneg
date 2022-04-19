@@ -1,0 +1,698 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     17792,        592]*)
+(*NotebookOutlinePosition[     18462,        615]*)
+(*  CellTagsIndexPosition[     18418,        611]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["acmt", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["acmt[op1[i1], op2[i2]]", "MR"],
+  " defines the value of the anti-commutator between fermionic operators ",
+  StyleBox["op1[i1]", "MR"],
+  " and ",
+  StyleBox["op2", "MR"],
+  StyleBox["[", "MR"],
+  StyleBox["i2", "MR"],
+  StyleBox["]", "MR"],
+  ". The default behavior is to return the canonical anti-commutator for \
+fermionic operators."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By default, ",
+  StyleBox["acmt", "MR"],
+  " returns the value of the anticommutator as a product of ",
+  ButtonBox["KroneckerDelta",
+    ButtonStyle->"RefGuideLink"],
+  " expressions for the pairs of indexes of the the operators."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare]  If needed, the user may override the default \
+behavior. This might be required, for example, if anticommutation relations \
+in terms of ",
+  ButtonBox["DiracDelta",
+    ButtonStyle->"RefGuideLink"],
+  " are preferred."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] NOTE: in versions of sneg prior to 1.96, the default \
+",
+  StyleBox["acmt", "MR"],
+  " performed ",
+  StyleBox["literal comparisons",
+    FontWeight->"Bold"],
+  " between pairs of indexes. It returned 1 if one operator was creation \
+operator and the other was annihilation operator, while all operator indexes \
+were equal. In all other cases 0 was returned. The new default behavior is \
+more general and safer."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] It is assumed that operators with different symbols \
+(",
+  StyleBox["op", "TI"],
+  ") anti-commute."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["nc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["antikomutator",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Let ",
+  StyleBox["c", "TI"],
+  " be a fermionic operator with canonical anti-commutation rules (the \
+default)."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegfermionoperators[c];\)\), "\[IndentingNewLine]", 
+    \(acmt[c[CR], c[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(acmt[c[AN], c[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(acmt[c[CR], c[AN]] \[Equal] 1\), "\[IndentingNewLine]", 
+    \(acmt[c[AN], c[CR]] \[Equal] 1\)}], "Input",
+  CellLabel->"In[2]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell["\<\
+The same values are obtained when the operator anticommutator are \
+explicitly calculated.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(antikomutator[c[CR], c[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(antikomutator[c[AN], c[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(antikomutator[c[CR], c[AN]] \[Equal] 1\), "\[IndentingNewLine]", 
+    \(antikomutator[c[AN], c[CR]] \[Equal] 1\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell["\<\
+The value of the anti-commutator is taken  into account when \
+reordering is performed.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(nc[c[AN], c[CR]]\)], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    RowBox[{"1", "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\^"\[Dagger]"\),
+              Superscript[ c, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\^\*"\<\"\"\>"\),
+              Superscript[ c, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[11]="]
+}, Open  ]],
+
+Cell["\<\
+acmt uses KroneckerDelta to return the value of the anticommutator \
+for generic indexes.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(acmt[c[CR, k1], c[AN, k1]]\), "\[IndentingNewLine]", 
+    \(acmt[c[CR, k1], c[AN, k2]]\), "\[IndentingNewLine]", 
+    \(acmt[c[CR, k1, \[Sigma]1], c[AN, k1, \[Sigma]2]]\), "\n", 
+    \(acmt[c[CR, k1, \[Sigma]1], c[AN, k2, \[Sigma]2]]\)}], "Input",
+  CellLabel->"In[12]:="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        SubscriptBox[
+          TagBox[
+            StyleBox["\<\"\[Delta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        SubscriptBox[
+          TagBox[
+            StyleBox["\<\"\[Delta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+          
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[15]="]
+}, Open  ]],
+
+Cell["\<\
+Anticommutators with KroneckerDelta are used in operator \
+reordering.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[c[AN, k1], c[CR, k2]]\), "\[IndentingNewLine]", 
+    \(nc[c[AN, k1, \[Sigma]1], 
+      c[CR, k2, \[Sigma]2]]\), "\[IndentingNewLine]", 
+    \(nc[c[AN, k1, s1], c[CR, k2, s2]]\), "\n", 
+    \(nc[c[AN, k1, UP], c[CR, k2, DO]]\), "\n", 
+    \(nc[c[AN, k1, UP], c[CR, k1, UP]]\)}], "Input",
+  CellLabel->"In[16]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_k2\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k2}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_k1\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k2  \[Sigma]2\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k2, \[Sigma]2}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, \[Sigma]1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[17]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(s1  s2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k2  s2\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k2, s2}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  s1\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, s1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[18]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k2", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k2, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    RowBox[{"1", "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[20]="]
+}, Open  ]],
+
+Cell["Two different operators always anticommute.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegfermionoperators[d];\)\), "\[IndentingNewLine]", 
+    \(antikomutator[c[CR], d[CR]] \[Equal] 0\), "\n", 
+    \(antikomutator[c[AN], d[AN]] \[Equal] 0\), "\n", 
+    \(antikomutator[c[CR], d[AN]] \[Equal] 0\), "\n", 
+    \(antikomutator[c[AN], d[CR]] \[Equal] 0\)}], "Input",
+  CellLabel->"In[21]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[22]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[23]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[24]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[25]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 311}, {Automatic, 237}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 26, 0, 38, "ObjectName"],
+Cell[1805, 55, 407, 12, 64, "Usage"],
+Cell[2215, 69, 284, 7, 40, "Notes"],
+Cell[2502, 78, 273, 7, 40, "Notes"],
+Cell[2778, 87, 468, 11, 88, "Notes"],
+Cell[3249, 100, 154, 5, 24, "Notes"],
+Cell[3406, 107, 258, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3689, 122, 42, 0, 38, "ExampleSection"],
+Cell[3734, 124, 32, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3791, 128, 75, 2, 26, "Input"],
+Cell[3869, 132, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3987, 137, 151, 5, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4163, 146, 339, 6, 90, "Input"],
+Cell[4505, 154, 62, 2, 25, "Output"],
+Cell[4570, 158, 62, 2, 25, "Output"],
+Cell[4635, 162, 62, 2, 25, "Output"],
+Cell[4700, 166, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[4777, 171, 121, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4923, 178, 313, 5, 74, "Input"],
+Cell[5239, 185, 62, 2, 25, "Output"],
+Cell[5304, 189, 62, 2, 25, "Output"],
+Cell[5369, 193, 62, 2, 25, "Output"],
+Cell[5434, 197, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[5512, 202, 118, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5655, 209, 74, 2, 26, "Input"],
+Cell[5732, 213, 700, 21, 29, "Output"]
+}, Open  ]],
+Cell[6447, 237, 120, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6592, 244, 293, 5, 74, "Input"],
+Cell[6888, 251, 60, 2, 25, "Output"],
+Cell[6951, 255, 430, 13, 29, "Output"],
+Cell[7384, 270, 444, 13, 29, "Output"],
+Cell[7831, 285, 905, 27, 29, "Output"]
+}, Open  ]],
+Cell[8751, 315, 101, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8877, 322, 335, 7, 90, "Input"],
+Cell[9215, 331, 1187, 35, 33, "Output"],
+Cell[10405, 368, 1750, 49, 33, "Output"],
+Cell[12158, 419, 1687, 48, 33, "Output"],
+Cell[13848, 469, 1616, 44, 33, "Output"],
+Cell[15467, 515, 1590, 43, 33, "Output"]
+}, Open  ]],
+Cell[17072, 561, 66, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[17163, 565, 325, 6, 90, "Input"],
+Cell[17491, 573, 63, 2, 25, "Output"],
+Cell[17557, 577, 63, 2, 25, "Output"],
+Cell[17623, 581, 63, 2, 25, "Output"],
+Cell[17689, 585, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

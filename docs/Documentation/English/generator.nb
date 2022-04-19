@@ -1,0 +1,655 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     11328,        494]*)
+(*NotebookOutlinePosition[     11960,        516]*)
+(*  CellTagsIndexPosition[     11916,        512]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+Cell[TextData[{
+  "Automatic generation of BrowserCategories.m file for sneg documentation.\n\
+Reference pages for sneg commands are contained in separate .nb files.\nPart \
+of ",
+  ButtonBox["Package sneg.",
+    ButtonData:>{
+      URL[ "http://nrgljubljana.ijs.si/sneg"], None},
+    ButtonStyle->"Hyperlink"],
+  " \nRok Zitko, rok.zitko@ijs.si, March 2007"
+}], "Text"],
+
+Cell[BoxData[
+    \(\(snegdoc = "\<sneg documentation\>";\)\)], "Input"],
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      None\ indicates\ that\ the\ source\ files\ are\ located\ in\ the\ same\ \
+directory\ as\ the\ BrowserCategory . 
+          m\ \(\(file\)\(.\)\)\ \
+*) \)\(\[IndentingNewLine]\)\(mkbrowsercategory[l_] = 
+        BrowserCategory[snegdoc, None, l];\)\)\)], "Input"],
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      CopyTag \[Rule] 
+        None : \ 
+          the\ entire\ notebook\ specified\ is\ displayed\ *) \)\(\
+\[IndentingNewLine]\)\(\(mkrefitem[name_] := 
+        Item[name, name <> "\<.nb\>", 
+          CopyTag \[Rule] None, \[IndentingNewLine]IndexTag \[Rule] 
+            name];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(mkrefitem[name_] := 
+        Module[{l, p, tags}, \[IndentingNewLine]Print[
+            name]; \[IndentingNewLine]l = 
+            Import[name <> "\<.nb\>"]; \[IndentingNewLine]p = 
+            Position[l, CellTags \[Rule] _]; \[IndentingNewLine]tags = 
+            If[p == {}, \[IndentingNewLine]{name}, \[IndentingNewLine]Flatten[
+                Extract[l, p] /. 
+                  HoldPattern[CellTags \[Rule] i_] \[RuleDelayed] 
+                    i]\[IndentingNewLine]]; \[IndentingNewLine]Map[
+            Item[#, name <> "\<.nb\>", 
+                CopyTag \[Rule] 
+                  None, \[IndentingNewLine]IndexTag \[Rule] #] &, 
+            tags]\[IndentingNewLine]];\)\)\)\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      Files\ which\ do\ not\ contain\ reference\ pages\ for\ sneg\ \
+\(\(commands\)\(.\)\)\ *) \)\(\[IndentingNewLine]\)\(\(specialfiles = \
+{"\<generator.nb\>", "\<quickstart.nb\>"};\)\[IndentingNewLine]\
+\[IndentingNewLine]
+    \(mkreference[] = 
+        Module[{l}, \[IndentingNewLine]l = 
+            FileNames["\<*.nb\>"]; \[IndentingNewLine]l = 
+            Select[l, \(! MemberQ[
+                    specialfiles, #]\) &]; \[IndentingNewLine]l = 
+            Map[\(StringSplit[#, "\<.\>"]\)[\([1]\)] &, 
+              l]; \[IndentingNewLine]l = 
+            Map[mkrefitem, 
+              l]; \[IndentingNewLine]BrowserCategory["\<Reference guide\>", 
+            None, l]\[IndentingNewLine]];\)\)\)\)], "Input"],
+
+Cell[BoxData[
+    \("acmt"\)], "Print"],
+
+Cell[BoxData[
+    \("antikomutator"\)], "Print"],
+
+Cell[BoxData[
+    \("ap"\)], "Print"],
+
+Cell[BoxData[
+    \("applybasis"\)], "Print"],
+
+Cell[BoxData[
+    \("basis"\)], "Print"],
+
+Cell[BoxData[
+    \("bosonQ"\)], "Print"],
+
+Cell[BoxData[
+    \("braketrule"\)], "Print"],
+
+Cell[BoxData[
+    \("braketvc"\)], "Print"],
+
+Cell[BoxData[
+    \("bra"\)], "Print"],
+
+Cell[BoxData[
+    \("bzvc2bzop"\)], "Print"],
+
+Cell[BoxData[
+    \("chargecharge"\)], "Print"],
+
+Cell[BoxData[
+    \("cmt"\)], "Print"],
+
+Cell[BoxData[
+    \("conj"\)], "Print"],
+
+Cell[BoxData[
+    \("contraction"\)], "Print"],
+
+Cell[BoxData[
+    \("dd"\)], "Print"],
+
+Cell[BoxData[
+    \("decomposevc"\)], "Print"],
+
+Cell[BoxData[
+    \("direct"\)], "Print"],
+
+Cell[BoxData[
+    \("dropemptysubspaces"\)], "Print"],
+
+Cell[BoxData[
+    \("fermionQ"\)], "Print"],
+
+Cell[BoxData[
+    \("goodopQ"\)], "Print"],
+
+Cell[BoxData[
+    \("grassmanQ"\)], "Print"],
+
+Cell[BoxData[
+    \("halfintegerQ"\)], "Print"],
+
+Cell[BoxData[
+    \("hamiltonian"\)], "Print"],
+
+Cell[BoxData[
+    \("holehop"\)], "Print"],
+
+Cell[BoxData[
+    \("hop"\)], "Print"],
+
+Cell[BoxData[
+    \("hubbard"\)], "Print"],
+
+Cell[BoxData[
+    \("inner"\)], "Print"],
+
+Cell[BoxData[
+    \("invertspin"\)], "Print"],
+
+Cell[BoxData[
+    \("isannihilation"\)], "Print"],
+
+Cell[BoxData[
+    \("isnumericQ"\)], "Print"],
+
+Cell[BoxData[
+    \("isospinxyz"\)], "Print"],
+
+Cell[BoxData[
+    \("komutator"\)], "Print"],
+
+Cell[BoxData[
+    \("majoranaQ"\)], "Print"],
+
+Cell[BoxData[
+    \("makeallmatricesbzvc"\)], "Print"],
+
+Cell[BoxData[
+    \("makebasis"\)], "Print"],
+
+Cell[BoxData[
+    \("makematricesbzop"\)], "Print"],
+
+Cell[BoxData[
+    \("manyisospin"\)], "Print"],
+
+Cell[BoxData[
+    \("manyspin"\)], "Print"],
+
+Cell[BoxData[
+    \("maskOp"\)], "Print"],
+
+Cell[BoxData[
+    \("matrixrepresentationvc"\)], "Print"],
+
+Cell[BoxData[
+    \("mcross"\)], "Print"],
+
+Cell[BoxData[
+    \("mergebasis"\)], "Print"],
+
+Cell[BoxData[
+    \("nambu"\)], "Print"],
+
+Cell[BoxData[
+    \("nc"\)], "Print"],
+
+Cell[BoxData[
+    \("ndx2op"\)], "Print"],
+
+Cell[BoxData[
+    \("normalorder"\)], "Print"],
+
+Cell[BoxData[
+    \("normvc"\)], "Print"],
+
+Cell[BoxData[
+    \("number"\)], "Print"],
+
+Cell[BoxData[
+    \("op2ndx"\)], "Print"],
+
+Cell[BoxData[
+    \("operatorQ"\)], "Print"],
+
+Cell[BoxData[
+    \("ordering"\)], "Print"],
+
+Cell[BoxData[
+    \("orthogvc"\)], "Print"],
+
+Cell[BoxData[
+    \("outer"\)], "Print"],
+
+Cell[BoxData[
+    \("PauliX"\)], "Print"],
+
+Cell[BoxData[
+    \("phononnumber"\)], "Print"],
+
+Cell[BoxData[
+    \("phononplus"\)], "Print"],
+
+Cell[BoxData[
+    \("pow"\)], "Print"],
+
+Cell[BoxData[
+    \("projector"\)], "Print"],
+
+Cell[BoxData[
+    \("qsbasis"\)], "Print"],
+
+Cell[BoxData[
+    \("qszbasis"\)], "Print"],
+
+Cell[BoxData[
+    \("quickISObasis"\)], "Print"],
+
+Cell[BoxData[
+    \("scalarproductop"\)], "Print"],
+
+Cell[BoxData[
+    \("scalarproductvc"\)], "Print"],
+
+Cell[BoxData[
+    \("SimplifyKD"\)], "Print"],
+
+Cell[BoxData[
+    \("snegAssuming"\)], "Print"],
+
+Cell[BoxData[
+    \("snegbosonoperators"\)], "Print"],
+
+Cell[BoxData[
+    \("snegcomplexconstants"\)], "Print"],
+
+Cell[BoxData[
+    \("snegfermionoperators"\)], "Print"],
+
+Cell[BoxData[
+    \("snegfreeindexes"\)], "Print"],
+
+Cell[BoxData[
+    \("sneggrassmanconstants"\)], "Print"],
+
+Cell[BoxData[
+    \("snegmajoranaoperators"\)], "Print"],
+
+Cell[BoxData[
+    \("snegold2newrules"\)], "Print"],
+
+Cell[BoxData[
+    \("snegOrderedQ"\)], "Print"],
+
+Cell[BoxData[
+    \("snegrealconstants"\)], "Print"],
+
+Cell[BoxData[
+    \("snegSeries"\)], "Print"],
+
+Cell[BoxData[
+    \("SnegSimplify"\)], "Print"],
+
+Cell[BoxData[
+    \("spinbra"\)], "Print"],
+
+Cell[BoxData[
+    \("spinfliphop"\)], "Print"],
+
+Cell[BoxData[
+    \("spinketbraX"\)], "Print"],
+
+Cell[BoxData[
+    \("spinmatrixX"\)], "Print"],
+
+Cell[BoxData[
+    \("spinspin"\)], "Print"],
+
+Cell[BoxData[
+    \("spinspinsymmetric"\)], "Print"],
+
+Cell[BoxData[
+    \("spinxyz"\)], "Print"],
+
+Cell[BoxData[
+    \("sumCollect"\)], "Print"],
+
+Cell[BoxData[
+    \("sumExpand"\)], "Print"],
+
+Cell[BoxData[
+    \("sumFullSimplify"\)], "Print"],
+
+Cell[BoxData[
+    \("sum"\)], "Print"],
+
+Cell[BoxData[
+    \("sumSimplifyKD"\)], "Print"],
+
+Cell[BoxData[
+    \("sumThread"\)], "Print"],
+
+Cell[BoxData[
+    \("superkomutator"\)], "Print"],
+
+Cell[BoxData[
+    \("transformbasis"\)], "Print"],
+
+Cell[BoxData[
+    \("transformQStoIS"\)], "Print"],
+
+Cell[BoxData[
+    \("transformtoLR"\)], "Print"],
+
+Cell[BoxData[
+    \("transformtoPH"\)], "Print"],
+
+Cell[BoxData[
+    \("twohop"\)], "Print"],
+
+Cell[BoxData[
+    \("vacuum"\)], "Print"],
+
+Cell[BoxData[
+    \("VACUUM"\)], "Print"],
+
+Cell[BoxData[
+    \("vc2ops"\)], "Print"],
+
+Cell[BoxData[
+    \("vc"\)], "Print"],
+
+Cell[BoxData[
+    \("vev"\)], "Print"],
+
+Cell[BoxData[
+    \("VMV"\)], "Print"],
+
+Cell[BoxData[
+    \("wick"\)], "Print"],
+
+Cell[BoxData[
+    \("zeroonvac"\)], "Print"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(\(mkintro[l_] = 
+        Module[{}, \[IndentingNewLine]BrowserCategory["\<Introduction\>", 
+            None, l]\[IndentingNewLine]];\)\)], "Input"],
+
+Cell[BoxData[
+    \(\(quickstart = 
+        Item["\<Quick start\>", "\<quickstart.nb\>", CopyTag \[Rule] None, 
+          IndexTag -> "\<snegquickstart\>"];\)\)], "Input"],
+
+Cell[BoxData[
+    \(\(res = 
+        mkbrowsercategory[{\[IndentingNewLine]mkintro[{quickstart}], \
+\[IndentingNewLine]mkreference[]\[IndentingNewLine]}];\)\)], "Input"],
+
+Cell[BoxData[
+    \(Put[res, "\<BrowserCategories.m\>"]\)], "Input"],
+
+Cell["", "Text",
+  Editable->False,
+  Selectable->False,
+  CellFrame->{{0, 0}, {0, 2}},
+  ShowCellBracket->False,
+  CellMargins->{{0, 0}, {1, 1}},
+  CellElementSpacings->{"CellMinHeight"->1},
+  CellFrameMargins->False,
+  CellFrameColor->RGBColor[0, 0, 1],
+  CellSize->{Inherited, 4}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(mkrefitem["\<spinxyz\>"]\)], "Input"],
+
+Cell[BoxData[
+    \("spinxyz"\)], "Print"],
+
+Cell[BoxData[
+    \({Item["spinx", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinx"], 
+      Item["spiny", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spiny"], 
+      Item["spinz", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinz"], 
+      Item["spinxyz", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinxyz"], 
+      Item["spinss", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinss"], 
+      Item["spinall", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinall"], 
+      Item["spinplus", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinplus"], 
+      Item["spinminus", "spinxyz.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "spinminus"]}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(mkrefitem["\<number\>"]\)], "Input"],
+
+Cell[BoxData[
+    \("number"\)], "Print"],
+
+Cell[BoxData[
+    \({Item["number", "number.nb", CopyTag \[Rule] None, 
+        IndexTag \[Rule] "number"]}\)], "Output"]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 304}, {Automatic, 188}}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+Cell[1754, 51, 370, 9, 86, "Text"],
+Cell[2127, 62, 72, 1, 27, "Input"],
+Cell[2202, 65, 297, 6, 59, "Input"],
+Cell[2502, 73, 1057, 21, 283, "Input"],
+
+Cell[CellGroupData[{
+Cell[3584, 98, 748, 15, 187, "Input"],
+Cell[4335, 115, 39, 1, 23, "Print"],
+Cell[4377, 118, 48, 1, 23, "Print"],
+Cell[4428, 121, 37, 1, 23, "Print"],
+Cell[4468, 124, 45, 1, 23, "Print"],
+Cell[4516, 127, 40, 1, 23, "Print"],
+Cell[4559, 130, 41, 1, 23, "Print"],
+Cell[4603, 133, 45, 1, 23, "Print"],
+Cell[4651, 136, 43, 1, 23, "Print"],
+Cell[4697, 139, 38, 1, 23, "Print"],
+Cell[4738, 142, 44, 1, 23, "Print"],
+Cell[4785, 145, 47, 1, 23, "Print"],
+Cell[4835, 148, 38, 1, 23, "Print"],
+Cell[4876, 151, 39, 1, 23, "Print"],
+Cell[4918, 154, 46, 1, 23, "Print"],
+Cell[4967, 157, 37, 1, 23, "Print"],
+Cell[5007, 160, 46, 1, 23, "Print"],
+Cell[5056, 163, 41, 1, 23, "Print"],
+Cell[5100, 166, 53, 1, 23, "Print"],
+Cell[5156, 169, 43, 1, 23, "Print"],
+Cell[5202, 172, 42, 1, 23, "Print"],
+Cell[5247, 175, 44, 1, 23, "Print"],
+Cell[5294, 178, 47, 1, 23, "Print"],
+Cell[5344, 181, 46, 1, 23, "Print"],
+Cell[5393, 184, 42, 1, 23, "Print"],
+Cell[5438, 187, 38, 1, 23, "Print"],
+Cell[5479, 190, 42, 1, 23, "Print"],
+Cell[5524, 193, 40, 1, 23, "Print"],
+Cell[5567, 196, 45, 1, 23, "Print"],
+Cell[5615, 199, 49, 1, 23, "Print"],
+Cell[5667, 202, 45, 1, 23, "Print"],
+Cell[5715, 205, 45, 1, 23, "Print"],
+Cell[5763, 208, 44, 1, 23, "Print"],
+Cell[5810, 211, 44, 1, 23, "Print"],
+Cell[5857, 214, 54, 1, 23, "Print"],
+Cell[5914, 217, 44, 1, 23, "Print"],
+Cell[5961, 220, 51, 1, 23, "Print"],
+Cell[6015, 223, 46, 1, 23, "Print"],
+Cell[6064, 226, 43, 1, 23, "Print"],
+Cell[6110, 229, 41, 1, 23, "Print"],
+Cell[6154, 232, 57, 1, 23, "Print"],
+Cell[6214, 235, 41, 1, 23, "Print"],
+Cell[6258, 238, 45, 1, 23, "Print"],
+Cell[6306, 241, 40, 1, 23, "Print"],
+Cell[6349, 244, 37, 1, 23, "Print"],
+Cell[6389, 247, 41, 1, 23, "Print"],
+Cell[6433, 250, 46, 1, 23, "Print"],
+Cell[6482, 253, 41, 1, 23, "Print"],
+Cell[6526, 256, 41, 1, 23, "Print"],
+Cell[6570, 259, 41, 1, 23, "Print"],
+Cell[6614, 262, 44, 1, 23, "Print"],
+Cell[6661, 265, 43, 1, 23, "Print"],
+Cell[6707, 268, 43, 1, 23, "Print"],
+Cell[6753, 271, 40, 1, 23, "Print"],
+Cell[6796, 274, 41, 1, 23, "Print"],
+Cell[6840, 277, 47, 1, 23, "Print"],
+Cell[6890, 280, 45, 1, 23, "Print"],
+Cell[6938, 283, 38, 1, 23, "Print"],
+Cell[6979, 286, 44, 1, 23, "Print"],
+Cell[7026, 289, 42, 1, 23, "Print"],
+Cell[7071, 292, 43, 1, 23, "Print"],
+Cell[7117, 295, 48, 1, 23, "Print"],
+Cell[7168, 298, 50, 1, 23, "Print"],
+Cell[7221, 301, 50, 1, 23, "Print"],
+Cell[7274, 304, 45, 1, 23, "Print"],
+Cell[7322, 307, 47, 1, 23, "Print"],
+Cell[7372, 310, 53, 1, 23, "Print"],
+Cell[7428, 313, 55, 1, 23, "Print"],
+Cell[7486, 316, 55, 1, 23, "Print"],
+Cell[7544, 319, 50, 1, 23, "Print"],
+Cell[7597, 322, 56, 1, 23, "Print"],
+Cell[7656, 325, 56, 1, 23, "Print"],
+Cell[7715, 328, 51, 1, 23, "Print"],
+Cell[7769, 331, 47, 1, 23, "Print"],
+Cell[7819, 334, 52, 1, 23, "Print"],
+Cell[7874, 337, 45, 1, 23, "Print"],
+Cell[7922, 340, 47, 1, 23, "Print"],
+Cell[7972, 343, 42, 1, 23, "Print"],
+Cell[8017, 346, 46, 1, 23, "Print"],
+Cell[8066, 349, 46, 1, 23, "Print"],
+Cell[8115, 352, 46, 1, 23, "Print"],
+Cell[8164, 355, 43, 1, 23, "Print"],
+Cell[8210, 358, 52, 1, 23, "Print"],
+Cell[8265, 361, 42, 1, 23, "Print"],
+Cell[8310, 364, 45, 1, 23, "Print"],
+Cell[8358, 367, 44, 1, 23, "Print"],
+Cell[8405, 370, 50, 1, 23, "Print"],
+Cell[8458, 373, 38, 1, 23, "Print"],
+Cell[8499, 376, 48, 1, 23, "Print"],
+Cell[8550, 379, 44, 1, 23, "Print"],
+Cell[8597, 382, 49, 1, 23, "Print"],
+Cell[8649, 385, 49, 1, 23, "Print"],
+Cell[8701, 388, 50, 1, 23, "Print"],
+Cell[8754, 391, 48, 1, 23, "Print"],
+Cell[8805, 394, 48, 1, 23, "Print"],
+Cell[8856, 397, 41, 1, 23, "Print"],
+Cell[8900, 400, 41, 1, 23, "Print"],
+Cell[8944, 403, 41, 1, 23, "Print"],
+Cell[8988, 406, 41, 1, 23, "Print"],
+Cell[9032, 409, 37, 1, 23, "Print"],
+Cell[9072, 412, 38, 1, 23, "Print"],
+Cell[9113, 415, 38, 1, 23, "Print"],
+Cell[9154, 418, 39, 1, 23, "Print"],
+Cell[9196, 421, 44, 1, 23, "Print"]
+}, Open  ]],
+Cell[9255, 425, 168, 3, 59, "Input"],
+Cell[9426, 430, 171, 3, 43, "Input"],
+Cell[9600, 435, 169, 3, 75, "Input"],
+Cell[9772, 440, 68, 1, 27, "Input"],
+Cell[9843, 443, 283, 9, 8, "Text"],
+
+Cell[CellGroupData[{
+Cell[10151, 456, 57, 1, 27, "Input"],
+Cell[10211, 459, 42, 1, 23, "Print"],
+Cell[10256, 462, 795, 16, 171, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[11088, 483, 56, 1, 27, "Input"],
+Cell[11147, 486, 41, 1, 23, "Print"],
+Cell[11191, 489, 121, 2, 27, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

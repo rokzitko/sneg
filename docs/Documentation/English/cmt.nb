@@ -1,0 +1,432 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      8810,        333]*)
+(*NotebookOutlinePosition[      9480,        356]*)
+(*  CellTagsIndexPosition[      9436,        352]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["cmt", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["cmt[op1[i1], op2[i2]]", "MR"],
+  " defines the value of the commutator between bosonic operators ",
+  StyleBox["op1[i1]", "MR"],
+  " and ",
+  StyleBox["op2[i2]", "MR"],
+  ". The default behavior is to return the canonical commutator for bosonic \
+operators."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By default, ",
+  StyleBox["cmt", "MR"],
+  " returns the value of the commutator as a product of ",
+  ButtonBox["KroneckerDelta",
+    ButtonStyle->"RefGuideLink"],
+  " expressions for the pairs of indexes of the the operators."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare]  If needed, the user may override the default \
+behavior. This might be required, for example, if commutation relations in \
+terms of ",
+  ButtonBox["DiracDelta",
+    ButtonStyle->"RefGuideLink"],
+  " are preferred."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] It is assumed that operators with different symbols \
+(",
+  StyleBox["op", "MR"],
+  ") commute."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["nc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["komutator",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Let ",
+  StyleBox["a", "TI"],
+  " be a bosonic operator with canonical commutation rules (the default)."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegbosonoperators[a];\)\), "\[IndentingNewLine]", 
+    \(cmt[a[CR], a[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(cmt[a[AN], a[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(cmt[a[CR], a[AN]] \[Equal] \(-1\)\), "\[IndentingNewLine]", 
+    \(cmt[a[AN], a[CR]] \[Equal] 1\)}], "Input",
+  CellLabel->"In[2]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell["\<\
+The same values are obtained when the operator commutators are \
+explicitly calculated.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(komutator[a[CR], a[CR]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(komutator[a[AN], a[AN]] \[Equal] 0\), "\[IndentingNewLine]", 
+    \(komutator[a[CR], a[AN]] \[Equal] \(-1\)\), "\[IndentingNewLine]", 
+    \(komutator[a[AN], a[CR]] \[Equal] 1\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell["\<\
+The value of the commutator is taken  into account when reordering \
+is performed.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(nc[a[AN], a[CR]]\)], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    RowBox[{"1", "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^"\[Dagger]"\),
+              Superscript[ a, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[11]="]
+}, Open  ]],
+
+Cell["\<\
+cmt uses KroneckerDelta to return the value of the anticommutator \
+for generic indexes.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(cmt[a[CR, k1], a[AN, k1]]\), "\[IndentingNewLine]", 
+    \(cmt[a[CR, k1], a[AN, k2]]\)}], "Input",
+  CellLabel->"In[12]:="],
+
+Cell[BoxData[
+    \(\(-1\)\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    RowBox[{"-", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[13]="]
+}, Open  ]],
+
+Cell["\<\
+Commutators with KroneckerDelta are used in operator \
+reordering.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(nc[a[AN, k1], a[CR, k2]]\)], "Input",
+  CellLabel->"In[14]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\_k2\%\("\[Dagger]"\)\),
+              Subsuperscript[ a, 
+                RowBox[ {k2}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\_k1\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ a, 
+                RowBox[ {k1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[14]="]
+}, Open  ]],
+
+Cell["Two different bosonic operators always commute.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegbosonoperators[d];\)\), "\[IndentingNewLine]", 
+    \(komutator[a[CR], d[CR]] \[Equal] 0\), "\n", 
+    \(komutator[a[AN], d[AN]] \[Equal] 0\), "\n", 
+    \(komutator[a[CR], d[AN]] \[Equal] 0\), "\n", 
+    \(komutator[a[AN], d[CR]] \[Equal] 0\)}], "Input",
+  CellLabel->"In[15]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[17]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[18]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[19]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 303}, {Automatic, 237}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 25, 0, 38, "ObjectName"],
+Cell[1804, 55, 326, 9, 64, "Usage"],
+Cell[2133, 66, 279, 7, 40, "Notes"],
+Cell[2415, 75, 269, 7, 40, "Notes"],
+Cell[2687, 84, 149, 5, 24, "Notes"],
+Cell[2839, 91, 254, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3118, 106, 42, 0, 38, "ExampleSection"],
+Cell[3163, 108, 32, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3220, 112, 75, 2, 26, "Input"],
+Cell[3298, 116, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3416, 121, 142, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3583, 129, 338, 6, 90, "Input"],
+Cell[3924, 137, 62, 2, 25, "Output"],
+Cell[3989, 141, 62, 2, 25, "Output"],
+Cell[4054, 145, 62, 2, 25, "Output"],
+Cell[4119, 149, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[4196, 154, 118, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4339, 161, 302, 5, 74, "Input"],
+Cell[4644, 168, 62, 2, 25, "Output"],
+Cell[4709, 172, 62, 2, 25, "Output"],
+Cell[4774, 176, 62, 2, 25, "Output"],
+Cell[4839, 180, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[4917, 185, 113, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5055, 192, 74, 2, 26, "Input"],
+Cell[5132, 196, 700, 21, 29, "Output"]
+}, Open  ]],
+Cell[5847, 220, 119, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5991, 227, 144, 3, 42, "Input"],
+Cell[6138, 232, 65, 2, 25, "Output"],
+Cell[6206, 236, 474, 14, 29, "Output"]
+}, Open  ]],
+Cell[6695, 253, 97, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6817, 260, 82, 2, 26, "Input"],
+Cell[6902, 264, 1187, 35, 33, "Output"]
+}, Open  ]],
+Cell[8104, 302, 70, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8199, 306, 307, 6, 90, "Input"],
+Cell[8509, 314, 63, 2, 25, "Output"],
+Cell[8575, 318, 63, 2, 25, "Output"],
+Cell[8641, 322, 63, 2, 25, "Output"],
+Cell[8707, 326, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

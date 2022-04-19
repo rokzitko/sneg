@@ -1,0 +1,38 @@
+I have written a Mathematica package "SNEG" for performing calculations
+using the operators of the second quantization formalism of quantum
+mechanics (with an emphasis on the anti-commuting fermionic operators). I
+have used the package extensively in the past years to solve various
+problems in theoretical condensed-matter and many-particle physics, so it
+has been well tested. Working with the package is especially nice when used
+in conjunction with the Notation package to obtain answers in the form that
+most physicists are familiar with. The package is freely (GPL license)
+available from
+
+http://auger.ijs.si/ljubljana/sneg
+
+Apart from defining a non-commutative multiplication with automatic
+reordering of operators in the conventional normal ordered products, the
+package has a number of additional features, such as:
+- utility functions to generate various operator expressions (electron
+  number, spin operators, hopping operators,...);
+- manipulations of operator expressions: canonic conjugation, spin inversion;
+- calculations of vacuum expectation values;
+- occupation-number representations of states;
+- Dirac's bra-ket notation;
+- support for summation over dummy indexes and simplification of such
+  expressions;
+- generation of basis states on lattices with well defined particle
+  number and spin, well defined isospin (axial charge) and spin, etc.;
+- simplifications using the Wick's theorem.
+
+Perhaps the nicest thing about the package is that it takes away the dreaded
+minus-sign errors when commuting the fermionic operators in complex operator
+expressions. In the past, "SNEG" has been applied to perform exact
+diagonalizations on Hubbard clusters, calculations of commutators of complex
+expressions, perturbation theory to higher orders, numerical renormalization
+group (NRG) calculations, etc.  I hope the package will be useful to the
+community.
+
+Rok Zitko, rok.zitko@ijs.si
+Jozef Stefan Institute
+Ljubljana, Slovenia

@@ -1,0 +1,684 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     13803,        533]*)
+(*NotebookOutlinePosition[     14494,        557]*)
+(*  CellTagsIndexPosition[     14450,        553]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["conj", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["conj[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " conjugates an expressions."
+}], "Usage"],
+
+Cell["\<\
+\[FilledSmallSquare] For fermionic operators, Hermitian conjugation \
+is performed.\
+\>", "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] For complex numbers, complex conjugation is \
+performed.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] For Grassman numbers, conjugation interchanges z and \
+",
+  Cell[BoxData[
+      \(TraditionalForm\`\(z\&-\)\)]],
+  "."
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] Real numbers, integers and indexes are \
+invariant under conjugation.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["CR",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["AN",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["iscreation",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["isannihilation",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["a", "TI"],
+  ", ",
+  StyleBox["b", "TI"],
+  ", ",
+  StyleBox["c", "TI"],
+  " to be fermionic operators, ",
+  StyleBox["x", "TI"],
+  " a real number, ",
+  StyleBox["z", "TI"],
+  " a complex number, ",
+  StyleBox["i", "TI"],
+  " an integer, ",
+  StyleBox["k", "TI"],
+  " an index and ",
+  StyleBox["g", "TI"],
+  " a Grassman number."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[a, b, c];\)\), "\[IndentingNewLine]", 
+    \(\(snegrealconstants[x];\)\), "\[IndentingNewLine]", 
+    \(\(snegcomplexconstants[z];\)\), "\[IndentingNewLine]", 
+    \(\(snegintegerconstants[i];\)\), "\[IndentingNewLine]", 
+    \(\(snegfreeindexes[k];\)\), "\[IndentingNewLine]", 
+    \(\(sneggrassmanconstants[g];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Repeated conjugation is automatically eliminated.", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(conj[conj[a]] \[Equal] a\)], "Input",
+  CellLabel->"In[8]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]],
+
+Cell["The order of operators is reversed under the conjugation", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(conj[nc[a, b]] \[Equal] nc[conj[b], conj[a]]\)], "Input",
+  CellLabel->"In[9]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[9]="]
+}, Open  ]],
+
+Cell["\"Linearity\"", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[a + b] \[Equal] conj[a] + conj[b]\), "\[IndentingNewLine]", 
+    \(conj[2  a] \[Equal] 2  conj[a]\), "\[IndentingNewLine]", 
+    \(conj[x\ a] \[Equal] x\ conj[a]\), "\[IndentingNewLine]", 
+    \(conj[i\ a] \[Equal] i\ conj[a]\), "\[IndentingNewLine]", 
+    \(conj[z\ a] \[Equal] Conjugate[z]\ conj[a]\)}], "Input",
+  CellLabel->"In[10]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[14]="]
+}, Open  ]],
+
+Cell["Fermionic operators", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[c[CR]] \[Equal] c[AN]\), "\[IndentingNewLine]", 
+    \(conj[c[AN]] \[Equal] c[CR]\), "\[IndentingNewLine]", 
+    \(conj[c[CR, k]] \[Equal] c[AN, k]\), "\[IndentingNewLine]", 
+    \(conj[c[CR, k, \[Sigma]]] \[Equal] c[AN, k, \[Sigma]]\)}], "Input",
+  CellLabel->"In[15]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[17]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[18]="]
+}, Open  ]],
+
+Cell["Real numbers", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[1]\), "\[IndentingNewLine]", 
+    \(conj[\[Pi]]\), "\[IndentingNewLine]", 
+    \(conj[x]\), "\[IndentingNewLine]", 
+    \(conj[Sin[x]]\), "\[IndentingNewLine]", 
+    \(conj[Exp[x]]\)}], "Input",
+  CellLabel->"In[19]:="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    \(\[Pi]\)], "Output",
+  CellLabel->"Out[20]="],
+
+Cell[BoxData[
+    \(x\)], "Output",
+  CellLabel->"Out[21]="],
+
+Cell[BoxData[
+    \(Sin[x]\)], "Output",
+  CellLabel->"Out[22]="],
+
+Cell[BoxData[
+    \(\[ExponentialE]\^x\)], "Output",
+  CellLabel->"Out[23]="]
+}, Open  ]],
+
+Cell["Complex numbers", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[I]\), "\[IndentingNewLine]", 
+    \(conj[z]\), "\[IndentingNewLine]", 
+    \(conj[Sin[z]]\), "\[IndentingNewLine]", 
+    \(conj[Exp[z]]\)}], "Input",
+  CellLabel->"In[24]:="],
+
+Cell[BoxData[
+    \(\(-\[ImaginaryI]\)\)], "Output",
+  CellLabel->"Out[24]="],
+
+Cell[BoxData[
+    \(Conjugate[z]\)], "Output",
+  CellLabel->"Out[25]="],
+
+Cell[BoxData[
+    \(Conjugate[Sin[z]]\)], "Output",
+  CellLabel->"Out[26]="],
+
+Cell[BoxData[
+    \(\[ExponentialE]\^Conjugate[z]\)], "Output",
+  CellLabel->"Out[27]="]
+}, Open  ]],
+
+Cell["Integers", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(conj[i]\)], "Input",
+  CellLabel->"In[28]:="],
+
+Cell[BoxData[
+    \(i\)], "Output",
+  CellLabel->"Out[28]="]
+}, Open  ]],
+
+Cell["\<\
+Indexes are not assumed to be real by default, but they can be made \
+so by defining the appropriate upvalue.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[k]\), "\[IndentingNewLine]", 
+    \(conj[KroneckerDelta[k, 0]]\), "\n", 
+    \(\(\(conj[UnitStep[k]]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(\(\(Conjugate[k] ^= k;\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(conj[k]\), "\[IndentingNewLine]", 
+    \(conj[KroneckerDelta[k, 0]]\), "\[IndentingNewLine]", 
+    \(conj[UnitStep[k]]\)}], "Input",
+  CellLabel->"In[29]:="],
+
+Cell[BoxData[
+    \(Conjugate[k]\)], "Output",
+  CellLabel->"Out[29]="],
+
+Cell[BoxData[
+    RowBox[{"Conjugate", "[", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(0  k\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], "]"}]], "Output",
+  CellLabel->"Out[30]="],
+
+Cell[BoxData[
+    RowBox[{"Conjugate", "[", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", "k", ")"}],
+        DisplayForm], "]"}]], "Output",
+  CellLabel->"Out[31]="],
+
+Cell[BoxData[
+    \(k\)], "Output",
+  CellLabel->"Out[33]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        SubscriptBox[
+          TagBox[
+            StyleBox["\<\"\[Delta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], \(0  k\)],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[34]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{
+        TagBox[
+          StyleBox["\<\"\[Theta]\"\>",
+            FontColor->RGBColor[0, 0.392187, 0]],
+          (
+          StyleForm[ #, FontColor -> RGBColor[ 
+            0.0, 0.39219300000000001, 0.0]]&)], "(", "k", ")"}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[35]="]
+}, Open  ]],
+
+Cell["Grassman numbers", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(g\), "\[IndentingNewLine]", 
+    \(conj[g]\), "\[IndentingNewLine]", 
+    \(nc[conj[g], g]\)}], "Input",
+  CellLabel->"In[36]:="],
+
+Cell[BoxData[
+    \(g\)], "Output",
+  CellLabel->"Out[36]="],
+
+Cell[BoxData[
+    \(g\&_\)], "Output",
+  CellLabel->"Out[37]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{"g", 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(g\&_\)}]}]], "Output",
+  CellLabel->"Out[38]="]
+}, Open  ]],
+
+Cell["VACUUM placeholder", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(VACUUM\), "\[IndentingNewLine]", 
+    \(conj[%]\), "\[IndentingNewLine]", 
+    \(nc[conj[VACUUM], VACUUM]\)}], "Input",
+  CellLabel->"In[39]:="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox["\<\"\[LeftDoubleBracketingBar]\[Diameter]\[RightAngleBracket]\
+\"\>",
+        FontColor->RGBColor[1, 0, 1]],
+      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 1]]&)]], "Output",
+  CellLabel->"Out[39]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox["\<\"\[LeftAngleBracket]\[Diameter]\[RightDoubleBracketingBar]\
+\"\>",
+        FontColor->RGBColor[1, 0, 1]],
+      (StyleForm[ #, FontColor -> RGBColor[ 1, 0, 1]]&)]], "Output",
+  CellLabel->"Out[40]="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[41]="]
+}, Open  ]],
+
+Cell["Dirac bras and kets", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[bra[l]] \[Equal] ket[l]\), "\[IndentingNewLine]", 
+    \(conj[ket[l]] \[Equal] bra[l]\)}], "Input",
+  CellLabel->"In[42]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[42]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[43]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[bra[m], op, ket[n]]\), "\[IndentingNewLine]", 
+    \(conj[%]\)}], "Input",
+  CellLabel->"In[44]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[LeftAngleBracket]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "m", 
+          TagBox[
+            StyleBox["\<\"\[RightBracketingBar]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], "op", 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[LeftBracketingBar]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "n", 
+          TagBox[
+            StyleBox["\<\"\[RightAngleBracket]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[44]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[LeftAngleBracket]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "n", 
+          TagBox[
+            StyleBox["\<\"\[RightBracketingBar]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], \(conj[op]\), 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[LeftBracketingBar]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "m", 
+          TagBox[
+            StyleBox["\<\"\[RightAngleBracket]\"\>",
+              FontColor->RGBColor[1, 0.500008, 0]],
+            (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[45]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 273}, {168, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 26, 0, 38, "ObjectName"],
+Cell[1805, 55, 163, 6, 32, "Usage"],
+Cell[1971, 63, 108, 3, 24, "Notes"],
+Cell[2082, 68, 102, 3, 24, "Notes"],
+Cell[2187, 73, 171, 6, 26, "Notes"],
+Cell[2361, 81, 115, 3, 24, "Notes"],
+Cell[2479, 86, 315, 14, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2819, 104, 42, 0, 38, "ExampleSection"],
+Cell[2864, 106, 406, 18, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3295, 128, 448, 8, 122, "Input"],
+Cell[3746, 138, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3864, 143, 72, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3961, 147, 81, 2, 26, "Input"],
+Cell[4045, 151, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[4122, 156, 79, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4226, 160, 101, 2, 26, "Input"],
+Cell[4330, 164, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[4407, 169, 36, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4468, 173, 365, 6, 90, "Input"],
+Cell[4836, 181, 63, 2, 25, "Output"],
+Cell[4902, 185, 63, 2, 25, "Output"],
+Cell[4968, 189, 63, 2, 25, "Output"],
+Cell[5034, 193, 63, 2, 25, "Output"],
+Cell[5100, 197, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[5178, 202, 42, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5245, 206, 298, 5, 74, "Input"],
+Cell[5546, 213, 63, 2, 25, "Output"],
+Cell[5612, 217, 63, 2, 25, "Output"],
+Cell[5678, 221, 63, 2, 25, "Output"],
+Cell[5744, 225, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[5822, 230, 35, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5882, 234, 245, 6, 90, "Input"],
+Cell[6130, 242, 60, 2, 25, "Output"],
+Cell[6193, 246, 64, 2, 25, "Output"],
+Cell[6260, 250, 60, 2, 25, "Output"],
+Cell[6323, 254, 65, 2, 25, "Output"],
+Cell[6391, 258, 77, 2, 25, "Output"]
+}, Open  ]],
+Cell[6483, 263, 38, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6546, 267, 200, 5, 74, "Input"],
+Cell[6749, 274, 77, 2, 25, "Output"],
+Cell[6829, 278, 71, 2, 25, "Output"],
+Cell[6903, 282, 76, 2, 25, "Output"],
+Cell[6982, 286, 88, 2, 27, "Output"]
+}, Open  ]],
+Cell[7085, 291, 31, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[7141, 295, 65, 2, 26, "Input"],
+Cell[7209, 299, 60, 2, 25, "Output"]
+}, Open  ]],
+Cell[7284, 304, 140, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[7449, 311, 437, 10, 154, "Input"],
+Cell[7889, 323, 71, 2, 25, "Output"],
+Cell[7963, 327, 490, 14, 30, "Output"],
+Cell[8456, 343, 382, 11, 25, "Output"],
+Cell[8841, 356, 60, 2, 25, "Output"],
+Cell[8904, 360, 428, 13, 29, "Output"],
+Cell[9335, 375, 326, 10, 25, "Output"]
+}, Open  ]],
+Cell[9676, 388, 39, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[9740, 392, 150, 4, 58, "Input"],
+Cell[9893, 398, 60, 2, 25, "Output"],
+Cell[9956, 402, 63, 2, 25, "Output"],
+Cell[10022, 406, 190, 5, 25, "Output"]
+}, Open  ]],
+Cell[10227, 414, 41, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[10293, 418, 165, 4, 58, "Input"],
+Cell[10461, 424, 244, 6, 25, "Output"],
+Cell[10708, 432, 244, 6, 25, "Output"],
+Cell[10955, 440, 60, 2, 25, "Output"]
+}, Open  ]],
+Cell[11030, 445, 42, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[11097, 449, 150, 3, 42, "Input"],
+Cell[11250, 454, 63, 2, 25, "Output"],
+Cell[11316, 458, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[11416, 465, 123, 3, 42, "Input"],
+Cell[11542, 470, 1105, 28, 25, "Output"],
+Cell[12650, 500, 1113, 28, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

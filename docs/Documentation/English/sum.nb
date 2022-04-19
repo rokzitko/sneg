@@ -1,0 +1,681 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     17788,        563]*)
+(*NotebookOutlinePosition[     18479,        587]*)
+(*  CellTagsIndexPosition[     18435,        583]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["sum", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["sum[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox[",{", "MR"],
+  StyleBox["indexes", "TI"],
+  StyleBox["}]", "MR"],
+  " denotes a symbolic sum of an expression over indexes."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The indexes that will be used may be declared using \
+",
+  ButtonBox["snegfreeindexes",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell["\[FilledSmallSquare] See also: snegfreeindexes.", "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["\<\
+Load sneg and declare some quantities.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegfermionoperators[c]\), "\n", 
+    \(\(ordering[c] = SEA;\)\), "\n", 
+    \(snegfreeindexes[k, k1, 
+      k2, \[Sigma], \[Sigma]1, \[Sigma]2]\), "\[IndentingNewLine]", 
+    \(snegrealconstants[x]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["\<\
+Summation over no indexes is equivalent to the expression \
+itself\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(sum[expr, {}]\)], "Input",
+  CellLabel->"In[6]:="],
+
+Cell[BoxData[
+    \(expr\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell["The order of indexes is irrelevant", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(sum[expr, {k, \[Sigma]}] == sum[expr, {\[Sigma], k}]\)], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="]
+}, Open  ]],
+
+Cell["\<\
+Constants are factored out of the sum, but numeric expressions \
+which depend on the indexes are not.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(sum[2\ expr, {k, \[Sigma]}]\), "\[IndentingNewLine]", 
+    \(sum[x\ expr, {k, \[Sigma]}]\), "\[IndentingNewLine]", 
+    \(\(\(sum[UnitStep[x]\ expr, {k, \[Sigma]}]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(sum[k\ expr, {k, \[Sigma]}]\), "\n", 
+    \(sum[UnitStep[k]\ expr, {k, \[Sigma]}]\)}], "Input",
+  CellLabel->"In[8]:="],
+
+Cell[BoxData[
+    \(2\ sum[expr, {k, \[Sigma]}]\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(x\ sum[expr, {k, \[Sigma]}]\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    RowBox[{\(sum[expr, {k, \[Sigma]}]\), " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", "x", ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(expr\ sum[k, {k, \[Sigma]}]\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    RowBox[{"expr", " ", 
+      RowBox[{"sum", "[", 
+        RowBox[{
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Theta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], "(", "k", ")"}],
+            DisplayForm], ",", \({k, \[Sigma]}\)}], "]"}]}]], "Output",
+  CellLabel->"Out[12]="]
+}, Open  ]],
+
+Cell["Sums can be conjugated", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(sum[c[CR, k, \[Sigma]], {k, \[Sigma]}]\), "\[IndentingNewLine]", 
+    \(conj[%]\)}], "Input",
+  CellLabel->"In[13]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], ",", \({k, \[Sigma]}\)}], "]"}]], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k, \[Sigma]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], ",", \({k, \[Sigma]}\)}], "]"}]], "Output",
+  CellLabel->"Out[14]="]
+}, Open  ]],
+
+Cell["\<\
+Multiple sums in a single nc expression and repeated sums are \
+merged into a single sum over all of the indexes.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[sum[expr1, {k1, \[Sigma]1}], 
+      sum[expr2, {k2, \[Sigma]2}]]\), "\[IndentingNewLine]", 
+    \(sum[sum[expr, {k1, \[Sigma]1}], {k2, \[Sigma]2}]\)}], "Input",
+  CellLabel->"In[15]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{"expr1", 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], "expr2"}], 
+        ",", \({k1, k2, \[Sigma]1, \[Sigma]2}\)}], "]"}]], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    \(sum[expr, {k1, k2, \[Sigma]1, \[Sigma]2}]\)], "Output",
+  CellLabel->"Out[16]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "If two sums with conflicting index names are multiplied, and ",
+  StyleBox["sumAutoRename=True", "MR"],
+  " (this is the default), the indexes will be automatically renamed."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(nc[sum[expr1, {k}], sum[expr2, {k}]]\)], "Input",
+  CellLabel->"In[17]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{"expr1", 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], "expr2"}], 
+        ",", \({k, k1}\)}], "]"}]], "Output",
+  CellLabel->"Out[17]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "If there is an index name conflit and ",
+  StyleBox["sumAutoRename=False", "MR"],
+  ", a warning message will be emitted and no renaming is performed."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(sumAutoRename = False;\)\), "\[IndentingNewLine]", 
+    \(nc[sum[expr1, {k}], sum[expr2, {k}]]\), "\[IndentingNewLine]", 
+    \(sum[sum[expr, {k}], {k}]\)}], "Input",
+  CellLabel->"In[18]:="],
+
+Cell[BoxData[
+    \(snegsumJoin::"overlap" \(\(:\)\(\ \)\) 
+      "Overlapping indexes detected when joining \!\({k}\) and \
+\!\({k}\)."\)], "Message",
+  CellLabel->"From In[18]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{"expr1", 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], "expr2"}], 
+        ",", \({k, k}\)}], "]"}]], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    \(snegsumJoin::"overlap" \(\(:\)\(\ \)\) 
+      "Overlapping indexes detected when joining \!\({k}\) and \
+\!\({k}\)."\)], "Message",
+  CellLabel->"From In[18]:="],
+
+Cell[BoxData[
+    \(sum[expr, {k, k}]\)], "Output",
+  CellLabel->"Out[20]="]
+}, Open  ]],
+
+Cell["Kinetic energy Hamiltonian", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(SetAttributes[eps, NumericFunction]\), "\[IndentingNewLine]", 
+    \(\(Conjugate[eps[k_]] ^= eps[k];\)\), "\[IndentingNewLine]", 
+    \(H = sum[eps[k]\ number[c[k], \[Sigma]], {k, \[Sigma]}]\)}], "Input",
+  CellLabel->"In[21]:="],
+
+Cell[BoxData[
+    RowBox[{"sum", "[", 
+      RowBox[{
+        RowBox[{\(eps[k]\), " ", 
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_\(k  \[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k, \[Sigma]}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}]], "Output",
+  CellLabel->"Out[23]="]
+}, Open  ]],
+
+Cell["Simple commutators", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(komutator[H, c[CR, k1, \[Sigma]1]]\), "\[IndentingNewLine]", 
+    \(sumSimplify[%]\), "\[IndentingNewLine]", 
+    \(komutator[H, c[AN, k1, \[Sigma]1]]\), "\n", 
+    \(sumSimplify[%]\)}], "Input",
+  CellLabel->"In[24]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\<\"-\"\>", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          RowBox[{"sum", "[", 
+            RowBox[{
+              RowBox[{\(eps[k]\), " ", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\
+\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k  \
+\[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k, \[Sigma]}], ""],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}]}]}], 
+      "+", 
+      RowBox[{
+        RowBox[{"sum", "[", 
+          RowBox[{
+            RowBox[{\(eps[k]\), " ", 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+                      
+                      Subsuperscript[ c, 
+                        RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k  \
+\[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k, \[Sigma]}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[24]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", \(eps[k1]\)}]], "Output",
+  CellLabel->"Out[25]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\<\"-\"\>", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\(\*"\<\"\"\>"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k1, \[Sigma]1}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          RowBox[{"sum", "[", 
+            RowBox[{
+              RowBox[{\(eps[k]\), " ", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\
+\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k  \
+\[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k, \[Sigma]}], ""],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}]}]}], 
+      "+", 
+      RowBox[{
+        RowBox[{"sum", "[", 
+          RowBox[{
+            RowBox[{\(eps[k]\), " ", 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k  \[Sigma]\)\%\("\[Dagger]"\)\),
+                      
+                      Subsuperscript[ c, 
+                        RowBox[ {k, \[Sigma]}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k  \
+\[Sigma]\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k, \[Sigma]}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], ",", \({k, \[Sigma]}\)}], "]"}], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, \[Sigma]1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[26]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"-", 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, \[Sigma]1}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], " ", \(eps[k1]\)}]], "Output",
+  CellLabel->"Out[27]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{516, 599},
+WindowMargins->{{Automatic, 476}, {235, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 25, 0, 38, "ObjectName"],
+Cell[1804, 55, 243, 8, 32, "Usage"],
+Cell[2050, 65, 178, 6, 24, "Notes"],
+Cell[2231, 73, 64, 0, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2320, 77, 42, 0, 38, "ExampleSection"],
+Cell[2365, 79, 69, 2, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[2459, 85, 309, 7, 90, "Input"],
+Cell[2771, 94, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[2889, 99, 97, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3011, 106, 70, 2, 26, "Input"],
+Cell[3084, 110, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[3161, 115, 57, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3243, 119, 109, 2, 26, "Input"],
+Cell[3355, 123, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[3432, 128, 132, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3589, 135, 369, 7, 106, "Input"],
+Cell[3961, 144, 85, 2, 25, "Output"],
+Cell[4049, 148, 85, 2, 25, "Output"],
+Cell[4137, 152, 394, 11, 25, "Output"],
+Cell[4534, 165, 86, 2, 25, "Output"],
+Cell[4623, 169, 485, 13, 25, "Output"]
+}, Open  ]],
+Cell[5123, 185, 45, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5193, 189, 139, 3, 42, "Input"],
+Cell[5335, 194, 454, 12, 33, "Output"],
+Cell[5792, 208, 446, 12, 32, "Output"]
+}, Open  ]],
+Cell[6253, 223, 144, 3, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6422, 230, 209, 4, 42, "Input"],
+Cell[6634, 236, 270, 7, 25, "Output"],
+Cell[6907, 245, 100, 2, 25, "Output"]
+}, Open  ]],
+Cell[7022, 250, 212, 4, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[7259, 258, 94, 2, 26, "Input"],
+Cell[7356, 262, 247, 7, 25, "Output"]
+}, Open  ]],
+Cell[7618, 272, 189, 4, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[7832, 280, 214, 4, 58, "Input"],
+Cell[8049, 286, 181, 4, 31, "Message"],
+Cell[8233, 292, 246, 7, 25, "Output"],
+Cell[8482, 301, 181, 4, 31, "Message"],
+Cell[8666, 307, 76, 2, 25, "Output"]
+}, Open  ]],
+Cell[8757, 312, 49, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8831, 316, 250, 4, 58, "Input"],
+Cell[9084, 322, 998, 25, 33, "Output"]
+}, Open  ]],
+Cell[10097, 350, 41, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[10163, 354, 241, 5, 74, "Input"],
+Cell[10407, 361, 3258, 84, 58, "Output"],
+Cell[13668, 447, 400, 11, 33, "Output"],
+Cell[14071, 460, 3242, 84, 58, "Output"],
+Cell[17316, 546, 432, 12, 32, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

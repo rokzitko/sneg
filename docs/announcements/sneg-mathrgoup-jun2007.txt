@@ -1,0 +1,43 @@
+A new version of the Mathematica package SNEG for performing
+calculations using the operators of the second quantization formalism
+of quantum mechanics has been released. In the past, SNEG has been
+applied to perform exact diagonalizations on Hubbard clusters,
+calculations of commutators of complex expressions, perturbation
+theory and high-temperature expansions to higher orders, numerical
+renormalization group (NRG) calculations, etc. This version adds the
+following new functionality:
+
+- support for bosonic operators,
+- support for real (Majorana) fermionic operators,
+- support for anti-commuting Grassman variables, Berezin integration,
+  and fermionic coherent states,
+- automatic simplifications of expressions with exponential functions of
+  operators using Baker-Campbell-Hausdorff and Mendas-Milutinovic formulas,
+- improved automatic canonical ordering of fermionic operators in
+  the case of Fermi sea vacuum,
+- improved handling of symbolic sums and automatic renaming of dummy indexes
+  when name conflicts appear,
+- built-in support for pretty printing of operator expressions, obviating
+  the need to use the Notation package,
+- code for rewriting creation operator expressions in terms of higher-level
+  functions, such as number, hopping, spin, and electron-electron repulsion
+  terms,
+- various performance improvements (for example, the generation of
+  basis states with well-defined charge and spin quantum numbers is much
+  faster).
+
+Furthermore, the documentation has been significantly improved and is
+now browsable in the Mathematica help system. The package is freely
+(GPL license) available from
+
+http://auger.ijs.si/ljubljana/sneg
+
+
+Kind regards,
+Rok Zitko
+
+
+
+Rok Zitko, rok.zitko@ijs.si
+Jozef Stefan Institute
+Ljubljana, Slovenia

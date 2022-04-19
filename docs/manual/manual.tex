@@ -1,0 +1,343 @@
+\documentclass[a4paper,10pt,openany]{book}
+\usepackage{a4wide}
+\usepackage{times}
+\usepackage{amsmath, amssymb, graphicx}
+
+\usepackage[section]{placeins}
+\usepackage{booktabs}
+
+
+\begin{document}
+
+\title{SNEG\\
+{\it Mathematica package for calculations with non-commuting
+operators of the second quantization algebra}\\
+MANUAL
+}
+
+\author{Copyright (C) 2006 Rok Zitko, rok.zitko@ijs.si}
+\date{}
+
+\maketitle
+
+
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\vc}[1]{\mathbf{#1}}
+\newcommand{\ket}[1]{| #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 |}
+
+\section{Introduction}
+
+The purpose of this manual is to describe the notations and
+conventions used in the SNEG library. The manual is rather abstract
+and concise, it focuses more on the design of the library than on
+real-world examples; it is not a tutorial. The examples in directory
+{\tt examples/} should thus be studied in conjunction with reading
+this text. For details, one should consult the library source code,
+which is the only true reference.
+
+\section{Non-commuting multiplication}
+
+The cornerstone of SNEG is the non-commuting multiplication function {\tt
+nc}. {\it Mathematica}'s built-in multiplication function {\tt Times} has
+{\tt Orderless} attribute, which corresponds to the mathematical property of
+commutativity, therefore it is unsuitable. Another built-in function, {\tt
+NonCommutativeMultiply}, has {\tt Flat} attribute, which corresponds to the
+mathematical property of associativity. Non-commuting multiplication should
+indeed be associative; unfortunately, {\tt Flat} attribute also affects
+pattern matching, which proved to be undesirable for our purposes due to
+decreased computational performance.
+
+An operator string is a sequence of second-quantization operators,
+such as $c^\dag_{k\uparrow} c^\dag_{k\downarrow} c_{k\downarrow}
+c_{k\uparrow}$.  In SNEG, it would be represented as {\tt
+  nc[c[CR,k,UP], c[CR,k,DO], c[AN,k,DO], c[AN,k,UP]]} (see
+Section~\ref{ops} on operators).
+
+Function {\tt nc} has the following basic properties:
+
+\begin{itemize}
+\item Associativity: for example, $\nc[a, \nc[b, c]] = \nc[a, b, c]$,
+  where $a$, $b$ and $c$ are operators.
+
+\item Linearity: for example, $\nc[\alpha a+\beta b, c] = \alpha
+  \nc[a,c] + \beta \nc[b,c]$, where $\alpha$ and $\beta$ are numbers,
+  and $a$, $b$ and $c$ are operators.  Linearity implies
+  distributivity. Furthermore, numerical objects are factored out from
+  operator strings.
+
+\item Product of zero terms equals one, $\nc[]=1$.
+
+\item Product of one term equals the term itself, $\nc[a]=a$.
+\end{itemize}
+
+In addition, fermionic operators are automatically normal ordered by
+anti-commuting the creation operators to the left and annihilation
+operators to the right using the default (canonical) or user-defined
+anti-commutation relations (see Section~\ref{acmt} on anti-commutation
+relations and operator ordering). This produces equivalent results for
+equivalent strings of operators and enables automatic expression
+simplifications. This property is the {\tt nc} equivalent of argument
+sorting in the commuting multiplication function {\tt Times}.
+
+Dirac bras and kets (see Section~\ref{dirac} on Dirac notation) can
+also appear in {\tt nc} multiplication expressions. They are
+automatically shifted to the right-most side of operator expressions.
+The default behavior is that bras and kets commute with operators,
+i.e. it is assumed that they belong to a different Hilbert space than
+the one where the second quantization operators operate.
+
+
+\section{Operators}
+\label{ops}
+
+In SNEG, operators are indexed objects, for example {\tt c[t, sigma]}.
+The expression head, {\tt c}, is the operator name, while {\tt t,
+  sigma} are indeces which indicate, for example, if the operator is a
+creation or an annihilation operator, and the associated degrees of
+freedom such as spin. The operator character of {\tt c} must be
+declared using the {\tt snegfermionoperators} function: for example {\tt
+  snegfermionoprators[c]}.
+
+By convention, the first index indicates if the operator creates or
+annihilates a particle. Two constants are predefined for this purpose:
+{\tt CR=0} and {\tt AN=1}. Another convention is that the spin index
+in the case of $S=1/2$ operators is on the last position. For convenience,
+two further constants are predefined: {\tt UP=1} and {\tt DO=0}.
+
+For a single orbital, the creation operators are thus {\tt c[CR, UP]}
+and {\tt c[CR, DO]}, while the corresponding annihilation operators
+are {\tt c[AN, UP]} and {\tt c[AN, DO]}. (Conjugation can be performed
+using the function {\tt conj}.)
+
+
+\section{Numbers and numeric expressions}
+
+SNEG must be able to differentiate operators from numbers and other
+numeric expressions in order to factor out non-operator parts of
+operator expressions. Using {\tt snegrealconstants[x1, x2,...]}, {\tt
+  x1}, {\tt x},\ldots are defined to be real constants (invariant
+under conjugation). Using {\tt snegcomplexconstants[z1, z2,...]}, {\tt
+  z1}, {\tt z2},\ldots are defined to be complex constants.  Finally,
+using {\tt snegfreeindexes[k, sigma,...]} we notify SNEG that {\tt k},
+{\tt sigma},\ldots are indexes: this is required to factor out numerical
+expressions such as {\tt KroneckerDelta[k1,k2]} out of operator strings.
+
+
+\section{Anti-commutation relations and operator ordering}
+\label{acmt}
+
+Two properties of operators must be known to SNEG to perform automatic
+reorderings and simplifications. These are anti-commutation relations
+and the vacuum state. The first affects how the transpositions of
+operators are performed, while the latter determines the conventional
+ordering of operators in operator strings. 
+
+The default anti-commutation relation for fermionic operators are the
+usual cannonical anti-commutation relations,
+$\{c^\dag_\alpha,c_\beta\} = \delta_{\alpha\beta}$,
+$\{c^\dag_\alpha,c^\dag_\beta\} = 0$, and $\{c_\alpha,c_\beta\} = 0$.
+Operators with different heads simply anti-commute. The value of the
+$\{c^\dag_\alpha,c_\beta\}$ anti-commutator is defined by the funciton
+{\tt acmt[c, \{indexes1\}, \{indexes2\}}. The default behaviour is to
+literally compare indexes1 and indexes2: 1 is returned if they are equal,
+and 0 otherwise. 
+
+{\tt ordering[c]=SEA}, {\tt ordering[c]=EMPTY}.
+
+\section{Expression-building functions}
+
+SNEG includes several functions that can be used to build operator
+expressions such as occupation number, spin operator, spin-spin scalar
+product, charge-charge repulsion, etc.
+
+Unless otherwise specified, parameters to such functions are operators with
+their type ({\tt CR} or {\tt AN}) and spin indeces removed, for example {\tt
+c[]}. To build the occupancy (number) operator for orbital $c$, we therefore
+call {\tt number[c[]]}, which returns an expression equivalent to
+$\sum_\sigma c^\dag_\sigma c_\sigma$. The sum over spin is automatically
+performed. Additional indexes are given as arguments to {\tt c[]}, for
+example {\tt number[c[k]]} gives an expression corresponding to $\sum_\sigma
+c^dag_{k\sigma} c_{k\sigma}$, i.e. the occupancy operator for a state with
+wavenumber $k$.
+
+Functions in this group are:
+%
+\begin{itemize}
+\item {\tt number[c[], sigma]} - number of particles with spin {\tt sigma}
+in orbital $c$, i.e. $n_\sigma=c^\dag_\sigma c_\sigma$.
+
+\item {\tt number[c[]]} - charge density (number of particles),
+i.e. $n=n_\uparrow + n_\downarrow$.
+
+\item {\tt spinx[c[]]}, {\tt spiny[c[]]}, {\tt spinz[c[]]} - spin density,
+i.e. $\vc{S} = \sum_{\alpha\beta} c^\dag_\alpha (1/2 \boldsymbol{\sigma})
+c_\beta$, where $\alpha$ and $\beta$ are spin indexes and
+$\boldsymbol{\sigma}$ is the vector of Pauli matrices.
+
+\item {\tt spinplus[c[]]} and {\tt spinminus[c[]]} - spin raising and
+spin lowering operators, $S^+=S_x+I S_y$ and $S^-=S_x-I S_y$.
+
+\item {\tt spinss[c[]]} - the total spin operator squared, $\vc{S}^2$.
+
+\item {\tt spinspin[c[1], c[2]]} - scalar product of two spin operators
+for different (or equal) orbitals, $\vc{S}_1 \cdot \vc{S}_2$.
+Transverse and longitudinal parts of the scalar product are obtained
+using {\tt spinspinxy[c[1], c[2]]} and {\tt spinspinz[c[1], c[2]]}.
+
+\item {\tt hubbard[c[]]} - Hubbard's local electron-electron repulstion
+operator, $n_\uparrow n_\downarrow$.
+
+\item {\tt nambu[c[]]} - Nambu spinor, $\eta = \{ c^\dag_\uparrow, (-1)^n
+c_\downarrow \}$.
+
+\item {\tt isospin[c[]]} - isospin operator, $\vc{I} = \sum_{\alpha\beta}
+\eta_\alpha (1/2 \boldsymbol{\sigma}) \eta_\beta$, where $\eta$ is the Nambu
+spinor, $\alpha$ and $\beta$ are isospin indexes and $\boldsymbol{\sigma}$
+is the vector of Pauli matrices.
+
+\item {\tt hop[c[1], c[2]]} - electron hopping operator
+$\sum_\sigma (c^\dag_{1\sigma} c_{2\sigma} + c^\dag_{2\sigma} c_{1\sigma})$.
+
+\item {\tt twohop[c[1], c[2]]} - two-electron hopping operator
+$c^\dag_{1\downarrow} c^\dag_{1\uparrow} c_{2\downarrow} c_{2\uparrow}
++\text{H.c.}$.
+
+\item {\tt projection[c[], pr]} - projection operator.
+{\tt pr = PROJ0 | PROJUP | PROJDO | PROJ2 | PROJ1 | PROJ02}; {\tt PROJ0}
+projects to zero-occupancy states, $(1-n_\uparrow)(1-n_\downarrow)$, {\tt
+PROJUP} to spin-up states, $n_\uparrow(1-n_\downarrow)$, {\tt PROJDO} to
+spin-down states, $n_\downarrow(1-n_\uparrow)$, {\tt PROJ2} to
+double-occupancy states, $n_\uparrow n_\downarrow$, {\tt PROJ1} to
+single-occupancy states, and {\tt PROJ02} to zero- and double-occupancy
+states.
+
+\end{itemize}
+
+
+\section{Expression manipulation functions}
+
+Function {\tt invertspin} inverts the spins of all operators appearing
+in an expression. The convention that the spin index appears at the
+last position must be followed.
+
+Function {\tt conj} calculates the Hermitian conjugate of an expression.
+
+Function {\tt vev} calculates the vacuum expectation value of an operator
+expression; {\tt vevwick} does the same using Wick's theorem.
+
+Function {\tt wick} writes an operator string using normal ordered
+strings of operators and contractions (Wick's theorem).
+
+{\tt komutator[a,b]} calculates the commutator $[a,b]$, while
+{\tt antikomutator[a,b]} calculates the the anti-commutator $\{a,b\}$.
+
+
+\section{Dirac's bra and ket notation}
+\label{dirac}
+
+Dirac's bras $\langle i,j,\ldots|$ and kets $|i,j,\rangle$ are
+represented by expressions {\tt bra[i,j,...]}  and {\tt ket[i,j,...]},
+where {\tt i}, {\tt j},\ldots denote the quantum numbers that
+determine the corresponding state.
+
+By default, the values of brakets are determined using the Kronecker's
+delta, i.e. $\langle i_1, j_1,\ldots | i_2, j_2, \ldots =
+\delta_{i_1i_2} \delta_{j_1j_2} \ldots$.
+
+Bras and kets may appear in {\tt nc} strings. They do not commute,
+i.e. the braket $\langle i|j \rangle$ is different from the projector
+$|j\rangle \langle i|$.
+
+Different quantum numbers correspond to different argument positions.
+{\tt Null} placeholders can be used in place of unspecified quantum
+numbers. Neighboring bras and kets are ``concatenated'' if they have
+compatible patterns of {\tt Null} placeholders. For example: {\tt
+  nc[ket[i, Null], ket[Null,j]]=ket[i,j]}. From the mathematical point
+of view, this corresponds to a direct (tensor) product of states.
+
+
+\section{{\tt VACUUM} vector}
+
+Keyword {\tt VACUUM} corresponds to a vacuum state. By default, if an
+annihilation operator is applied to {\tt VACUUM} from the left, the
+result is 0. Correspondingly, if a creation operator is applied to
+{\tt conj[VACUUM]} from the right, the result is 0.
+
+By definition, {\tt nc[conj[VACUUM], VACUUM]=1}.
+
+
+\section{State vectors: operator and occupation number representations}
+
+A state can be represented either as the effect of string of creation
+operators on a (unspecified) vacuum state, or as a set of occupation
+numbers. If the vacuum is known, a one-to-one mapping between the two
+representations can be established.
+
+In the creation operator representation, a state is just an operator
+expression. For example, a one-particle state $1/\sqrt{2}
+(c^\dag_{1\uparrow} + c^\dag_{2\uparrow}) \ket{0}$ would be described as
+{\tt 1/Sqrt[2] (c[CR,1,UP]+c[CR,2,UP])}, a two-particle state
+$c^\dag_{1\uparrow} c^\dag_{1\downarrow}$ as {\tt nc[c[CR,1,UP],
+c[CR,1,DO]]}, etc.
+
+In the occupation number representation, a state is given by a vector of
+occupation numbers, {\tt vc[0,1,0,0,1,0,\dots]}. Each position in the vector
+corresponds to some orbital with a given spin. 
+
+A mapping between operators and positions in the vector is established using
+{\tt makebasis} function. For two orbitals, for example, the mapping is
+defined by {\tt makebasis[c[1], c[2]]}. Position 1 then corresponds to
+$c^\dag_{1\uparrow}$, position 2 to $c^\dag_{1\downarrow}$, position 3 to
+$c^\dag_{2\uparrow}$, and position 4 to $c^\dag_{2\downarrow}$. The mapping
+can be accessed as the global variable {\tt BASIS}, or using {\tt op2ndx}
+and {\tt ndx2op} mapping functions. 
+
+The zero-particle vacuum can be obtained using {\tt vacuum}. Operator
+expressions can be applied to occupation number vectors using {\tt ap}. One
+can go from creation operator representation to occupation number
+representation and back using {\tt ops2vc} and {\tt vc2ops} mapping
+functions.
+
+Scalar products of vectors are given by {\tt scalarproductop[a,b]} and {\tt
+scalarproductvc[a,b]}. Norms can be calculated using {\tt normop[a]} and
+{\tt normvc[a]}.
+
+An operator given by a second-quantisation operator expression {\tt O} can
+be transformed using {\tt matrixrepresentationop[O, l]} and {\tt
+matrixrepresentationvc[O, l]} to its matrix representation in a subspace
+spanned by states given in a list {\tt l}.
+
+A vector can be decomposed in a given subspace using {\tt decomposeop[v, l]}
+and {\tt decomposevc[v, l]}.
+
+A set of vectors can be orthogonalized in a given subspace using
+{\tt orthogop[vs, l]} and {\tt orthogvc[vs, l]}, where {\tt vs} are
+the vectors and {\tt l} is a list of vectors spanning the subspace.
+
+
+\section{Basis sets}
+
+In SNEG, basis sets are lists of subspace basis sets. A subspace basis
+set consists of a list of invariant quantum numbers that characterize
+the invariant subspace and a list of states in either creation operator
+or occupation number representation.
+
+Function {\tt qszbasis[l]} constructs a basis set with subspaces with
+well-defined charge, $Q$, and spin projection, $S_z$, quantum numbers. List
+{\tt l} is the list of operators that defined the orbitals; it is usually
+the same list as the one passed as the argument to {\tt makebasis}.
+
+Function {\tt qsbasis[l]} constructs a basis set with subspaces with
+well-defined charge, $Q$, and total spin, $S$, quantum numbers.
+
+Conversions of basis sets from creation operator to occupation
+number representation can be performed using {\tt bzvc2bzop} 
+and {\tt bzop2bzvc} functions.
+
+
+\section{Symbolic sums}
+
+{\tt sum[expr, \{k, sigma,{\ldots}\}]}
+
+\end{document}

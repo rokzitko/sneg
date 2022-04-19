@@ -1,0 +1,360 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      8643,        291]*)
+(*NotebookOutlinePosition[      9313,        314]*)
+(*  CellTagsIndexPosition[      9269,        310]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["ordering", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["ordering[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=EMPTY | SEA", "MR"],
+  " determines how the fermionic operators are reordered in an operator \
+string by defining the vacuum state that corresponds to the operator ",
+  StyleBox["c", "TI"],
+  "."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By default, sneg attempts to put the operators in the \
+canonical normal order, i.e the creation operators are moved in front of the \
+annihilation operators. Annihilation operators are defined to be those \
+operators that yeild zero when applied to the vacuum state. ",
+  StyleBox["ordering", "MR"],
+  " defines what the relevant vacuum state is."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["ordering[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=EMPTY", "MR"],
+  " corresponds to an empty state vacuum (all levels unoccupied). This is the \
+default."
+}], "Text"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["ordering[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=SEA", "MR"],
+  " corresponds to a Fermi sea vacuum state (levels filled up to the Fermi \
+level)."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] For ",
+  StyleBox["ordering[c]=EMPTY", "MR"],
+  ", the operators are also ordred in increasing order with respect to the \
+other operator indexes (momentum, site index, spin,etc.)."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare]  For ",
+  StyleBox["ordering[c]=SEA", "MR"],
+  ", the reordering depends on what is known about the creation/annihilation \
+nature of the operators (see ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  "). Furthermore, the operators are always ordered in the increasing order \
+with respect to the last (n-2) indexes, where n is the total number of \
+indexes (the first index is ",
+  ButtonBox["CR",
+    ButtonStyle->"AddOnsLink"],
+  "/",
+  ButtonBox["AN",
+    ButtonStyle->"AddOnsLink"],
+  " index, the second is assumed to correspond to momentum or some other \
+quantum number that uniquely determines the level energy)."
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] In addition, operators of the same type \
+(creation/annihilation) are sorted in the increasing order of the associated \
+symbol (Head of the operator expression), i.e. in the alphabetical \
+order.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] When reordering is performed, the anticommutator is \
+computed using function ",
+  ButtonBox["acmt",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] In addition to ",
+  StyleBox["EMPTY", "MR"],
+  " and ",
+  StyleBox["SEA", "MR"],
+  ", other types may be defined by the user for special purposes. This might \
+be useful, for example, in the case of some nontrivial vacuum state."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["overrideSEA",
+    ButtonStyle->"AddOnsLink"]
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Let ",
+  StyleBox["c", "TI"],
+  " and ",
+  StyleBox["d", "TI"],
+  " be fermionic operators, for ",
+  StyleBox["c", "TI"],
+  " the vacuum state is empty, for ",
+  StyleBox["d", "TI"],
+  " the vacuum state is a Fermi sea."
+}], "ExampleText"],
+
+Cell[BoxData[{
+    \(snegfermionoperators[c, d]\), "\[IndentingNewLine]", 
+    \(\(ordering[c] = EMPTY;\)\), "\[IndentingNewLine]", 
+    \(\(ordering[d] = SEA;\)\)}], "Input",
+  CellLabel->"In[2]:="],
+
+Cell["Alphabetical sorting with respect to operator symbols", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[c[CR], d[CR]]\), "\n", 
+    \(nc[d[CR], c[CR]]\), "\[IndentingNewLine]", 
+    \(nc[c[AN], d[AN]]\), "\n", 
+    \(nc[d[AN], c[AN]]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^"\[Dagger]"\),
+            Superscript[ c, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(d\^"\[Dagger]"\),
+            Superscript[ d, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\^"\[Dagger]"\),
+              Superscript[ c, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^"\[Dagger]"\),
+              Superscript[ d, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\^\*"\<\"\"\>"\),
+            Superscript[ c, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(d\^\*"\<\"\"\>"\),
+            Superscript[ d, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\^\*"\<\"\"\>"\),
+              Superscript[ c, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(d\^\*"\<\"\"\>"\),
+              Superscript[ d, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 362}, {Automatic, 147}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 30, 0, 38, "ObjectName"],
+Cell[1809, 55, 319, 9, 64, "Usage"],
+Cell[2131, 66, 401, 7, 72, "Notes"],
+Cell[2535, 75, 227, 7, 40, "Text"],
+Cell[2765, 84, 222, 7, 40, "Notes"],
+Cell[2990, 93, 234, 5, 40, "Notes"],
+Cell[3227, 100, 692, 17, 104, "Notes"],
+Cell[3922, 119, 242, 5, 56, "Notes"],
+Cell[4167, 126, 191, 6, 24, "Notes"],
+Cell[4361, 134, 282, 7, 56, "Notes"],
+Cell[4646, 143, 191, 7, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[4862, 154, 42, 0, 38, "ExampleSection"],
+Cell[4907, 156, 32, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4964, 160, 75, 2, 26, "Input"],
+Cell[5042, 164, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[5160, 169, 258, 10, 50, "ExampleText"],
+Cell[5421, 181, 199, 4, 58, "Input"],
+Cell[5623, 187, 76, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5724, 191, 191, 5, 74, "Input"],
+Cell[5918, 198, 644, 20, 29, "Output"],
+Cell[6565, 220, 710, 21, 29, "Output"],
+Cell[7278, 243, 628, 20, 28, "Output"],
+Cell[7909, 265, 694, 21, 28, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

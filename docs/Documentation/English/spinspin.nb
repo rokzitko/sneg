@@ -1,0 +1,304 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      7007,        221]*)
+(*NotebookOutlinePosition[      8616,        272]*)
+(*  CellTagsIndexPosition[      8428,        262]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["spinspin", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["spinspin[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  " returns the spin-spin scalar product ",
+  Cell[BoxData[
+      FormBox[
+        RowBox[{
+          SubscriptBox[
+            StyleBox["S",
+              FontWeight->"Bold"], "a"], "\[CenterDot]", 
+          SubscriptBox[
+            StyleBox["S",
+              FontWeight->"Bold"], "b"], " "}], TraditionalForm]]],
+  "between two S=1/2 spin operators corresponding to the levels described by \
+the operators ",
+  StyleBox["a", "TI"],
+  " and ",
+  StyleBox["b", "TI"],
+  ".\n\[FilledSmallSquare] ",
+  StyleBox["spinspinpm[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  StyleBox[" returns the ", "Notes"],
+  Cell[BoxData[
+      \(TraditionalForm\`\(\(S\_\(\(a\)\(+\)\)\) \(S\_\(\(b\)\(-\)\)\)\(\ \
+\)\)\)]],
+  "part of the scalar product.\n\[FilledSmallSquare] ",
+  StyleBox["spinspinmp[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  StyleBox[" returns the ", "Notes"],
+  Cell[BoxData[
+      \(TraditionalForm\`\(\(S\_\(\(a\)\(-\)\)\) \(S\_\(\(b\)\(+\)\)\)\(\ \
+\)\)\)]],
+  "part of the scalar product.\n\[FilledSmallSquare] ",
+  StyleBox["spinspinxy[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  StyleBox[" returns the ", "Notes"],
+  Cell[BoxData[
+      \(TraditionalForm\`\(S\_ax\) S\_bx + S\_ay\ S\_by\)]],
+  "(transversal) part of the scalar product.\n\[FilledSmallSquare] ",
+  StyleBox["spinspinz[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[", ", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox["]", "MR"],
+  StyleBox[" returns the ", "Notes"],
+  Cell[BoxData[
+      \(TraditionalForm\`\(\(S\_az\) \(S\_bz\)\(\ \)\((longitudinal)\)\(\ \
+\)\)\)]],
+  "part of the scalar product."
+}], "Usage",
+  CellTags->{
+  "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operators ",
+  StyleBox["a", "TI",
+    FontSize->10],
+  " and ",
+  StyleBox["b", "TI"],
+  " must be expressed in a form which excludes the first index \
+(creation/annihilation) and the last index (spin). "
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["spinxyz",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinx",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spiny",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinz",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinplus",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["spinminus",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["chargecharge",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " and ",
+  StyleBox["d", "TI"],
+  " to be fermionic operators"
+}], "ExampleText"],
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c, d];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell["Verify definitions", "ExampleText"],
+
+Cell[BoxData[{
+    \(spinspin[c[], d[]]\), "\[IndentingNewLine]", 
+    \(spinspinxy[c[], d[]]\), "\[IndentingNewLine]", 
+    \(\(\(spinspinz[c[], d[]]\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(spinspin[c[], d[]] \[Equal] spinspinz[c[], d[]] + spinspinxy[c[], d[]] // 
+      ExpandAll\), "\[IndentingNewLine]", 
+    \(1/2 \((spinspinpm[c[], d[]] + spinspinmp[c[], d[]])\) == 
+        spinspinxy[c[], d[]] // ExpandAll\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell["Singlet and triplet states", "ExampleText"],
+
+Cell[BoxData[{
+    \(\(updo = nc[c[CR, UP], d[CR, DO]];\)\), "\[IndentingNewLine]", 
+    \(\(doup = nc[c[CR, DO], d[CR, UP]];\)\), "\[IndentingNewLine]", 
+    \(singlet = 
+      nc[\(1\/\@2\) \((updo - doup)\), VACUUM]\), "\[IndentingNewLine]", 
+    \(triplet = 
+      nc[\(1\/\@2\) \((updo + doup)\), VACUUM]\), "\[IndentingNewLine]", 
+    \(\(\(Scd = spinxyz[c[]] + spinxyz[d[]];\)\(\[IndentingNewLine]\)
+    \) (*\ Total\ spin\ operator\ squared\ *) \), "\[IndentingNewLine]", 
+    \(\(ssq = inner[Scd, Scd];\)\ \[IndentingNewLine] (*\ 
+      Spin - spin\ exchange\ interaction\ *) \), "\[IndentingNewLine]", 
+    \(\(\(ss = spinspin[c[], d[]];\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(ssq~nc~singlet \[Equal] 0\  // ExpandAll\), "\[IndentingNewLine]", 
+    \(\(\(ss~nc~singlet \[Equal] \(-3\)/4  singlet // 
+      ExpandAll\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(ssq~nc~triplet \[Equal] 1 \((1 + 1)\) triplet // 
+      ExpandAll\), "\[IndentingNewLine]", 
+    \(ss~nc~triplet \[Equal] 1/4  triplet // ExpandAll\)}], "Input",
+  CellLabel->"In[8]:="],
+
+Cell["Higher powers of the spin-spin operator", "ExampleText"],
+
+Cell[BoxData[{
+    \(pow[spinspin[c[], d[]], 2] // Expand\), "\[IndentingNewLine]", 
+    \(pow[spinspin[c[], d[]], 3] // Expand\), "\[IndentingNewLine]", 
+    \(pow[spinspin[c[], d[]], 4] // Expand\), "\[IndentingNewLine]", 
+    \(\)}], "Input",
+  CellLabel->"In[19]:="]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{664, 802},
+WindowMargins->{{Automatic, 381}, {Automatic, 169}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{
+  "spinspin"->{
+    Cell[1809, 55, 2016, 64, 136, "Usage",
+      CellTags->{
+      "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}]},
+  "spinspinpm"->{
+    Cell[1809, 55, 2016, 64, 136, "Usage",
+      CellTags->{
+      "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}]},
+  "spinspinmp"->{
+    Cell[1809, 55, 2016, 64, 136, "Usage",
+      CellTags->{
+      "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}]},
+  "spinspinxy"->{
+    Cell[1809, 55, 2016, 64, 136, "Usage",
+      CellTags->{
+      "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}]},
+  "spinspinz"->{
+    Cell[1809, 55, 2016, 64, 136, "Usage",
+      CellTags->{
+      "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}]}
+  }
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{
+  {"spinspin", 7647, 238},
+  {"spinspinpm", 7802, 242},
+  {"spinspinmp", 7957, 246},
+  {"spinspinxy", 8112, 250},
+  {"spinspinz", 8266, 254}
+  }
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 30, 0, 38, "ObjectName"],
+Cell[1809, 55, 2016, 64, 136, "Usage",
+  CellTags->{
+  "spinspin", "spinspinpm", "spinspinmp", "spinspinxy", "spinspinz"}],
+Cell[3828, 121, 258, 8, 40, "Notes"],
+Cell[4089, 131, 506, 23, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[4620, 158, 42, 0, 38, "ExampleSection"],
+Cell[4665, 160, 150, 6, 34, "ExampleText"],
+Cell[4818, 168, 142, 3, 42, "Input"],
+Cell[4963, 173, 41, 0, 34, "ExampleText"],
+Cell[5007, 175, 477, 9, 122, "Input"],
+Cell[5487, 186, 49, 0, 34, "ExampleText"],
+Cell[5539, 188, 1102, 20, 305, "Input"],
+Cell[6644, 210, 62, 0, 34, "ExampleText"],
+Cell[6709, 212, 270, 5, 74, "Input"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

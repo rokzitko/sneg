@@ -1,0 +1,431 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     11074,        422]
+NotebookOptionsPosition[      9686,        367]
+NotebookOutlinePosition[     10040,        383]
+CellTagsIndexPosition[      9997,        380]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"<<", "sneg`"}]], "Input",
+ CellChangeTimes->{{3.566545026740757*^9, 3.566545029557304*^9}}],
+
+Cell[BoxData["\<\"sneg 1.233 Copyright (C) 2013 Rok Zitko\"\>"], "Print",
+ CellChangeTimes->{{3.566545030772305*^9, 3.56654505575847*^9}, 
+   3.566545122734153*^9}],
+
+Cell[BoxData["\<\"sneg.m $Id: sneg.m,v 1.233 2013/01/07 10:57:30 rokzitko Exp \
+rokzitko $ loaded\"\>"], "Output",
+ CellChangeTimes->{{3.5665450312468348`*^9, 3.5665450561871367`*^9}, 
+   3.566545123180193*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"snegspinlessfermionoperators", "[", "c", "]"}]], "Input",
+ CellChangeTimes->{{3.56654505742482*^9, 3.566545066742293*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", "CR", "]"}], ",", 
+   RowBox[{"c", "[", "AN", "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.5665450676050253`*^9, 3.5665450774554167`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     TemplateBox[{"c","\"\[Dagger]\""},
+      "Superscript"],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     TemplateBox[{"c","\"\""},
+      "Superscript"],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{{3.566545068759452*^9, 3.5665450778169937`*^9}, 
+   3.5665451250168324`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "0"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "0"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.566545133025522*^9, 3.56654513507952*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "", "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{""}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "", "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{""}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{3.566545135398724*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "1"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "1"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.5665450825040493`*^9, 3.566545084047532*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "1", "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "1", "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.5665450844740562`*^9, {3.566545125919942*^9, 3.566545137100518*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "1", ",", "0"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "1", ",", "0"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.5665451423777037`*^9, 3.566545144193181*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "1", "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1, ""}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", "1", "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1, ""}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{3.566545144509506*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "0", ",", "1"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "0", ",", "1"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.566545149746142*^9, 3.566545166218164*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"0", "1"}], "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{0, 1}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"0", "1"}], "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{0, 1}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{{3.566545153219018*^9, 3.5665451665160713`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "1", ",", "2", ",", "3"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "1", ",", "2", ",", "3"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.5665451670161133`*^9, 3.566545175843112*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"1", "2", "3"}], "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1, 2, 3}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"1", "2", "3"}], "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{1, 2, 3}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{3.566545176245119*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"c", "[", 
+    RowBox[{"CR", ",", "i", ",", "j", ",", "k"}], "]"}], ",", 
+   RowBox[{"c", "[", 
+    RowBox[{"AN", ",", "k", ",", "l", ",", "m"}], "]"}]}], "}"}]], "Input",
+ CellChangeTimes->{{3.566545181715128*^9, 3.566545190251377*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"i", "j", "k"}], "\<\"\[Dagger]\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{Sneg`i, Sneg`j, Sneg`k}], "\[Dagger]"],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm], ",", 
+   TagBox[
+    StyleBox[
+     InterpretationBox[
+      SubsuperscriptBox["c", 
+       RowBox[{"k", "l", "m"}], "\<\"\"\>"],
+      Subsuperscript[Sneg`c, 
+       RowBox[{Sneg`k, Sneg`l, Sneg`m}], ""],
+      Editable->False],
+     ScriptSizeMultipliers->1,
+     ScriptBaselineShifts->{1, 1}],
+    DisplayForm]}], "}"}]], "Output",
+ CellChangeTimes->{3.566545190544729*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"number", "[", 
+  RowBox[{"c", "[", "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.566545191242446*^9, 3.56654519801724*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[
+   StyleBox[
+    InterpretationBox[
+     SubsuperscriptBox["c", "", "\<\"\[Dagger]\"\>"],
+     Subsuperscript[Sneg`c, 
+      RowBox[{""}], "\[Dagger]"],
+     Editable->False],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm], 
+  StyleBox["\[CenterDot]",
+   FontColor->RGBColor[0, 1, 0]], 
+  TagBox[
+   StyleBox[
+    InterpretationBox[
+     SubsuperscriptBox["c", "", "\<\"\"\>"],
+     Subsuperscript[Sneg`c, 
+      RowBox[{""}], ""],
+     Editable->False],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm]}]], "Output",
+ CellChangeTimes->{3.566545198392069*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"number", "[", 
+  RowBox[{"c", "[", "2", "]"}], "]"}]], "Input",
+ CellChangeTimes->{3.5665452020115547`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[
+   StyleBox[
+    InterpretationBox[
+     SubsuperscriptBox["c", "2", "\<\"\[Dagger]\"\>"],
+     Subsuperscript[Sneg`c, 
+      RowBox[{2, ""}], "\[Dagger]"],
+     Editable->False],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm], 
+  StyleBox["\[CenterDot]",
+   FontColor->RGBColor[0, 1, 0]], 
+  TagBox[
+   StyleBox[
+    InterpretationBox[
+     SubsuperscriptBox["c", "2", "\<\"\"\>"],
+     Subsuperscript[Sneg`c, 
+      RowBox[{2, ""}], ""],
+     Editable->False],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm]}]], "Output",
+ CellChangeTimes->{3.56654520249135*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 862},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 6, \
+2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 115, 2, 27, "Input"],
+Cell[697, 26, 164, 2, 20, "Print"],
+Cell[864, 30, 210, 3, 27, "Output"]
+}, Open  ]],
+Cell[1089, 36, 146, 2, 27, "Input"],
+Cell[CellGroupData[{
+Cell[1260, 42, 202, 5, 27, "Input"],
+Cell[1465, 49, 496, 18, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1998, 72, 247, 7, 27, "Input"],
+Cell[2248, 81, 645, 23, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2930, 109, 250, 7, 27, "Input"],
+Cell[3183, 118, 696, 24, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3916, 147, 270, 7, 27, "Input"],
+Cell[4189, 156, 653, 23, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4879, 184, 268, 7, 27, "Input"],
+Cell[5150, 193, 723, 25, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5910, 223, 290, 7, 27, "Input"],
+Cell[6203, 232, 713, 25, 38, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6953, 262, 288, 7, 27, "Input"],
+Cell[7244, 271, 743, 25, 39, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8024, 301, 147, 3, 27, "Input"],
+Cell[8174, 306, 659, 24, 36, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8870, 335, 131, 3, 27, "Input"],
+Cell[9004, 340, 666, 24, 36, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

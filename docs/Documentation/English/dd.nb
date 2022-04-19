@@ -1,0 +1,2085 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     70966,       1994]*)
+(*NotebookOutlinePosition[     71657,       2018]*)
+(*  CellTagsIndexPosition[     71613,       2014]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["dd", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["dd[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]", "MR"],
+  " denotes the double dots surrounding an expression, i.e. a normal ordered \
+string."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["dd", "MR"],
+  " is merely a placeholder. To explicitly evaluate the normal ordered \
+expression, use ",
+  ButtonBox["normalorder",
+    ButtonStyle->"AddOnsLink"],
+  ". "
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Double dotted results are returned by ",
+  ButtonBox["wick",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By definition, ",
+  StyleBox["vev[dd[", "MR"],
+  StyleBox["expr", "TI"],
+  StyleBox["]]=0", "MR"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] If pretty printing is enabled, ",
+  StyleBox["dd", "MR"],
+  " is typeset as a pair of double green dots enclosing the expression."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["normalorder",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["normalorderwick",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["wick",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["c", "TI"],
+  " to be a fermionic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegfermionoperators[c];\)\), "\[IndentingNewLine]", 
+    \(\(ordering[c] = SEA;\)\), "\[IndentingNewLine]", 
+    \(\(snegfreeindexes[k, k1, k2, k3, 
+        k4, \[Sigma]1, \[Sigma]2, \[Sigma]3, \[Sigma]4];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Evaluate vacuum expectation value either directly using ",
+  StyleBox["vev", "MR"],
+  ", or by dropping the ",
+  StyleBox["dd", "MR"],
+  " terms in the expression obtained by Wick's theorem."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(op = nc[c[CR, k], c[AN, k]]\), "\[IndentingNewLine]", 
+    \(vev[op]\), "\[IndentingNewLine]", 
+    \(wick[op]\), "\[IndentingNewLine]", 
+    \(vev[%]\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k\%\("\[Dagger]"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k}], "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k\%\(\*"\<\"\"\>"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k}], ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{
+        TagBox[
+          StyleBox["\<\"\[Theta]\"\>",
+            FontColor->RGBColor[0, 0.392187, 0]],
+          (
+          StyleForm[ #, FontColor -> RGBColor[ 
+            0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k\), ")"}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Colon]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], 
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_k\%\("\[Dagger]"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k}], "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_k\%\(\*"\<\"\"\>"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], 
+          TagBox[
+            StyleBox["\<\"\[Colon]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)]}],
+        DisplayForm], "+", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{
+        TagBox[
+          StyleBox["\<\"\[Theta]\"\>",
+            FontColor->RGBColor[0, 0.392187, 0]],
+          (
+          StyleForm[ #, FontColor -> RGBColor[ 
+            0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k\), ")"}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(op = nc[c[CR, k1], c[AN, k2]]\), "\[IndentingNewLine]", 
+    \(vev[op]\), "\[IndentingNewLine]", 
+    \(wick[op]\), "\[IndentingNewLine]", 
+    \(vev[%]\)}], "Input",
+  CellLabel->"In[9]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k1\%\("\[Dagger]"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k1}], "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(c\_k2\%\(\*"\<\"\"\>"\)\),
+            Subsuperscript[ c, 
+              RowBox[ {k2}], ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Colon]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], 
+          RowBox[{
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_k1\%\("\[Dagger]"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k1}], "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(c\_k2\%\(\*"\<\"\"\>"\)\),
+                  Subsuperscript[ c, 
+                    RowBox[ {k2}], ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], 
+          TagBox[
+            StyleBox["\<\"\[Colon]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)]}],
+        DisplayForm], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[12]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "For longer strings of operators, Wick's theorem is the only way of \
+computing the vacuum expectation values. This can be accomplished in a single \
+step using ",
+  ButtonBox["vevwick",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(op = 
+      nc[c[CR, k1, UP], c[AN, k2, UP], c[CR, k3, DO], 
+        c[AN, k4, DO]]\), "\[IndentingNewLine]", 
+    \(vev[op]\), "\[IndentingNewLine]", 
+    \(wick[op]\), "\[IndentingNewLine]", 
+    \(vev[%]\), "\[IndentingNewLine]", 
+    \(% \[Equal] vevwick[op]\)}], "Input",
+  CellLabel->"In[13]:="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k1", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k1, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k3", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k3, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k2", 
+                  TagBox[
+                    StyleBox["\<\"\[UpArrow]\"\>",
+                      FontColor->RGBColor[1, 0, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      1, 0, 0]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k2, 
+                  StyleForm[ "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}],
+                 ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[
+              SubsuperscriptBox["c", 
+                RowBox[{"k4", 
+                  TagBox[
+                    StyleBox["\<\"\[DownArrow]\"\>",
+                      FontColor->RGBColor[0, 0, 1]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0, 0, 1]]&)]}], "\<\"\"\>"],
+              Subsuperscript[ c, 
+                RowBox[ {k4, 
+                  StyleForm[ 
+                  "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    RowBox[{"-", 
+      RowBox[{"vev", "[", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"k1", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {k1, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"k3", 
+                    TagBox[
+                      StyleBox["\<\"\[DownArrow]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {k3, 
+                    StyleForm[ 
+                    "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                  "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"k2", 
+                    TagBox[
+                      StyleBox["\<\"\[UpArrow]\"\>",
+                        FontColor->RGBColor[1, 0, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        1, 0, 0]]&)]}], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {k2, 
+                    StyleForm[ 
+                    "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[
+                SubsuperscriptBox["c", 
+                  RowBox[{"k4", 
+                    TagBox[
+                      StyleBox["\<\"\[DownArrow]\"\>",
+                        FontColor->RGBColor[0, 0, 1]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0, 0, 1]]&)]}], "\<\"\"\>"],
+                Subsuperscript[ c, 
+                  RowBox[ {k4, 
+                    StyleForm[ 
+                    "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "]"}]}]], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\<\"-\"\>", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Colon]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k1", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k1, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k3", 
+                        TagBox[
+                          StyleBox["\<\"\[DownArrow]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k3, 
+                        StyleForm[ 
+                        "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                      "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k2", 
+                        TagBox[
+                          StyleBox["\<\"\[UpArrow]\"\>",
+                            FontColor->RGBColor[1, 0, 0]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            1, 0, 0]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k2, 
+                        StyleForm[ 
+                        "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], ""],
+                    
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[
+                    SubsuperscriptBox["c", 
+                      RowBox[{"k4", 
+                        TagBox[
+                          StyleBox["\<\"\[DownArrow]\"\>",
+                            FontColor->RGBColor[0, 0, 1]],
+                          (
+                          StyleForm[ #, FontColor -> RGBColor[ 
+                            0, 0, 1]]&)]}], "\<\"\"\>"],
+                    Subsuperscript[ c, 
+                      RowBox[ {k4, 
+                        StyleForm[ 
+                        "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                      ""],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], 
+            TagBox[
+              StyleBox["\<\"\[Colon]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)]}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k3", 
+                          TagBox[
+                            StyleBox["\<\"\[DownArrow]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)]}], "\<\"\[Dagger]\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k3, 
+                          StyleForm[ 
+                          "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                        "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k4", 
+                          TagBox[
+                            StyleBox["\<\"\[DownArrow]\"\>",
+                              FontColor->RGBColor[0, 0, 1]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              0, 0, 1]]&)]}], "\<\"\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k4, 
+                          StyleForm[ 
+                          "\[DownArrow]", FontColor -> RGBColor[ 0, 0, 1]]}], 
+                        ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k1", 
+                          TagBox[
+                            StyleBox["\<\"\[UpArrow]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)]}], "\<\"\[Dagger]\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k1, 
+                          StyleForm[ 
+                          "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                        "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[
+                      SubsuperscriptBox["c", 
+                        RowBox[{"k2", 
+                          TagBox[
+                            StyleBox["\<\"\[UpArrow]\"\>",
+                              FontColor->RGBColor[1, 0, 0]],
+                            (
+                            StyleForm[ #, FontColor -> RGBColor[ 
+                              1, 0, 0]]&)]}], "\<\"\"\>"],
+                      Subsuperscript[ c, 
+                        RowBox[ {k2, 
+                          StyleForm[ 
+                          "\[UpArrow]", FontColor -> RGBColor[ 1, 0, 0]]}], 
+                        ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[15]="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        StyleBox[
+          SubscriptBox[
+            TagBox[
+              StyleBox["\<\"\[Delta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+        DisplayForm], " ", 
+      TagBox[
+        RowBox[{
+          TagBox[
+            StyleBox["\<\"\[Theta]\"\>",
+              FontColor->RGBColor[0, 0.392187, 0]],
+            (
+            StyleForm[ #, FontColor -> RGBColor[ 
+              0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[16]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[17]="]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(op = 
+      nc[c[CR, k1, \[Sigma]1], c[AN, k2, \[Sigma]2], c[CR, k3, \[Sigma]3], 
+        c[AN, k4, \[Sigma]4]]\), "\[IndentingNewLine]", 
+    \(vev[op]\), "\[IndentingNewLine]", 
+    \(wick[op]\), "\[IndentingNewLine]", 
+    \(vev[%]\), "\[IndentingNewLine]", 
+    \(% \[Equal] vevwick[op]\)}], "Input",
+  CellLabel->"In[18]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k4  \[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k4, \[Sigma]4}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k3  \[Sigma]3\)\%\("\[Dagger]"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k3, \[Sigma]3}], "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k2  \[Sigma]2\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k2, \[Sigma]2}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(c\_\(k4  \[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+              Subsuperscript[ c, 
+                RowBox[ {k4, \[Sigma]4}], ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[18]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}], "-", 
+      RowBox[{"vev", "[", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k3  \[Sigma]3\)\%\("\[Dagger]"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k3, \[Sigma]3}], "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k2  \[Sigma]2\)\%\(\*"\<\"\"\>"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k2, \[Sigma]2}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(c\_\(k4  \[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                Subsuperscript[ c, 
+                  RowBox[ {k4, \[Sigma]4}], ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "]"}]}]], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"\<\"-\"\>", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Colon]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  
+                  InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\),
+                    
+                    Subsuperscript[ c, 
+                      RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  
+                  InterpretationBox[\(c\_\(k3  \[Sigma]3\)\%\("\[Dagger]"\)\),
+                    
+                    Subsuperscript[ c, 
+                      RowBox[ {k3, \[Sigma]3}], "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  
+                  InterpretationBox[\(c\_\(k2  \
+\[Sigma]2\)\%\(\*"\<\"\"\>"\)\),
+                    Subsuperscript[ c, 
+                      RowBox[ {k2, \[Sigma]2}], ""],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], 
+              StyleBox["\[CenterDot]",
+                FontColor->RGBColor[0, 0.392187, 0]], 
+              TagBox[
+                StyleBox[
+                  
+                  InterpretationBox[\(c\_\(k4  \
+\[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                    Subsuperscript[ c, 
+                      RowBox[ {k4, \[Sigma]4}], ""],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], 
+            TagBox[
+              StyleBox["\<\"\[Colon]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)]}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k3  \[Sigma]3\)\%\("\[Dagger]"\)\
+\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k3, \[Sigma]3}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k4  \
+\[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k4, \[Sigma]4}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}], "-", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k3  \[Sigma]3\)\%\("\[Dagger]"\)\
+\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k3, \[Sigma]3}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k2  \
+\[Sigma]2\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k2, \[Sigma]2}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        RowBox[{"(", 
+          RowBox[{
+            TagBox[
+              RowBox[{
+                TagBox[
+                  StyleBox["\<\"\[Colon]\"\>",
+                    FontColor->RGBColor[0, 0.392187, 0]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    0.0, 0.39219300000000001, 0.0]]&)], 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\
+\)\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      
+                      InterpretationBox[\(c\_\(k4  \
+\[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                        Subsuperscript[ c, 
+                          RowBox[ {k4, \[Sigma]4}], ""],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], 
+                TagBox[
+                  StyleBox["\<\"\[Colon]\"\>",
+                    FontColor->RGBColor[0, 0.392187, 0]],
+                  (
+                  StyleForm[ #, FontColor -> RGBColor[ 
+                    0.0, 0.39219300000000001, 0.0]]&)]}],
+              DisplayForm], "+", 
+            RowBox[{
+              TagBox[
+                StyleBox[
+                  SubscriptBox[
+                    TagBox[
+                      StyleBox["\<\"\[Delta]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], " ", 
+              TagBox[
+                StyleBox[
+                  SubscriptBox[
+                    TagBox[
+                      StyleBox["\<\"\[Delta]\"\>",
+                        FontColor->RGBColor[0, 0.392187, 0]],
+                      (
+                      StyleForm[ #, FontColor -> RGBColor[ 
+                        0.0, 0.39219300000000001, 
+                          0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm], " ", 
+              TagBox[
+                RowBox[{
+                  TagBox[
+                    StyleBox["\<\"\[Theta]\"\>",
+                      FontColor->RGBColor[0, 0.392187, 0]],
+                    (
+                    StyleForm[ #, FontColor -> RGBColor[ 
+                      0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+                
+                DisplayForm]}]}], ")"}]}], "-", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\
+\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k4  \
+\[Sigma]4\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k4, \[Sigma]4}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        RowBox[{"(", 
+          TagBox[
+            RowBox[{
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k1  \[Sigma]1\)\%\("\[Dagger]"\)\
+\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k1, \[Sigma]1}], "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 0.392187, 0]], 
+                TagBox[
+                  StyleBox[
+                    
+                    InterpretationBox[\(c\_\(k2  \
+\[Sigma]2\)\%\(\*"\<\"\"\>"\)\),
+                      Subsuperscript[ c, 
+                        RowBox[ {k2, \[Sigma]2}], ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], 
+              TagBox[
+                StyleBox["\<\"\[Colon]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)]}],
+            DisplayForm], ")"}], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]3  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]3  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[20]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm]}], "-", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k2  k3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]2  \[Sigma]3\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k1  k2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 0.0]]&)], \(k3  k4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]1  \[Sigma]2\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          StyleBox[
+            SubscriptBox[
+              TagBox[
+                StyleBox["\<\"\[Delta]\"\>",
+                  FontColor->RGBColor[0, 0.392187, 0]],
+                (
+                StyleForm[ #, FontColor -> RGBColor[ 
+                  0.0, 0.39219300000000001, 
+                    0.0]]&)], \(\[Sigma]3  \[Sigma]4\)],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k1\), ")"}],
+          DisplayForm], " ", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[Theta]\"\>",
+                FontColor->RGBColor[0, 0.392187, 0]],
+              (
+              StyleForm[ #, FontColor -> RGBColor[ 
+                0.0, 0.39219300000000001, 0.0]]&)], "(", \(-k3\), ")"}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[21]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[22]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 281}, {193, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 24, 0, 38, "ObjectName"],
+Cell[1803, 55, 217, 7, 48, "Usage"],
+Cell[2023, 64, 237, 8, 40, "Notes"],
+Cell[2263, 74, 151, 5, 24, "Notes"],
+Cell[2417, 81, 157, 6, 24, "Notes"],
+Cell[2577, 89, 183, 4, 40, "Notes"],
+Cell[2763, 95, 261, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3049, 110, 42, 0, 38, "ExampleSection"],
+Cell[3094, 112, 117, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3236, 120, 321, 6, 74, "Input"],
+Cell[3560, 128, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3678, 133, 229, 6, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3932, 143, 209, 5, 74, "Input"],
+Cell[4144, 150, 714, 22, 33, "Output"],
+Cell[4861, 174, 328, 10, 25, "Output"],
+Cell[5192, 186, 1666, 47, 33, "Output"],
+Cell[6861, 235, 328, 10, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7226, 250, 211, 5, 74, "Input"],
+Cell[7440, 257, 718, 22, 33, "Output"],
+Cell[8161, 281, 774, 23, 29, "Output"],
+Cell[8938, 306, 2142, 60, 33, "Output"],
+Cell[11083, 368, 774, 23, 29, "Output"]
+}, Open  ]],
+Cell[11872, 394, 261, 7, 66, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[12158, 405, 322, 8, 106, "Input"],
+Cell[12483, 415, 3204, 86, 33, "Output"],
+Cell[15690, 503, 3421, 88, 33, "Output"],
+Cell[19114, 593, 12424, 310, 104, "Output"],
+Cell[31541, 905, 1490, 44, 29, "Output"],
+Cell[33034, 951, 63, 2, 25, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[33134, 958, 350, 8, 106, "Input"],
+Cell[33487, 968, 3392, 92, 33, "Output"],
+Cell[36882, 1062, 3928, 106, 54, "Output"],
+Cell[40813, 1170, 22905, 614, 200, "Output"],
+Cell[63721, 1786, 7139, 199, 71, "Output"],
+Cell[70863, 1987, 63, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

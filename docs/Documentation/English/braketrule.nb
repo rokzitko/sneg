@@ -1,0 +1,376 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     10401,        308]*)
+(*NotebookOutlinePosition[     11112,        333]*)
+(*  CellTagsIndexPosition[     11068,        329]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["braketrule", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["braketrule[bra[", "MR"],
+  StyleBox["i", "IT"],
+  StyleBox["], ket[", "MR"],
+  StyleBox["j", "IT"],
+  StyleBox["]]", "MR"],
+  " defines the value of the braket \[LeftAngleBracket]",
+  StyleBox["i", "IT"],
+  "\[RightBracketingBar]",
+  StyleBox["j", "IT"],
+  "\[RightAngleBracket]."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Wheneven a bra and a ket are juxtaposed within a ",
+  StyleBox["nc", "MR"],
+  " expression and they are compatible (in the sense described in the \
+documentation for ",
+  ButtonBox["bra",
+    ButtonStyle->"AddOnsLink"],
+  "), the braket is evaluated by calling ",
+  StyleBox["braketrule", "MR"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] The default ",
+  StyleBox["braketrule", "MR"],
+  " returns the product of ",
+  ButtonBox["KroneckerDelta",
+    ButtonStyle->"RefGuideLink"],
+  " symbols for each pair of compatible indexes from ",
+  StyleBox["bra", "MR"],
+  " and ",
+  StyleBox["ket", "MR"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["nc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["bra",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["ket",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load Package sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["The kets form an orthonormal basis", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(k = Array[ket, 5]\), "\[IndentingNewLine]", 
+    \(b = conj[k]\), "\[IndentingNewLine]", 
+    \(Outer[nc, b, k] // MatrixForm\)}], "Input",
+  CellLabel->"In[2]:="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "1", 
+            TagBox[
+              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "2", 
+            TagBox[
+              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "3", 
+            TagBox[
+              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "4", 
+            TagBox[
+              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "5", 
+            TagBox[
+              StyleBox["\<\"\[RightAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm]}], "}"}]], "Output",
+  CellLabel->"Out[2]="],
+
+Cell[BoxData[
+    RowBox[{"{", 
+      RowBox[{
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "1", 
+            TagBox[
+              StyleBox["\<\"\[RightBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "2", 
+            TagBox[
+              StyleBox["\<\"\[RightBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "3", 
+            TagBox[
+              StyleBox["\<\"\[RightBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "4", 
+            TagBox[
+              StyleBox["\<\"\[RightBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm], ",", 
+        TagBox[
+          RowBox[{
+            TagBox[
+              StyleBox["\<\"\[LeftAngleBracket]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)], "5", 
+            TagBox[
+              StyleBox["\<\"\[RightBracketingBar]\"\>",
+                FontColor->RGBColor[1, 0.500008, 0]],
+              (StyleForm[ #, FontColor -> RGBColor[ 1, 0.5, 0]]&)]}],
+          DisplayForm]}], "}"}]], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {"1", "0", "0", "0", "0"},
+            {"0", "1", "0", "0", "0"},
+            {"0", "0", "1", "0", "0"},
+            {"0", "0", "0", "1", "0"},
+            {"0", "0", "0", "0", "1"}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[4]//MatrixForm="]
+}, Open  ]],
+
+Cell["Define a different rule for computing brakets", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(Clear[braketrule];\)\), "\[IndentingNewLine]", 
+    \(\(braketrule[bra[i_Integer], ket[j_Integer]] := 
+        Exp[\(-Abs[i - j]\)];\)\), "\[IndentingNewLine]", 
+    \(Outer[nc, b, k] // MatrixForm\)}], "Input",
+  CellLabel->"In[5]:="],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {
+              "1", \(1\/\[ExponentialE]\), \(1\/\[ExponentialE]\^2\), \(1\/\
+\[ExponentialE]\^3\), \(1\/\[ExponentialE]\^4\)},
+            {\(1\/\[ExponentialE]\), 
+              "1", \(1\/\[ExponentialE]\), \(1\/\[ExponentialE]\^2\), \(1\/\
+\[ExponentialE]\^3\)},
+            {\(1\/\[ExponentialE]\^2\), \(1\/\[ExponentialE]\), 
+              "1", \(1\/\[ExponentialE]\), \(1\/\[ExponentialE]\^2\)},
+            {\(1\/\[ExponentialE]\^3\), \(1\/\[ExponentialE]\^2\), \(1\/\
+\[ExponentialE]\), "1", \(1\/\[ExponentialE]\)},
+            {\(1\/\[ExponentialE]\^4\), \(1\/\[ExponentialE]\^3\), \(1\/\
+\[ExponentialE]\^2\), \(1\/\[ExponentialE]\), "1"}
+            },
+          RowSpacings->1,
+          ColumnSpacings->1,
+          ColumnAlignments->{Left}], "\[NoBreak]", ")"}],
+      Function[ BoxForm`e$, 
+        MatrixForm[ BoxForm`e$]]]], "Output",
+  CellLabel->"Out[7]//MatrixForm="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{746, 873},
+WindowMargins->{{Automatic, 261}, {Automatic, 105}},
+ShowSelection->True,
+ShowCellTags->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 32, 0, 38, "ObjectName"],
+Cell[1811, 55, 348, 12, 32, "Usage"],
+Cell[2162, 69, 354, 10, 40, "Notes"],
+Cell[2519, 81, 316, 11, 40, "Notes"],
+Cell[2838, 94, 239, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3102, 109, 42, 0, 38, "ExampleSection"],
+Cell[3147, 111, 40, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3212, 115, 75, 2, 26, "Input"],
+Cell[3290, 119, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3408, 124, 57, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3490, 128, 184, 4, 58, "Input"],
+Cell[3677, 134, 2419, 58, 25, "Output"],
+Cell[6099, 194, 2419, 58, 25, "Output"],
+Cell[8521, 254, 501, 14, 110, "Output"]
+}, Open  ]],
+Cell[9037, 271, 68, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[9130, 275, 258, 5, 58, "Input"],
+Cell[9391, 282, 970, 21, 144, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

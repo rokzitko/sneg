@@ -1,0 +1,790 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     20193,        670]*)
+(*NotebookOutlinePosition[     20883,        694]*)
+(*  CellTagsIndexPosition[     20839,        690]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["snegmajoranaoperators", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["snegmajoranaoperators[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[",", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox[",", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]", "MR"],
+  " declares ",
+  StyleBox["a", "TI"],
+  ", ",
+  StyleBox["b", "TI"],
+  ", and ",
+  StyleBox["c", "TI"],
+  " to be real (Majorana) fermionic operators."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Majorana operators are real: ",
+  Cell[BoxData[
+      \(TraditionalForm\`\[Psi]\^\[Dagger] = \[Psi]\)]],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Majorana operators obey the following \
+anti-commutation relation: ",
+  Cell[BoxData[
+      \(TraditionalForm\`{\[Psi]\_a, \ \[Psi]\_b} = \(\(\[Delta]\_ab\)\(.\)\)\
+\)]],
+  " Note that a different convention ",
+  Cell[BoxData[
+      \(TraditionalForm\`{\[Psi]\_a, \[Psi]\_b} = 2  \[Delta]\_ab\)]],
+  "is also commonly used (see the examples)."
+}], "Notes"],
+
+Cell["\<\
+\[FilledSmallSquare] Expressions featuring Majorana operators are \
+automatically reordered in the increasing order with respect to the \
+indexes.\
+\>", "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] For operator ",
+  StyleBox["c", "TI"],
+  " tagged with ",
+  StyleBox["snegmajoranaoperators", "MR"],
+  ", ",
+  StyleBox["operatorQ[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=True", "MR"],
+  " and majorana",
+  StyleBox["Q[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=True", "MR"],
+  "."
+}], "Text"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operators have ",
+  ButtonBox["NHoldAll",
+    ButtonStyle->"RefGuideLink"],
+  " attribute."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["operatorQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["majoranaQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegfermionoperators",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["\<\
+Load sneg and define \[Psi] to be a Majorana operator\
+\>", \
+"ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(\(snegmajoranaoperators[\[Psi]];\)\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell["Test basic properties", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(conj[\[Psi][1]]\), "\[IndentingNewLine]", 
+    \(nc[\[Psi][1], \[Psi][2]]\), "\[IndentingNewLine]", 
+    \(nc[\[Psi][2], \[Psi][1]]\), "\[IndentingNewLine]", 
+    \(conj[nc[\[Psi][1], \[Psi][2]]]\), "\[IndentingNewLine]", 
+    \(nc[\[Psi][1], \[Psi][1]]\), "\[IndentingNewLine]", 
+    \(antikomutator[\[Psi][1], \[Psi][1]]\), "\[IndentingNewLine]", 
+    \(antikomutator[\[Psi][1], \[Psi][2]]\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    \(\[Psi][1]\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    RowBox[{\(\[Psi][1]\), 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], \(\[Psi][2]\)}]], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{\(\[Psi][1]\), 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(\[Psi][2]\)}]}]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    RowBox[{"\<\"-\"\>", 
+      RowBox[{\(\[Psi][1]\), 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(\[Psi][2]\)}]}]], "Output",
+  CellLabel->"Out[6]="],
+
+Cell[BoxData[
+    \(1\/2\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  CellLabel->"Out[9]="]
+}, Open  ]],
+
+Cell["Relation with Dirac fermions", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(c = \(1\/\@2\) \((\[Psi][1] + 
+            I\ \[Psi][2])\)\), "\[IndentingNewLine]", 
+    \(cdg = conj[c]\), "\[IndentingNewLine]", 
+    \(antikomutator[c, c] // Simplify\), "\[IndentingNewLine]", 
+    \(antikomutator[cdg, cdg] // Simplify\), "\[IndentingNewLine]", 
+    \(antikomutator[cdg, c] // Simplify\), "\[IndentingNewLine]", 
+    \(c + cdg\  // Expand\)}], "Input",
+  CellLabel->"In[10]:="],
+
+Cell[BoxData[
+    \(\(\[Psi][1] + \[ImaginaryI]\ \[Psi][2]\)\/\@2\)], "Output",
+  CellLabel->"Out[10]="],
+
+Cell[BoxData[
+    \(\(\[Psi][1] - \[ImaginaryI]\ \[Psi][2]\)\/\@2\)], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    \(0\)], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[14]="],
+
+Cell[BoxData[
+    \(\@2\ \[Psi][1]\)], "Output",
+  CellLabel->"Out[15]="]
+}, Open  ]],
+
+Cell["\<\
+A S=1/2 spin operator can be represented by three Majorana \
+modes\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(snegmajoranaoperators[\[Eta]]\), "\[IndentingNewLine]", 
+    \(sx = \(-I\)\ nc[\[Eta][2], \[Eta][3]]\), "\[IndentingNewLine]", 
+    \(sy = \(-I\)\ nc[\[Eta][3], \[Eta][1]]\), "\[IndentingNewLine]", 
+    \(sz = \(-I\)\ nc[\[Eta][1], \[Eta][2]]\), "\[IndentingNewLine]", 
+    \(komutator[sx, sy] \[Equal] I\ sz\), "\n", 
+    \(komutator[sy, sz] \[Equal] I\ sx\), "\[IndentingNewLine]", 
+    \(komutator[sz, sx] \[Equal] I\ sy\), "\[IndentingNewLine]", 
+    \(\)}], "Input",
+  CellLabel->"In[16]:="],
+
+Cell[BoxData[
+    RowBox[{\(-\[ImaginaryI]\), 
+      RowBox[{\(\[Eta][2]\), 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(\[Eta][3]\)}]}]], "Output",
+  CellLabel->"Out[17]="],
+
+Cell[BoxData[
+    RowBox[{"\[ImaginaryI]", 
+      RowBox[{\(\[Eta][1]\), 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(\[Eta][3]\)}]}]], "Output",
+  CellLabel->"Out[18]="],
+
+Cell[BoxData[
+    RowBox[{\(-\[ImaginaryI]\), 
+      RowBox[{\(\[Eta][1]\), 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], \(\[Eta][2]\)}]}]], "Output",
+  CellLabel->"Out[19]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[20]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[21]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[22]="]
+}, Open  ]],
+
+Cell["Drone-fermion representation of S=1/2 spin operator", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(snegfermionoperators[f, d];\)\), "\[IndentingNewLine]", 
+    \(\(sp = nc[f[CR], d[AN] + d[CR]];\)\), "\[IndentingNewLine]", 
+    \(\(sm = nc[d[AN] + d[CR], f[AN]];\)\), "\[IndentingNewLine]", 
+    \(sx = Expand[\((sp + sm)\)/2]\), "\[IndentingNewLine]", 
+    \(sy = Expand[\((sp - sm)\)/\((2  I)\)]\), "\[IndentingNewLine]", 
+    \(\(\(sz = \ nc[f[CR], f[AN]] - 1/2\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(Simplify[komutator[sx, sy] \[Equal] I\ sz]\), "\[IndentingNewLine]", 
+    \(Simplify[komutator[sy, sz] \[Equal] I\ sx]\), "\n", 
+    \(Simplify[komutator[sz, sx] \[Equal] I\ sy]\)}], "Input",
+  CellLabel->"In[23]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{\(-\(1\/2\)\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^"\[Dagger]"\),
+                Superscript[ d, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^"\[Dagger]"\),
+                Superscript[ f, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{\(1\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^"\[Dagger]"\),
+                Superscript[ d, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                Superscript[ f, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{\(1\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^\*"\<\"\"\>"\),
+                Superscript[ d, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                Superscript[ f, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{\(1\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^"\[Dagger]"\),
+                Superscript[ f, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^\*"\<\"\"\>"\),
+                Superscript[ d, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}]], "Output",
+  CellLabel->"Out[26]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{\(\[ImaginaryI]\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^"\[Dagger]"\),
+                Superscript[ d, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^"\[Dagger]"\),
+                Superscript[ f, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{\(\[ImaginaryI]\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^"\[Dagger]"\),
+                Superscript[ d, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                Superscript[ f, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{\(\[ImaginaryI]\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^\*"\<\"\"\>"\),
+                Superscript[ d, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                Superscript[ f, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+      RowBox[{\(\[ImaginaryI]\/2\), 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^"\[Dagger]"\),
+                Superscript[ f, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(d\^\*"\<\"\"\>"\),
+                Superscript[ d, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}]], "Output",
+  CellLabel->"Out[27]="],
+
+Cell[BoxData[
+    RowBox[{\(-\(1\/2\)\), "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(f\^"\[Dagger]"\),
+              Superscript[ f, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(f\^\*"\<\"\"\>"\),
+              Superscript[ f, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[28]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[29]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[30]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[31]="]
+}, Open  ]],
+
+Cell["\<\
+Drone-fermion representation in mixed Fermi-Dirac \
+representation\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(sp = nc[f[CR], \(\@2\) \[Psi][1]];\)\), "\[IndentingNewLine]", 
+    \(\(sm = nc[\(\@2\) \[Psi][1], f[AN]];\)\), "\[IndentingNewLine]", 
+    \(sx = Expand[\((sp + sm)\)/2]\), "\[IndentingNewLine]", 
+    \(sy = Expand[\((sp - sm)\)/\((2  I)\)]\), "\[IndentingNewLine]", 
+    \(\(\(sz = \ nc[f[CR], f[AN]] - 1/2\)\(\[IndentingNewLine]\)
+    \)\), "\[IndentingNewLine]", 
+    \(Simplify[komutator[sx, sy] \[Equal] I\ sz]\), "\[IndentingNewLine]", 
+    \(Simplify[komutator[sy, sz] \[Equal] I\ sx]\), "\n", 
+    \(Simplify[komutator[sz, sx] \[Equal] I\ sy]\)}], "Input",
+  CellLabel->"In[32]:="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"-", 
+        FractionBox[
+          RowBox[{\(\[Psi][1]\), 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(f\^"\[Dagger]"\),
+                  Superscript[ f, "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], \(\@2\)]}], "+", 
+      FractionBox[
+        RowBox[{\(\[Psi][1]\), 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                Superscript[ f, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], \(\@2\)]}]], "Output",
+  CellLabel->"Out[34]="],
+
+Cell[BoxData[
+    RowBox[{
+      FractionBox[
+        RowBox[{"\[ImaginaryI]", 
+          RowBox[{\(\[Psi][1]\), 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(f\^"\[Dagger]"\),
+                  Superscript[ f, "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], \(\@2\)], "+", 
+      FractionBox[
+        RowBox[{"\[ImaginaryI]", 
+          RowBox[{\(\[Psi][1]\), 
+            StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 0.392187, 0]], 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(f\^\*"\<\"\"\>"\),
+                  Superscript[ f, ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], \(\@2\)]}]], "Output",
+  CellLabel->"Out[35]="],
+
+Cell[BoxData[
+    RowBox[{\(-\(1\/2\)\), "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(f\^"\[Dagger]"\),
+              Superscript[ f, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(f\^\*"\<\"\"\>"\),
+              Superscript[ f, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[36]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[37]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[38]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[39]="]
+}, Open  ]],
+
+Cell["\<\
+Different normalization conditions for Majorana anti-commutation \
+relation.\
+\>", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\( (*\ 
+      Default\ \(\(definition\)\(.\)\)\ \
+*) \)\(\[IndentingNewLine]\)\(antikomutator[\[Psi][1], \[Psi][
+        1]]\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      Alternative\ \(\(definition\)\(.\)\)\ *) \[IndentingNewLine]
+    \(nc[a___, op_, op_, c___] /; majoranaQ[op] := nc[a, c];\)\n
+    antikomutator[\[Psi][1], \[Psi][
+        1]]\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      Switch\ back\ to\ the\ default\ \(\(definition\)\(.\)\)\ \
+*) \[IndentingNewLine]
+    \(nc[a___, op_, op_, c___] /; majoranaQ[op] := 
+        1/2\ nc[a, c];\)\[IndentingNewLine]
+    antikomutator[\[Psi][1], \[Psi][1]]\)\)\)], "Input",
+  CellLabel->"In[40]:="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[40]="],
+
+Cell[BoxData[
+    \(2\)], "Output",
+  CellLabel->"Out[42]="],
+
+Cell[BoxData[
+    \(1\)], "Output",
+  CellLabel->"Out[44]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{201, Automatic}, {45, Automatic}},
+ShowSelection->True,
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 43, 0, 38, "ObjectName"],
+Cell[1822, 55, 390, 16, 48, "Usage"],
+Cell[2215, 73, 163, 5, 24, "Notes"],
+Cell[2381, 80, 396, 10, 56, "Notes"],
+Cell[2780, 92, 171, 4, 40, "Notes"],
+Cell[2954, 98, 343, 14, 40, "Text"],
+Cell[3300, 114, 144, 5, 24, "Notes"],
+Cell[3447, 121, 269, 11, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3741, 136, 42, 0, 38, "ExampleSection"],
+Cell[3786, 138, 86, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3897, 145, 145, 3, 42, "Input"],
+Cell[4045, 150, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[4163, 155, 44, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4232, 159, 450, 8, 122, "Input"],
+Cell[4685, 169, 67, 2, 25, "Output"],
+Cell[4755, 173, 170, 4, 25, "Output"],
+Cell[4928, 179, 204, 5, 25, "Output"],
+Cell[5135, 186, 204, 5, 25, "Output"],
+Cell[5342, 193, 62, 2, 42, "Output"],
+Cell[5407, 197, 59, 2, 25, "Output"],
+Cell[5469, 201, 59, 2, 25, "Output"]
+}, Open  ]],
+Cell[5543, 206, 51, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5619, 210, 419, 8, 131, "Input"],
+Cell[6041, 220, 104, 2, 46, "Output"],
+Cell[6148, 224, 104, 2, 46, "Output"],
+Cell[6255, 228, 60, 2, 25, "Output"],
+Cell[6318, 232, 60, 2, 25, "Output"],
+Cell[6381, 236, 60, 2, 25, "Output"],
+Cell[6444, 240, 73, 2, 32, "Output"]
+}, Open  ]],
+Cell[6532, 245, 97, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6654, 252, 517, 9, 138, "Input"],
+Cell[7174, 263, 212, 5, 25, "Output"],
+Cell[7389, 270, 209, 5, 25, "Output"],
+Cell[7601, 277, 212, 5, 25, "Output"],
+Cell[7816, 284, 63, 2, 25, "Output"],
+Cell[7882, 288, 63, 2, 25, "Output"],
+Cell[7948, 292, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[8026, 297, 74, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[8125, 301, 670, 11, 170, "Input"],
+Cell[8798, 314, 2851, 82, 42, "Output"],
+Cell[11652, 398, 2894, 82, 41, "Output"],
+Cell[14549, 482, 710, 21, 42, "Output"],
+Cell[15262, 505, 63, 2, 25, "Output"],
+Cell[15328, 509, 63, 2, 25, "Output"],
+Cell[15394, 513, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[15472, 518, 97, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[15594, 525, 613, 10, 168, "Input"],
+Cell[16210, 537, 972, 27, 51, "Output"],
+Cell[17185, 566, 1042, 28, 51, "Output"],
+Cell[18230, 596, 710, 21, 42, "Output"],
+Cell[18943, 619, 63, 2, 25, "Output"],
+Cell[19009, 623, 63, 2, 25, "Output"],
+Cell[19075, 627, 63, 2, 25, "Output"]
+}, Open  ]],
+Cell[19153, 632, 107, 3, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[19285, 639, 679, 14, 186, "Input"],
+Cell[19967, 655, 60, 2, 25, "Output"],
+Cell[20030, 659, 60, 2, 25, "Output"],
+Cell[20093, 663, 60, 2, 25, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

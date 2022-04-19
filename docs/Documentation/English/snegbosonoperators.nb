@@ -1,0 +1,351 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[      6811,        275]*)
+(*NotebookOutlinePosition[      7480,        298]*)
+(*  CellTagsIndexPosition[      7436,        294]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["snegbosonoperators", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["snegbosonoperators[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox[",", "MR"],
+  StyleBox["b", "TI"],
+  StyleBox[",", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]", "MR"],
+  " declares ",
+  StyleBox["a", "TI"],
+  ", ",
+  StyleBox["b", "TI"],
+  ", and ",
+  StyleBox["c", "TI"],
+  " to be bosonic operators which obey canonical commutation relations."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] By convention, the first index of the operator \
+denotes the type of the operator (creation versus annihlation operator, see \
+also ",
+  ButtonBox["CR",
+    ButtonStyle->"AddOnsLink"],
+  " and ",
+  ButtonBox["AN",
+    ButtonStyle->"AddOnsLink"],
+  "). If ",
+  StyleBox["PrettyOutput", "MR"],
+  " is enabled, creation operators following this convention will be \
+displayed with daggers."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] For operator ",
+  StyleBox["c", "TI"],
+  " tagged with ",
+  StyleBox["snegbosonoperators", "MR"],
+  ", ",
+  StyleBox["operatorQ[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=True", "MR"],
+  " and ",
+  StyleBox["bosonQ[", "MR"],
+  StyleBox["c", "TI"],
+  StyleBox["]=True", "MR"],
+  "."
+}], "Text"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operators have ",
+  ButtonBox["NHoldAll",
+    ButtonStyle->"RefGuideLink"],
+  " attribute."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["snegfermionoperators",
+    ButtonStyle->"Hyperlink"],
+  ", ",
+  ButtonBox["snegmajoranaoperators",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["bosonQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["operatorQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["cmt",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["nc",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["conj",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["vev",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["zeroonvac",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell["Load sneg", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Let ",
+  StyleBox["a", "TI"],
+  " and be a bosonic operator"
+}], "ExampleText"],
+
+Cell[BoxData[
+    \(snegbosonoperators[a]\)], "Input",
+  CellLabel->"In[2]:="],
+
+Cell["Pretty printing of operators", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(a[CR]\), "\[IndentingNewLine]", 
+    \(a[AN]\), "\[IndentingNewLine]", 
+    \(a[CR, k]\), "\[IndentingNewLine]", 
+    \(a[AN, k]\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(a\^"\[Dagger]"\),
+          Superscript[ a, "\[Dagger]"],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(a\^\*"\<\"\"\>"\),
+          Superscript[ a, ""],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(a\_k\%\("\[Dagger]"\)\),
+          Subsuperscript[ a, 
+            RowBox[ {k}], "\[Dagger]"],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(a\_k\%\(\*"\<\"\"\>"\)\),
+          Subsuperscript[ a, 
+            RowBox[ {k}], ""],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "List of all defined bosonic operators is stored in ",
+  StyleBox["listbosonoperators", "MR"],
+  "."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(listbosonoperators\)], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \({a}\)], "Output",
+  CellLabel->"Out[7]="]
+}, Open  ]],
+
+Cell[TextData[{
+  StyleBox["NHoldAll", "MR"],
+  " attribute prevents ",
+  StyleBox["N", "MR"],
+  " from acting on operator indexes."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(N[Sqrt[2]\ a[CR]]\)], "Input",
+  CellLabel->"In[8]:="],
+
+Cell[BoxData[
+    RowBox[{"1.4142135623730951`", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(a\^"\[Dagger]"\),
+            Superscript[ a, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[8]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 865},
+WindowMargins->{{Automatic, 201}, {Automatic, 47}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 40, 0, 38, "ObjectName"],
+Cell[1819, 55, 412, 16, 48, "Usage"],
+Cell[2234, 73, 440, 13, 56, "Notes"],
+Cell[2677, 88, 337, 14, 40, "Text"],
+Cell[3017, 104, 144, 5, 24, "Notes"],
+Cell[3164, 111, 711, 32, 40, "Notes"],
+
+Cell[CellGroupData[{
+Cell[3900, 147, 42, 0, 38, "ExampleSection"],
+Cell[3945, 149, 32, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4002, 153, 75, 2, 26, "Input"],
+Cell[4080, 157, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[4198, 162, 98, 4, 34, "ExampleText"],
+Cell[4299, 168, 78, 2, 26, "Input"],
+Cell[4380, 172, 51, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4456, 176, 187, 5, 74, "Input"],
+Cell[4646, 183, 283, 9, 29, "Output"],
+Cell[4932, 194, 275, 9, 28, "Output"],
+Cell[5210, 205, 320, 10, 33, "Output"],
+Cell[5533, 217, 312, 10, 32, "Output"]
+}, Open  ]],
+Cell[5860, 230, 137, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6022, 238, 75, 2, 26, "Input"],
+Cell[6100, 242, 61, 2, 25, "Output"]
+}, Open  ]],
+Cell[6176, 247, 151, 5, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[6352, 256, 74, 2, 26, "Input"],
+Cell[6429, 260, 342, 10, 29, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

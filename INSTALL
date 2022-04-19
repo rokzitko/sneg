@@ -1,0 +1,67 @@
+Quick installation
+==================
+
+sneg is essentially a Mathematica script that simply needs to be loaded in
+your Mathematica session before you start to perform the calculations. No
+compilation or even installation is really required. It is, however,
+recommended that you copy sneg files in the standard location where other
+Mathematica packages reside. You can determine the correct location by
+typing $UserBaseDirectory in a Mathematica sesstion and then appending
+Applications/sneg/ to that base path. On Linux and Unix like systems this is
+typically
+
+/home/[username]/.Mathematica/Applications/sneg/
+
+or a direcry of similar name (this depends on the version of Mathematica
+used). You can then load sneg using <<sneg`sneg` in your Mathematica
+session. In addition, you can copy the directory tree Documentation/
+in the sample place, i.e. to
+
+/home/[username]/.Mathematica/Applications/sneg/Documentation/
+
+On Windows systems the corresponding directories might be
+
+C:\Documents and Settings\[username]\Application Data\Mathematica\Applications\sneg
+C:\Documents and Settings\[username]\Application Data\Mathematica\Applications\sneg\Documentation
+
+while on Mac OS-X they could be
+
+/Users/[username]/Library/Mathematica/Applications/sneg/
+/Users/[username]/Library/Mathematica/Applications/sneg/Documentation/
+
+It is also possible to perform a global installation, so that sneg is
+accessible to all users of the computer. The suitable global installation
+directories can be determined by typing $BaseDirectory in a Mathematica
+session and again appending Applications/sneg/. On Windows that would
+be
+
+C:\Documents and Settings\All Users\Application Data\Mathematica\Applications\sneg\
+C:\Documents and Settings\All Users\Application Data\Mathematica\Applications\sneg\Documentation\
+
+and on Linux and Unix
+
+/usr/share/Mathematica/Applications/sneg/
+/usr/share/Mathematica/Applications/sneg/Documentation/
+
+Note: After copying Documentation notebooks to the installation directory,
+you should start "Rebuild help index" in Help menu in Mathematica, and the
+sneg help pages should then appear in Help Browser in Add-ons & Links / sneg
+documentation section). 
+
+Eventually, in later versions "make install" will perform the necessary
+steps automatically. Unfortunately, there is no easy way to detect in a
+robust and portable way what that suitable target location is, so "make
+install" currently does not do anything useful.
+
+
+Note 2 (2008): I have mostly developped and tested sneg using
+Mathematica 5.* series. The package works with Mathematica 6, but has
+undergone much less testing up to now. In particular, the
+documentation has not been updated to integrate better in Mathematica
+6's new help system.
+
+Note 3 (2011): sneg has now been tested using Mathematica versions 6,
+7, and 8. In Mathematica 8, the Documentation can be located in
+the Installed Add-ons section of the integrated Help system.
+
+Rok Zitko, March 2011

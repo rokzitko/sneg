@@ -1,0 +1,439 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     10059,        360]*)
+(*NotebookOutlinePosition[     10729,        383]*)
+(*  CellTagsIndexPosition[     10685,        379]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["bosonQ", "ObjectName"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["bosonQ[", "MR"],
+  StyleBox["a", "TI"],
+  StyleBox["]", "MR"],
+  " returns True if ",
+  StyleBox["a", "TI"],
+  " is a bosonic operator."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] Operators are usually declared to be bosonic using ",
+  ButtonBox["snegbosonoperators",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] For bosonic operators, automatic reordering in \
+canonical form is performed (see ",
+  ButtonBox["cmt ",
+    ButtonStyle->"AddOnsLink"],
+  " and ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  "). In all other respects, they behave as general operators (see ",
+  ButtonBox["operatorQ",
+    ButtonStyle->"AddOnsLink"],
+  ")."
+}], "Text"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] See also: ",
+  ButtonBox["cmt",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegOrderedQ",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["snegbosonoperators",
+    ButtonStyle->"AddOnsLink"],
+  ", ",
+  ButtonBox["operatorQ",
+    ButtonStyle->"AddOnsLink"],
+  "."
+}], "Notes"],
+
+Cell[CellGroupData[{
+
+Cell["Further examples", "ExampleSection"],
+
+Cell[TextData[{
+  "Load sneg and declare ",
+  StyleBox["a", "TI"],
+  " to be a bosonic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(\(<< sneg`sneg`;\)\), "\[IndentingNewLine]", 
+    \(snegbosonoperators[a]\)}], "Input",
+  CellLabel->"In[1]:="],
+
+Cell[BoxData[
+    \("sneg 1.168 Copyright (C) 2007 Rok Zitko"\)], "Print",
+  CellLabel->"From In[1]:="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Check that ",
+  StyleBox["a", "TI"],
+  " is recognized as bosonic operator"
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(bosonQ[a]\), "\[IndentingNewLine]", 
+    \(operatorQ[a]\), "\[IndentingNewLine]", 
+    \(a[CR]\), "\[IndentingNewLine]", 
+    \(listbosonoperators\)}], "Input",
+  CellLabel->"In[3]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[3]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[4]="],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(a\^"\[Dagger]"\),
+          Superscript[ a, "\[Dagger]"],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output",
+  CellLabel->"Out[5]="],
+
+Cell[BoxData[
+    \({a}\)], "Output",
+  CellLabel->"Out[6]="]
+}, Open  ]],
+
+Cell[TextData[{
+  "Operators can be manually defined to be bosonic. In this case, pretty \
+printing is disabled and the operators are not added to ",
+  StyleBox["listbosonoperators", "MR"],
+  "."
+}], "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(bosonQ[d] = True\), "\[IndentingNewLine]", 
+    \(operatorQ[d]\), "\[IndentingNewLine]", 
+    \(d[CR]\), "\[IndentingNewLine]", 
+    \(listbosonoperators\)}], "Input",
+  CellLabel->"In[7]:="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[7]="],
+
+Cell[BoxData[
+    \(True\)], "Output",
+  CellLabel->"Out[8]="],
+
+Cell[BoxData[
+    \(d[0]\)], "Output",
+  CellLabel->"Out[9]="],
+
+Cell[BoxData[
+    \({a}\)], "Output",
+  CellLabel->"Out[10]="]
+}, Open  ]],
+
+Cell["Automatic reordering", "ExampleText"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[a[CR], a[AN]]\), "\[IndentingNewLine]", 
+    \(nc[a[AN], a[CR]]\), "\[IndentingNewLine]", 
+    \(nc[a[AN], a[AN], a[CR]]\), "\[IndentingNewLine]", 
+    \(nc[a[AN], a[AN], a[CR], a[CR]]\)}], "Input",
+  CellLabel->"In[11]:="],
+
+Cell[BoxData[
+    RowBox[{
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(a\^"\[Dagger]"\),
+            Superscript[ a, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(a\^\*"\<\"\"\>"\),
+            Superscript[ a, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output",
+  CellLabel->"Out[11]="],
+
+Cell[BoxData[
+    RowBox[{"1", "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^"\[Dagger]"\),
+              Superscript[ a, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[12]="],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"2", " ", 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^"\[Dagger]"\),
+              Superscript[ a, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[13]="],
+
+Cell[BoxData[
+    RowBox[{"2", "+", 
+      RowBox[{"4", 
+        RowBox[{
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(a\^"\[Dagger]"\),
+                Superscript[ a, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+          StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 0.392187, 0]], 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(a\^\*"\<\"\"\>"\),
+                Superscript[ a, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+      RowBox[{
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^"\[Dagger]"\),
+              Superscript[ a, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^"\[Dagger]"\),
+              Superscript[ a, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(a\^\*"\<\"\"\>"\),
+              Superscript[ a, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output",
+  CellLabel->"Out[14]="]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{520, 600},
+WindowMargins->{{Automatic, 252}, {Automatic, 212}},
+StyleDefinitions -> "HelpBrowser.nb"
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 28, 0, 38, "ObjectName"],
+Cell[1807, 55, 204, 8, 32, "Usage"],
+Cell[2014, 65, 178, 5, 24, "Notes"],
+Cell[2195, 72, 393, 12, 56, "Text"],
+Cell[2591, 86, 329, 14, 24, "Notes"],
+
+Cell[CellGroupData[{
+Cell[2945, 104, 42, 0, 38, "ExampleSection"],
+Cell[2990, 106, 115, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3130, 114, 132, 3, 42, "Input"],
+Cell[3265, 119, 103, 2, 21, "Print"]
+}, Open  ]],
+Cell[3383, 124, 113, 4, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[3521, 132, 205, 5, 74, "Input"],
+Cell[3729, 139, 62, 2, 25, "Output"],
+Cell[3794, 143, 62, 2, 25, "Output"],
+Cell[3859, 147, 283, 9, 29, "Output"],
+Cell[4145, 158, 61, 2, 25, "Output"]
+}, Open  ]],
+Cell[4221, 163, 214, 5, 50, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[4460, 172, 212, 5, 74, "Input"],
+Cell[4675, 179, 62, 2, 25, "Output"],
+Cell[4740, 183, 62, 2, 25, "Output"],
+Cell[4805, 187, 62, 2, 25, "Output"],
+Cell[4870, 191, 62, 2, 25, "Output"]
+}, Open  ]],
+Cell[4947, 196, 43, 0, 34, "ExampleText"],
+
+Cell[CellGroupData[{
+Cell[5015, 200, 247, 5, 74, "Input"],
+Cell[5265, 207, 637, 20, 29, "Output"],
+Cell[5905, 229, 700, 21, 29, "Output"],
+Cell[6608, 252, 1324, 40, 29, "Output"],
+Cell[7935, 294, 2084, 61, 29, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

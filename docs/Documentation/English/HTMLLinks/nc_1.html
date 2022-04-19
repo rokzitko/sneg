@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+        "../HTMLFiles/xhtml-math11-f.dtd">
+
+<!-- Created by Wolfram Mathematica 5.2 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>
+  nc.nb
+ </title>
+ <link href="../HTMLFiles/HelpBrowser.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<p class="ExampleSection">
+ Further examples
+</p>
+
+
+
+<p class="ExampleText">
+ Load Package sneg
+</p>
+
+
+
+<p class="CellLabel">
+ In[1]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_1.gif" alt="&lt;&lt;sneg`sneg` ;"  width="99" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Print">
+ <img src="../HTMLFiles/nc_2.gif" alt="sneg $Id: sneg.m,v 1.81 2007/03/11 00:23:39 rok Exp rok $"  width="403" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Print">
+ <img src="../HTMLFiles/nc_3.gif" alt="Copyright (C) 2007 Rok Zitko, rok.zitko@ijs.si"  width="326" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Define <span class="TIInline">c</span> as a fermionic operator
+</p>
+
+
+
+<p class="CellLabel">
+ In[2]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_4.gif" alt="snegfermionoperators[c]"  width="165" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Pretty printing of operator string
+</p>
+
+
+
+<p class="CellLabel">
+ In[3]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_5.gif" alt="nc[c[CR, 1, UP], c[CR, 2, UP], c[CR, 3, UP]]"  width="293" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[3]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_6.gif" alt="c_ (1&uarr;)^&dagger;&middot;c_ (2&uarr;)^&dagger;&middot;c_ (3&uarr;)^&dagger;"  width="102" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Internally, the string is still represented by an <span class="MRInline">nc</span> expression.
+</p>
+
+
+
+<p class="CellLabel">
+ In[4]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_7.gif" alt="FullForm[%]"  width="81" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[4]//FullForm=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_8.gif" alt="nc[c[0, 1, 1], c[0, 2, 1], c[0, 3, 1]]"  width="248" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Distributivity
+</p>
+
+
+
+<p class="CellLabel">
+ In[10]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_9.gif" alt="nc[c[CR, 1, UP] + c[CR, 2, UP], c[CR, 3, DO]]"  width="294" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[10]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_10.gif" alt="c_ (1&uarr;)^&dagger;&middot;c_ (3&darr;)^&dagger; + c_ (2&uarr;)^&dagger;&middot;c_ (3&darr;)^&dagger;"  width="139" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Factorization of numeric constants
+</p>
+
+
+
+<p class="CellLabel">
+ In[11]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_11.gif" alt="nc[c[CR, 1, UP], 3 c[CR, 2, UP], &pi; c[CR, 3, UP]]"  width="315" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[11]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_12.gif" alt="3 &pi; c_ (1&uarr;)^&dagger;&middot;c_ (2&uarr;)^&dagger;&middot;c_ (3&uarr;)^&dagger;"  width="123" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Associativity
+</p>
+
+
+
+<p class="CellLabel">
+ In[7]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_13.gif" alt="nc[c[CR, 1, UP], nc[c[CR, 2, UP], c[CR, 3, UP]]]"  width="321" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_14.gif" alt="FullForm[%]"  width="81" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[7]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_15.gif" alt="c_ (1&uarr;)^&dagger;&middot;c_ (2&uarr;)^&dagger;&middot;c_ (3&uarr;)^&dagger;"  width="102" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[8]//FullForm=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_16.gif" alt="nc[c[0, 1, 1], c[0, 2, 1], c[0, 3, 1]]"  width="248" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Pauli rule
+</p>
+
+
+
+<p class="CellLabel">
+ In[12]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_17.gif" alt="nc[c[CR, UP], c[CR, UP]]"  width="166" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[12]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_18.gif" alt="0"  width="11" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Automatic reordering: by default, the creation operators are moved to the left.
+</p>
+
+
+
+<p class="CellLabel">
+ In[15]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_19.gif" alt="nc[c[AN, UP], c[CR, UP]]"  width="166" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[15]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_20.gif" alt="1 - c_&uarr;^&dagger;&middot;c_&uarr;^"  width="65" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ <span class="MRInline">nc</span> expression with an operator and a ket
+</p>
+
+
+
+<p class="CellLabel">
+ In[29]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_21.gif" alt="nc[c[CR, UP], ket[0]]"  width="147" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[29]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_22.gif" alt="c_&uarr;^&dagger;&middot; {0&gt;"  width="58" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Use of VACUUM placeholder. Annihilation operator applied to a vacuum state yields zero.
+</p>
+
+
+
+<p class="CellLabel">
+ In[31]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_23.gif" alt="nc[c[CR, UP], VACUUM]"  width="148" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_24.gif" alt="nc[c[AN, UP], VACUUM]"  width="148" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[31]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_25.gif" alt="c_&uarr;^&dagger;&middot;VACUUM"  width="73" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[32]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_26.gif" alt="0"  width="11" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Multiplication of abstract sums
+</p>
+
+
+
+<p class="CellLabel">
+ In[18]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_27.gif" alt="nc[sum[c[CR, k1, UP], {k1}], sum[c[CR, k2, DO], {k2}]]"  width="365" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[18]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_28.gif" alt="sum[c_ (k1&uarr;)^&dagger;&middot;c_ (k2&darr;)^&dagger;, {k1, k2}]"  width="179" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="ExampleText">
+ Raising operators to powers
+</p>
+
+
+
+<p class="CellLabel">
+ In[24]:=
+</p>
+
+
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_29.gif" alt="number[c[]]"  width="81" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_30.gif" alt="pow[%, 2]"  width="66" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="../HTMLFiles/nc_31.gif" alt="pow[%%, 3]"  width="73" height="15"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[24]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_32.gif" alt="c_&darr;^&dagger;&middot;c_&darr;^ + c_&uarr;^&dagger;&middot;c_&uarr;^"  width="99" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[25]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_33.gif" alt="c_&darr;^&dagger;&middot;c_&darr;^ + c_&uarr;^&dagger;&middot;c_&uarr;^ - 2c_&darr;^&dagger;&middot;c_&uarr;^&dagger;&middot;c_&darr;^&middot;c_&uarr;^"  width="215" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="CellLabel">
+ Out[26]=
+</p>
+
+
+
+<p class="Output">
+ <img src="../HTMLFiles/nc_34.gif" alt="c_&darr;^&dagger;&middot;c_&darr;^ + c_&uarr;^&dagger;&middot;c_&uarr;^ - 6c_&darr;^&dagger;&middot;c_&uarr;^&dagger;&middot;c_&darr;^&middot;c_&uarr;^"  width="215" height="23"  style="vertical-align:middle" />
+</p>
+
+<p class="Message">
+ <img src="../HTMLFiles/nc_35.gif" width="524" height="51"  style="vertical-align:middle" />
+</p>
+
+<p class="Message">
+ <img src="../HTMLFiles/nc_36.gif" width="651" height="64"  style="vertical-align:middle" />
+</p>
+
+<p class="Message">
+ <img src="../HTMLFiles/nc_37.gif" width="622" height="64"  style="vertical-align:middle" />
+</p>
+
+<p class="Message">
+ <img src="../HTMLFiles/nc_38.gif" alt="General :: stop : Further output of XML`MathML`BoxesToMathML :: notboxes will be suppressed during this calculation. More&hellip;"  width="626" height="25"  style="vertical-align:middle" />
+</p>
+
+<hr />
+
+<table><tr>
+<td style='font-family: Helvetica; font-size: 10px; width: 100%'>Created by
+ <a href="http://www.wolfram.com"><span style='font-style: italic'>Mathematica</span></a>
+ &nbsp;(March 24, 2007)</td>
+<td><img src='http://www.w3.org/Icons/valid-xhtml11.gif'
+ alt='Valid XHTML 1.1!' height='31' width='88' /></td>
+</tr></table>
+</body>
+
+</html>

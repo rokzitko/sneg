@@ -1,0 +1,535 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.1'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     14838,        452]*)
+(*NotebookOutlinePosition[     15469,        474]*)
+(*  CellTagsIndexPosition[     15425,        470]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+Cell["\<\
+Manipulations of expressions featuring exponential functions of \
+bosonic operators
+Part of SNEG, http://nrgljubljana.ijs.si/sneg
+Rok Zitko, rok.zitko@ijs.si, May 2007\
+\>", "Text",
+  Background->GrayLevel[0.900008]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(<< sneg`sneg`;\)\)], "Input"],
+
+Cell[BoxData[
+    \("sneg 1.164 Copyright (C) 2007 Rok Zitko"\)], "Print"]
+}, Open  ]],
+
+Cell[BoxData[{
+    \(snegrealconstants[\[Alpha], \[Beta]]\), "\[IndentingNewLine]", 
+    \(snegbosonoperators[b]\)}], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(ap = \[Alpha]\ b[CR]\), "\[IndentingNewLine]", 
+    \(bm = \[Beta]\ b[AN]\)}], "Input"],
+
+Cell[BoxData[
+    RowBox[{"\[Alpha]", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^"\[Dagger]"\),
+            Superscript[ b, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"],
+
+Cell[BoxData[
+    RowBox[{"\[Beta]", " ", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^\*"\<\"\"\>"\),
+            Superscript[ b, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(x = Exp[bm]\[CenterDot]Exp[ap]\), "\[IndentingNewLine]", 
+    \(x = Simplify[x]\)}], "Input"],
+
+Cell[BoxData[
+    SuperscriptBox["\[ExponentialE]", 
+      RowBox[{
+        RowBox[{"\[Alpha]", " ", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(b\^"\[Dagger]"\),
+                Superscript[ b, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "+", 
+        RowBox[{"\[Beta]", " ", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                Superscript[ b, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "+", 
+        RowBox[{\(1\/2\), " ", 
+          RowBox[{"(", 
+            RowBox[{
+              RowBox[{\(-\[Alpha]\), " ", "\[Beta]", " ", 
+                RowBox[{
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[\(b\^"\[Dagger]"\),
+                        Superscript[ b, "\[Dagger]"],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                  StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 0.392187, 0]], 
+                  TagBox[
+                    StyleBox[
+                      InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                        Superscript[ b, ""],
+                        Editable->False],
+                      ScriptSizeMultipliers->1,
+                      ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], "+", 
+              RowBox[{"\[Alpha]", " ", "\[Beta]", " ", 
+                RowBox[{"(", 
+                  RowBox[{"1", "+", 
+                    RowBox[{
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[\(b\^"\[Dagger]"\),
+                            Superscript[ b, "\[Dagger]"],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm], 
+                      StyleBox["\[CenterDot]",
+                        FontColor->RGBColor[0, 0.392187, 0]], 
+                      TagBox[
+                        StyleBox[
+                          InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                            Superscript[ b, ""],
+                            Editable->False],
+                          ScriptSizeMultipliers->1,
+                          ScriptBaselineShifts->{1, 1}],
+                        DisplayForm]}]}], ")"}]}]}], ")"}]}]}]]], "Output"],
+
+Cell[BoxData[
+    SuperscriptBox["\[ExponentialE]", 
+      RowBox[{\(\(\[Alpha]\ \[Beta]\)\/2\), "+", 
+        RowBox[{"\[Alpha]", " ", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(b\^"\[Dagger]"\),
+                Superscript[ b, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}], "+", 
+        RowBox[{"\[Beta]", " ", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                Superscript[ b, ""],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(y = komutator[b[AN], x] // Expand\), "\[IndentingNewLine]", 
+    \(y \[Equal] \[Alpha]\ x\)}], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+        RowBox[{\(\(\[Alpha]\ \[Beta]\)\/2\), "+", 
+          RowBox[{"\[Alpha]", " ", 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(b\^"\[Dagger]"\),
+                  Superscript[ b, "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}], "+", 
+          RowBox[{"\[Beta]", " ", 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                  Superscript[ b, ""],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}]], " ", "\[Alpha]"}]], "Output"],
+
+Cell[BoxData[
+    \(True\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(conj[x]\[CenterDot]y // Simplify\)], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+        RowBox[{\(\[Alpha]\^2\/2\), "-", \(\[Beta]\^2\/2\), "+", 
+          RowBox[{"\[Beta]", " ", 
+            RowBox[{"(", 
+              RowBox[{
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(b\^"\[Dagger]"\),
+                      Superscript[ b, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], "+", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                      Superscript[ b, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], ")"}]}], "+", 
+          RowBox[{"\[Alpha]", " ", 
+            RowBox[{"(", 
+              RowBox[{"\[Beta]", "+", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(b\^"\[Dagger]"\),
+                      Superscript[ b, "\[Dagger]"],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], "+", 
+                TagBox[
+                  StyleBox[
+                    InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                      Superscript[ b, ""],
+                      Editable->False],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}], ")"}]}]}]], " ", "\[Alpha]"}]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(z = komutator[b[CR], x] // Expand\), "\[IndentingNewLine]", 
+    \(z \[Equal] \(-\[Beta]\)\ x\)}], "Input"],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"-", 
+        SuperscriptBox["\[ExponentialE]", 
+          RowBox[{\(\(\[Alpha]\ \[Beta]\)\/2\), "+", 
+            RowBox[{"\[Alpha]", " ", 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[\(b\^"\[Dagger]"\),
+                    Superscript[ b, "\[Dagger]"],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}], "+", 
+            RowBox[{"\[Beta]", " ", 
+              TagBox[
+                StyleBox[
+                  InterpretationBox[\(b\^\*"\<\"\"\>"\),
+                    Superscript[ b, ""],
+                    Editable->False],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                DisplayForm]}]}]]}], " ", "\[Beta]"}]], "Output"],
+
+Cell[BoxData[
+    \(True\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[Exp[b[CR]], b[CR], Exp[\(-b[CR]\)]]\), "\[IndentingNewLine]", 
+    \(nc[b[CR], Exp[\(-b[CR]\)]]\), "\[IndentingNewLine]", 
+    \(nc[Exp[b[CR]], b[CR]]\)}], "Input"],
+
+Cell[BoxData[
+    TagBox[
+      StyleBox[
+        InterpretationBox[\(b\^"\[Dagger]"\),
+          Superscript[ b, "\[Dagger]"],
+          Editable->False],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+      DisplayForm]], "Output"],
+
+Cell[BoxData[
+    RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+        RowBox[{"-", 
+          TagBox[
+            StyleBox[
+              InterpretationBox[\(b\^"\[Dagger]"\),
+                Superscript[ b, "\[Dagger]"],
+                Editable->False],
+              ScriptSizeMultipliers->1,
+              ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^"\[Dagger]"\),
+            Superscript[ b, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"],
+
+Cell[BoxData[
+    RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(b\^"\[Dagger]"\),
+              Superscript[ b, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^"\[Dagger]"\),
+            Superscript[ b, "\[Dagger]"],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+    \(nc[Exp[b[CR]], b[AN], Exp[\(-b[CR]\)]]\), "\[IndentingNewLine]", 
+    \(nc[b[AN], Exp[\(-b[CR]\)]]\), "\[IndentingNewLine]", 
+    \(nc[Exp[b[CR]], b[AN]]\)}], "Input"],
+
+Cell[BoxData[
+    RowBox[{\(-1\), "+", 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^\*"\<\"\"\>"\),
+            Superscript[ b, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"],
+
+Cell[BoxData[
+    RowBox[{
+      RowBox[{"-", 
+        SuperscriptBox["\[ExponentialE]", 
+          RowBox[{"-", 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(b\^"\[Dagger]"\),
+                  Superscript[ b, "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]]}], "+", 
+      RowBox[{
+        SuperscriptBox["\[ExponentialE]", 
+          RowBox[{"-", 
+            TagBox[
+              StyleBox[
+                InterpretationBox[\(b\^"\[Dagger]"\),
+                  Superscript[ b, "\[Dagger]"],
+                  Editable->False],
+                ScriptSizeMultipliers->1,
+                ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]], 
+        StyleBox["\[CenterDot]",
+          FontColor->RGBColor[0, 0.392187, 0]], 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(b\^\*"\<\"\"\>"\),
+              Superscript[ b, ""],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]}]}]], "Output"],
+
+Cell[BoxData[
+    RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+        TagBox[
+          StyleBox[
+            InterpretationBox[\(b\^"\[Dagger]"\),
+              Superscript[ b, "\[Dagger]"],
+              Editable->False],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+          DisplayForm]], 
+      StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 0.392187, 0]], 
+      TagBox[
+        StyleBox[
+          InterpretationBox[\(b\^\*"\<\"\"\>"\),
+            Superscript[ b, ""],
+            Editable->False],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]], "Output"]
+}, Open  ]]
+},
+FrontEndVersion->"5.1 for X",
+ScreenRectangle->{{0, 2880}, {0, 1200}},
+WindowSize->{764, 811},
+WindowMargins->{{Automatic, 346}, {Automatic, 64}}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+Cell[1754, 51, 226, 6, 84, "Text"],
+
+Cell[CellGroupData[{
+Cell[2005, 61, 51, 1, 27, "Input"],
+Cell[2059, 64, 74, 1, 23, "Print"]
+}, Open  ]],
+Cell[2148, 68, 126, 2, 43, "Input"],
+
+Cell[CellGroupData[{
+Cell[2299, 74, 108, 2, 43, "Input"],
+Cell[2410, 78, 307, 9, 31, "Output"],
+Cell[2720, 89, 298, 9, 30, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3055, 103, 114, 2, 43, "Input"],
+Cell[3172, 107, 2719, 65, 35, "Output"],
+Cell[5894, 174, 751, 20, 35, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6682, 199, 124, 2, 43, "Input"],
+Cell[6809, 203, 823, 21, 35, "Output"],
+Cell[7635, 226, 38, 1, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7710, 232, 65, 1, 27, "Input"],
+Cell[7778, 235, 1699, 41, 39, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9514, 281, 128, 2, 43, "Input"],
+Cell[9645, 285, 884, 22, 35, "Output"],
+Cell[10532, 309, 38, 1, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[10607, 315, 188, 3, 59, "Input"],
+Cell[10798, 320, 259, 8, 31, "Output"],
+Cell[11060, 330, 718, 21, 33, "Output"],
+Cell[11781, 353, 678, 20, 33, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12496, 378, 188, 3, 59, "Input"],
+Cell[12687, 383, 295, 9, 30, "Output"],
+Cell[12985, 394, 1164, 33, 33, "Output"],
+Cell[14152, 429, 670, 20, 33, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

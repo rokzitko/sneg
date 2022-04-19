@@ -1,0 +1,25 @@
+233:
+snegspinlessfermionoperators
+
+234:
+majorana anticommutation relations bug fix
+
+245:
+ops2vc function added
+
+246:
+vevwicknew, allcombinations
+
+236: [numbering??]
+scalarproductvc[ 0.+I 0.] fix
+
+238: 4.11.2015
+orthogonalization code (MMA >6 now required)
+
+252:
+args -> margs to silence a Warning
+
+2.0.0:
+- first version on github
+- switched to a new version numbering system
+- snegpositiveconstants[], bug in snegrealconstants[] fixed

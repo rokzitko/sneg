@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+        "HTMLFiles/xhtml-math11-f.dtd">
+
+<!-- Created by Wolfram Mathematica 5.2 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>
+  nc.nb
+ </title>
+ <link href="HTMLFiles/HelpBrowser.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<p class="ObjectName">
+ nc
+</p>
+
+
+
+<p class="Usage">
+ &#8226; <span class="MRInline">nc[</span><span class="TIInline">a</span><span class="MRInline">,</span><span class="TIInline">b</span><span class="MRInline">,</span><span class="TIInline">c</span><span class="MRInline">]</span> represents non-commutative multiplication, i.e. it encloses a string of operators that do not (necessarily) commute.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; When <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;PrettyOutput&#34;"><span class="AddOnsLinkInline">PrettyOutput</span></a></span> is enabled, <span class="MRInline">nc</span> expressions are output in infix notation with CenterDots.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; <span class="MRInline">nc</span> is a linear operator in all of its arguments: scalar (numeric) quantities are factored out in front of the expression, and distributive law over addition is automatically applied. See sneg command <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;sneglinearoperator&#34;"><span class="AddOnsLinkInline">sneglinearoperator</span></a></span>.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; <span class="MRInline">nc</span> is associative, for example <span class="MRInline">nc[</span><span class="TIInline">a</span><span class="MRInline">,nc[</span><span class="TIInline">b</span><span class="MRInline">,</span><span class="TIInline">c</span><span class="MRInline">],</span><span class="TIInline">d</span><span class="MRInline">]=nc[</span><span class="TIInline">a</span><span class="MRInline">,</span><span class="TIInline">b</span><span class="MRInline">,</span><span class="TIInline">c</span><span class="MRInline">,</span><span class="TIInline">d</span><span class="MRInline">]</span>. Note, however, that <span class="MRInline">nc</span> does not have <span class="NotesInline"><a title="Help Browser RefGuide Entry: Flat" href="http://documents.wolfram.com/mathematica/functions/Flat"><span class="RefGuideLinkInline">Flat</span></a></span>, nor <span class="NotesInline"><a title="Help Browser RefGuide Entry: OneIdentity" href="http://documents.wolfram.com/mathematica/functions/OneIdentity"><span class="RefGuideLinkInline">OneIdentity</span></a></span> attributes like <span class="NotesInline"><a title="Help Browser RefGuide Entry: Times" href="http://documents.wolfram.com/mathematica/functions/Times"><span class="RefGuideLinkInline">Times</span></a></span> has. This was a design decision for reasons of performance. This implies that pattern matching is different for <span class="MRInline">nc</span> as compared to <span class="MRInline">Times</span>. Note also that <span class="MRInline">nc</span>, being noncommutative multiplication, clearly does not have <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;OrderLess&#34;"><span class="AddOnsLinkInline">OrderLess</span></a></span> attribute.
+</p>
+
+
+
+<p class="Text">
+ &#8226; <span class="MRInline">nc[]</span><span class="NotesInline"> is taken to be 1.</span>
+</p>
+
+
+
+<p class="Text">
+ &#8226; <span class="MRInline">nc</span> is idempotent, <span class="MRInline">nc[</span><span class="TIInline">c</span><span class="MRInline">]=</span><span class="TIInline">c</span>.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; <span class="MRInline">nc</span> automatically imposes Pauli rule for fermionic operators: a product of two consecutive equal operator is zero.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; Operator strings are automatically reordered into the&nbsp;&nbsp;normal form. See <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;ordering&#34;"><span class="AddOnsLinkInline">ordering</span></a></span> and <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;acmt&#34;"><span class="AddOnsLinkInline">acmt</span></a></span> for more details.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; In addition to operators, <span class="MRInline">nc</span> can contain Dirac bras and kets (see sneg commands <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;bra&#34;"><span class="AddOnsLinkInline">bra</span></a></span> and <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;ket&#34;"><span class="AddOnsLinkInline">ket</span></a></span>) and <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;VACUUM&#34;"><span class="AddOnsLinkInline">VACUUM</span></a></span> placeholder. More generally, sneg will leave intact any elements that it does not recognize to have special meaning.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; <span class="MRInline">nc</span> can be used to multiply abstract sums. See <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;sum&#34;"><span class="AddOnsLinkInline">sum</span></a></span> for more details.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; Remember to use <span class="MRInline">nc</span> instead of <span class="MRInline">Times</span> for multiplication when using Mathematica commands such as <span class="MRInline">Inner</span> and <span class="MRInline">Outer</span> (see sneg commands <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;inner&#34;"><span class="AddOnsLinkInline">inner</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;outer&#34;"><span class="AddOnsLinkInline">outer</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;mcross&#34;"><span class="AddOnsLinkInline">mcross</span></a></span> and <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;VMV&#34;"><span class="AddOnsLinkInline">VMV</span></a></span>). Furthermore, use <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;pow&#34;"><span class="AddOnsLinkInline">pow</span></a></span> instead of <span class="MRInline">Power</span> to raise operator expressions to some power.
+</p>
+
+
+
+<p class="Notes">
+ &#8226; See also: <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;snegfermionoperators&#34;"><span class="AddOnsLinkInline">snegfermionoperators</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;snegrealconstants&#34;"><span class="AddOnsLinkInline">snegrealconstants</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;vev&#34;"><span class="AddOnsLinkInline">vev</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;vevwick&#34;"><span class="AddOnsLinkInline">vevwick</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;dd&#34;"><span class="AddOnsLinkInline">dd</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;onvac&#34;"><span class="AddOnsLinkInline">onvac</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;ap&#34;"><span class="AddOnsLinkInline">ap</span></a></span>, <span class="NotesInline"><a title="Help Browser AddOns Entry: &#34;wick&#34;"><span class="AddOnsLinkInline">wick</span></a></span>.
+</p>
+
+
+
+<p class="ExampleSection">
+ <a href="HTMLLinks/nc_1.html">Further examples</a>
+</p>
+
+
+
+<hr />
+
+<table><tr>
+<td style='font-family: Helvetica; font-size: 10px; width: 100%'>Created by
+ <a href="http://www.wolfram.com"><span style='font-style: italic'>Mathematica</span></a>
+ &nbsp;(March 24, 2007)</td>
+<td><img src='http://www.w3.org/Icons/valid-xhtml11.gif'
+ alt='Valid XHTML 1.1!' height='31' width='88' /></td>
+</tr></table>
+</body>
+
+</html>
