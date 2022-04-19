@@ -2158,6 +2158,15 @@ SetAttributes[nambu, Listable];
 nambu[op_?fermionQ[j___], n_:0] := {op[CR, j, UP], (-1)^n op[AN, j, DO]};
 nambu[op_?AtomQ, n___] := nambu[op[], n];
 
+(* BCS pairing operator *)
+bcs[op_?fermionQ[j1__], Phi_] :=
+  Exp[ I Phi] nc[op[CR, j1, UP], op[CR, j1, DO]] + 
+  Exp[-I Phi] nc[op[AN, j1, DO], op[AN, j1, UP]]
+
+bcs[Delta_, op_?fermionQ[j1__]] :=
+  Delta nc[op[CR, j1, UP], op[CR, j1, DO]] + 
+  Conjugate[Delta] nc[op[AN, j1, DO], op[AN, j1, UP]]
+
 (* X, Y and Z componentes of the isospin operator. *)
 
 SetAttributes[{isospinxyz, isospin, isospinx, isospiny, isospinz, 
@@ -2262,6 +2271,14 @@ hop[fn1_Function, fn2_Function] :=
 
 hop[fn1_Function, op2_?fermionQ[j2___]] := hop[fn1, op2[#1, j2, #2]&];
 hop[op1_?fermionQ[j1___], fn2_Function] := hop[op1[#1, j1, #2]&, fn2];
+
+(* Generic hopping with a complex-valued parameter t *)
+genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] := 
+  t op1[CR, j1, sigma]~nc~op2[AN, j2, sigma] + 
+  Conjugate[t] op2[CR, j2, sigma]~nc~op1[AN, j1, sigma];
+
+genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /; (spinof[op1] == spinof[op2] == 1/2) := 
+  genhop[t, op1[j1], op2[j2], UP] + genhop[t, op1[j1], op2[j2], DO];
 
 (* Hopping with spin-flip *)
 SetAttributes[spinfliphop, Listable];
