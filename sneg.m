@@ -1462,6 +1462,9 @@ superantikomutator[a_, b_, i_Integer] /; i > 1 :=
 supercommutator[a___] := superkomutator[a];
 superanticommutator[a___] := superantikomutator[a];    
 
+(* Other helper functions *)
+extracteps[a_, b_, H_] := anticommutator[a, commutator[H, conj[b]]] // Expand;
+
 (* (Manual) normal ordering *)
 SetAttributes[normalorder, Listable];
 normalorder[a_] := a - vev[a];
