@@ -1712,7 +1712,7 @@ summation indexes.";
 
 sumAbstractIndex[expr_, ndxfunc_] := Module[{ r },
   SetAttributes[ndxfunc, NumericFunction];
-  r = sum[a_, it_List] :> Module[{rule, len},
+  r = sum[a_, it_List] :> Module[{rule, len, i},
         len = Length[it];
         rule = Table[it[[i]] -> ndxfunc[i], {i, len}];
         sum[a //. rule, it //. rule]
