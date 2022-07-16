@@ -2162,11 +2162,11 @@ nambu[op_?fermionQ[j___], n_:0] := {op[CR, j, UP], (-1)^n op[AN, j, DO]};
 nambu[op_?AtomQ, n___] := nambu[op[], n];
 
 (* BCS pairing operator *)
-bcs[op_?fermionQ[j1__], Phi_] :=
+bcs[op_?fermionQ[j1___], Phi_:0] :=
   Exp[ I Phi] nc[op[CR, j1, UP], op[CR, j1, DO]] + 
   Exp[-I Phi] nc[op[AN, j1, DO], op[AN, j1, UP]]
 
-bcs[Delta_, op_?fermionQ[j1__]] :=
+bcs[Delta_, op_?fermionQ[j1___]] :=
   Delta nc[op[CR, j1, UP], op[CR, j1, DO]] + 
   Conjugate[Delta] nc[op[AN, j1, DO], op[AN, j1, UP]]
 
