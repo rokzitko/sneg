@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.1 July 2022";
+snegidstring = "sneg.m 2.0.2 July 2022";
 snegcopyright = "Copyright (C) 2002-2022 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1606,14 +1606,16 @@ ssJWRnewname[n_, allnames_List, expr_:1] := Module[{ns, i, nn},
 ];
 
 snegsumJoinWithRenaming[a1_, a0___, a2_, it1_List, it2_List, reverse_:False] :=
-Module[{l, rule},
+Module[{l, rule, allnames},
   l = it1;
   rule = {};
+  allnames = Union[it1, it2];
   Scan[ If[FreeQ[l, #] && FreeQ[a1, #],
-    AppendTo[l, #], 
+    AppendTo[l, #],
     (* else *) 
-    nn = ssJWRnewname[#, Union[it1, it2], a1];
+    nn = ssJWRnewname[#, allnames, a1];
     AppendTo[l, nn];
+    AppendTo[allnames, nn];
     AppendTo[rule, # -> nn] ]&, it2];
   If[reverse == False,
     sum[nc[a1, a0, a2 /. rule], Sort @ l],
