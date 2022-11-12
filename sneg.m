@@ -3748,17 +3748,18 @@ vevwick2[HoldPattern[x : nc[l__]]] := Module[{ic, ia, ndc, nda},
 NOTE: nnop[] will be used, if defined, otherwise all signs are taken to be
 equal (this is likely not what you want!). *)
 
-quickbasis[basisops__, fnc_] := Module[{Tminus, nnop2},
+quickisobasis[basisops__, fnc_] := Module[{Tminus, nnop2},
   nnop2[i_] := If[ValueQ @ nnop[i], nnop[i], 0];
   Tminus = Simplify @ Total @ Map[isospinminus[#, nnop2[#]]&, basisops];
   bzvc2bzop @ transformQStoIS[fnc @ basisops, Tminus]
 ];
 
-quickISObasis[basisops__] := quickbasis[basisops, qsbasisvc];
-quickISOSZbasis[basisops__] := quickbasis[basisops, qszbasisvc];
-quickSU2basis[basisops__] := quickbasis[basisops, qbasisvc];
+quickISObasis[basisops__]   := quickisobasis[basisops, qsbasisvc];
+quickISOSZbasis[basisops__] := quickisobasis[basisops, qszbasisvc];
+quickSU2basis[basisops__]   := quickisobasis[basisops, qbasisvc];
 
-(* Product basis with double (isospin, etc.) symmetry *)
+(* Product basis with double (charge, isospin, etc.) symmetry. *)
+(* The result has quantum numbers (Q1, Q2), (I1, I2), etc. *)
 quickDBL[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   bz1 = fnc @ basisops1;
   bz2 = fnc @ basisops2;
@@ -3769,10 +3770,13 @@ quickDBL[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   directproductbasis[bz1, bz2, Join[#1, #2] &]
 ];
 
+(* Product basis with double (charge, isospin, etc.) symmetry and a total spin SZ projection. *)
+(* The result has quantum numbers (Q1, Q2, SZ), (I1, I2, SZ), etc. *)
 quickDBLSZ[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   bz1 = fnc @ basisops1;
   bz2 = fnc @ basisops2;
   makebasis[Join[basisops1, basisops2]];
+  (* NOTE: we are summing S_z. *)
   mergebasis @ directproductbasis[bz1, bz2, {#1[[1]], #2[[1]], #1[[2]]+#2[[2]]} &]
 ];
 
