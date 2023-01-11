@@ -2,7 +2,7 @@
    SNEG - Mathematica package for calculations with non-commuting
    operators of the second quantization algebra
 
-   Copyright (C) 2002-2022 Rok Zitko
+   Copyright (C) 2002-2023 Rok Zitko
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.3 July 2022";
-snegcopyright = "Copyright (C) 2002-2022 Rok Zitko";
+snegidstring = "sneg.m 2.0.4 January 2023";
+snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
   pos = StringPosition[snegidstring, " "];
@@ -2178,7 +2178,7 @@ nambu[op_?fermionQ[j___], n_:0] := {op[CR, j, UP], (-1)^n op[AN, j, DO]};
 nambu[op_?AtomQ, n___] := nambu[op[], n];
 
 (* BCS pairing operator *)
-bcs[op_?fermionQ[j1__], Phi_:0] :=
+bcs[op_?fermionQ[j1___], Phi_:0] :=
   Exp[ I Phi] nc[op[CR, j1, UP], op[CR, j1, DO]] +
   Exp[-I Phi] nc[op[AN, j1, DO], op[AN, j1, UP]]
 
