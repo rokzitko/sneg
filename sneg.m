@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.4 Jan 2023";
+snegidstring = "sneg.m 2.0.5 Jan 2023";
 snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -320,6 +320,9 @@ UsageWithMore[hop,
 "hop[a[i], b[j]] returns the electron hopping operator between
 sites a[i] and b[j]. hop[a[i], b[j], sigma] with sigma=UP | DO
 does the same for a single spin projection sigma."];
+UsageWithMore[anomaloushop,
+"anomaloushop[a[i], b[j]] returns the anomalous hopping operator between
+sites a[i] and b[j]."];
 UsageWithMore[holehop,
 "holehop[h[i], p[j]] returns the electron hopping operator for
 the case of a hole operator h[i] and particle operator p[j]."];
@@ -2298,6 +2301,26 @@ genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
 
 genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /; (spinof[op1] == spinof[op2] == 1/2) :=
   genhop[t, op1[j1], op2[j2], UP] + genhop[t, op1[j1], op2[j2], DO];
+
+(* Anomalous hopping, a a + a^+ a^+ *)
+SetAttributes[anomaloushop, Listable];
+anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  anomaloushop[op1[j1], op2[j2], UP] + anomaloushop[op1[j1], op2[j2], DO];
+
+anomaloushop[fn1_Function, fn2_Function, sigma_] :=
+  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
+  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+
+anomaloushop[fn1_Function, fn2_Function] :=
+  anomaloushop[fn1, fn2, UP] + anomaloushop[fn1, fn2, DO];
+
+anomaloushop[fn1_Function, op2_?fermionQ[j2___]] := anomaloushop[fn1, op2[#1, j2, #2]&];
+anomaloushop[op1_?fermionQ[j1___], fn2_Function] := anomaloushop[op1[#1, j1, #2]&, fn2];
 
 (* Hopping with spin-flip *)
 SetAttributes[spinfliphop, Listable];
