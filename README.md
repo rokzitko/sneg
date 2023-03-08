@@ -1,7 +1,7 @@
 SNEG - Mathematica package for calculations with non-commuting
 operators of the second quantization algebra
 
-Copyright (C) 2006-2022 Rok Zitko
+Copyright (C) 2006-2023 Rok Zitko
 
 
 The SNEG library is a package for Mathematica computer algebra
