@@ -1,5 +1,4 @@
-SNEG - Mathematica package for calculations with non-commuting
-operators of the second quantization algebra
+# SNEG - Mathematica package for calculations with non-commuting operators of the second quantization algebra
 
 Copyright (C) 2006-2023 Rok Zitko
 
@@ -24,7 +23,7 @@ operation. Especially, it prevents inauspicious sign errors when
 commuting fermionic operators.
 
 
-1. Features
+## Features
 
 * Collection of utility functions that generate various operator
 expressions, such as electron number, electron spin and isospin,
@@ -98,7 +97,7 @@ currently in the testing stage. See the examples in the file
 snegtoascii_asciitosneg.nb.
 
 
-2. Applications
+## Applications
 
 SNEG forms the basis of "NRG Ljubljana", a framework for performing
 numerical renormalization group calculations for quantum impurity
@@ -113,7 +112,7 @@ learning calculus. A number of examples is included in the SNEG
 library distribution; they can easily be extended to non-trivial
 calculations.
 
-3. Installation
+## Installation
 
 Download the latest version from the main branch on github or [here](https://github.com/rokzitko/sneg/archive/refs/heads/master.zip). The package can be installed by extracting to your  '$InstallationDirectory\AddOns\Applications\' directory. The installation directoy can be found by running `$InstallationDirectory` in a Wolfram language kernel. Alternatively, the package can be installed through the Mathematica provided GUI by going to `file > instal... > Source: From directory` and selecting the downloaded `Sneg` folder.
 
@@ -122,7 +121,7 @@ The package is correctly installed if one can run
 << Sneg`
 ```
 
-4. Documentation
+## Documentation
 
 Documentation for SNEG library is located in Documentation/English
 directory. This directory should be copied to your local Applications
@@ -137,7 +136,7 @@ A number of example Mathematica notebooks can be found in the
 directory examples/.
 
 
-5. License
+## License
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -157,7 +156,7 @@ The full text of the GPL General Public License can be found
 in file LICENSE.
 
 
-6. Contributing to SNEG
+## Contributing to SNEG
 
 If you make improvements to SNEG, you are encouraged to share them
 with other users. Bug reports (and fixes) are very welcome as well.
@@ -169,7 +168,7 @@ the case of bosons); performance improvements; code simplifications;
 and improved documentation.
 
 
-7. Compatibility
+## Compatibility
 
 SNEG was mostly developed and tested using Mathematica 5.2. It was
 also tested to work under Mathematica 5.0 and 5.1, as well as under
@@ -177,9 +176,10 @@ new versions 6, 7, and 8. The author tries his best to make SNEG
 compatible across different versions of Mathematica.
 
 
-8. Contact information:
+## Contact information:
 
 SNEG library home-page: http://nrgljubljana.ijs.si/sneg
+
 Github repository: https://github.com/rokzitko/sneg
 
 Rok Zitko
