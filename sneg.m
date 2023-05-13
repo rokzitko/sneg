@@ -888,7 +888,7 @@ snegrealfunctions[l__] := Scan[
 {
   snegnonopQ[#] ^= True;
   Conjugate[#[a___]] ^= #[a];
-  isnumeric[#[___]] := True;
+  isnumericQ[#[___]] := True;
 }&, {l}];
 
 snegpositiveconstants[l__] := Scan[
@@ -981,7 +981,7 @@ snegcomplexconstants[l__] := Scan[
 snegcomplexfunctions[l__] := Scan[
 {
   snegnonopQ[#] ^= True;
-  isnumeric[#[___]] := True;
+  isnumericQ[#[___]] := True;
 }&, {l}];
 
 (* Define which symbols are free indexes that appear in sum[]s *)
