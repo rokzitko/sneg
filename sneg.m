@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.6 May 2023";
+snegidstring = "sneg.m 2.0.7 May 2023";
 snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -2207,6 +2207,9 @@ isospin[x__] := isospinxyz[x];
 isospinx[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[1]];
 isospiny[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[2]];
 isospinz[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[3]];
+
+isospinx1[op_?fermionQ[j___], 0] := 1/2 nc[op[CR, j, UP], op[CR, j, DO]];
+isospinx2[op_?fermionQ[j___], 0] := 1/2 nc[op[AN, j, DO], op[AN, j, UP]];
 
 isospinplus[a__]  := Expand[isospinx[a] + I isospiny[a]];
 isospinminus[a__] := Expand[isospinx[a] - I isospiny[a]];
