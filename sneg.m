@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.5 Jan 2023";
+snegidstring = "sneg.m 2.0.6 May 2023";
 snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -982,6 +982,7 @@ snegcomplexfunctions[l__] := Scan[
 {
   snegnonopQ[#] ^= True;
   isnumericQ[#[___]] := True;
+  isnumericQ[Conjugate[#[___]]] := True;
 }&, {l}];
 
 (* Define which symbols are free indexes that appear in sum[]s *)
