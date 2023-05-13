@@ -2304,6 +2304,7 @@ genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /; (spinof[op1] == spinof
   genhop[t, op1[j1], op2[j2], UP] + genhop[t, op1[j1], op2[j2], DO];
 
 (* Anomalous hopping, a a + a^+ a^+ *)
+(* This version is not SU(2) invariant. See below for spin-rotation-invariant version (anhop). *)
 SetAttributes[anomaloushop, Listable];
 anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
   op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
@@ -2322,6 +2323,37 @@ anomaloushop[fn1_Function, fn2_Function] :=
 
 anomaloushop[fn1_Function, op2_?fermionQ[j2___]] := anomaloushop[fn1, op2[#1, j2, #2]&];
 anomaloushop[op1_?fermionQ[j1___], fn2_Function] := anomaloushop[op1[#1, j1, #2]&, fn2];
+
+(* anhop has a different sign convention as anomaloushop and is a singlet tensor
+operator with respect to spin SU(2) symmetry. *)
+SetAttributes[anhop, Listable];
+anhop[op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+anhop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  anhop[op1[j1], op2[j2], UP] - anhop[op1[j1], op2[j2], DO]; (* sign! *)
+
+anhop[fn1_Function, fn2_Function, sigma_] :=
+  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
+  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+
+anhop[fn1_Function, fn2_Function] :=
+  anhop[fn1, fn2, UP] - anhop[fn1, fn2, DO]; (* sign! *)
+
+anhop[fn1_Function, op2_?fermionQ[j2___]] := anhop[fn1, op2[#1, j2, #2]&];
+anhop[op1_?fermionQ[j1___], fn2_Function] := anhop[op1[#1, j1, #2]&, fn2];
+
+(* Anomalous hopping with a complex-valued parameter t *)
+SetAttributes[genanhop, Listable];
+genanhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  t op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  Conjugate[t] op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+genanhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  genanhop[t, op1[j1], op2[j2], UP] - genanhop[t, op1[j1], op2[j2], DO]; (* sign! *)
 
 (* Hopping with spin-flip *)
 SetAttributes[spinfliphop, Listable];
