@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.6 May 2023";
+snegidstring = "sneg.m 2.0.7 Dec 2023";
 snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -4168,7 +4168,7 @@ matrixrepresentationvcfast[a_, l_List] := Module[{n = Length[l]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l]) /.
           x_. v_vc :> {Position[l, v][[1,1]], x}
       ],
     n] &,
@@ -4179,7 +4179,7 @@ matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[{n = Length[l1]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l1]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l1]) /.
         x_. v_vc :> Module[{pos = Position[l1, v]},
           If[pos==={},0,{pos[[1,1]], x}] ]
       ],
