@@ -4180,7 +4180,7 @@ matrixrepresentationvcfast[a_, l_List] := Module[{n = Length[l]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l]) /.
           x_. v_vc :> {Position[l, v][[1,1]], x}
       ],
     n] &,
@@ -4191,7 +4191,7 @@ matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[{n = Length[l1]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l1]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l1]) /.
         x_. v_vc :> Module[{pos = Position[l1, v]},
           If[pos==={},0,{pos[[1,1]], x}] ]
       ],
