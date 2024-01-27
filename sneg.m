@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.7 May 2023";
+snegidstring = "sneg.m 2.0.8 Dec 2023";
 snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1065,6 +1065,13 @@ sneglinearoperatorFirst[op_] := {
   op[z_?isnumericQ, b__] := z op[b];
   op[z_?isnumericQ b_, c___] := z op[b, c]; (* Important: b_, not b__ ! *)
   op[b1_ + b2_, c___] := op[b1, c] + op[b2, c];
+};
+
+(* Note: note the pattern b__ in the first line *)
+sneglinearoperatorWithLast[op_] := {
+  op[a___, z_?isnumericQ, b__] := z op[a, b];
+  op[a___, z_?isnumericQ b_, c___] := z op[a, b, c];
+  op[a___, b1_ + b2_, c___] := op[a, b1, c] + op[a, b2, c];
 };
 
 (* Definition for an operator with at most two arguments; the operator
@@ -2533,8 +2540,10 @@ nc[a___, conj[v1_vc], v2_vc, b___] := scalarproductvc[v1, v2] nc[a, b];
 
 (*** Applies an operator to a vector in occupation number representation ***)
  
-sneglinearoperator[ap];
+sneglinearoperatorWithLast[ap];
 SetAttributes[ap, Listable];
+
+ap[a___, 0] := 0; (* special rule *)
 
 ap[v_vc] := v;
 
