@@ -114,11 +114,11 @@ calculations.
 
 ## Installation
 
-Download the latest version from the main branch on github or [here](https://github.com/rokzitko/sneg/archive/refs/heads/master.zip). The package can be installed by extracting to your  '$InstallationDirectory\AddOns\Applications\' directory. The installation directoy can be found by running `$InstallationDirectory` in a Wolfram language kernel. Alternatively, the package can be installed through the Mathematica provided GUI by going to `file > instal... > type: Application > Source: From directory` and selecting the downloaded `Sneg` folder.
+Download the latest version from the main branch on github or [here](https://github.com/rokzitko/sneg/archive/refs/heads/master.zip). The package can be installed by extracting to your  '$InstallationDirectory\AddOns\Applications\' directory. The installation directoy can be found by running `$InstallationDirectory` in a Wolfram language kernel. Alternatively, the package can be installed through the Mathematica provided GUI by going to `File > Install... > type: Application > Source: From directory` and selecting the downloaded `sneg` folder. (Note: rename the directory to `sneg` before doing the File > Install, i.e., remove any `-main` or `-2.0.0` parts of the directory name. Mathematica does not seem to like minus signs in the paths.)
 
 The package is correctly installed if one can run 
 ```
-<< Sneg`
+<< sneg`
 ```
 
 ## Documentation
