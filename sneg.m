@@ -108,10 +108,11 @@ UsageWithMore[bosonQ,
 UsageWithMore[operatorQ,
 "operatorQ[c] returns True if c is an operator."];
 UsageWithMore[ordering,
-"ordering[c] = EMPTY | SEA determined how the fermionic operators
+"ordering[c] = EMPTY | SEA | NONE determined how the fermionic operators
 are reordered by defining the vacuum state that corresponds to
 the operator c. EMPTY corresponds to an empty state vacuum, while
-SEA denotes a Fermi sea filled up to a Fermi level."];
+SEA denotes a Fermi sea filled up to a Fermi level. NONE turns off
+automatic reodering for operator c."];
 UsageWithMore[snegOrderedQ,
 "snegOrderedQ[op1[i1], op2[i2]] returns True if operators op1[i1] and
 op2[i2] are canonically ordered."];
