@@ -2,7 +2,7 @@
    SNEG - Mathematica package for calculations with non-commuting
    operators of the second quantization algebra
 
-   Copyright (C) 2002-2023 Rok Zitko
+   Copyright (C) 2002-2025 Rok Zitko
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.8 Dec 2023";
-snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
+snegidstring = "sneg.m 2.0.9 Jun 2025";
+snegcopyright = "Copyright (C) 2002-2025 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
   pos = StringPosition[snegidstring, " "];
@@ -1185,6 +1185,8 @@ snegOrderedQ[x1:op_[___], x2:op_[___]] /;
   (fermionQ[op] && ordering[op] === SEA) := OrderedQ[{x1, x2}];
 
 (* Ordering of bosonic operators *)
+snegOrderedQ[x1 : op_[___], x2 : op_[___]] /;
+  (bosonQ[op] && ordering[op] === NONE) := True;
 snegOrderedQ[x1:op_[___], x2:op_[___]] /; bosonQ[op] :=
   OrderedQ[{x1, x2}];
 
