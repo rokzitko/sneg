@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.9 Jun 2025";
+snegidstring = "sneg.m 2.0.10 Jun 2025";
 snegcopyright = "Copyright (C) 2002-2025 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -3136,6 +3136,11 @@ projector[op_[j___], PROJ02] :=
   projector[op[j], PROJ0] + projector[op[j], PROJ2];
 projector02[op_[j___]] := projector[op[j], PROJ02];
 
+outofdiag02[op_[j___]] := nc[op[AN, j, DO], op[AN, j, UP]];
+outofdiag20[op_[j___]] := nc[op[CR, j, UP], op[CR, j, DO]];
+projectorE[op_[j___]] := (projector0[op[j]] + projector2[op[j]] + outofdiag02[op[j]] + outofdiag20[op[j]])/2;
+projectorO[op_[j___]] := (projector0[op[j]] + projector2[op[j]] - outofdiag02[op[j]] - outofdiag20[op[j]])/2;
+
 projector[op_?AtomQ, n___] := projector[op[], n];
 projector0[op_?AtomQ] := projector0[op[]];
 projectorUP[op_?AtomQ] := projectorUP[op[]];
@@ -3143,6 +3148,8 @@ projectorDO[op_?AtomQ] := projectorDO[op[]];
 projector1[op_?AtomQ] := projector1[op[]];
 projector2[op_?AtomQ] := projector2[op[]];
 projector02[op_?AtomQ] := projector02[op[]];
+projectorE[op_?AtomQ] := projectorE[op[]];
+projectorO[op_?AtomQ] := projectorO[op[]];
 
 
 (**** Operations on basis sets ****)
