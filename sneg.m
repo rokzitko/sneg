@@ -1284,7 +1284,7 @@ nc[a___, x1:op1_?majoranaQ, x2:op2_?majoranaQ, c___] /;
 
 snegOrderedQ[x1:op_[__], x2:op_[__]] /; majoranaQ[op] := OrderedQ[{x1, x2}];
 
-acmt[x1:op_[j1_], x2:op_[j2_]] /; majoranaQ[op] :=
+acmt[x1:op_[j1__], x2:op_[j2__]] /; majoranaQ[op] :=
   If[Length[{j1}] == Length[{j2}],
     Inner[KroneckerDelta, {j1}, {j2}, Times], 0];
 
