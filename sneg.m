@@ -1760,7 +1760,7 @@ sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len},
 ];
 
 rulesumStripSums = {
-  sum[expr_, {k___}] -> expr
+  sum[expr_, {k___}] :> expr
 };
 
 (* sumFullSimplifyOLD tries to simplify an expression involving symbolic
