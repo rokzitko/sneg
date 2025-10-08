@@ -1,0 +1,2720 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     97247,       2712]
+NotebookOptionsPosition[     93178,       2644]
+NotebookOutlinePosition[     93573,       2660]
+CellTagsIndexPosition[     93530,       2657]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+Displacement  operator  algebra
+Bergeron, Curado, Gazeau, Rodrigues: \[OpenCurlyDoubleQuote]Weyl-Heisenberg \
+integral quantization(s): A Compendium\[CloseCurlyDoubleQuote], \
+arxiv:1703.08443\
+\>", "Text",
+ CellChangeTimes->{{3.9601061907908497`*^9, 
+  3.960106257487979*^9}},ExpressionUUID->"c49d189a-e2a0-4151-b685-\
+b66305307c10"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "sneg`"}], ";"}]], "Input",
+ CellChangeTimes->{{3.960105691427067*^9, 3.9601056957244997`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"2a7a7141-8a9f-4ec1-b8de-08597eac8eda"],
+
+Cell[BoxData["\<\"sneg 2.0.8 Copyright (C) 2002-2023 Rok Zitko\"\>"], "Print",
+ CellChangeTimes->{{3.960105695993331*^9, 3.9601057135291643`*^9}, 
+   3.9601068968774643`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"b2e87471-2000-4fd5-8faf-b0de232dcc89"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"snegbosonoperators", "[", "a", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"snegcomplexconstants", "[", 
+   RowBox[{"z", ",", "z1", ",", "z2"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.960105716917144*^9, 3.960105720391033*^9}, {
+  3.960106014821034*^9, 3.960106018175374*^9}, {3.9601065753206053`*^9, 
+  3.9601065757649317`*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"377505da-d34f-4846-abe0-d97291aa4457"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"o", "[", 
+    RowBox[{"z1_", ",", "z2_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"z1", " ", 
+     RowBox[{"Conjugate", "[", "z2", "]"}]}], "-", 
+    RowBox[{
+     RowBox[{"Conjugate", "[", "z1", "]"}], "z2"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.9601066332048483`*^9, 3.9601066485483522`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"76aaaddc-ff85-42fd-a299-1a3a408b8d4a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"d", "[", "z_", "]"}], ":=", 
+  RowBox[{"Exp", "[", 
+   RowBox[{
+    RowBox[{"z", " ", 
+     RowBox[{"a", "[", "CR", "]"}]}], "-", 
+    RowBox[{
+     RowBox[{"Conjugate", "[", "z", "]"}], " ", 
+     RowBox[{"a", "[", "AN", "]"}]}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.960105728496729*^9, 3.960105748891815*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"34fb248b-ce29-47da-9e85-dff54ce90072"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"d1", "[", "z_", "]"}], ":=", 
+   RowBox[{"nc", "[", 
+    RowBox[{
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "1"}], "/", "2"}], " ", 
+       RowBox[{
+        RowBox[{"Abs", "[", "z", "]"}], "^", "2"}]}], "]"}], ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"z", " ", 
+       RowBox[{"a", "[", "CR", "]"}]}], "]"}], ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Conjugate", "[", "z", "]"}]}], " ", 
+       RowBox[{"a", "[", "AN", "]"}]}], "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"d2", "[", "z_", "]"}], ":=", 
+   RowBox[{"nc", "[", 
+    RowBox[{
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{"1", "/", "2"}], " ", 
+       RowBox[{
+        RowBox[{"Abs", "[", "z", "]"}], "^", "2"}]}], "]"}], ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Conjugate", "[", "z", "]"}]}], 
+       RowBox[{"a", "[", "AN", "]"}]}], "]"}], ",", 
+     RowBox[{"Exp", "[", 
+      RowBox[{"z", " ", 
+       RowBox[{"a", "[", "CR", "]"}]}], "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.9601058046172323`*^9, 3.96010586396062*^9}, {
+  3.960105894757641*^9, 3.960105920383226*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"bbb67171-e461-43a0-8e11-ea01451a2c06"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.1", " ", "in", " ", "Bergeron", " ", "et", " ", 
+    RowBox[{"al", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"d", "[", 
+     RowBox[{"-", "z"}], "]"}], "==", 
+    RowBox[{"conj", "[", 
+     RowBox[{"d", "[", "z", "]"}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"d", "[", 
+     RowBox[{"-", "z"}], "]"}], "==", 
+    RowBox[{"1", "/", 
+     RowBox[{"d", "[", "z", "]"}]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.960106288477416*^9, 3.960106346563518*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"697daf85-dab7-49f6-a13e-b21d3e5d68e1"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.96010628969048*^9, 3.96010631268541*^9}, {
+   3.960106344249058*^9, 3.960106346859969*^9}, 3.960106897540215*^9},
+ CellLabel->"Out[8]=",ExpressionUUID->"17db9901-2fc0-41c9-91bd-f5b84d475eed"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.96010628969048*^9, 3.96010631268541*^9}, {
+   3.960106344249058*^9, 3.960106346859969*^9}, 3.960106897540846*^9},
+ CellLabel->"Out[9]=",ExpressionUUID->"bc2067cb-1bc9-497d-84ca-ab241c0b15f7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.6", " ", "in", " ", "Bergeron", " ", "et", " ", "al"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"d1", "[", "z", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"FullSimplify", "[", "%", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"%", "==", 
+    RowBox[{"d", "[", "z", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.9601058648935223`*^9, 3.96010586582863*^9}, {
+  3.9601060338614283`*^9, 3.9601060888103523`*^9}, {3.96010612425126*^9, 
+  3.960106129165124*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"32cfe827-61d1-41f8-a981-c70e8ed840bc"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   FractionBox[
+    SuperscriptBox[
+     RowBox[{"Abs", "[", "z", "]"}], "2"], "2"], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "z"}], " ", 
+       RowBox[{"Conjugate", "[", "z", "]"}], " ", 
+       RowBox[{
+        TagBox[
+         StyleBox[
+          TemplateBox[{"a", "\"\[Dagger]\""},
+           "Superscript"],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+         DisplayForm], 
+        StyleBox["\[CenterDot]",
+         FontColor->RGBColor[0, 1, 0]], 
+        TagBox[
+         StyleBox[
+          TemplateBox[{"a", "\"\""},
+           "Superscript"],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+         DisplayForm]}]}], "+", 
+      RowBox[{"z", " ", 
+       RowBox[{"Conjugate", "[", "z", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{
+          TagBox[
+           StyleBox[
+            TemplateBox[{"a", "\"\[Dagger]\""},
+             "Superscript"],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+           DisplayForm], 
+          StyleBox["\[CenterDot]",
+           FontColor->RGBColor[0, 1, 0]], 
+          TagBox[
+           StyleBox[
+            TemplateBox[{"a", "\"\""},
+             "Superscript"],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+           DisplayForm]}]}], ")"}]}]}], ")"}]}]}]]], "Output",
+ CellChangeTimes->{
+  3.960105866191131*^9, {3.960105903135168*^9, 3.960105922144068*^9}, {
+   3.960106020451542*^9, 3.960106089115333*^9}, 3.960106897550288*^9},
+ CellLabel->"Out[10]=",ExpressionUUID->"e69a9569-6879-4f6f-a66a-ae6ca02ccc98"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z", "]"}]}]}]]], "Output",
+ CellChangeTimes->{
+  3.960105866191131*^9, {3.960105903135168*^9, 3.960105922144068*^9}, {
+   3.960106020451542*^9, 3.960106089115333*^9}, 3.960106897593987*^9},
+ CellLabel->"Out[11]=",ExpressionUUID->"a3da6bfb-084e-43c7-9eeb-1eee60a45710"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.960105866191131*^9, {3.960105903135168*^9, 3.960105922144068*^9}, {
+   3.960106020451542*^9, 3.960106089115333*^9}, 3.960106897594674*^9},
+ CellLabel->"Out[12]=",ExpressionUUID->"8138d3e2-d585-4c97-b4e1-efdf0a4fe449"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.6", " ", "in", " ", "Bergeron", " ", "et", " ", "al"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"d2", "[", "z", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"FullSimplify", "[", "%", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"%", "==", 
+    RowBox[{"d", "[", "z", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.9601059228220863`*^9, 3.960105924313237*^9}, {
+   3.960106091761649*^9, 3.960106097595167*^9}, 3.960106132383705*^9},
+ CellLabel->"In[13]:=",ExpressionUUID->"5c6c7bde-09e7-484f-a3b0-669b4fd6c819"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "+", 
+   FractionBox[
+    SuperscriptBox[
+     RowBox[{"Abs", "[", "z", "]"}], "2"], "2"], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"z", " ", 
+       RowBox[{"Conjugate", "[", "z", "]"}], " ", 
+       RowBox[{
+        TagBox[
+         StyleBox[
+          TemplateBox[{"a", "\"\[Dagger]\""},
+           "Superscript"],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+         DisplayForm], 
+        StyleBox["\[CenterDot]",
+         FontColor->RGBColor[0, 1, 0]], 
+        TagBox[
+         StyleBox[
+          TemplateBox[{"a", "\"\""},
+           "Superscript"],
+          ScriptSizeMultipliers->1,
+          ScriptBaselineShifts->{1, 1}],
+         DisplayForm]}]}], "-", 
+      RowBox[{"z", " ", 
+       RowBox[{"Conjugate", "[", "z", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{
+          TagBox[
+           StyleBox[
+            TemplateBox[{"a", "\"\[Dagger]\""},
+             "Superscript"],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+           DisplayForm], 
+          StyleBox["\[CenterDot]",
+           FontColor->RGBColor[0, 1, 0]], 
+          TagBox[
+           StyleBox[
+            TemplateBox[{"a", "\"\""},
+             "Superscript"],
+            ScriptSizeMultipliers->1,
+            ScriptBaselineShifts->{1, 1}],
+           DisplayForm]}]}], ")"}]}]}], ")"}]}]}]]], "Output",
+ CellChangeTimes->{3.960105926430624*^9, 3.960106027428718*^9, 
+  3.960106098018042*^9, 3.960106897603387*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"fe34a950-f09f-4ba3-8dfb-023f316a37c6"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z", "]"}]}]}]]], "Output",
+ CellChangeTimes->{3.960105926430624*^9, 3.960106027428718*^9, 
+  3.960106098018042*^9, 3.960106897616651*^9},
+ CellLabel->"Out[14]=",ExpressionUUID->"551635fe-27e0-44e1-b7df-6cca2b0782ff"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.960105926430624*^9, 3.960106027428718*^9, 
+  3.960106098018042*^9, 3.960106897617215*^9},
+ CellLabel->"Out[15]=",ExpressionUUID->"0d2c02c1-7079-42bc-af6e-393602ccae72"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.10", " ", "in", " ", "Bergeron", " ", "et", " ", 
+    RowBox[{"al", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"commutator", "[", 
+     RowBox[{
+      RowBox[{"a", "[", "AN", "]"}], ",", 
+      RowBox[{"d1", "[", "z", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"FullSimplify", "[", "%", "]"}], "\[IndentingNewLine]", 
+   RowBox[{"%", "==", 
+    RowBox[{"z", " ", 
+     RowBox[{"d", "[", "z", "]"}]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.960105950425148*^9, 3.960105959559252*^9}, {
+  3.960105991754064*^9, 3.9601059976718407`*^9}, {3.960106103882214*^9, 
+  3.960106109494027*^9}, {3.960106148737289*^9, 3.960106177349618*^9}},
+ CellLabel->"In[16]:=",ExpressionUUID->"66a78893-c8c3-4413-bd84-e4488022c1c8"],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{
+    RowBox[{"z", " ", 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"a", "\"\[Dagger]\""},
+        "Superscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], "-", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"a", "\"\""},
+        "Superscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], " ", 
+     RowBox[{"Conjugate", "[", "z", "]"}]}]}]], " ", "z"}]], "Output",
+ CellChangeTimes->{
+  3.9601060019977303`*^9, {3.960106101562503*^9, 3.960106109984318*^9}, {
+   3.96010615080278*^9, 3.960106166661312*^9}, 3.960106897761094*^9},
+ CellLabel->"Out[17]=",ExpressionUUID->"8d83140d-9671-4ae0-ae24-c79760d0c27e"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.9601060019977303`*^9, {3.960106101562503*^9, 3.960106109984318*^9}, {
+   3.96010615080278*^9, 3.960106166661312*^9}, 3.960106897761795*^9},
+ CellLabel->"Out[18]=",ExpressionUUID->"4896a807-ef8e-4cbf-a474-1786d3f77be7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"commutator", "[", 
+   RowBox[{
+    RowBox[{"a", "[", "CR", "]"}], ",", 
+    RowBox[{"d1", "[", "z", "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"FullSimplify", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"%", "==", 
+  RowBox[{
+   RowBox[{"Conjugate", "[", "z", "]"}], 
+   RowBox[{"d", "[", "z", "]"}]}]}]}], "Input",
+ CellChangeTimes->{{3.960106512854507*^9, 3.960106550212386*^9}},
+ CellLabel->"In[19]:=",ExpressionUUID->"4f49c46e-8585-45e2-b4ff-8a2772c86f2d"],
+
+Cell[BoxData[
+ RowBox[{
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{
+    RowBox[{"z", " ", 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"a", "\"\[Dagger]\""},
+        "Superscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], "-", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"a", "\"\""},
+        "Superscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], " ", 
+     RowBox[{"Conjugate", "[", "z", "]"}]}]}]], " ", 
+  RowBox[{"Conjugate", "[", "z", "]"}]}]], "Output",
+ CellChangeTimes->{{3.960106537652072*^9, 3.9601065509717083`*^9}, 
+   3.9601068978752623`*^9},
+ CellLabel->"Out[20]=",ExpressionUUID->"fe8ed959-19ae-43e3-bfc6-dc2afbabf20f"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.960106537652072*^9, 3.9601065509717083`*^9}, 
+   3.960106897876005*^9},
+ CellLabel->"Out[21]=",ExpressionUUID->"71004f8b-3dcf-4734-8825-ef44a805f01b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.16", " ", "in", " ", "Bergeron", " ", "et", " ", 
+    RowBox[{"al", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"nc", "[", 
+    RowBox[{
+     RowBox[{"d", "[", "z1", "]"}], ",", 
+     RowBox[{"d", "[", "z2", "]"}]}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{"expr1", "=", 
+    RowBox[{"FullSimplify", "[", "%", "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"1", "/", "2"}], " ", 
+      RowBox[{"o", "[", 
+       RowBox[{"z1", ",", "z2"}], "]"}]}], "]"}], 
+    RowBox[{"d", "[", 
+     RowBox[{"z1", "+", "z2"}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"expr2", "=", 
+    RowBox[{"FullSimplify", "[", "%", "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"expr1", "==", "expr2"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.960106569127302*^9, 3.960106613180472*^9}, {
+  3.960106665523568*^9, 3.960106726595093*^9}},
+ CellLabel->"In[22]:=",ExpressionUUID->"be51095e-a400-4527-9ba7-d675d5248a6f"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z1", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "+", 
+   RowBox[{"z2", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z1", "]"}]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "z2"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{"z1", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z2", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "-", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z2", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}]}], ")"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106583252887*^9, 3.960106604158828*^9}, {
+   3.9601066902162313`*^9, 3.960106726910982*^9}, 3.960106898449669*^9},
+ CellLabel->"Out[22]=",ExpressionUUID->"7ebe9798-7aa6-4a10-a2ff-2149a9c2079e"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"z1", "+", "z2"}], ")"}], " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{"z2", "+", 
+      RowBox[{"2", " ", 
+       TagBox[
+        StyleBox[
+         TemplateBox[{"a", "\"\""},
+          "Superscript"],
+         ScriptSizeMultipliers->1,
+         ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]}], ")"}], " ", 
+    RowBox[{"Conjugate", "[", "z1", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{"z1", "-", 
+      RowBox[{"2", " ", 
+       TagBox[
+        StyleBox[
+         TemplateBox[{"a", "\"\""},
+          "Superscript"],
+         ScriptSizeMultipliers->1,
+         ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}]}], ")"}], " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106583252887*^9, 3.960106604158828*^9}, {
+   3.9601066902162313`*^9, 3.960106726910982*^9}, 3.960106898502249*^9},
+ CellLabel->"Out[23]=",ExpressionUUID->"fd6edd98-90c4-4d7b-be52-356593737379"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"z1", "+", "z2"}], ")"}], " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "z2"}], " ", 
+       RowBox[{"Conjugate", "[", "z1", "]"}]}], "+", 
+      RowBox[{"z1", " ", 
+       RowBox[{"Conjugate", "[", "z2", "]"}]}]}], ")"}]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", 
+     RowBox[{"z1", "+", "z2"}], "]"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106583252887*^9, 3.960106604158828*^9}, {
+   3.9601066902162313`*^9, 3.960106726910982*^9}, 3.960106898503261*^9},
+ CellLabel->"Out[24]=",ExpressionUUID->"756fea6f-1688-49f1-af96-2977cc156fe8"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"z1", "+", "z2"}], ")"}], " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    FractionBox["1", "2"], " ", "z2", " ", 
+    RowBox[{"Conjugate", "[", "z1", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", "z1", " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", 
+     RowBox[{"z1", "+", "z2"}], "]"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106583252887*^9, 3.960106604158828*^9}, {
+   3.9601066902162313`*^9, 3.960106726910982*^9}, 3.960106898539454*^9},
+ CellLabel->"Out[25]=",ExpressionUUID->"2aaacbb2-4b9b-4a61-9589-6de4b6dbdaf9"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.960106583252887*^9, 3.960106604158828*^9}, {
+   3.9601066902162313`*^9, 3.960106726910982*^9}, 3.960106898618445*^9},
+ CellLabel->"Out[26]=",ExpressionUUID->"7ed1114b-fb74-4160-a303-953d8dcec0f5"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.18", " ", "in", " ", "Bergeron", " ", "et", " ", 
+    RowBox[{"al", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"expr1", "=", 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"d", "[", "z1", "]"}], ",", 
+      RowBox[{"d", "[", "z2", "]"}], ",", 
+      RowBox[{"conj", "@", 
+       RowBox[{"d", "[", "z1", "]"}]}]}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"expr2", "=", 
+    RowBox[{
+     RowBox[{"Exp", "[", 
+      RowBox[{"o", "[", 
+       RowBox[{"z1", ",", "z2"}], "]"}], "]"}], 
+     RowBox[{"d", "[", "z2", "]"}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{"expr1", "==", "expr2"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.96010673971947*^9, 3.960106800388489*^9}},
+ CellLabel->"In[27]:=",ExpressionUUID->"57cb11d3-3cd6-46c8-86d3-716098d41046"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z2", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "z2"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{"z1", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z2", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "-", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z2", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}]}], ")"}]}], "+", 
+   RowBox[{
+    FractionBox["1", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"z1", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z1"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{"z2", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z1"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "-", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z1"}], " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "-", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z1"}], " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}]}], ")"}]}], "+", 
+      RowBox[{"z1", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+         RowBox[{"z2", " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\[Dagger]\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+         RowBox[{
+          FractionBox["1", "2"], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "z2"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z1", " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "+", 
+            RowBox[{"z1", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z2", " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "+", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z1", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z2", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}]}], ")"}]}], "+", 
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z2"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"z1", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}], "+", 
+         RowBox[{"z1", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"z2", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"z1", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                TagBox[
+                 StyleBox[
+                  TemplateBox[{"a", "\"\[Dagger]\""},
+                   "Superscript"],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                 DisplayForm]}], "+", 
+               RowBox[{
+                TagBox[
+                 StyleBox[
+                  TemplateBox[{"a", "\"\""},
+                   "Superscript"],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                 DisplayForm], " ", 
+                RowBox[{"Conjugate", "[", "z1", "]"}]}], "-", 
+               RowBox[{"z1", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"z2", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                TagBox[
+                 StyleBox[
+                  TemplateBox[{"a", "\"\[Dagger]\""},
+                   "Superscript"],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                 DisplayForm]}], "+", 
+               RowBox[{
+                TagBox[
+                 StyleBox[
+                  TemplateBox[{"a", "\"\""},
+                   "Superscript"],
+                  ScriptSizeMultipliers->1,
+                  ScriptBaselineShifts->{1, 1}],
+                 DisplayForm], " ", 
+                RowBox[{"Conjugate", "[", "z1", "]"}]}], "-", 
+               RowBox[{"z1", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"-", "z1"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "+", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}]}], ")"}]}], "-", 
+      RowBox[{
+       RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"z1", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "+", 
+         RowBox[{"z2", " ", 
+          RowBox[{"(", 
+           RowBox[{"1", "+", 
+            RowBox[{
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\[Dagger]\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm], 
+             StyleBox["\[CenterDot]",
+              FontColor->RGBColor[0, 1, 0]], 
+             TagBox[
+              StyleBox[
+               TemplateBox[{"a", "\"\""},
+                "Superscript"],
+               ScriptSizeMultipliers->1,
+               ScriptBaselineShifts->{1, 1}],
+              DisplayForm]}]}], ")"}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "-", 
+         RowBox[{
+          RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+          RowBox[{
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm], 
+           StyleBox["\[CenterDot]",
+            FontColor->RGBColor[0, 1, 0]], 
+           TagBox[
+            StyleBox[
+             TemplateBox[{"a", "\"\""},
+              "Superscript"],
+             ScriptSizeMultipliers->1,
+             ScriptBaselineShifts->{1, 1}],
+            DisplayForm]}]}], "+", 
+         RowBox[{
+          FractionBox["1", "2"], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "z2"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z1", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}]}], ")"}]}], "+", 
+            RowBox[{"z1", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z2", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  TagBox[
+                   StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                   DisplayForm], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}]}], ")"}]}], "+", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z1", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "z1", "]"}], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"z2", " ", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"2", " ", 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}], "+", 
+                  RowBox[{
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\[Dagger]\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm], 
+                   StyleBox["\[CenterDot]",
+                    FontColor->RGBColor[0, 1, 0]], 
+                   TagBox[
+                    StyleBox[
+                    TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                    ScriptSizeMultipliers->1,
+                    ScriptBaselineShifts->{1, 1}],
+                    DisplayForm]}]}], ")"}]}], "-", 
+               RowBox[{
+                RowBox[{"Conjugate", "[", "z2", "]"}], " ", 
+                RowBox[{
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm], 
+                 StyleBox["\[CenterDot]",
+                  FontColor->RGBColor[0, 1, 0]], 
+                 TagBox[
+                  StyleBox[
+                   TemplateBox[{"a", "\"\""},
+                    "Superscript"],
+                   ScriptSizeMultipliers->1,
+                   ScriptBaselineShifts->{1, 1}],
+                  DisplayForm]}]}]}], ")"}]}]}], ")"}]}]}], ")"}]}]}], 
+     ")"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106756777615*^9, 3.96010678873039*^9}, 
+   3.9601069000126467`*^9},
+ CellLabel->"Out[27]=",ExpressionUUID->"db96fb6e-f234-41f3-91c7-be632377a6a1"],
+
+Cell[BoxData[
+ SuperscriptBox["\[ExponentialE]", 
+  RowBox[{
+   RowBox[{"z2", " ", 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\[Dagger]\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], "-", 
+   RowBox[{"z2", " ", 
+    RowBox[{"Conjugate", "[", "z1", "]"}]}], "+", 
+   RowBox[{"z1", " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}], "-", 
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"a", "\"\""},
+       "Superscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], " ", 
+    RowBox[{"Conjugate", "[", "z2", "]"}]}]}]]], "Output",
+ CellChangeTimes->{{3.960106756777615*^9, 3.96010678873039*^9}, 
+   3.960106900019826*^9},
+ CellLabel->"Out[28]=",ExpressionUUID->"17a29572-0126-457c-a67c-3f8f6d8ff7cd"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.960106756777615*^9, 3.96010678873039*^9}, 
+   3.960106900119993*^9},
+ CellLabel->"Out[29]=",ExpressionUUID->"5f6d38e4-4567-4ac6-9b0e-ff86847520f9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"6.20", " ", "in", " ", "Bergeron", " ", "et", " ", 
+    RowBox[{"al", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"d", "[", "z", "]"}], ",", 
+      RowBox[{"a", "[", "AN", "]"}], ",", 
+      RowBox[{"conj", "@", 
+       RowBox[{"d", "[", "z", "]"}]}]}], "]"}], "//", "Simplify"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"d", "[", "z", "]"}], ",", 
+      RowBox[{"a", "[", "CR", "]"}], ",", 
+      RowBox[{"conj", "@", 
+       RowBox[{"d", "[", "z", "]"}]}]}], "]"}], "//", 
+    "Simplify"}]}]}]], "Input",
+ CellChangeTimes->{{3.960106810147628*^9, 3.96010684857808*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"a74b3a6a-3082-41e5-b451-f95b05ba2979"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "z"}], "+", 
+  TagBox[
+   StyleBox[
+    TemplateBox[{"a", "\"\""},
+     "Superscript"],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm]}]], "Output",
+ CellChangeTimes->{{3.960106823147799*^9, 3.960106848948906*^9}, 
+   3.960106900145163*^9},
+ CellLabel->"Out[30]=",ExpressionUUID->"4a17ac33-cb77-4051-ab76-b2dc50cf2b98"],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[
+   StyleBox[
+    TemplateBox[{"a", "\"\[Dagger]\""},
+     "Superscript"],
+    ScriptSizeMultipliers->1,
+    ScriptBaselineShifts->{1, 1}],
+   DisplayForm], "-", 
+  RowBox[{"Conjugate", "[", "z", "]"}]}]], "Output",
+ CellChangeTimes->{{3.960106823147799*^9, 3.960106848948906*^9}, 
+   3.960106900145896*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"aadfe20f-7e4e-4340-ae90-77d6e780f751"]
+}, Open  ]]
+},
+WindowSize->{808, 743},
+WindowMargins->{{3, Automatic}, {Automatic, 4}},
+FrontEndVersion->"14.0 for Mac OS X ARM (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"3ca25d19-6f35-43c9-96f4-4bf6968c99a1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 344, 8, 81, "Text",ExpressionUUID->"c49d189a-e2a0-4151-b685-b66305307c10"],
+Cell[CellGroupData[{
+Cell[927, 32, 213, 4, 30, "Input",ExpressionUUID->"2a7a7141-8a9f-4ec1-b8de-08597eac8eda"],
+Cell[1143, 38, 278, 5, 24, "Print",ExpressionUUID->"b2e87471-2000-4fd5-8faf-b0de232dcc89"]
+}, Open  ]],
+Cell[1436, 46, 465, 9, 52, "Input",ExpressionUUID->"377505da-d34f-4846-abe0-d97291aa4457"],
+Cell[1904, 57, 425, 11, 30, "Input",ExpressionUUID->"76aaaddc-ff85-42fd-a299-1a3a408b8d4a"],
+Cell[2332, 70, 430, 11, 30, "Input",ExpressionUUID->"34fb248b-ce29-47da-9e85-dff54ce90072"],
+Cell[2765, 83, 1357, 41, 52, "Input",ExpressionUUID->"bbb67171-e461-43a0-8e11-ea01451a2c06"],
+Cell[CellGroupData[{
+Cell[4147, 128, 645, 17, 73, "Input",ExpressionUUID->"697daf85-dab7-49f6-a13e-b21d3e5d68e1"],
+Cell[4795, 147, 245, 3, 34, "Output",ExpressionUUID->"17db9901-2fc0-41c9-91bd-f5b84d475eed"],
+Cell[5043, 152, 245, 3, 34, "Output",ExpressionUUID->"bc2067cb-1bc9-497d-84ca-ab241c0b15f7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5325, 160, 613, 13, 94, "Input",ExpressionUUID->"32cfe827-61d1-41f8-a981-c70e8ed840bc"],
+Cell[5941, 175, 2220, 71, 46, "Output",ExpressionUUID->"e69a9569-6879-4f6f-a66a-ae6ca02ccc98"],
+Cell[8164, 248, 759, 23, 39, "Output",ExpressionUUID->"a3da6bfb-084e-43c7-9eeb-1eee60a45710"],
+Cell[8926, 273, 273, 4, 34, "Output",ExpressionUUID->"8138d3e2-d585-4c97-b4e1-efdf0a4fe449"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9236, 282, 585, 12, 94, "Input",ExpressionUUID->"5c6c7bde-09e7-484f-a3b0-669b4fd6c819"],
+Cell[9824, 296, 2145, 69, 46, "Output",ExpressionUUID->"fe34a950-f09f-4ba3-8dfb-023f316a37c6"],
+Cell[11972, 367, 707, 22, 39, "Output",ExpressionUUID->"551635fe-27e0-44e1-b7df-6cca2b0782ff"],
+Cell[12682, 391, 221, 3, 34, "Output",ExpressionUUID->"0d2c02c1-7079-42bc-af6e-393602ccae72"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12940, 399, 820, 18, 94, "Input",ExpressionUUID->"66a78893-c8c3-4413-bd84-e4488022c1c8"],
+Cell[13763, 419, 801, 24, 39, "Output",ExpressionUUID->"8d83140d-9671-4ae0-ae24-c79760d0c27e"],
+Cell[14567, 445, 274, 4, 34, "Output",ExpressionUUID->"4896a807-ef8e-4cbf-a474-1786d3f77be7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14878, 454, 515, 12, 73, "Input",ExpressionUUID->"4f49c46e-8585-45e2-b4ff-8a2772c86f2d"],
+Cell[15396, 468, 769, 24, 39, "Output",ExpressionUUID->"fe8ed959-19ae-43e3-bfc6-dc2afbabf20f"],
+Cell[16168, 494, 204, 3, 34, "Output",ExpressionUUID->"71004f8b-3dcf-4734-8825-ef44a805f01b"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16409, 502, 1063, 26, 136, "Input",ExpressionUUID->"be51095e-a400-4527-9ba7-d675d5248a6f"],
+Cell[17475, 530, 6756, 210, 41, "Output",ExpressionUUID->"7ebe9798-7aa6-4a10-a2ff-2149a9c2079e"],
+Cell[24234, 742, 1296, 41, 41, "Output",ExpressionUUID->"fd6edd98-90c4-4d7b-be52-356593737379"],
+Cell[25533, 785, 1088, 34, 41, "Output",ExpressionUUID->"756fea6f-1688-49f1-af96-2977cc156fe8"],
+Cell[26624, 821, 1031, 31, 41, "Output",ExpressionUUID->"2aaacbb2-4b9b-4a61-9589-6de4b6dbdaf9"],
+Cell[27658, 854, 250, 3, 34, "Output",ExpressionUUID->"7ed1114b-fb74-4160-a303-953d8dcec0f5"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27945, 862, 876, 22, 94, "Input",ExpressionUUID->"57cb11d3-3cd6-46c8-86d3-716098d41046"],
+Cell[28824, 886, 61603, 1666, 41, "Output",ExpressionUUID->"db96fb6e-f234-41f3-91c7-be632377a6a1"],
+Cell[90430, 2554, 837, 26, 39, "Output",ExpressionUUID->"17a29572-0126-457c-a67c-3f8f6d8ff7cd"],
+Cell[91270, 2582, 201, 3, 34, "Output",ExpressionUUID->"5f6d38e4-4567-4ac6-9b0e-ff86847520f9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[91508, 2590, 837, 23, 73, "Input",ExpressionUUID->"a74b3a6a-3082-41e5-b451-f95b05ba2979"],
+Cell[92348, 2615, 392, 12, 36, "Output",ExpressionUUID->"4a17ac33-cb77-4051-ab76-b2dc50cf2b98"],
+Cell[92743, 2629, 419, 12, 60, "Output",ExpressionUUID->"aadfe20f-7e4e-4340-ae90-77d6e780f751"]
+}, Open  ]]
+}
+]
+*)
+

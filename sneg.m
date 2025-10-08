@@ -2,7 +2,7 @@
    SNEG - Mathematica package for calculations with non-commuting
    operators of the second quantization algebra
 
-   Copyright (C) 2002-2023 Rok Zitko
+   Copyright (C) 2002-2025 Rok Zitko
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.4 January 2023";
-snegcopyright = "Copyright (C) 2002-2023 Rok Zitko";
+snegidstring = "sneg.m 2.0.11 Jun 2025";
+snegcopyright = "Copyright (C) 2002-2025 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
   pos = StringPosition[snegidstring, " "];
@@ -44,7 +44,7 @@ $SnegVersion::usage = "$SnegVersion is the version of sneg package used.";
 
 Print["sneg " <> $SnegVersion <> " " <> snegcopyright];
 
-(* 
+(*
 A few NAMING CONVENTIONS (that I try to follow most of the time)
 for function arguments and patterns:
 
@@ -77,8 +77,8 @@ UsageWithMore[symbol_, string_, tag_:Null] := (symbol::usage = string <>
 "\!\(\*ButtonBox[\(More...\),ButtonStyle->\"AddOnsLink\",ButtonData:>\"" <>
      If[tag === Null, ToString[symbol], tag] <> "\"]\)");
 
-UsageWithMore[snegfermionoperators, 
-"snegfermionoperators[a, b, c] declares a, b, and c to be 
+UsageWithMore[snegfermionoperators,
+"snegfermionoperators[a, b, c] declares a, b, and c to be
 fermionic operators. They obey canonical anti-commutation relations."];
 UsageWithMore[snegbosonoperators,
 "snegbosonoperators[a, b, c] declares a, b, and c to be
@@ -99,7 +99,7 @@ Grassman quantities."];
 UsageWithMore[snegfreeindexes,
 "snegfreeindexes[k, sigma] declares k and sigma to be indexes. This is
 taken into account when simplifying sum[] blocks."];
-UsageWithMore[nc, 
+UsageWithMore[nc,
 "nc[...] represents non-commutative multiplication."];
 UsageWithMore[fermionQ,
 "fermionQ[c] returns True if c is a fermionic operator."];
@@ -107,11 +107,12 @@ UsageWithMore[bosonQ,
 "bosonQ[c] returns True if c is a bosonic operator."];
 UsageWithMore[operatorQ,
 "operatorQ[c] returns True if c is an operator."];
-UsageWithMore[ordering, 
-"ordering[c] = EMPTY | SEA determined how the fermionic operators
+UsageWithMore[ordering,
+"ordering[c] = EMPTY | SEA | NONE determined how the fermionic operators
 are reordered by defining the vacuum state that corresponds to
 the operator c. EMPTY corresponds to an empty state vacuum, while
-SEA denotes a Fermi sea filled up to a Fermi level."];
+SEA denotes a Fermi sea filled up to a Fermi level. NONE turns off
+automatic reodering for operator c."];
 UsageWithMore[snegOrderedQ,
 "snegOrderedQ[op1[i1], op2[i2]] returns True if operators op1[i1] and
 op2[i2] are canonically ordered."];
@@ -145,7 +146,7 @@ anti-commutator.", "superkomutator"];
 UsageWithMore[superanticommutator,
 "superanticommutator[a, b, n] = {a, {a, ... {a, b}}}, this is order-n nested
 anti-commutator.", "superkomutator"];
-UsageWithMore[dd, 
+UsageWithMore[dd,
 "dd[expr] denotes the double dots surrounding an expresions, i.e.
 a normal ordered string"];
 UsageWithMore[normalorder,
@@ -158,10 +159,10 @@ vacuum expectation value (vev). Wick's theorem is used to compute the vev.",
 UsageWithMore[conj,
 "conj[expr] conjugates an expression."];
 UsageWithMore[sum,
-"sum[expr, {indexes}] denotes a symbolic sum of an expression 
+"sum[expr, {indexes}] denotes a symbolic sum of an expression
 over indexes."];
 UsageWithMore[sumThread,
-"sumThread threads sum[{expr1, expr2}, {indexes}] over the list in the first 
+"sumThread threads sum[{expr1, expr2}, {indexes}] over the list in the first
 argument."];
 UsageWithMore[sumExpand,
 "sumExpand[expr] expands sums over the addends."];
@@ -232,19 +233,19 @@ two S=1/2 spin operators corresponding to fermionic operators a[i]
 and b[j]."];
 UsageWithMore[spinspinpm,
 "spinspinpm[a[i], b[j]] returns the +- part of the scalar product
-between two S=1/2 spin operators corresponding to fermionic operators 
+between two S=1/2 spin operators corresponding to fermionic operators
 a[i] and b[j].", "spinspin"];
 UsageWithMore[spinspinmp,
 "spinspinmp[a[i], b[j]] returns the -+ part of the scalar product
-between two S=1/2 spin operators corresponding to fermionic operators 
+between two S=1/2 spin operators corresponding to fermionic operators
 a[i] and b[j].", "spinspin"];
 UsageWithMore[spinspinxy,
 "spinspinxy[a[i], b[j]] returns the transverse part of the scalar product
-between two S=1/2 spin operators corresponding to fermionic operators 
+between two S=1/2 spin operators corresponding to fermionic operators
 a[i] and b[j].", "spinspin"];
 UsageWithMore[spinspinz,
 "spinspinxy[a[i], b[j]] returns the longitudinal part of the scalar product
-between two S=1/2 spin operators corresponding to fermionic operators 
+between two S=1/2 spin operators corresponding to fermionic operators
 a[i] and b[j].", "spinspin"];
 UsageWithMore[manyspin,
 "manyspin[{a[i], b[j],...}] returns the x, y, and z components of the
@@ -262,10 +263,10 @@ UsageWithMore[spinmatrixZ,
 "spinmatrixZ[S] returns the matrix of the Z component of the spin
 operator for arbitrary spin S.", "spinmatrixX"];
 UsageWithMore[spinmatrixP,
-"spinmatrixP[S] returns the matrix of the spin-raising operator 
+"spinmatrixP[S] returns the matrix of the spin-raising operator
 for arbitrary spin S.", "spinmatrixX"];
 UsageWithMore[spinmatrixM,
-"spinmatrixM[S] returns the matrix of the spin-lowering operator 
+"spinmatrixM[S] returns the matrix of the spin-lowering operator
 for arbitrary spin S.", "spinmatrixX"];
 UsageWithMore[direct,
 "direct[b1, b2] returns a direct product of two sets of operator
@@ -276,11 +277,11 @@ to a fermionic operator c[i]. The phase is (-1)^nr. The default
 value of nr is 0."];
 UsageWithMore[isospinxyz,
 "isospinxyz[c[i], nr] returns the isospin operator corresponding
-to the fermionic operator c[i]. The phase is (-1)^nr. The default 
+to the fermionic operator c[i]. The phase is (-1)^nr. The default
 value of nr is 0."];
 UsageWithMore[isospin,
 "isospin[c[i], nr] returns the isospin operator corresponding
-to the fermionic operator c[i]. The phase is (-1)^nr. The default 
+to the fermionic operator c[i]. The phase is (-1)^nr. The default
 value of nr is 0.", "isospinxyz"];
 UsageWithMore[nnop,
 "nnop[op] is used to define the lattice index that determines
@@ -298,12 +299,12 @@ UsageWithMore[isospinz,
 corresponding to the fermionic operator c[i]. The phase is (-1)^nr.
 The default value of nr is 0.", "isospinxyz"];
 UsageWithMore[isospinplus,
-"isospinplus[c[i], nr] returns the isospin-raising component of the 
-isospin operator corresponding to the fermionic operator c[i]. 
+"isospinplus[c[i], nr] returns the isospin-raising component of the
+isospin operator corresponding to the fermionic operator c[i].
 The phase is (-1)^nr. The default value of nr is 0.", "isospinxyz"];
 UsageWithMore[isospinminus,
-"isospinminus[c[i], nr] returns the isospin-lowering component of the 
-isospin operator corresponding to the fermionic operator c[i]. 
+"isospinminus[c[i], nr] returns the isospin-lowering component of the
+isospin operator corresponding to the fermionic operator c[i].
 The phase is (-1)^nr. The default value of nr is 0.", "isospinxyz"];
 UsageWithMore[manyisospin,
 "manyisospin[{ops}, {phases}] returns the X, Y, and Z components
@@ -320,6 +321,9 @@ UsageWithMore[hop,
 "hop[a[i], b[j]] returns the electron hopping operator between
 sites a[i] and b[j]. hop[a[i], b[j], sigma] with sigma=UP | DO
 does the same for a single spin projection sigma."];
+UsageWithMore[anomaloushop,
+"anomaloushop[a[i], b[j]] returns the anomalous hopping operator between
+sites a[i] and b[j]."];
 UsageWithMore[holehop,
 "holehop[h[i], p[j]] returns the electron hopping operator for
 the case of a hole operator h[i] and particle operator p[j]."];
@@ -343,17 +347,17 @@ UsageWithMore[op2ndx,
 "op2ndx[c[i]] returns the index of operator c[i] in the basis declared
 by makebasis."];
 UsageWithMore[ndx2op,
-"ndx2op[ndx] returns the creation operator corresponding to 
+"ndx2op[ndx] returns the creation operator corresponding to
 the index ndx in the basis declared by makebasis."];
 UsageWithMore[vacuum,
-"vacuum[] returns the vacuum vector in the occupation number (vc) 
+"vacuum[] returns the vacuum vector in the occupation number (vc)
 representation for a basis that has been previously defined using makebasis.",
 "vacuumlc"];
 UsageWithMore[ap,
 "ap[op, vc] applies an operator op to a vector vc in the occupation
 number representation."];
 UsageWithMore[vc,
-"vc[...] is a wrapper (vector) that holds the information about the occupancy 
+"vc[...] is a wrapper (vector) that holds the information about the occupancy
 of the individual sites in the occupation number representation."];
 UsageWithMore[vc2ops,
 "vc2ops[expr] transforms vectors in the occupation-number representation
@@ -366,12 +370,12 @@ UsageWithMore[scalarproductop,
 product between operator expressions a and b. The expression on the
 left, a, is automatically conjugated."];
 UsageWithMore[braketvc,
-"braketvc[a, op, b] computes the braket <a|op|b>, where op is an operator   
+"braketvc[a, op, b] computes the braket <a|op|b>, where op is an operator
 expression, while a and b are some states (in the occupation number
 representation)."];
 UsageWithMore[braketop,
-"braketop[a, op, b] computes the braket <a|op|b>, where op is an operator   
-expression, while a and b are some states (in the creation operator 
+"braketop[a, op, b] computes the braket <a|op|b>, where op is an operator
+expression, while a and b are some states (in the creation operator
 representation).", "braketvc"];
 UsageWithMore[expvop,
 "expvop[op, a] computes the braket <a|op|a>, where op is an
@@ -384,8 +388,8 @@ expression and a is some state (in the occupation number representation).",
 UsageWithMore[matrixrepresentationvc,
 "matrixrepresentationvc[op, basis] computes the matrix representation
 of the operator op in a given basis (occupation number representation).
-matrixrepresentationvc[op, basisL, basisR] returns the matrix 
-representation of an operator in the case of different basis for 
+matrixrepresentationvc[op, basisL, basisR] returns the matrix
+representation of an operator in the case of different basis for
 left-multiplication and right-multiplication."];
 UsageWithMore[matrixrepresentationvcfast,
 "matrixrepresentationvcfast[op, basis] computes the matrix representation
@@ -394,7 +398,7 @@ of the operator op in a given basis (occupation number representation).",
 UsageWithMore[matrixrepresentationvcsparse,
 "matrixrepresentationvcsparse[op,  basis] computes the matrix representation
 of the operator op in a given basis (occupation number representation).
-A sparse matrix is returned.", 
+A sparse matrix is returned.",
 "matrixrepresentationvc"];
 UsageWithMore[matrixrepresentationop,
 "matrixrepresentationop[op, basis] computes the matrix representation
@@ -432,7 +436,7 @@ UsageWithMore[VACUUM,
 "VACUUM is a placeholder for vacuum in operator expressions. If an
 annihilation operator stands just before VACUUM, the expression is zero.
 Likewise, if a creation operators stands just after conj[VACUUM], the
-expression drops. VACUUM is normalized to 1, i.e. 
+expression drops. VACUUM is normalized to 1, i.e.
 vev[nc[conj[VACUUM], VACUUM]] = 1."];
 UsageWithMore[projector,
 "projector[op[j], PROJ] returns the projection operator corresponding
@@ -463,11 +467,11 @@ UsageWithMore[projector02,
 fermionic operator op[j]. It projects to the subspace with either zero
 or double occupancy.", "projector"];
 UsageWithMore[decomposevc,
-"decomposevc[vec, basis] decomposes a vector into components with     
+"decomposevc[vec, basis] decomposes a vector into components with
 respect to the given basis in the occupation number representation."];
 UsageWithMore[decomposeop,
 "decomposeop[vec, basis] decomposes a vector into components with
-respect to the given basis in the creation operator representation.", 
+respect to the given basis in the creation operator representation.",
 "decomposevc"];
 UsageWithMore[orthogvc,
 "orthogvc[vecs, basis] orthogonalizes a list of vectors vecs in the
@@ -476,7 +480,7 @@ UsageWithMore[orthogop,
 "orthogop[vecs, basis] orthogonalizes a list of vectors vecs in the
 creation operator representation basis 'basis'.", "orthogvc"];
 UsageWithMore[transformQStoIS,
-"transformQStoIS[basis] transforms from a basis with well defined (Q,S) 
+"transformQStoIS[basis] transforms from a basis with well defined (Q,S)
 quantum numbers to a basis with well defined (I,S) quantum numbers."];
 UsageWithMore[bra,
 "bra[i] denotes the Dirac bra <i|."];
@@ -531,7 +535,7 @@ UsageWithMore[phononminus,
 representation. Nph is the phonon number cutoff.", "phononplus"];
 UsageWithMore[phononx,
 "phononx[Nph] returns the phonon displacement operator (a^dag+a)
-in the bra-ket representation. Nph is the phonon number cutoff.", 
+in the bra-ket representation. Nph is the phonon number cutoff.",
 "phononplus"];
 UsageWithMore[transformtoLR,
 "transformtoLR[b, map] transforms the basis b to a basis with well
@@ -671,7 +675,7 @@ providing a counterpart to PrettyOutput. *)
 If[!ValueQ[PrettyOutput], PrettyOutput = True];
 If[!ValueQ[PrettyInput], PrettyInput = True];
 
-PrettyOutput::Usage = 
+PrettyOutput::Usage =
 "Setting PrettyOutput to False prior to loading the package sneg disables
 the pretty printing of sneg expressions.";
 PrettyInput::Usage = 
@@ -704,7 +708,7 @@ SetAttributes[{CR, AN, DO, UP}, Protected];
 (* list?? store symbols that have been promoted to operators,
 constants or indexes. *)
 If[!ValueQ[listfermionoperators],  listfermionoperators={} ];
-If[!ValueQ[listbosonoperators],    listbosonoperators={} ]; 
+If[!ValueQ[listbosonoperators],    listbosonoperators={} ];
 If[!ValueQ[listmajoranaoperators], listmajoranaoperators={} ];
 If[!ValueQ[listspinoperators],     listspinoperators={} ];
 
@@ -722,16 +726,16 @@ SetAttributes[addto, HoldFirst];
 (* Define formatting rules for an operator (pretty printing). *)
 SnegPPoperator[x_, spin_:1/2] := Block[{},
      (* With spin index *)
-     Format[x[i_, j___, sigma_], StandardForm] := 
+     Format[x[i_, j___, sigma_], StandardForm] :=
       Module[{dag, sgm},
        dag = Which[i === CR, "\[Dagger]",
                    i === AN, "",
                    True, Null];
        sgm = Which[
-           spin == 1/2 && sigma === UP, 
+           spin == 1/2 && sigma === UP,
               (* XXX: TEMPORARY FIX: Should be \[UpArrow] *)
               StyleForm["\[DoubleUpArrow]", FontColor -> Red],
-           spin == 1/2 && sigma === DO, 
+           spin == 1/2 && sigma === DO,
               StyleForm["\[DownArrow]", FontColor -> Blue],
            spin == 0 && sigma === 0,
               "",
@@ -782,8 +786,8 @@ SnegTeXForm[x_, spin_] := Module[{},
               "\\uparrow",
            spin == 1/2 && sigma === DO,
               "\\downarrow",
-           True, 
-              sigma ]; 
+           True,
+              sigma ];
       SequenceForm[ ToString[op], "^", dag, "_{", Append[TeXString[{j}], sgm], "}" ]
    ];
 
@@ -851,8 +855,8 @@ SnegPPbosonoperator[x_] := Block[{},
 
        DisplayForm @ If[dag === Null,
           RowBox[{x, "[", RowBox[{i}], "]"}],
-          StyleBox[ Superscript[x, dag], 
-            ScriptSizeMultipliers -> 1, 
+          StyleBox[ Superscript[x, dag],
+            ScriptSizeMultipliers -> 1,
             ScriptBaselineShifts -> {1, 1}]
         ]
       ];
@@ -885,7 +889,7 @@ snegrealfunctions[l__] := Scan[
 {
   snegnonopQ[#] ^= True;
   Conjugate[#[a___]] ^= #[a];
-  isnumeric[#[___]] := True;
+  isnumericQ[#[___]] := True;
 }&, {l}];
 
 snegpositiveconstants[l__] := Scan[
@@ -927,7 +931,7 @@ SPININDEXm=5;
 
 (* Define formatting rules for a spin operator. *)
 SnegPPspinoperator[x_] := Block[{},
-     Format[x[i___, j_], StandardForm] := 
+     Format[x[i___, j_], StandardForm] :=
       Module[{ndx},
        ndx = Which[j === SPININDEXx, StyleForm["x", FontColor -> Blue],
                    j === SPININDEXy, StyleForm["y", FontColor -> Blue],
@@ -936,10 +940,10 @@ SnegPPspinoperator[x_] := Block[{},
                    j === SPININDEXm, StyleForm["-", FontColor -> Blue],
                    True, j];
 
-       DisplayForm @ StyleBox[ 
-              If[ {i} === {}, Superscript[x, ndx], 
+       DisplayForm @ StyleBox[
+              If[ {i} === {}, Superscript[x, ndx],
                               Subsuperscript[x, RowBox @ {i}, ndx ] ],
-            ScriptSizeMultipliers -> 1, 
+            ScriptSizeMultipliers -> 1,
             ScriptBaselineShifts -> {1, 1}]
       ];
    ];
@@ -963,14 +967,14 @@ snegspinoperators[l__] := Scan[
 
 
 snegintegerconstants[l__] := Scan[
-{  
+{
    snegnonopQ[#] ^= True;
    Conjugate[#] ^= #;
    addto[listintegerconstants, #];}&,
 {l}];
 
 snegcomplexconstants[l__] := Scan[
-{  
+{
    snegnonopQ[#] ^= True;
    addto[listcomplexconstants, #];}&,
 {l}];
@@ -978,7 +982,8 @@ snegcomplexconstants[l__] := Scan[
 snegcomplexfunctions[l__] := Scan[
 {
   snegnonopQ[#] ^= True;
-  isnumeric[#[___]] := True;
+  isnumericQ[#[___]] := True;
+  isnumericQ[Conjugate[#[___]]] := True;
 }&, {l}];
 
 (* Define which symbols are free indexes that appear in sum[]s *)
@@ -1009,7 +1014,7 @@ Protect[UnitStep];
 If[PrettyOutput,
   Unprotect[KroneckerDelta];
   Format[KroneckerDelta[x_, y_], StandardForm] :=
-   DisplayForm @ 
+   DisplayForm @
     StyleBox[SubscriptBox[StyleForm["\[Delta]", FontColor -> Green],
         RowBox[{x,y}]],
         ScriptSizeMultipliers -> 1,
@@ -1017,7 +1022,7 @@ If[PrettyOutput,
   Protect[KroneckerDelta];
 
   Unprotect[UnitStep];
-  Format[UnitStep[x_], StandardForm] := DisplayForm @ 
+  Format[UnitStep[x_], StandardForm] := DisplayForm @
     RowBox[{StyleForm["\[Theta]", FontColor -> Green],
       "(", x, ")"}];
   Protect[UnitStep];
@@ -1038,9 +1043,9 @@ operatorQ[op_?spinQ] := True;
 
 (* isnumericQ[] return True if the expression does not involve operators. *)
 
-isnumericQ[z_] := And @@ (If[NumericQ@#, True, 
+isnumericQ[z_] := And @@ (If[NumericQ@#, True,
   If[MemberQ[Quiet[Attributes@Evaluate@Head@#], NumericFunction] ||
-     snegnonopQ[#] === True, True, False]] & /@ 
+     snegnonopQ[#] === True, True, False]] & /@
   Level[z, {0, Infinity}]);
 
 (* Make "op" be a linear operator in all of its arguments. *)
@@ -1063,6 +1068,13 @@ sneglinearoperatorFirst[op_] := {
   op[b1_ + b2_, c___] := op[b1, c] + op[b2, c];
 };
 
+(* Note: note the pattern b__ in the first line *)
+sneglinearoperatorWithLast[op_] := {
+  op[a___, z_?isnumericQ, b__] := z op[a, b];
+  op[a___, z_?isnumericQ b_, c___] := z op[a, b, c];
+  op[a___, b1_ + b2_, c___] := op[a, b1, c] + op[a, b2, c];
+};
+
 (* Definition for an operator with at most two arguments; the operator
 is conjugate-linear with respect to the first argument and linear
 with respect to the second argument. This is the usual convention
@@ -1079,9 +1091,9 @@ snegsesquilinearoperator[op_] := {
   op[0, b_] := 0;
 };
 
-(* nc is a reserved word and it is obviously never an operator. 
+(* nc is a reserved word and it is obviously never an operator.
 This definition speeds up some tests. *)
-operatorQ[nc] = False; 
+operatorQ[nc] = False;
 
 (**** Define operations for non-commuting operators ****)
 
@@ -1103,7 +1115,7 @@ sneglinearoperator[nc];
 SetAttributes[nc, Listable];
 
 (* Product of zero operators equals one, see Times[]. *)
-nc[] := 1; 
+nc[] := 1;
 
 (* Rule for single terms, see Times[]. *)
 (* This rule implies idempotency of multiplication. *)
@@ -1130,11 +1142,11 @@ Canonical sorting:
 - creation operators to the left, annihilation operators to the right
 - sort by index
 - sort by spin index
-=> for trivial vacuum (no particles), this reduces to simple sorting 
+=> for trivial vacuum (no particles), this reduces to simple sorting
    by all indexes!
 *)
 
-snegOrderedQ[x1:op_[___], x2:op_[___]] /; 
+snegOrderedQ[x1:op_[___], x2:op_[___]] /;
   (fermionQ[op] && ordering[op] === EMPTY) := OrderedQ[{x1, x2}];
 
 
@@ -1143,8 +1155,8 @@ snegOrderedQ[x1:op_[___], x2:op_[___]] /;
    working with very long operator expressions. Note that certain
    assumptions about the vacuum state and the normal ordering
    are implied. *)
-  
-snegOrderedQ[x1 : op_[___], x2 : op_[___]] /; 
+
+snegOrderedQ[x1 : op_[___], x2 : op_[___]] /;
   (fermionQ[op] && ordering[op] === NONE) := True;
 
 isannihilation[op_[t_, j___]] /; (ordering[op] == NONE) := (t == AN);
@@ -1156,11 +1168,11 @@ contraction[op_[___], op_[___]] /; (ordering[op] == NONE) := 0;
 (* NEW RULES for ordering=SEA, 25. 3. 2007 *)
 
 snegOrderedQ[x1:op_[i1_, k1___], x2:op_[i2_, k2___]] /;
-  (fermionQ[op] && ordering[op] === SEA && 
+  (fermionQ[op] && ordering[op] === SEA &&
   iscreation[x2] && isannihilation[x1]) := False;
 
 snegOrderedQ[x1:op_[i1_, k1___], x2:op_[i2_, k2___]] /;
-  (fermionQ[op] && ordering[op] === SEA && 
+  (fermionQ[op] && ordering[op] === SEA &&
   iscreation[x1] && isannihilation[x2]) := True;
 
 (* If no other pattern was matched, use standard reordering rules. The
@@ -1169,29 +1181,31 @@ creation/annihilation character of the operators, we may as well
 reorder the expression in a form that is convenient for further
 simplifications. *)
 
-snegOrderedQ[x1:op_[___], x2:op_[___]] /; 
+snegOrderedQ[x1:op_[___], x2:op_[___]] /;
   (fermionQ[op] && ordering[op] === SEA) := OrderedQ[{x1, x2}];
 
 (* Ordering of bosonic operators *)
+snegOrderedQ[x1 : op_[___], x2 : op_[___]] /;
+  (bosonQ[op] && ordering[op] === NONE) := True;
 snegOrderedQ[x1:op_[___], x2:op_[___]] /; bosonQ[op] :=
   OrderedQ[{x1, x2}];
 
 (* Ordering of spin operators *)
 snegOrderedQ[x1:op_[___], x2:op_[___]] /; spinQ[op] :=
   OrderedQ[{x1, x2}];
-  
+
 (* Perform reordering for operators with equal Head. *)
-  
+
 nc[a___, x1:op_[k1__], x2:op_[k2__], b___] /;
   (fermionQ[op] && !snegOrderedQ[x1, x2]) :=
     -nc[a, x2, x1, b] + nc[a, acmt[x1, x2], b];
 
-nc[a___, x1:op_[k1__], x2:op_[k2__], b___] /; 
+nc[a___, x1:op_[k1__], x2:op_[k2__], b___] /;
   (bosonQ[op] && !snegOrderedQ[x1, x2]) :=
     nc[a, x2, x1, b] + nc[a, cmt[x1, x2], b];
 
 (* Only reorder spin operator when the spin index is determined (x,y,z,p,m). *)
-nc[a___, x1:op_[k1___, t1_], x2:op_[k2___,t2_], b___] /; 
+nc[a___, x1:op_[k1___, t1_], x2:op_[k2___,t2_], b___] /;
   (spinQ[op] && 1 <= t1 <= 5 && 1 <= t2 <= 5 && !snegOrderedQ[x1, x2]) :=
     nc[a, x2, x1, b] + nc[a, cmt[x1, x2], b];
 
@@ -1270,12 +1284,12 @@ nc[a___, x1:op1_?majoranaQ, x2:op2_?majoranaQ, c___] /;
 
 snegOrderedQ[x1:op_[__], x2:op_[__]] /; majoranaQ[op] := OrderedQ[{x1, x2}];
 
-acmt[x1:op_[j1_], x2:op_[j2_]] /; majoranaQ[op] := 
+acmt[x1:op_[j1__], x2:op_[j2__]] /; majoranaQ[op] :=
   If[Length[{j1}] == Length[{j2}],
     Inner[KroneckerDelta, {j1}, {j2}, Times], 0];
-    
+
 acmt[op1_Symbol, op2_Symbol] /; majoranaQ[op1] && majoranaQ[op2] && op1 =!= op2 := 0;
-  
+
 
 (* Majorana operators are always anti-commuted to the left of the (Dirac)
 fermionic operators. This allows for mixed Majorana-Dirac expressions. *)
@@ -1285,17 +1299,17 @@ nc[a___, x1:op1_?fermionQ, x2:op2_?majoranaQ, b___] := -nc[a, x2, x1, b];
 coh[z_, c_[k___]] := nc[Exp[-nc[conj[z], z]/2], Exp[nc[c[CR, k], z]], VACUUM];
 
 (* Count the number of operators with anticommuting properties *)
-  
+
 acmtcount[l_List] := Count[l, _?((fermionQ[#] || grassmanQ[#]) &), 1];
 
 
 (* Berezin integral *)
 
 nc[a___, int[z_], b___] /; (grassmanQ[z] && FreeQ[{b}, z, 1]) := 0;
-nc[a___, int[z_], z_, b___] /; (grassmanQ[z] && FreeQ[{b}, z, 1]) := 
+nc[a___, int[z_], z_, b___] /; (grassmanQ[z] && FreeQ[{b}, z, 1]) :=
     nc[a, b];
-nc[a___, int[z_], b__, z_, c___] /; 
-  (grassmanQ[z] && FreeQ[{b}, z, 1] && FreeQ[{c}, z, 1]) := 
+nc[a___, int[z_], b__, z_, c___] /;
+  (grassmanQ[z] && FreeQ[{b}, z, 1] && FreeQ[{c}, z, 1]) :=
     nc[a, b, c] (-1)^acmtcount[{b}];
 
 nc[int[z__]] := 0;
@@ -1323,23 +1337,23 @@ nc[a___, Exp[b1_], Exp[b2_], c___] /;
 
 (* ++ Exp op Exp ++ *)
 
-nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /; 
+nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /;
   (b1 == -b3 && Simplify[ komutator[b1, nc[b2]] ] === 0) :=
   nc[a, nc[b2], c];
 
-nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /; 
+nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /;
   (b1 == -b3 && Simplify[ superkomutator[b1, nc[b2], 2] ] === 0) :=
   nc[a, nc[b2], c] + nc[a, komutator[b1, nc[b2]], c];
 
 nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /; (b1 == -b3) :=
-  Module[{kmt}, 
+  Module[{kmt},
     kmt = Simplify[
       (Simplify @ komutator[b1, nc[b2]] /. nonuls) / nc[b2] ];
     Exp[kmt] nc[a, nc[b2], c] /; isnumericQ[kmt]
   ];
 
 nc[a___, Exp[b1_], b2__, Exp[b3_], c___] /; (b1 == -b3) :=
-  Module[{kmt}, 
+  Module[{kmt},
     kmt = Simplify[
       (Simplify @ superkomutator[b1, nc[b2], 2] /. nonuls) / nc[b2] ];
     nc[a, Simplify[ Cos[I Sqrt[kmt]] nc[b2] +
@@ -1354,7 +1368,7 @@ nc[a___, b2__, Exp[b3_], c___] /;
   Simplify[ komutator[b3, nc[b2]] ] === 0 :=
   nc[a, Exp[b3], nc[b2], c];
 
-nc[a___, b2__, Exp[b3_], c___] /; 
+nc[a___, b2__, Exp[b3_], c___] /;
   Simplify[ superkomutator[b3, nc[b2], 2] ] === 0 :=
   nc[a, Exp[b3], nc[b2], c] - nc[a, Exp[b3], komutator[b3, nc[b2]], c];
 
@@ -1511,7 +1525,7 @@ If[PrettyOutput,
   (* Enclose the expression between two dark green double dots. *)
   Format[dd[i__], StandardForm] := DisplayForm @
     RowBox[{StyleForm["\[Colon]", FontColor -> Green],
-    i, 
+    i,
     StyleForm["\[Colon]", FontColor -> Green]}];
 
   fixparens[dd];
@@ -1520,7 +1534,7 @@ If[PrettyOutput,
 sneglinearoperator[dd];
 
 (* Associativity *)
-dd[a___, HoldPattern[dd[b__]], c___] := dd[a, b, c]; 
+dd[a___, HoldPattern[dd[b__]], c___] := dd[a, b, c];
 
 dd[] := 1;
 
@@ -1593,7 +1607,7 @@ snegsumJoin[l1_List, l2_List] := Module[{l},
   If[l =!= Union[l],
     Message[snegsumJoin::overlap, l1, l2];
   ];
-  l  
+  l
 ];
 
 (* Automatically rename indexes in sums when name collisions occur.
@@ -1608,10 +1622,10 @@ ssJWRnewname[n_, allnames_List, expr_:1] := Module[{ns, i, nn},
   ns = ToString[n];
   If[$VersionNumber >= 5.1,
     (* For the following line, Mathematica 5.1 is required *)
-    ns = StringReplace[ns, 
+    ns = StringReplace[ns,
       ShortestMatch[x : (_ ~~ ___)] ~~ DigitCharacter .. ~~ EndOfString :> x];
   ];
-  For[i = 1, True, i++, 
+  For[i = 1, True, i++,
     nn = ToExpression[ ns <> ToString[i] ];
     If[!MemberQ[allnames, nn] && FreeQ[expr, nn], Break[]];
   ];
@@ -1627,7 +1641,7 @@ Module[{l, rule, allnames},
   allnames = Union[it1, it2];
   Scan[ If[FreeQ[l, #] && FreeQ[a1, #],
     AppendTo[l, #],
-    (* else *) 
+    (* else *)
     nn = ssJWRnewname[#, allnames, a1];
     AppendTo[l, nn];
     AppendTo[allnames, nn];
@@ -1737,7 +1751,7 @@ sumAbstractIndex[expr_, ndxfunc_] := Module[{ r },
 ];
 
 sumNameIndex::usage =
-"sumNameIndex[expr] is to be used in conjunction with 
+"sumNameIndex[expr] is to be used in conjunction with
 sumAbstractIndex[expr].";
 
 sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len},
@@ -1746,7 +1760,7 @@ sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len},
 ];
 
 rulesumStripSums = {
-  sum[expr_, {k___}] -> expr
+  sum[expr_, {k___}] :> expr
 };
 
 (* sumFullSimplifyOLD tries to simplify an expression involving symbolic
@@ -1811,7 +1825,7 @@ complexity of the expression that is being simplified. *)
 
 sumsimplfuncs = Join[ { Automatic, SimplifyKD, sumSimplifyFnc1,
   sumSimplifyFnc2, sumSimplifyFnc3, sumSimplifyFnc4 },
-  Sequence @@ Map[rulestofuncs, 
+  Sequence @@ Map[rulestofuncs,
     {rulesumExpand, rulesumCollect, rulesumSimplifyKD} ]
 ];
 
@@ -1822,7 +1836,7 @@ sumSimplify[expr_] := Simplify[expr,
 (* sumFullSimplify first calls sumFullSimplifyOLD, then applies additional
   rules to furher simplify the resulting expression. *)
 
-sumFullSimplify[expr_] := FullSimplify[expr, 
+sumFullSimplify[expr_] := FullSimplify[expr,
   TransformationFunctions -> Prepend[sumsimplfuncs, sumFullSimplifyOLD] ];
 
 
@@ -1882,8 +1896,8 @@ vevwick[dd[_]] := 0;
 
 (* Annihilates vacuum to the right *)
 
-vev[ nc[___, x:op_?fermionQ[__]] ] /; isannihilation[x] := 0; 
-vevwick[ nc[___, x:op_?fermionQ[__]] ] /; isannihilation[x] := 0; 
+vev[ nc[___, x:op_?fermionQ[__]] ] /; isannihilation[x] := 0;
+vevwick[ nc[___, x:op_?fermionQ[__]] ] /; isannihilation[x] := 0;
 
 vev[ nc[___, x:op_?bosonQ[AN,___]] ] := 0;
 
@@ -1898,7 +1912,7 @@ vev[ nc[x:op_?bosonQ[CR,___]] ] := 0;
 
 (* Special rules for bosons *)
 
-  (* VEV of a string of identical bosonic operators must be zero. 
+  (* VEV of a string of identical bosonic operators must be zero.
   The equivalent rule for fermionic operators is not necessary, due
   to Pauli exclusion rule with is enforced at all times in the definition
   of nc[] multiplication. *)
@@ -1958,13 +1972,13 @@ vev[x:HoldPattern[nc[_?((fermionQ[#] && ordering[#] === SEA)&)
 
 (* Finally, an explicit procedure for bilinear forms in the case of SEA
 ordering. This is then used for more general expression, for example in
-conjunction with Wick's theorem. *) 
+conjunction with Wick's theorem. *)
 
 vev[nc[op1_[i1_, k1_, j1___], op2_[i2_, k2_, j2___]]] :=
   KroneckerDelta[op1, op2] KroneckerDelta[{j1}, {j2}] KroneckerDelta[k1, k2] *
   (If[i1 == CR && i2 == AN, UnitStep[-k1], 0]
   + If[i1 == AN && i2 == CR, UnitStep[k1], 0]) /;
-  fermionQ[op1] && fermionQ[op2] && 
+  fermionQ[op1] && fermionQ[op2] &&
   ordering[op1] === SEA && ordering[op2] === SEA;
 
 
@@ -2043,7 +2057,7 @@ be a pure function of spin index. *)
 spinxyzgen::usage =
 "spinxyzgen[g] generates x, y, and z components of a S=1/2 spin
 operator corresponding to an (operator) expression g. g must be a
-pure function of the spin index. For example, the conventional spin 
+pure function of the spin index. For example, the conventional spin
 operators are obtained by spinxyzgen[op[CR, #]&].";
 
 spinxyzgen[g_] := Module[{cr, an},
@@ -2055,7 +2069,7 @@ spinxyzgen[g_] := Module[{cr, an},
 spinxyzgen[g_, spin_?halfintegerQ] := Module[{cr, an},
   cr = Table[g[s], {s, +spin, -spin, -1}];
   an = conj /@ cr;
-  VMV[cr, #, an]& /@ 
+  VMV[cr, #, an]& /@
     {spinmatrixX[spin], spinmatrixY[spin], spinmatrixZ[spin]}
 ];
 
@@ -2121,7 +2135,7 @@ spinspin[op1_?spinQ[j1___], op2_?spinQ[j2___]] :=
   Sum[nc[op1[j1, i], op2[j2, i]], {i, 3}];
 
 (* Recall: S1 . S2 = S1^z S2^z + 1/2 (S1^+ S2^- + S1^- S2^+) *)
-(* Note: spinspin[a,b] = spinspinz[a,b] + spinspinxy[a,b] -> no factor 1/2 
+(* Note: spinspin[a,b] = spinspinz[a,b] + spinspinxy[a,b] -> no factor 1/2
    in this definition! *)
 
 (* Transverse part of the spin-spin interaction *)
@@ -2163,10 +2177,10 @@ halfintegerQ[z_] := IntegerQ[2z];
 spinmatrixZ[S_?halfintegerQ] :=
     Table[If[sz1 == sz2, sz1, 0], {sz1, S, -S, -1}, {sz2, S, -S, -1}];
 spinmatrixP[S_?halfintegerQ] :=
-    Table[If[sz1 == sz2 + 1, Sqrt[S(S + 1) - sz2(sz2 + 1)], 0], {sz1, 
+    Table[If[sz1 == sz2 + 1, Sqrt[S(S + 1) - sz2(sz2 + 1)], 0], {sz1,
           S, -S, -1}, {sz2, S, -S, -1}];
-spinmatrixM[S_?halfintegerQ] := 
-    Table[If[sz1 == sz2 - 1, Sqrt[S(S + 1) - sz2(sz2 - 1)], 0], {sz1, 
+spinmatrixM[S_?halfintegerQ] :=
+    Table[If[sz1 == sz2 - 1, Sqrt[S(S + 1) - sz2(sz2 - 1)], 0], {sz1,
           S, -S, -1}, {sz2, S, -S, -1}];
 spinmatrixX[S_?halfintegerQ] := 1/2(spinmatrixP[S] + spinmatrixM[S]);
 spinmatrixY[S_?halfintegerQ] := 1/(2I)(spinmatrixP[S] - spinmatrixM[S]);
@@ -2188,7 +2202,7 @@ bcs[Delta_, op_?fermionQ[j1___]] :=
 
 (* X, Y and Z componentes of the isospin operator. *)
 
-SetAttributes[{isospinxyz, isospin, isospinx, isospiny, isospinz, 
+SetAttributes[{isospinxyz, isospin, isospinx, isospiny, isospinz,
   isospinplus, isospinminus}, Listable];
 
 isospinxyz[op_?fermionQ[j___], n_:0] := Module[{nam, nbar},
@@ -2203,6 +2217,9 @@ isospin[x__] := isospinxyz[x];
 isospinx[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[1]];
 isospiny[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[2]];
 isospinz[op_?fermionQ[j___], n_:0] := isospin[op[j], n] [[3]];
+
+isospinx1[op_?fermionQ[j___], 0] := 1/2 nc[op[CR, j, UP], op[CR, j, DO]];
+isospinx2[op_?fermionQ[j___], 0] := 1/2 nc[op[AN, j, DO], op[AN, j, UP]];
 
 isospinplus[a__]  := Expand[isospinx[a] + I isospiny[a]];
 isospinminus[a__] := Expand[isospinx[a] - I isospiny[a]];
@@ -2285,7 +2302,7 @@ hop[fn1_Function, fn2_Function, sigma_] :=
   fn1[CR, sigma] ~ nc ~ fn2[AN, sigma] +
   fn2[CR, sigma] ~ nc ~ fn1[AN, sigma];
 
-hop[fn1_Function, fn2_Function] := 
+hop[fn1_Function, fn2_Function] :=
   hop[fn1, fn2, UP] + hop[fn1, fn2, DO];
 
 hop[fn1_Function, op2_?fermionQ[j2___]] := hop[fn1, op2[#1, j2, #2]&];
@@ -2299,6 +2316,58 @@ genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
 genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /; (spinof[op1] == spinof[op2] == 1/2) :=
   genhop[t, op1[j1], op2[j2], UP] + genhop[t, op1[j1], op2[j2], DO];
 
+(* Anomalous hopping, a a + a^+ a^+ *)
+(* This version is not SU(2) invariant. See below for spin-rotation-invariant version (anhop). *)
+SetAttributes[anomaloushop, Listable];
+anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  anomaloushop[op1[j1], op2[j2], UP] + anomaloushop[op1[j1], op2[j2], DO];
+
+anomaloushop[fn1_Function, fn2_Function, sigma_] :=
+  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
+  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+
+anomaloushop[fn1_Function, fn2_Function] :=
+  anomaloushop[fn1, fn2, UP] + anomaloushop[fn1, fn2, DO];
+
+anomaloushop[fn1_Function, op2_?fermionQ[j2___]] := anomaloushop[fn1, op2[#1, j2, #2]&];
+anomaloushop[op1_?fermionQ[j1___], fn2_Function] := anomaloushop[op1[#1, j1, #2]&, fn2];
+
+(* anhop has a different sign convention as anomaloushop and is a singlet tensor
+operator with respect to spin SU(2) symmetry. *)
+SetAttributes[anhop, Listable];
+anhop[op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+anhop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  anhop[op1[j1], op2[j2], UP] - anhop[op1[j1], op2[j2], DO]; (* sign! *)
+
+anhop[fn1_Function, fn2_Function, sigma_] :=
+  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
+  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+
+anhop[fn1_Function, fn2_Function] :=
+  anhop[fn1, fn2, UP] - anhop[fn1, fn2, DO]; (* sign! *)
+
+anhop[fn1_Function, op2_?fermionQ[j2___]] := anhop[fn1, op2[#1, j2, #2]&];
+anhop[op1_?fermionQ[j1___], fn2_Function] := anhop[op1[#1, j1, #2]&, fn2];
+
+(* Anomalous hopping with a complex-valued parameter t *)
+SetAttributes[genanhop, Listable];
+genanhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
+  t op1[CR, j1, sigma]   ~ nc ~ op2[CR, j2, 1-sigma] +
+  Conjugate[t] op2[AN, j2, 1-sigma] ~ nc ~ op1[AN, j1, sigma];
+
+genanhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
+  (spinof[op1] == spinof[op2] == 1/2) :=
+  genanhop[t, op1[j1], op2[j2], UP] - genanhop[t, op1[j1], op2[j2], DO]; (* sign! *)
+
 (* Hopping with spin-flip *)
 SetAttributes[spinfliphop, Listable];
 spinfliphop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] := Sum[
@@ -2306,9 +2375,9 @@ spinfliphop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] := Sum[
   op2[CR, j2, sigma] ~ nc ~ op1[AN, j1, 1-sigma],
 {sigma, DO, UP} ];
 
-(* Hopping with hole operators: 
+(* Hopping with hole operators:
 c^\dag_{k,\sigma} f_\sigma} + f^\dag_\sigma c_{k\sigma}
-\to 
+\to
 h_{k,-\sigma} f_\sigma + f^\dag_\sigma h^\dag_{k,-\sigma}
 *)
 
@@ -2474,8 +2543,10 @@ nc[a___, conj[v1_vc], v2_vc, b___] := scalarproductvc[v1, v2] nc[a, b];
 
 (*** Applies an operator to a vector in occupation number representation ***)
  
-sneglinearoperator[ap];
+sneglinearoperatorWithLast[ap];
 SetAttributes[ap, Listable];
+
+ap[a___, 0] := 0; (* special rule *)
 
 ap[v_vc] := v;
 
@@ -2636,11 +2707,11 @@ removecommas[s_String] := Map[ToExpression, StringSplit[s, ","]];
 removecommas[""] := {};
 
 (* Replace operators, kets, bras with string expressions. Concatenate
-the expression, taking into account the noncommutative multiplication 
+the expression, taking into account the noncommutative multiplication
 nc[]. *)
 snegtoasciirules = {
   op_[] /; operatorQ[op] :> ToString[op] <> "()",
-  op_[t_, i___] /; operatorQ[op] :> 
+  op_[t_, i___] /; operatorQ[op] :>
     ToString[op] <> If[t == CR, "+", ""] <> snegToString["(", ")", i],
   ket[] :> "|>",
   ket[i__] :> snegToString["|", ">", i],
@@ -2689,7 +2760,7 @@ asciitosneg[expr_] := expr //. asciitosnegrules;
 (************* (Q,Sz) BASIS **************)
 
 (* Make a basis of good quantum numbers Q and S_z. This is trivially done in
-the occupation number representation vc[...]. *) 
+the occupation number representation vc[...]. *)
 (* IMPORTANT: As of version 1.147, makebasis[] is called automatically. *)
 
 (* Spin-1/2 specific implementation! *)
@@ -2705,7 +2776,7 @@ qszbasisvc[l_List, 1/2] := Module[{n = Length[l], ndxs},
 
   ndx2vc[up_, do_] := vc @@ interleave[ndx2digs[up], ndx2digs[do]];
 
-  ndxs = Table[ {qunum[up, do], ndx2vc[up, do]}, 
+  ndxs = Table[ {qunum[up, do], ndx2vc[up, do]},
     {up, 0, 2^n-1}, {do, 0, 2^n-1}];
   ndxs = Flatten[ndxs, 1];
   mergebasis[ndxs]
@@ -2718,7 +2789,7 @@ qszbasisvc[l_List] := Module[{b, n, a, qmask, szmask},
 
   a = Table[ IntegerDigits[i, 2, n], {i, 0, 2^n-1}];
   qmask = Table[1, {n}];
-  szmask = b /. { 
+  szmask = b /. {
     op_?fermionQ[CR, i___, SP_] /; spinof[op] == 1/2 :>
       If[SP == UP, 1/2, -1/2],
     op_?fermionQ[CR, i___, SP_] /; spinof[op] != 1/2 :> SP
@@ -2798,7 +2869,7 @@ qsbasisvc[m_List, l_List] := Module[{mmnew},
 ADDvc[l_List, x:op_[___]] :=
   Map[ADDQSvc[#, x]&, l] ~ Flatten ~ 1;
 
-ADDQSvc[l_List, x:op_[___]] := 
+ADDQSvc[l_List, x:op_[___]] :=
   Map[ADDONEvc[#, x]&, Map[{First[l],#}&, l[[2]] ] ] ~ Flatten ~ 1;
 
 ADDONEvc[{{q_, s_}, a_}, op_[j___]] := Module[{op1, op2, res},
@@ -2821,7 +2892,7 @@ spinflip[op_[i_, j___, sigma_]] := op[i, j, 1-sigma];
 
 (* We start with an empty list of (Q,S) states and the full list
    of all single-particle operators. *)
-(* makebasis is called automatically. While not necessary, such behave 
+(* makebasis is called automatically. While not necessary, such behave
    is desirable for consistency with qszbasis[]. *)
 qsbasis[l_List] := Module[{},
   makebasis[l];
@@ -2836,7 +2907,7 @@ qsbasis[m_List, {}] := m;
 qsbasis[{}, l_List] := Module[{op1, op2},
   op1 = First[l] /. op_[j___] -> op[CR, j, UP];
   op2 = spinflip[op1];
-  qsbasis[ 
+  qsbasis[
     {
       { {-1, 0}, {1} },
       { {0, 1/2}, {op1} },
@@ -2910,7 +2981,7 @@ nc[a___, conj[VACUUM], x:op_?operatorQ[j___], b___] /;
 nc[a___, conj[VACUUM], VACUUM, b___] := nc[a, b];
 
 (* VACUUM placeholder corresponds to the vacuum state in the fermionic
-space. Grassman numbers can therefore be moved to the left of the 
+space. Grassman numbers can therefore be moved to the left of the
 conj[VACUUM] placeholder. *)
 nc[a___, conj[VACUUM], z_?grassmanQ, b___] :=
   nc[a, z, conj[VACUUM], b];
@@ -2927,7 +2998,7 @@ If[PrettyOutput,
 
 (* Smart spindown: determines which operators appear in the expressions,
 builds a corresponding spin down operator and applies it to the expression. *)
-SPINDOWN[a_] := nc[Plus @@ Map[spinminus, Union[Cases[a, 
+SPINDOWN[a_] := nc[Plus @@ Map[spinminus, Union[Cases[a,
 op_?operatorQ[i_, j___, sigma_] -> op[j], {0, Infinity} ]]], a];
 
 (* Calculate a 'norm' for an operator expression, i.e. sqrt(<expr|expr>). *)
@@ -2946,7 +3017,7 @@ applytocr[op_, expr_] := Module[{b},
 
 (* Smarter spindown: drops parts which annihilate vacuum and "normalizes"
 the remainder *)
-spindown::Usage = "spindown[v] effectively applies the spin-lowering 
+spindown::Usage = "spindown[v] effectively applies the spin-lowering
 operator to the state v in the creation operator representation.";
 spindown[a_] := Module[{b},
   b = zeroonvac[SPINDOWN[a]];
@@ -3065,6 +3136,16 @@ projector[op_[j___], PROJ02] :=
   projector[op[j], PROJ0] + projector[op[j], PROJ2];
 projector02[op_[j___]] := projector[op[j], PROJ02];
 
+outofdiag02[op_[j___]] := nc[op[AN, j, DO], op[AN, j, UP]];
+outofdiag20[op_[j___]] := nc[op[CR, j, UP], op[CR, j, DO]];
+projectorE[op_[j___]] := (projector0[op[j]] + projector2[op[j]] + outofdiag02[op[j]] + outofdiag20[op[j]])/2;
+projectorO[op_[j___]] := (projector0[op[j]] + projector2[op[j]] - outofdiag02[op[j]] - outofdiag20[op[j]])/2;
+
+projectorEphi[op_[j___], phi_] := (projector0[op[j]] + projector2[op[j]] +
+  Exp[I  phi] outofdiag02[op[j]] + Exp[-I  phi] outofdiag20[op[j]])/2;
+projectorOphi[op_[j___], phi_ ] := (projector0[op[j]] + projector2[op[j]] -
+  Exp[I  phi] outofdiag02[op[j]] - Exp[-I  phi] outofdiag20[op[j]])/2;
+
 projector[op_?AtomQ, n___] := projector[op[], n];
 projector0[op_?AtomQ] := projector0[op[]];
 projectorUP[op_?AtomQ] := projectorUP[op[]];
@@ -3072,6 +3153,10 @@ projectorDO[op_?AtomQ] := projectorDO[op[]];
 projector1[op_?AtomQ] := projector1[op[]];
 projector2[op_?AtomQ] := projector2[op[]];
 projector02[op_?AtomQ] := projector02[op[]];
+projectorE[op_?AtomQ] := projectorE[op[]];
+projectorO[op_?AtomQ] := projectorO[op[]];
+projectorEphi[op_?AtomQ] := projectorEphi[op[]];
+projectorOphi[op_?AtomQ] := projectorOphi[op[]];
 
 
 (**** Operations on basis sets ****)
@@ -3130,9 +3215,9 @@ removestates[vecs_, states_] := Module[{},
   Fold[remove1state, vecs, states]
 ];
 
-(** 
+(**
 Transformation from basis with well defined (Q,S) to a basis with well
-defined (I,S) quantum numbers. 
+defined (I,S) quantum numbers.
 
 Strategy: take states with high Q (these are maximum weight states with
 respect to the isospin SU(2) group), apply Tminus to generate other states
@@ -3142,7 +3227,7 @@ of maximum-weight representative states, which is the (I,S) basis that we
 wanted to construct.
 
 NOTE: this function may also be applied to a (Q,Sz) basis to generate a
-(I,Sz) basis. In fact, it is applicable to all (Q,...) -> (I,...) 
+(I,Sz) basis. In fact, it is applicable to all (Q,...) -> (I,...)
 transformations.
 **)
 
@@ -3164,7 +3249,7 @@ transformQStoIS2[TM_, baza_, novabaza_] := Module[{nova2, ISv, ostali},
 (* baza is a basis List in the format as returned by function qsbasis[] *)
 (* Tminus is the isospin lowering operator that we apply to the vectors in
    the subspace that we're subtracting from other subspaces *)
-transform1[baza_, Tminus_] := 
+transform1[baza_, Tminus_] :=
  Module[{prvi, ostali, subspace, states, statesplus, pos, ISvec, i,
          nrqn, subvector, isubspace},
   prvi = First[baza];  (* The subspace that we are subtracting *)
@@ -3245,7 +3330,7 @@ If[PrettyOutput,
 fermionic (!) operators *)
 
 nc[a___, x1:bra[b___], x2:op_?fermionQ[i___], d___] := nc[a, x2, x1, d];
-nc[a___, x1:ket[k___], x2:op_?fermionQ[i___], d___] := nc[a, x2, x1, d]; 
+nc[a___, x1:ket[k___], x2:op_?fermionQ[i___], d___] := nc[a, x2, x1, d];
 
 (* Returns a list with True at non-Null positions *)
 nonnullpattern[l_List] := nonnullQ /@ l;
@@ -3253,7 +3338,7 @@ nonnullQ[expr_] := (expr =!= Null);
 
 (* Returns True if there are no conflicting non-Null elements in two lists. This
 is used in concatenating kets and bras. *)
-compatiblepattern[l1_List, l2_List] := (Length[l1] == Length[l2]) && (Nor @@ 
+compatiblepattern[l1_List, l2_List] := (Length[l1] == Length[l2]) && (Nor @@
   Thread[And[nonnullpattern[l1], nonnullpattern[l2]]]);
 
 (* Returns True if non-Null elements come in pairs. This is used in calculating
@@ -3265,12 +3350,12 @@ pairpattern[l1_List, l2_List] := (Length[l1] == Length[l2]) && !(Or @@
 nonnullpos[l_List] := Position[l, _?nonnullQ, {1, Infinity}, Heads->False];
 
 (* Default rule for the expectation values: Kronecker delta over all non-Null indexes *)
-braketrule[bra[b___], ket[k___]]  /; pairpattern[{b}, {k}] := 
+braketrule[bra[b___], ket[k___]]  /; pairpattern[{b}, {k}] :=
   Module[{pos, l1, l2},
     pos = nonnullpos[{b}];
     l1 = Extract[{b}, pos];
     l2 = Extract[{k}, pos];
-    Inner[KroneckerDelta, l1, l2, Times] 
+    Inner[KroneckerDelta, l1, l2, Times]
   ];
 
 (* When bra and ket are juxtaposed, we can evaluate the scalar
@@ -3279,13 +3364,13 @@ sense that both have the same pair pattern: quantum numbers at
 equivalent position are defined either in both bra and ket or in
 neither. *)
 
-nc[a___, x1:bra[b___], x2:ket[k___], d___] /; pairpattern[{b}, {k}] := 
+nc[a___, x1:bra[b___], x2:ket[k___], d___] /; pairpattern[{b}, {k}] :=
   braketrule[x1, x2] nc[a, d]
 
 (* bkcombine[]: combine two lists in such a manner that Null elements
 are treated as placeholders that are filled only if the corresponding
 element in the other list is non-Null. Used in concatenation of bras
-and kets.*) 
+and kets.*)
 (* TO DO: This could be made to work even for multi-dimensional
 lists. *)
 
@@ -3295,7 +3380,7 @@ bkcombine[l1_List, l2_List] := Module[{pos},
   If[pos =!= {}, ReplacePart[l1, l2, pos, pos], l1]
 ] /; compatiblepattern[l1, l2];
 
-bkcombine[l1_List, l2_List] := (Message[bkcombine::incompat]; 
+bkcombine[l1_List, l2_List] := (Message[bkcombine::incompat];
   error[bkcombine, l1,l2]) /; !compatiblepattern[l1, l2];
 
 (* Direct product: concatenates all indexes, if possible! *)
@@ -3341,13 +3426,13 @@ spinketbraY[s_?halfintegerQ, positionarray_:{1}] :=
 spinketbraI[s_?halfintegerQ, positionarray_:{1}] :=
   VMV[spinket[s, positionarray], IdentityMatrix[2s+1],
       spinbra[s, positionarray]];
-  
+
 (* Convenience definitions *)
 spinketbraOPS[s_?halfintegerQ, positionarray_: {1}] :=
-  (#[s, positionarray]) & /@ 
+  (#[s, positionarray]) & /@
   {spinketbraX, spinketbraY, spinketbraZ, spinketbraP, spinketbraM};
 spinketbraXYZ[s_?halfintegerQ, positionarray_: {1}] :=
-  (#[s, positionarray]) & /@ 
+  (#[s, positionarray]) & /@
   {spinketbraX, spinketbraY, spinketbraZ};
 
 (* Spin-spin exchange coupling *)
@@ -3360,7 +3445,7 @@ spinketbraspinspin[{s1_?halfintegerQ, s2_?halfintegerQ}] :=
 
 (* Generates a basis for spin operators. The key is the value of
    the Z-component of spin, S_z. *)
-spinbasis[s_?halfintegerQ, positionarray_:{1}] := 
+spinbasis[s_?halfintegerQ, positionarray_:{1}] :=
    {{#}, {buildket[#, positionarray]}}& /@ Range[s, -s, -1];
 
 (* Generates a direct-product basis for two spin operators. The key
@@ -3455,11 +3540,11 @@ basistensorproduct[bz1_List, bz2_List, qnfn_:List] := Module[{fn},
    are to be merged to give the quantum number corresponding to the subspaces
    of the new basis. *)
 (* XXX: See also basistensorproduct[] - essentially the same! *)
-directproductbasis[basis1_List, basis2_List, qnmergefnc_:Join] := 
+directproductbasis[basis1_List, basis2_List, qnmergefnc_:Join] :=
   Flatten[Outer[directproductsubspace[##, qnmergefnc] &, basis1, basis2, 1], 1];
 
 (* Perform the merging with the pair of basis subspaces. *)
-directproductsubspace[{qn1_List, states1_List}, {qn2_List, states2_List}, 
+directproductsubspace[{qn1_List, states1_List}, {qn2_List, states2_List},
       qnmergefnc_] := {qnmergefnc[qn1, qn2], Flatten[outer[states1, states2], 1]};
 
 
@@ -3522,7 +3607,7 @@ mapbasis[bz1_, bz2_, o_:(1/2 Plus[##]&)] := Module[
   subs2 = bz2[[All, 1]];
   vecs2 = bz2[[All, 2]];
   If[subs1 =!= subs2,
-    Message[mapbasis::compat]; 
+    Message[mapbasis::compat];
     Return[];
   ];
 
@@ -3535,13 +3620,13 @@ mapbasis[bz1_, bz2_, o_:(1/2 Plus[##]&)] := Module[
 
 orthogbasisop::usage =
 "orthogbasisop[bz1, bz0] orthogonalizes the basis bz1 with respect
-to the original basis bz. Both basis sets must be given in the creation 
+to the original basis bz. Both basis sets must be given in the creation
 operator representation.";
 orthogbasisop[bz1_, bz_] := mapbasis[bz1, bz, orthogop];
 
 orthogbasisvc::usage =
 "orthogbasisvc[bz1, bz0] orthogonalizes the basis bz1 with respect
-to the original basis bz. Both basis sets must be given in the occupation 
+to the original basis bz. Both basis sets must be given in the occupation
 number representation.";
 orthogbasisvc[bvc1_, bvc_] := mapbasis[bvc1, bvc, orthogvc];
 
@@ -3550,7 +3635,7 @@ in basis bz *)
 appendquantumnumber[bz_, qn_] := Map[{ Append[First[#], qn], #[[2]] }&, bz];
 
 (* Putting it all together: transform a given basis to an equivalent basis
-which takes into account the l/r symmetry, i.e. parity. l is the list of 
+which takes into account the l/r symmetry, i.e. parity. l is the list of
 consecutive operators that are fed to lrmap[] function. Additional
 transformation rules can be specified as an optional parameter
 'snextrarule'.*)
@@ -3559,7 +3644,7 @@ transformation rules can be specified as an optional parameter
 transformtoLR[bz_, l_, snextrarule_:{}] := Module[{bz2, bzsim, bzasim},
   bz2 = bz /. Join[lrmap[l], snextrarule];
   bzsim  = mapbasis[bz, bz2, 1/2 Plus[##]& ];
-  bzasim = mapbasis[bz, bz2, 1/2 Subtract[##]& ]; 
+  bzasim = mapbasis[bz, bz2, 1/2 Subtract[##]& ];
   {bzsim, bzasim} = Map[dropemptysubspaces@orthogbasisop[#, bz]&, {bzsim, bzasim}];
   bzsim  = appendquantumnumber[bzsim, 1];
   bzasim = appendquantumnumber[bzasim, -1];
@@ -3574,7 +3659,7 @@ transformtoLRvc[bz_, l_, vak_, snextrarule_:{}] := Module[
   bzasim = mapbasis[bz, bz2, 1/2 Subtract[##]& ];
   bvcsim  = bzop2bzvc[bzsim, vak];
   bvcasim = bzop2bzvc[bzasim, vak];
-  {bvcsim, bvcasim} = 
+  {bvcsim, bvcasim} =
     Map[dropemptysubspaces@orthogbasisvc[#, bvc]&, {bvcsim, bvcasim}];
   bvcsim  = appendquantumnumber[bvcsim, 1];
   bvcasim = appendquantumnumber[bvcasim, -1];
@@ -3622,7 +3707,7 @@ indecesAN[HoldPattern[nc[l__]]] := Flatten @ Position[{l}, op_[AN, j___], {1}];
 maxcran[HoldPattern[x : nc[l__]]] :=
   Min[Length @ indecesCR[x], Length @ indecesAN[x]];
 
-(* Returns True if there are no overlapping elements in the list of pairs *)  
+(* Returns True if there are no overlapping elements in the list of pairs *)
 disjointQ[{l__}] :=
   Length[{l}] == 1 || Length[Union[l]] == (Plus @@ Map[Length, {l}]);
 
@@ -3637,12 +3722,12 @@ dropconflicts[l_List] := dropzeros @ zeroconflict[l];
 
 (* Generate lists of nr pairs to be contracted *)
 (* OPTIMIZATION: cache the result! *)
-contractedpairs[nr_, l_List] := contractedpairs[nr,l] = 
+contractedpairs[nr_, l_List] := contractedpairs[nr,l] =
   dropconflicts @ KSubsets[l, nr];
 
 (* Contraction of two operators according to the standard definition:
 substract the normal ordered expression. *)
-contraction[x1 : op1_[t1_, i1___], x2 : op2_[t2_, i2___]] /; 
+contraction[x1 : op1_[t1_, i1___], x2 : op2_[t2_, i2___]] /;
     (ordering[op] =!= NONE) :=
        nc[x1, x2] - normalorder[x1 ~ nc ~ x2];
 
@@ -3650,7 +3735,7 @@ contraction[x1 : op1_[t1_, i1___], x2 : op2_[t2_, i2___]] /;
 operators in the operator string, factor is the prefactor of the string and
 ops is the string that we are currently applying the contraction to. *)
 
-contractone[{ctr_, factor_, ops_List}, {i1_, i2_}] := 
+contractone[{ctr_, factor_, ops_List}, {i1_, i2_}] :=
   Module[{l = ops, c},
     (* Preserve order! *)
     If[i1 < i2,
@@ -3669,7 +3754,7 @@ flipped whenever two neighboring integers are transposed, and when an
 integer and a neighboring operator are transposed. Note: List2 is a
 non-Listable List. *)
 
-remainder[{ops__}] := Module[{ops2}, 
+remainder[{ops__}] := Module[{ops2},
   ops2 = List2[ops] //. {
     List2[a___, nr1_Integer, nr2_Integer, b___] :>
         -List2[a, nr2, nr1, b] /; nr2 < nr1,
@@ -3679,7 +3764,7 @@ remainder[{ops__}] := Module[{ops2},
   ops2 = ops2 /. {x : List2[i__] :> DeleteCases[x, _Integer, {1}]};
   ops2 = ops2 /. {List2[i___] :> dd[nc[i]]}
 ];
-  
+
 (* Contract "pairs" in the operator string "ops" *)
 
 contract[ops_List, pairs_List] := Module[{ctr, factor, indexes},
@@ -3713,7 +3798,7 @@ wick[sum[a_, b_]] := sum[wick[a], b];
 
 (* VEV calculation using the Wick theorem *)
 (* Idea: 1) the expression is rewritten in terms of contractions and
-normal ordered terms. 2) vev is taken. 3) All terms but the last one 
+normal ordered terms. 2) vev is taken. 3) All terms but the last one
 (with nr=maxcran[x]) drop out since vev[dd[...]]=0. In other words,
 we do the same calculation as wick[] does, but calling wickorder[]
 for a single argument. *)
@@ -3748,17 +3833,18 @@ vevwick2[HoldPattern[x : nc[l__]]] := Module[{ic, ia, ndc, nda},
 NOTE: nnop[] will be used, if defined, otherwise all signs are taken to be
 equal (this is likely not what you want!). *)
 
-quickbasis[basisops__, fnc_] := Module[{Tminus, nnop2},
+quickisobasis[basisops__, fnc_] := Module[{Tminus, nnop2},
   nnop2[i_] := If[ValueQ @ nnop[i], nnop[i], 0];
   Tminus = Simplify @ Total @ Map[isospinminus[#, nnop2[#]]&, basisops];
   bzvc2bzop @ transformQStoIS[fnc @ basisops, Tminus]
 ];
 
-quickISObasis[basisops__] := quickbasis[basisops, qsbasisvc];
-quickISOSZbasis[basisops__] := quickbasis[basisops, qszbasisvc];
-quickSU2basis[basisops__] := quickbasis[basisops, qbasisvc];
+quickISObasis[basisops__]   := quickisobasis[basisops, qsbasisvc];
+quickISOSZbasis[basisops__] := quickisobasis[basisops, qszbasisvc];
+quickSU2basis[basisops__]   := quickisobasis[basisops, qbasisvc];
 
-(* Product basis with double (isospin, etc.) symmetry *)
+(* Product basis with double (charge, isospin, etc.) symmetry. *)
+(* The result has quantum numbers (Q1, Q2), (I1, I2), etc. *)
 quickDBL[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   bz1 = fnc @ basisops1;
   bz2 = fnc @ basisops2;
@@ -3769,10 +3855,13 @@ quickDBL[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   directproductbasis[bz1, bz2, Join[#1, #2] &]
 ];
 
+(* Product basis with double (charge, isospin, etc.) symmetry and a total spin SZ projection. *)
+(* The result has quantum numbers (Q1, Q2, SZ), (I1, I2, SZ), etc. *)
 quickDBLSZ[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
   bz1 = fnc @ basisops1;
   bz2 = fnc @ basisops2;
   makebasis[Join[basisops1, basisops2]];
+  (* NOTE: we are summing S_z. *)
   mergebasis @ directproductbasis[bz1, bz2, {#1[[1]], #2[[1]], #1[[2]]+#2[[2]]} &]
 ];
 
@@ -3781,19 +3870,19 @@ quickDBLSZ[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
 bzQ[{ {{__},{___}}.. }] = True;
 bzQ[_] = False;
 
-(* makematricesbzop[] and makematricesbzvc[] produce a table of operator 
+(* makematricesbzop[] and makematricesbzvc[] produce a table of operator
    matrices for all invariant subspaces. The functions are appropriate for
    operators that are diagonal with respect to the conserved quantum numbers
    that are used to enumerate the invariant subspaces, i.e. singlets with
-   respect to the group of symmetry operations which are explicitly taken 
+   respect to the group of symmetry operations which are explicitly taken
    into account in the problem. For general operators, use
    makeallmatricesbzop[] and makeallmatricesbzvc[] which combine all pairs
    of invariant subspaces. *)
 
-makematricesbzop[op_, basis_?bzQ] := Map[ 
+makematricesbzop[op_, basis_?bzQ] := Map[
   {First[#], Simplify @ matrixrepresentationop[op, #[[2]], #[[2]]]}&, basis ];
 
-makematricesbzvc[op_, basis_?bzQ] := Map[ 
+makematricesbzvc[op_, basis_?bzQ] := Map[
   {First[#], Simplify @ matrixrepresentationvc[op, #[[2]], #[[2]]]}&, basis ];
 
 (* Helper function for makeallmatricesbzvc : process a pair of invariant
@@ -3881,17 +3970,17 @@ SnegSimplifyNumber[expr_] :=
 
 ruleSnegSimplifySpin =
   Block[{op1, op2, rule1, rule2, rule3, l1, l2, ir1, ir2, i1, i2},
-  (* Note: By setting upvalues, the following rules will be removed 
+  (* Note: By setting upvalues, the following rules will be removed
   when op1 and op2 go out of scope. *)
-    operatorQ[op1] ^= True; 
+    operatorQ[op1] ^= True;
     operatorQ[op2] ^= True;
     fermionQ[op1] ^= True;
     fermionQ[op2] ^= True;
-    l1 = {HoldForm @ spinx[op1[i1]], 
-          HoldForm @ spiny[op1[i1]], 
+    l1 = {HoldForm @ spinx[op1[i1]],
+          HoldForm @ spiny[op1[i1]],
           HoldForm @ spinz[op1[i1]]};
     l2 = {HoldForm @ spinx[op2[i2]],
-          HoldForm @ spiny[op2[i2]], 
+          HoldForm @ spiny[op2[i2]],
           HoldForm @ spinz[op2[i2]]};
     ir1 = {op1 -> a_?operatorQ, op2 -> b_?operatorQ};
     ir2 = {op1 -> a, op2 -> b};
@@ -3937,16 +4026,16 @@ ruleSnegSimplifySpin =
           };
 
     (* Rules for combining the components of spin operator pairs *)
-    rule3 = {Expand[z_. inner[l1, l2] /. 
+    rule3 = {Expand[z_. inner[l1, l2] /.
                Join[ir1, {i1 -> i1___, i2 -> i2___}]] ->
                 (z HoldForm[spinspin[op1[i1], op2[i2]]] /. ir2)};
 
-    Join[rule3, 
+    Join[rule3,
          rule1, rule1a, rule1b, rule1c, rule1d, rule1e, rule1f,
          rule2, rule2b, rule2a]
   ];
 
-SnegSimplifySpin[expr_] := Simplify[expr, TransformationFunctions -> 
+SnegSimplifySpin[expr_] := Simplify[expr, TransformationFunctions ->
   {Automatic, Function[x, x //. ruleSnegSimplifySpin]}];
 
 ruleSnegSimplifyHop = Block[{op1, op2, ir1, ir2, rule1, rule2},
@@ -4108,9 +4197,9 @@ matrixrepresentationvcfast[a_, l_List] := Module[{n = Length[l]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l]) /.
           x_. v_vc :> {Position[l, v][[1,1]], x}
-      ], 
+      ],
     n] &,
   l] // Transpose
 ];
@@ -4119,10 +4208,10 @@ matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[{n = Length[l1]},
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[ap[a, #], l1]) /.
+        (sum2list @ Collect[Chop[ap[a, #]], l1]) /.
         x_. v_vc :> Module[{pos = Position[l1, v]},
           If[pos==={},0,{pos[[1,1]], x}] ]
-      ], 
+      ],
     n] &,
   l2] // Transpose
 ];
@@ -4168,7 +4257,7 @@ SU2basistensorproduct[l1_, l2_,
                       fixspin1fnc_, fixspin2fnc_] :=
   mergebasis @
    Flatten[Outer[
-    SU2merge[#1, #2, spinfnc1, spinfnc2, 
+    SU2merge[#1, #2, spinfnc1, spinfnc2,
              combineqnfnc, fixspin1fnc, fixspin2fnc] &,
     l1, l2, 1],
    2];
@@ -4188,7 +4277,7 @@ SU2merge[{qn1_, l1_}, {qn2_, l2_},
        l1, l2]
      ],
     2];
-   states = mergebasis @ 
+   states = mergebasis @
      Map[{combineqnfn[First[#], qn1, qn2], {Last[#]}} &, states]
  ];
 
