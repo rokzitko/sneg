@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.11 Jun 2025";
+snegidstring = "sneg.m 2.0.12 Oct 2025";
 snegcopyright = "Copyright (C) 2002-2025 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
