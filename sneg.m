@@ -1318,8 +1318,8 @@ nc[a___, int[z__], b___] := nc[a, Sequence @@ Map[int, {z}], b];
 
 (* NOTE: 0.->0 rules are useful to eliminate numerically zero terms in
 the expressions *)
-nonuls = {0. -> 0, 0. I -> 0, Complex[0.,0.] -> 0, Complex[x_, 0.]->x,
-          Complex[0.,y_] -> I y};
+nonuls = {0. -> 0, 0. I -> 0, Complex[0.,0.] -> 0, Complex[x_, 0.] :> x,
+          Complex[0.,y_] :> I y};
 
 
 
@@ -1645,7 +1645,7 @@ Module[{l, rule, allnames},
     nn = ssJWRnewname[#, allnames, a1];
     AppendTo[l, nn];
     AppendTo[allnames, nn];
-    AppendTo[rule, # -> nn] ]&, it2];
+    AppendTo[rule, # :> nn] ]&, it2];
   If[reverse == False,
     sum[nc[a1, a0, a2 /. rule], Sort @ l],
     sum[nc[a2 /. rule, a0, a1], Sort @ l]
@@ -1711,10 +1711,10 @@ sumCollect[expr_] := expr //. rulesumCollect;
 
 rulesumSimplifyKD = {
   sum[KroneckerDelta[n1_, n2_] a_., it_List] /; MemberQ[it, n1] :>
-    sum[a //. {n1 -> n2}, Complement[it, {n1}]],
+    sum[a //. {n1 :> n2}, Complement[it, {n1}]],
 
   sum[KroneckerDelta[n1_, n2_] a_., it_List] /; MemberQ[it, n2] :>
-    sum[a //. {n2 -> n1}, Complement[it, {n2}]],
+    sum[a //. {n2 :> n1}, Complement[it, {n2}]],
 
   HoldPattern[sum[a1_ + a2_, x:{i___, n1_, n2_, j___}]] /;
     (FreeQ[a1, n2] && FreeQ[a2, n1]) :>
@@ -1744,7 +1744,7 @@ sumAbstractIndex[expr_, ndxfunc_] := Module[{ r },
   SetAttributes[ndxfunc, NumericFunction];
   r = sum[a_, it_List] :> Module[{rule, len, i},
         len = Length[it];
-        rule = Table[it[[i]] -> ndxfunc[i], {i, len}];
+        rule = Table[it[[i]] :> ndxfunc[i], {i, len}];
         sum[a //. rule, it //. rule]
       ];
   expr /. r
@@ -1756,7 +1756,7 @@ sumAbstractIndex[expr].";
 
 sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len},
   len = Length[li];
-  expr //. Table[ndxfunc[i] -> li[[i]], {i, len}]
+  expr //. Table[ndxfunc[i] :> li[[i]], {i, len}]
 ];
 
 rulesumStripSums = {
@@ -1955,7 +1955,7 @@ total isospin and spin of the operator string must be equal to zero. *)
 vev[x:HoldPattern[nc[_?((fermionQ[#] && ordering[#] === SEA)&)
   [_?((# === CR || # === AN)&), _, ___, _?((# === UP || # === DO)&)]..]] ] :=
   Module[{tmp, isospin, spin},
-  tmp = Map[(# /. opp_[ii_,kk_,jj___, ss_] -> {ii, ss}) &, List @@ x];
+  tmp = Map[(# /. opp_[ii_,kk_,jj___, ss_] :> {ii, ss}) &, List @@ x];
   isospin = tmp[[All,1]];
   spin = tmp[[All,2]];
   isospin = Map[If[# == CR, 1/2, -1/2]&, isospin];
@@ -2850,7 +2850,7 @@ qsbasisvc[l_List] := Module[{},
 qsbasisvc[m_List, {}] := m;
 
 qsbasisvc[{}, l_List] := Module[{op1, op2},
-  op1 = First[l] /. op_[j___] -> op[CR, j, UP];
+  op1 = First[l] /. op_[j___] :> op[CR, j, UP];
   op2 = spinflip[op1];
   qsbasisvc[ 
     {
@@ -2905,7 +2905,7 @@ qsbasis[m_List, {}] := m;
 (* First step: construct the three possible (Q,S) states from one
    single-particle creation operator. *)
 qsbasis[{}, l_List] := Module[{op1, op2},
-  op1 = First[l] /. op_[j___] -> op[CR, j, UP];
+  op1 = First[l] /. op_[j___] :> op[CR, j, UP];
   op2 = spinflip[op1];
   qsbasis[
     {
@@ -2999,7 +2999,7 @@ If[PrettyOutput,
 (* Smart spindown: determines which operators appear in the expressions,
 builds a corresponding spin down operator and applies it to the expression. *)
 SPINDOWN[a_] := nc[Plus @@ Map[spinminus, Union[Cases[a,
-op_?operatorQ[i_, j___, sigma_] -> op[j], {0, Infinity} ]]], a];
+op_?operatorQ[i_, j___, sigma_] :> op[j], {0, Infinity} ]]], a];
 
 (* Calculate a 'norm' for an operator expression, i.e. sqrt(<expr|expr>). *)
 
@@ -3681,7 +3681,7 @@ snegold2newrules[oldbasis_, newbasis_, rules_] := Module[{n, ob, mat, x},
     Print["Mismatching lengths."];
     Return[];
   ];
-  ob = Table[oldbasis[[i]] -> enain[i, n], {i, Length[oldbasis]}];
+  ob = Table[oldbasis[[i]] :> enain[i, n], {i, Length[oldbasis]}];
   mat = rules /. ob;
   x = Norm[mat . Transpose[Conjugate[mat]] - IdentityMatrix[n]];
   If[x != 0,
@@ -3818,9 +3818,9 @@ vevwick2[HoldPattern[x : nc[l__]]] := Module[{ic, ia, ndc, nda},
   ia = indecesAN[x];
   If[Length[ic] != Length[ia], Return[0]];
   (* Bug trap *)
-  ndc = Check[Extract[x, Map[{#} &, ic]] /. op_[CR, i___] -> {op, i},
+  ndc = Check[Extract[x, Map[{#} &, ic]] /. op_[CR, i___] :> {op, i},
               Null];
-  nda = Check[Extract[x, Map[{#} &, ia]] /. op_[AN, i___] -> {op, i},
+  nda = Check[Extract[x, Map[{#} &, ia]] /. op_[AN, i___] :> {op, i},
               Null];
   If[ndc === Null || nda === Null, Return[Problem[{l}]] ];
   If[Sort[ndc] =!= Sort[nda], Return[0]];
@@ -3987,26 +3987,26 @@ ruleSnegSimplifySpin =
 
     (* Rules for a single spin operator *)
 
-    rule1  = Thread[(spinxyz[op1[i1___]] /. ir1) -> (l1 /. ir2)];
-    rule1a = Thread[(Expand[spinxyz[op1[i1___]]] /. ir1) -> (l1 /. ir2)];
-    rule1b = Thread[(Expand[2spinxyz[op1[i1___]]] /. ir1) -> (2l1 /. ir2)];
-    rule1c = Thread[(Expand[I spinxyz[op1[i1___]]] /. ir1) -> (I l1 /. ir2)];
-    rule1d = Thread[(Expand[2I spinxyz[op1[i1___]]] /. ir1) -> (2I l1 /. ir2)];
-    rule1e = Thread[(Simplify[2I spinxyz[op1[i1___]]] /. ir1) -> (2I l1 /. ir2)];
-    rule1f = Thread[(Simplify[-2I spinxyz[op1[i1___]]] /. ir1) -> (-2I l1 /. ir2)];
+    rule1  = Thread[(spinxyz[op1[i1___]] /. ir1) :> (l1 /. ir2)];
+    rule1a = Thread[(Expand[spinxyz[op1[i1___]]] /. ir1) :> (l1 /. ir2)];
+    rule1b = Thread[(Expand[2spinxyz[op1[i1___]]] /. ir1) :> (2l1 /. ir2)];
+    rule1c = Thread[(Expand[I spinxyz[op1[i1___]]] /. ir1) :> (I l1 /. ir2)];
+    rule1d = Thread[(Expand[2I spinxyz[op1[i1___]]] /. ir1) :> (2I l1 /. ir2)];
+    rule1e = Thread[(Simplify[2I spinxyz[op1[i1___]]] /. ir1) :> (2I l1 /. ir2)];
+    rule1f = Thread[(Simplify[-2I spinxyz[op1[i1___]]] /. ir1) :> (-2I l1 /. ir2)];
 
     (* Rules for products of spin operators *)
 
     rule2 = Thread[
           Flatten[Expand[
                   4 outer[spinxyz[op1[i1___]], spinxyz[op2[i2___]]]] /.
-                ir1, 1] ->
+                ir1, 1] :>
             Flatten[Expand[4 outer[l1, l2]] /. ir2, 1]];
 
     rule2b = Thread[
           Flatten[Expand[
                   outer[spinxyz[op1[i1___]], spinxyz[op2[i2___]]]] /.
-                ir1, 1] ->
+                ir1, 1] :>
             Flatten[Expand[outer[l1, l2]] /. ir2, 1]];
 
     (* Some symmetrized combinations of spin - spin products *)
@@ -4045,9 +4045,9 @@ ruleSnegSimplifyHop = Block[{op1, op2, ir1, ir2, rule1, rule2},
   fermionQ[op2] ^= True;
   ir1 = {op1 -> a_?operatorQ, op2 -> b_?operatorQ};
   ir2 = {op1 -> a, op2 -> b};
-  rule1 = Expand[z_. hop[op1[i___], op2[j___]] /. ir1] ->
+  rule1 = Expand[z_. hop[op1[i___], op2[j___]] /. ir1] :>
     (z HoldForm[hop[op1[i], op2[j]]] /. ir2);
-    rule2 = Expand[z_. twohop[op1[i___], op2[j___]] /. ir1] ->
+    rule2 = Expand[z_. twohop[op1[i___], op2[j___]] /. ir1] :>
     (z HoldForm[twohop[op1[i], op2[j]]] /. ir2);
   {rule1, rule2}
  ];
@@ -4106,7 +4106,7 @@ around 0 to order n. The result is returned in terms of powers
 of expr. *)
 snegSeries[f_, expr_, n_:5] := Module[{s, x, pw},
   s = Normal @ Series[f[x], {x, 0, n}];
-  s /. x^pw_. -> fastpow[expr, pw]  (* pow -> fastpow, 25.8.2010 *)
+  s /. x^pw_. :> fastpow[expr, pw]  (* pow -> fastpow, 25.8.2010 *)
 ];
 
 snegSeries[f_[expr_], n_:5] := snegSeries[f, expr, n];
@@ -4159,10 +4159,10 @@ SimplifyKDfunc[expr_] := (expr //. {
   KroneckerDelta[k_, l_] UnitStep[-k_] UnitStep[l_] -> 0,
   UnitStep[k_] UnitStep[-k_] -> 0,
   UnitStep[k_]+UnitStep[-k_] -> 1,
-  1 - UnitStep[-k_] -> UnitStep[k],
-  UnitStep[-k_] -1 -> -UnitStep[k],
-  HoldPattern[KroneckerDelta[x__]^n_Integer] -> KroneckerDelta[x],
-  HoldPattern[UnitStep[x__]^n_Integer] -> UnitStep[x]
+  1 - UnitStep[-k_] :> UnitStep[k],
+  UnitStep[-k_] -1 :> -UnitStep[k],
+  HoldPattern[KroneckerDelta[x__]^n_Integer] :> KroneckerDelta[x],
+  HoldPattern[UnitStep[x__]^n_Integer] :> UnitStep[x]
   });
   
 SimplifyKD[expr_] := Simplify[expr,
@@ -4186,7 +4186,7 @@ matrixrepresentationvcsparse[a_, l_List] := Module[{},
   SparseArray[Select[Flatten[
     Table[
       (sum2list @ Collect[ap[a, l[[i]]], l]) /.
-        x_. v_vc :> ({i, Position[l, v][[1, 1]]} -> x),
+        x_. v_vc :> ({i, Position[l, v][[1, 1]]} :> x),
       {i, Length[l]}],
     1], (#=!=0)&]]
 ];
