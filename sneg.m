@@ -521,7 +521,7 @@ UsageWithMore[applybasis,
 "applybasis[b, fn] applies function fn to each basis state in the
 basis b."];
 UsageWithMore[transformtoPH,
-"transformtoPH[b, Nph] generates a direct product of a basis b for
+"transformtoPH[b, {Nph,...}] generates a direct product of a basis b for
 fermions with a basis with up-to Nph excited local phonons, i.e. Nph
 is the phonon number cutoff."];
 UsageWithMore[phononnumber,
@@ -3585,16 +3585,17 @@ ruletensor = {
 };
 
 (* Direct product of a fermionic basis and a (single) phonon basis
-with up to Nph phonons. *)
+with up to cutoffs={Nph,...} phonons. *)
 
-transformtoPH[bvc_List, Nph_Integer] := Module[{vecs, fn, phbasis},
-  phbasis = phononbasis[Nph];
+transformtoPH[bvc_List, cutoffs:{_Integer ..}] := Module[{vecs, fn, phbasis},
+  phbasis = phononbasis[cutoffs];
   fn[x_] = nc[x, #]&;
   vecs = Map[applybasis[bvc, fn[#]]&, phbasis];
   mergebasis @ Flatten[vecs, 1]
 ];
 
-phononbasis[Nph_] := Table[ket[i], {i, 0, Nph}];
+phononbasis[Nph_Integer] := Table[ket[i], {i, 0, Nph}];
+phononbasis[{Nph_Integer}] := phononbasis[Nph];
 
 (* Phonon hamiltonian construction functions *)
 phononnumber[Nph_Integer] := Sum[i nc[ket[i], bra[i]], {i, 0, Nph}];
