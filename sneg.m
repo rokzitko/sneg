@@ -2,7 +2,7 @@
    SNEG - Mathematica package for calculations with non-commuting
    operators of the second quantization algebra
 
-   Copyright (C) 2002-2025 Rok Zitko
+   Copyright (C) 2002-2026 Rok Zitko
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.12 Oct 2025";
-snegcopyright = "Copyright (C) 2002-2025 Rok Zitko";
+snegidstring = "sneg.m 2.0.13 Feb 2026";
+snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
   pos = StringPosition[snegidstring, " "];
@@ -3563,6 +3563,25 @@ ap[ket[i___], vc[j___, ket[k___]]] := vc[j, ket @@ bkcombine[{i}, {k}]] /;
 ap[a___, x1:bra[i___], vc[j___, x2:ket[k___]]] := ap[a, vc[j]] braketrule[x1, x2] /;
   pairpattern[{i}, {k}];
 
+(* Tensor product of two operator expressions in terms of ket,bra terms *)
+ketbratensorproduct[x1_, x2_] := Module[{y1, y2},
+  y1 = x1 /. {
+    ket[a__] :> ket[a, Null],
+    bra[a__] :> bra[a, Null]
+  };
+  y2 = x2 /. {
+    ket[a__] :> ket[Null, a],
+    bra[a__] :> bra[Null, a]
+  };
+  nc[y1, y2]
+];
+
+(* Merge argument lists of neighboring bra/ket terms. *)
+ruletensor = {
+  nc[a___, bra[i__], bra[j__], b___] :> nc[a, bra[i, j], b],
+  nc[a___, ket[i__], ket[j__], b___] :> nc[a, ket[i, j], b]
+};
+
 (* Direct product of a fermionic basis and a (single) phonon basis
 with up to Nph phonons. *)
 
@@ -3580,6 +3599,36 @@ phononnumber[Nph_Integer] := Sum[i nc[ket[i], bra[i]], {i, 0, Nph}];
 phononplus[Nph_Integer] := Sum[ Sqrt[i+1] nc[ket[i+1], bra[i]], {i, 0, Nph-1}];
 phononminus[Nph_Integer] := Sum[ Sqrt[i] nc[ket[i-1], bra[i]], {i, 1, Nph}];
 phononx[Nph_Integer] := phononplus[Nph] + phononminus[Nph];
+
+(* Extension to multiple phonons *)
+phononbasis[cutoffs : {_Integer ..}] :=
+  Flatten[Outer[nc[#1, #2] /. ruletensor &, Sequence @@ Map[phononbasis, cutoffs]], 1];
+
+phononid[Nph_Integer] := Sum[nc[ket[i], bra[i]], {i, 0, Nph}];
+
+phononnumber[i_, cutoffs : {_Integer ..}] := Module[{},
+  nr = Length[cutoffs];
+  ops = Table[If[j == i, phononnumber, phononid], {j, nr}];
+  ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
+];
+
+phononplus[i_, cutoffs : {_Integer ..}] := Module[{},
+  nr = Length[cutoffs];
+  ops = Table[If[j == i, phononplus, phononid], {j, nr}];
+  ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
+];
+
+phononminus[i_, cutoffs : {_Integer ..}] := Module[{},
+  nr = Length[cutoffs];
+  ops = Table[If[j == i, phononminus, phononid], {j, nr}];
+  ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
+];
+
+phononx[i_, cutoffs : {_Integer ..}] := Module[{},
+  nr = Length[cutoffs];
+  ops = Table[If[j == i, phononx, phononid], {j, nr}];
+  ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
+];
 
 (*** LEFT/RIGHT SYMMETRY SUPPORT ***)
 
