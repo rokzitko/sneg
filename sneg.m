@@ -3576,6 +3576,8 @@ ketbratensorproduct[x1_, x2_] := Module[{y1, y2},
   nc[y1, y2]
 ];
 
+ketbratensorproduct[x_] := x;
+
 (* Merge argument lists of neighboring bra/ket terms. *)
 ruletensor = {
   nc[a___, bra[i__], bra[j__], b___] :> nc[a, bra[i, j], b],
