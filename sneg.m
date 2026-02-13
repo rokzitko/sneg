@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.13 Feb 2026";
+snegidstring = "sneg.m 2.0.14 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -885,12 +885,12 @@ snegrealconstants[l__] := Scan[
    addto[listrealconstants, #];
 }&, {l}];
 
-snegrealfunctions[l__] := Scan[
-{
-  snegnonopQ[#] ^= True;
-  Conjugate[#[a___]] ^= #[a];
-  isnumericQ[#[___]] := True;
-}&, {l}];
+flagrealfunction[x_] := (
+  snegnonopQ[x] ^= True;
+  Conjugate[x[args___]] ^= x[args];
+  isnumericQ[x[___]] := True;
+);
+snegrealfunctions[l__] := Scan[flagrealfunction, {l}];
 
 snegpositiveconstants[l__] := Scan[
 {  snegnonopQ[#] ^= True;
