@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.15 Feb 2026";
+snegidstring = "sneg.m 2.0.16 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1694,6 +1694,10 @@ sum[a_, it_List] :> sum[ExpandAll[a], it]
 (* Expand[] here, not ExpandAll[], we don't want to blow up the denominators *)
 ruleExpandUnderSum = {
   sum[a_, it_List] :> sum[Expand[a], it]
+};
+
+rulesumDistribute = {
+  sum[a_ + b_, it_List] :> sum[a, it] + sum[b, it]
 };
 
 sumExpand[expr_] := expr //. rulesumExpand;
@@ -4433,10 +4437,7 @@ nc[a___, b_ scalar[x_], c___] := scalar[x] nc[a, b, c];
 conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
 vev[scalar[x_] a_] := scalar[x] vev[a];
 vev[scalar[x_]] := 0;
-
-(* scalar marker no longer needed *)
-sum[scalar[a_], {q__}] := sum[a, {q}];
-sum[scalar[a_] scalar[b_], {q__}] := sum[a b, {q}];
+scalar[0] := 0;
 
 rulescalargather = {
   scalar[x_] b_ /; isnumericQ[b] :> scalar[x b],
