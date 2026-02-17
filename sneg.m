@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.14 Feb 2026";
+snegidstring = "sneg.m 2.0.15 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1596,7 +1596,7 @@ sum[z_ a_, it_List] := z sum[a, it] /; NumberQ[z];
 
 sum[z_ a_, it_List] := z sum[a, it] /; sumFactorizableQ[z, it];
 
-sum[z_, it_List] := z sum[1, it] /; (sumFactorizableQ[z, it] && z != 1);
+sum[z_, it_List] := z sum[1, it] /; (sumFactorizableQ[z, it] && z =!= 1);
 
 
 (* Join two Lists. Send a message if the indexes overlap. *)
@@ -1689,6 +1689,11 @@ rulesumExpand = {
 sum[a_ + b_, it_List] :> sum[a, it] + sum[b, it],
 
 sum[a_, it_List] :> sum[ExpandAll[a], it]
+};
+
+(* Expand[] here, not ExpandAll[], we don't want to blow up the denominators *)
+ruleExpandUnderSum = {
+  sum[a_, it_List] :> sum[Expand[a], it]
 };
 
 sumExpand[expr_] := expr //. rulesumExpand;
@@ -4409,5 +4414,47 @@ vevwicknew[HoldPattern[l_nc]] /; EvenQ[Length[l]] :=
 
   Total[contributions /. {dd[_]->0}]
 ];
+
+(* Derivatives under the sum *)
+der[a_ + b_, c_] := der[a, c] + der[b, c];
+der[a_ /; FreeQ[a, sum], c_] := D[a, c];
+der[a_ b_, c_] /; FreeQ[a, sum] := D[a, c] b + a der[b, c];
+
+(* Division *)
+nc[a___, b_/c_, d___] /; isnumericQ[c] := nc[a, b, d]/c;
+vev[a_/b_] /; isnumericQ[b] := vev[nc[a]]/b;
+conj[1/a_] := 1/conj[a];
+conj[nc[a__]/b_] := conj[nc[a]]/conj[b];
+sum[a_./(n_ b_ + n_ c_), l_List] /; isnumericQ[n] && sumFactorizableQ[n, l] := (1/n) sum[a/(b + c), l];
+
+(* scalar[] marker for explicitly defined numerical blocks.
+Particularly useful for expressions involving sum[]. *)
+nc[a___, b_ scalar[x_], c___] := scalar[x] nc[a, b, c];
+conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
+vev[scalar[x_] a_] := scalar[x] vev[a];
+vev[scalar[x_]] := 0;
+
+(* scalar marker no longer needed *)
+sum[scalar[a_], {q__}] := sum[a, {q}];
+sum[scalar[a_] scalar[b_], {q__}] := sum[a b, {q}];
+
+rulescalargather = {
+  scalar[x_] b_ /; isnumericQ[b] :> scalar[x b],
+  scalar[a_] + scalar[b_] :> scalar[a + b],
+  scalar[a_] scalar[b_] :> scalar[a b]
+};
+
+(* Improved zeroonvac function; tries harder to drop terms. *)
+Zeroonvac[a_ + b_] := Zeroonvac[a] + Zeroonvac[b];
+Zeroonvac[a_ b_] /; isnumericQ[a] := a Zeroonvac[b];
+Zeroonvac[a_ scalar[x_]] := scalar[x] Zeroonvac[a];
+Zeroonvac[sum[a_, {q__}]] := sum[Zeroonvac[a], {q}];
+Zeroonvac[HoldPattern[nc[a__]]] := zeroonvac[nc[a]];
+Zeroonvac[x : op_[a__]] /; operatorQ[op] := zeroonvac[x];
+Zeroonvac[a_] /; isnumericQ[a] := a;
+
+ruleFullSimplifyUnderSum = {
+  sum[a_, {q__}] :> sum[FullSimplify[a], {q}]
+};
 
 EndPackage[];
