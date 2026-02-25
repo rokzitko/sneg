@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.16 Feb 2026";
+snegidstring = "sneg.m 2.0.18 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1719,11 +1719,23 @@ nc[a___, sum[b_,it_List], c___] :> sum[nc[a, b, c], it]
 sumCollect[expr_] := expr //. rulesumCollect;
 
 rulesumSimplifyKD = {
-  sum[KroneckerDelta[n1_, n2_] a_., it_List] /; MemberQ[it, n1] :>
-    sum[a //. {n1 :> n2}, Complement[it, {n1}]],
+  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; MemberQ[it, n1] :>
+    sum[a //. {n1 :> n2}, Complement[it, {n1}]] + sum[b, it],
 
-  sum[KroneckerDelta[n1_, n2_] a_., it_List] /; MemberQ[it, n2] :>
-    sum[a //. {n2 :> n1}, Complement[it, {n2}]],
+  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; MemberQ[it, n2] :>
+    sum[a //. {n2 :> n1}, Complement[it, {n2}]] + sum[b, it],
+
+  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; MemberQ[it, n1] :>
+    sum[(scalar[z] a) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c] a, it] + sum[b, it],
+
+  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; MemberQ[it, n2] :>
+    sum[(scalar[z] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c] a, it] + sum[b, it],
+
+  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n1] :>
+    sum[(scalar[z/d] a/d) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c/d] a, it] + sum[b, it],
+
+  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n2] :>
+    sum[(scalar[z/d] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c/d] a, it] + sum[b, it],
 
   HoldPattern[sum[a1_ + a2_, x:{i___, n1_, n2_, j___}]] /;
     (FreeQ[a1, n2] && FreeQ[a2, n1]) :>

@@ -1,0 +1,2387 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     82551,       2379]
+NotebookOptionsPosition[     76093,       2275]
+NotebookOutlinePosition[     76490,       2291]
+CellTagsIndexPosition[     76447,       2288]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "sneg`"}], ";"}]], "Input",
+ CellChangeTimes->{{3.9809907760045643`*^9, 3.980990787359445*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"58097483-bfb8-4e66-b2b5-8bd01a001306"],
+
+Cell[BoxData["\<\"sneg 2.0.18 Copyright (C) 2002-2026 Rok Zitko\"\>"], "Print",
+ CellChangeTimes->{{3.980990787933353*^9, 3.980990803295064*^9}, 
+   3.9809909270359163`*^9, {3.9809911611723747`*^9, 3.98099117897517*^9}, 
+   3.980991380137816*^9, 3.980991744266724*^9, 3.980991777140073*^9, {
+   3.980991963801115*^9, 3.980992009666024*^9}, {3.980996432056435*^9, 
+   3.980996444505739*^9}},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"146d4882-7592-4678-9812-1c3df0ce8e58"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"snegfermionoperators", "[", "c", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"snegfreeindexes", "[", 
+   RowBox[{"i", ",", "j"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"snegrealfunctions", "[", 
+    RowBox[{"f", ",", "g"}], "]"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"number", " ", "of", " ", "levels"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"snegrealconstants", "[", "n", "]"}], ";"}], " "}]}], "Input",
+ CellChangeTimes->{{3.980990804343904*^9, 3.980990812359322*^9}, {
+  3.980991049994377*^9, 3.9809910567299232`*^9}, {3.980991516864057*^9, 
+  3.980991526311655*^9}, {3.98099189531573*^9, 3.980991895491438*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"0796d7a5-20f6-4966-a5d2-87da07cd247a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{"nc", "[", 
+    RowBox[{
+     RowBox[{"c", "[", 
+      RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+     RowBox[{"c", "[", 
+      RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.9809908140077553`*^9, 3.980990828718286*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"f5bb8f4c-c3f0-425c-a1f7-9146a86247d7"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"i", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\[Dagger]\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], 
+    StyleBox["\[CenterDot]",
+     FontColor->RGBColor[0, 1, 0]], 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"j", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.980990829010714*^9, 3.980990928771744*^9, 3.980991746018186*^9, {
+   3.98099643256205*^9, 3.9809964451594048`*^9}},
+ CellLabel->"Out[6]=",ExpressionUUID->"b134fd34-697a-495a-bfe3-170b408edf65"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{"0", ",", 
+    RowBox[{"{", "i", "}"}]}], "]"}], "==", "0"}]], "Input",
+ CellChangeTimes->{{3.980990920781693*^9, 3.980990931620591*^9}},
+ CellLabel->"In[7]:=",ExpressionUUID->"394fa82b-f623-4d87-bf8e-4c60c0cfe1c3"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.9809909233260927`*^9, 3.9809909318408337`*^9}, 
+   3.9809915280947113`*^9, 3.980991746465176*^9, {3.980996432568507*^9, 
+   3.980996445166934*^9}},
+ CellLabel->"Out[7]=",ExpressionUUID->"9b46971a-d47e-4363-a885-46110ff377b2"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"sum", "[", 
+    RowBox[{"1", ",", 
+     RowBox[{"{", "_", "}"}]}], "]"}], "=", "n"}], ";"}]], "Input",
+ CellChangeTimes->{{3.980991510518917*^9, 3.9809915147997932`*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"3b41aff6-df5f-42ed-afdc-381a01f4ad68"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"KroneckerDelta", "[", 
+     RowBox[{"i", ",", "j"}], "]"}], 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980990836158826*^9, 3.980990857406839*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"5f158822-045a-4bd8-aa9a-48b0c0bc98a4"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    TemplateBox[{
+      RowBox[{"i", ",", "j"}]},
+     "KroneckerDeltaSeq"], " ", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"i", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980990839402008*^9, 3.9809908577696333`*^9}, 
+   3.9809909332593937`*^9, 3.980991531601577*^9, 3.98099174794846*^9, {
+   3.980996432595182*^9, 3.980996445235956*^9}},
+ CellLabel->"Out[9]=",ExpressionUUID->"868c9b6b-d14d-4663-9653-9882ab7f9699"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"j", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\[Dagger]\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], 
+    StyleBox["\[CenterDot]",
+     FontColor->RGBColor[0, 1, 0]], 
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"j", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm]}], ",", 
+   RowBox[{"{", "j", "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980990839402008*^9, 3.9809908577696333`*^9}, 
+   3.9809909332593937`*^9, 3.980991531601577*^9, 3.98099174794846*^9, {
+   3.980996432595182*^9, 3.9809964452386208`*^9}},
+ CellLabel->"Out[10]=",ExpressionUUID->"e0485568-1742-4d69-84a4-a1bad320b8d3"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.9809908641253567`*^9, 3.980990867071021*^9}, {
+  3.980990950253981*^9, 3.980990959565312*^9}, {3.980991536319687*^9, 
+  3.980991537487282*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"d6277fa7-c507-4d76-8672-453b831b42da"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], "+", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.980990867554193*^9, {3.980990934211012*^9, 3.980990959859333*^9}, {
+   3.980991532093833*^9, 3.980991537820627*^9}, 3.98099175101884*^9, {
+   3.98099643260467*^9, 3.980996445246212*^9}},
+ CellLabel->"Out[11]=",ExpressionUUID->"95c39068-62a0-46d2-9a49-42b881a97817"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"n", " ", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], ",", 
+     RowBox[{"{", "j", "}"}]}], "]"}]}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.980990867554193*^9, {3.980990934211012*^9, 3.980990959859333*^9}, {
+   3.980991532093833*^9, 3.980991537820627*^9}, 3.98099175101884*^9, {
+   3.98099643260467*^9, 3.980996445248942*^9}},
+ CellLabel->"Out[12]=",ExpressionUUID->"81a2c30f-b3b0-465c-adaf-4ab30911b365"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{
+  3.980990867554193*^9, {3.980990934211012*^9, 3.980990959859333*^9}, {
+   3.980991532093833*^9, 3.980991537820627*^9}, 3.98099175101884*^9, {
+   3.98099643260467*^9, 3.9809964452511053`*^9}},
+ CellLabel->"Out[13]=",ExpressionUUID->"82ba7144-4a01-4ede-b7ff-556f2584af24"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"j", ",", "i"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980990988748437*^9, 3.980990990420741*^9}, {
+  3.98099154068734*^9, 3.98099154150318*^9}},
+ CellLabel->"In[14]:=",ExpressionUUID->"6dc3d6db-21cd-4204-9003-ddf3dc3d2356"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], "+", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.9809909906846313`*^9, {3.9809915389087267`*^9, 3.980991541977129*^9}, 
+   3.980991752701923*^9, {3.9809964326326942`*^9, 3.9809964452857227`*^9}},
+ CellLabel->"Out[14]=",ExpressionUUID->"0db76e30-953f-4b11-9d5e-da7feddf1a22"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"n", " ", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], ",", 
+     RowBox[{"{", "j", "}"}]}], "]"}]}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.9809909906846313`*^9, {3.9809915389087267`*^9, 3.980991541977129*^9}, 
+   3.980991752701923*^9, {3.9809964326326942`*^9, 3.98099644528861*^9}},
+ CellLabel->"Out[15]=",ExpressionUUID->"ff67bedb-3a3b-48d6-baa9-e00d3f54b663"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{
+  3.9809909906846313`*^9, {3.9809915389087267`*^9, 3.980991541977129*^9}, 
+   3.980991752701923*^9, {3.9809964326326942`*^9, 3.9809964452908278`*^9}},
+ CellLabel->"Out[16]=",ExpressionUUID->"7afa15fe-e39d-4983-b976-4b44989196c0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"j", ",", "i"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980990998300414*^9, 3.980991005716045*^9}, {
+  3.980991150063747*^9, 3.9809911507758102`*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"b6b0354c-2c71-40d9-9b34-b2088abac8e1"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], "+", 
+    RowBox[{
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991001840914*^9, 3.980991006120783*^9}, 
+   3.980991151138686*^9, 3.980991543237863*^9, 3.980991754949767*^9, {
+   3.9809964326452827`*^9, 3.980996445326013*^9}},
+ CellLabel->"Out[17]=",ExpressionUUID->"9830c63e-0ee0-4668-80f4-54399413fc0c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+            StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.980991001840914*^9, 3.980991006120783*^9}, 
+   3.980991151138686*^9, 3.980991543237863*^9, 3.980991754949767*^9, {
+   3.9809964326452827`*^9, 3.980996445329314*^9}},
+ CellLabel->"Out[18]=",ExpressionUUID->"7d48b34e-3ed7-4038-a957-d21d6df3f5e9"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980991001840914*^9, 3.980991006120783*^9}, 
+   3.980991151138686*^9, 3.980991543237863*^9, 3.980991754949767*^9, {
+   3.9809964326452827`*^9, 3.9809964453318*^9}},
+ CellLabel->"Out[19]=",ExpressionUUID->"77980180-aa98-4ef2-9fdb-445a4b617240"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], 
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"j", ",", "i"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], 
+     RowBox[{"KroneckerDelta", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991046563862*^9, 3.980991068243346*^9}, {
+  3.980991144492956*^9, 3.9809911461834717`*^9}},
+ CellLabel->"In[20]:=",ExpressionUUID->"a01fb66b-14a6-47c7-9d8c-965c65ac4d35"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], " ", 
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], "+", 
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], " ", 
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.9809910690217047`*^9, 3.980991146391343*^9, 3.980991544238237*^9, 
+   3.98099175779134*^9, {3.980996432672892*^9, 3.980996445339196*^9}},
+ CellLabel->"Out[20]=",ExpressionUUID->"f9d7bae5-aa41-4202-bb1c-7efbf8daf72b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"j", ",", "j"}], "]"}], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"j", ",", "j"}], "]"}], " ", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.9809910690217047`*^9, 3.980991146391343*^9, 3.980991544238237*^9, 
+   3.98099175779134*^9, {3.980996432672892*^9, 3.980996445342395*^9}},
+ CellLabel->"Out[21]=",ExpressionUUID->"6b9c7553-1a68-4818-93e7-f8911226603e"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{
+  3.9809910690217047`*^9, 3.980991146391343*^9, 3.980991544238237*^9, 
+   3.98099175779134*^9, {3.980996432672892*^9, 3.980996445344871*^9}},
+ CellLabel->"Out[22]=",ExpressionUUID->"28e2bddb-42d2-4905-9e4b-132d4a46740f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{"f", "[", 
+       RowBox[{"i", ",", "j"}], "]"}], 
+      RowBox[{"KroneckerDelta", "[", 
+       RowBox[{"j", ",", "i"}], "]"}]}], "]"}], 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991118937736*^9, 3.980991133007763*^9}},
+ CellLabel->"In[23]:=",ExpressionUUID->"6ec650a9-c7dc-4bf5-801b-3f8ac18fbd4b"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"i", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{"f", "[", 
+       RowBox[{"i", ",", "j"}], "]"}], " ", 
+      TemplateBox[{
+        RowBox[{"i", ",", "j"}]},
+       "KroneckerDeltaSeq"]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991120664075*^9, 3.980991133417954*^9}, 
+   3.980991545714576*^9, {3.980991758484696*^9, 3.980991783854335*^9}, {
+   3.980996432686013*^9, 3.9809964453796453`*^9}},
+ CellLabel->"Out[23]=",ExpressionUUID->"57f0699c-c44e-4e2f-adb5-1974ac3feae8"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     RowBox[{"f", "[", 
+      RowBox[{"j", ",", "j"}], "]"}], "]"}]}], ",", 
+   RowBox[{"{", "j", "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991120664075*^9, 3.980991133417954*^9}, 
+   3.980991545714576*^9, {3.980991758484696*^9, 3.980991783854335*^9}, {
+   3.980996432686013*^9, 3.9809964453822603`*^9}},
+ CellLabel->"Out[24]=",ExpressionUUID->"fcf732ad-0beb-4b4d-a1a6-7188266be821"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980991120664075*^9, 3.980991133417954*^9}, 
+   3.980991545714576*^9, {3.980991758484696*^9, 3.980991783854335*^9}, {
+   3.980996432686013*^9, 3.980996445384214*^9}},
+ CellLabel->"Out[25]=",ExpressionUUID->"462d56c7-16e5-4186-8d56-1988f3aa2dcb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"j", ",", "i"}], "]"}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"i", ",", "j"}], "]"}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991087083198*^9, 3.980991094802836*^9}, {
+  3.980991229974642*^9, 3.9809912307502747`*^9}},
+ CellLabel->"In[26]:=",ExpressionUUID->"e1c4c83a-8f00-41a9-9f5d-40d07f82632f"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.9809910950415916`*^9, {3.980991158753972*^9, 3.9809911823117867`*^9}, 
+   3.980991231088623*^9, 3.980991547879224*^9, 3.9809917890424347`*^9, {
+   3.980996432714211*^9, 3.9809964453915997`*^9}},
+ CellLabel->"Out[26]=",ExpressionUUID->"d61287ff-22f8-476f-ab3c-e5cd40324db7"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{
+  3.9809910950415916`*^9, {3.980991158753972*^9, 3.9809911823117867`*^9}, 
+   3.980991231088623*^9, 3.980991547879224*^9, 3.9809917890424347`*^9, {
+   3.980996432714211*^9, 3.980996445394847*^9}},
+ CellLabel->"Out[27]=",ExpressionUUID->"6e2ea439-3381-4bb1-a708-bd41d9bab1aa"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{
+  3.9809910950415916`*^9, {3.980991158753972*^9, 3.9809911823117867`*^9}, 
+   3.980991231088623*^9, 3.980991547879224*^9, 3.9809917890424347`*^9, {
+   3.980996432714211*^9, 3.980996445399414*^9}},
+ CellLabel->"Out[28]=",ExpressionUUID->"38134c6f-a266-4a56-a78b-e91ea2518aef"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"j", ",", "i"}], "]"}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"i", ",", "k"}], "]"}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "j", ",", "DO"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "DO"}], "]"}]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991191856471*^9, 3.980991227582152*^9}},
+ CellLabel->"In[29]:=",ExpressionUUID->"de5fdb3a-7692-4516-bfea-f0958157384e"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "k"}]},
+        "KroneckerDeltaSeq"]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.9809911986466227`*^9, 3.980991227905427*^9}, 
+   3.9809915511270227`*^9, 3.9809918170011168`*^9, {3.980996432730381*^9, 
+   3.980996445435213*^9}},
+ CellLabel->"Out[29]=",ExpressionUUID->"4b5a636c-b0eb-4a71-980c-f67ae79a356c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+             StyleForm[#, FontColor -> RGBColor[0, 0, 1]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"k", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.9809911986466227`*^9, 3.980991227905427*^9}, 
+   3.9809915511270227`*^9, 3.9809918170011168`*^9, {3.980996432730381*^9, 
+   3.98099644543919*^9}},
+ CellLabel->"Out[30]=",ExpressionUUID->"d4a1e0f4-c625-4713-afa5-9dba5bbe2eb5"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.9809911986466227`*^9, 3.980991227905427*^9}, 
+   3.9809915511270227`*^9, 3.9809918170011168`*^9, {3.980996432730381*^9, 
+   3.980996445441856*^9}},
+ CellLabel->"Out[31]=",ExpressionUUID->"a3a7f31e-e38d-4085-a40b-cc2a05391842"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"j", ",", "i"}], "]"}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{"c", "[", 
+     RowBox[{"CR", ",", "k", ",", "UP"}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991418323863*^9, 3.98099145900908*^9}},
+ CellLabel->"In[32]:=",ExpressionUUID->"f2964bef-f366-4e1e-8692-233a1f050943"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"k", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\[Dagger]\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], "+", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991424252634*^9, 3.980991459466997*^9}, 
+   3.980991552493701*^9, 3.980991825079465*^9, {3.980996432760743*^9, 
+   3.9809964454496183`*^9}},
+ CellLabel->"Out[32]=",ExpressionUUID->"4a960bf5-aeef-4b5a-8288-e08a8042e97b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   SuperscriptBox["n", "2"], " ", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"k", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], ",", 
+     RowBox[{"{", "k", "}"}]}], "]"}]}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.980991424252634*^9, 3.980991459466997*^9}, 
+   3.980991552493701*^9, 3.980991825079465*^9, {3.980996432760743*^9, 
+   3.980996445453074*^9}},
+ CellLabel->"Out[33]=",ExpressionUUID->"d8da191f-0729-4086-9d57-dcaca34a055d"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980991424252634*^9, 3.980991459466997*^9}, 
+   3.980991552493701*^9, 3.980991825079465*^9, {3.980996432760743*^9, 
+   3.9809964454556828`*^9}},
+ CellLabel->"Out[34]=",ExpressionUUID->"f1d9d51a-42a1-4104-99bb-f398f63eb365"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"j", ",", "i"}], "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"KroneckerDelta", "[", 
+        RowBox[{"i", ",", "k"}], "]"}]}]}], "]"}], 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.9809913368849277`*^9, 3.980991369261281*^9}, {
+  3.980991872324366*^9, 3.980991873089665*^9}},
+ CellLabel->"In[35]:=",ExpressionUUID->"58431b79-78e2-49d5-8c72-982e62b273e6"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"i", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], "+", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "k"}]},
+        "KroneckerDeltaSeq"]}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.9809913695247927`*^9, 3.980991383499384*^9}, 
+   3.980991558376377*^9, 3.980991827957203*^9, 3.980991873431035*^9, {
+   3.980996432772993*^9, 3.980996445489333*^9}},
+ CellLabel->"Out[35]=",ExpressionUUID->"ab7cf8f9-c5bf-40d8-8426-9fd9e170de5a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"k", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"k", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.9809913695247927`*^9, 3.980991383499384*^9}, 
+   3.980991558376377*^9, 3.980991827957203*^9, 3.980991873431035*^9, {
+   3.980996432772993*^9, 3.980996445492337*^9}},
+ CellLabel->"Out[36]=",ExpressionUUID->"d293bfbd-adaf-4998-a210-8ab39425d5cf"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.9809913695247927`*^9, 3.980991383499384*^9}, 
+   3.980991558376377*^9, 3.980991827957203*^9, 3.980991873431035*^9, {
+   3.980996432772993*^9, 3.980996445495039*^9}},
+ CellLabel->"Out[37]=",ExpressionUUID->"09d0ded5-9e78-4c3a-8cea-b2e790033a66"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], "/", 
+       RowBox[{"g", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}]}], 
+      RowBox[{"KroneckerDelta", "[", 
+       RowBox[{"j", ",", "i"}], "]"}]}], "]"}], 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980992035210992*^9, 3.980992052234497*^9}},
+ CellLabel->"In[38]:=",ExpressionUUID->"bf05a100-ff2c-4012-806a-4f25e564f8b8"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"i", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     FractionBox[
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+       TemplateBox[{
+         RowBox[{"i", ",", "j"}]},
+        "KroneckerDeltaSeq"]}], 
+      RowBox[{"g", "[", 
+       RowBox[{"i", ",", "j", ",", "k"}], "]"}]], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980992042650247*^9, 3.9809920524834433`*^9}, {
+  3.980996432806534*^9, 3.980996445502479*^9}},
+ CellLabel->"Out[38]=",ExpressionUUID->"7e36cba5-6c35-447b-8519-4075925f6e1b"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     FractionBox[
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}], 
+      RowBox[{"g", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}]], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980992042650247*^9, 3.9809920524834433`*^9}, {
+  3.980996432806534*^9, 3.980996445505191*^9}},
+ CellLabel->"Out[39]=",ExpressionUUID->"5fc3fd67-81ed-4e37-a847-67674b59fbab"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980992042650247*^9, 3.9809920524834433`*^9}, {
+  3.980996432806534*^9, 3.980996445507503*^9}},
+ CellLabel->"Out[40]=",ExpressionUUID->"cdedc9f3-5ac8-4c0e-9b8b-cc2b28246c09"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"scalar", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"f", "[", 
+          RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+         RowBox[{"KroneckerDelta", "[", 
+          RowBox[{"j", ",", "i"}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"f", "[", 
+          RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+         RowBox[{"KroneckerDelta", "[", 
+          RowBox[{"i", ",", "k"}], "]"}]}]}], ")"}], "/", 
+      RowBox[{"g", "[", 
+       RowBox[{"i", ",", "j", ",", "k"}], "]"}]}], "]"}], 
+    RowBox[{"nc", "[", 
+     RowBox[{
+      RowBox[{"c", "[", 
+       RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+      RowBox[{"c", "[", 
+       RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991886003449*^9, 3.980991890978483*^9}, {
+  3.980992024240983*^9, 3.980992026720923*^9}},
+ CellLabel->"In[41]:=",ExpressionUUID->"9cc7738d-4133-4cff-bcd5-54eac06b546a"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"i", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], 
+     StyleBox["\[CenterDot]",
+      FontColor->RGBColor[0, 1, 0]], 
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"j", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm]}], " ", 
+    RowBox[{"scalar", "[", 
+     FractionBox[
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "j"}]},
+         "KroneckerDeltaSeq"]}], "+", 
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "k"}]},
+         "KroneckerDeltaSeq"]}]}], 
+      RowBox[{"g", "[", 
+       RowBox[{"i", ",", "j", ",", "k"}], "]"}]], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991891733193*^9, 3.980991901470243*^9}, {
+  3.9809919683079977`*^9, 3.980992027293486*^9}, {3.980996432818853*^9, 
+  3.980996445544613*^9}},
+ CellLabel->"Out[41]=",ExpressionUUID->"b6af1e4d-88d7-422d-98cb-a6ccc0665711"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sum", "[", 
+   RowBox[{
+    FractionBox[
+     RowBox[{
+      RowBox[{
+       TagBox[
+        StyleBox[
+         TemplateBox[{"c", 
+           RowBox[{"j", 
+             TagBox[
+              StyleBox[
+              "\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+           "\"\[Dagger]\""},
+          "Subsuperscript"],
+         ScriptSizeMultipliers->1,
+         ScriptBaselineShifts->{1, 1}],
+        DisplayForm], 
+       StyleBox["\[CenterDot]",
+        FontColor->RGBColor[0, 1, 0]], 
+       TagBox[
+        StyleBox[
+         TemplateBox[{"c", 
+           RowBox[{"j", 
+             TagBox[
+              StyleBox[
+              "\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+          "Subsuperscript"],
+         ScriptSizeMultipliers->1,
+         ScriptBaselineShifts->{1, 1}],
+        DisplayForm]}], " ", 
+      RowBox[{"scalar", "[", 
+       FractionBox[
+        RowBox[{"f", "[", 
+         RowBox[{"j", ",", "j", ",", "k"}], "]"}], 
+        RowBox[{"g", "[", 
+         RowBox[{"j", ",", "j", ",", "k"}], "]"}]], "]"}]}], 
+     RowBox[{"g", "[", 
+      RowBox[{"j", ",", "j", ",", "k"}], "]"}]], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"k", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      FractionBox[
+       RowBox[{"f", "[", 
+        RowBox[{"k", ",", "j", ",", "k"}], "]"}], 
+       RowBox[{"g", "[", 
+        RowBox[{"k", ",", "j", ",", "k"}], "]"}]], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.980991891733193*^9, 3.980991901470243*^9}, {
+  3.9809919683079977`*^9, 3.980992027293486*^9}, {3.980996432818853*^9, 
+  3.980996445548491*^9}},
+ CellLabel->"Out[42]=",ExpressionUUID->"b9c1504f-1979-43a5-aad2-48e6d31c0233"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980991891733193*^9, 3.980991901470243*^9}, {
+  3.9809919683079977`*^9, 3.980992027293486*^9}, {3.980996432818853*^9, 
+  3.980996445551339*^9}},
+ CellLabel->"Out[43]=",ExpressionUUID->"6c021c8a-60f8-4c67-b43b-44bd92c2c5d6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+        RowBox[{"KroneckerDelta", "[", 
+         RowBox[{"j", ",", "i"}], "]"}]}], "+", 
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], 
+        RowBox[{"KroneckerDelta", "[", 
+         RowBox[{"i", ",", "k"}], "]"}]}]}], "]"}], 
+     RowBox[{"nc", "[", 
+      RowBox[{
+       RowBox[{"c", "[", 
+        RowBox[{"CR", ",", "i", ",", "UP"}], "]"}], ",", 
+       RowBox[{"c", "[", 
+        RowBox[{"AN", ",", "j", ",", "UP"}], "]"}]}], "]"}]}], "+", 
+    RowBox[{"c", "[", 
+     RowBox[{"CR", ",", "k", ",", "UP"}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"sumSimplifyKD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"vev", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.980991875043223*^9, 3.980991876203044*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"86fb7c9c-1cf9-47b7-bbb6-f3d3637c12a8"],
+
+Cell[BoxData[
+ RowBox[{"sum", "[", 
+  RowBox[{
+   RowBox[{
+    TagBox[
+     StyleBox[
+      TemplateBox[{"c", 
+        RowBox[{"k", 
+          TagBox[
+           StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+           StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\[Dagger]\""},
+       "Subsuperscript"],
+      ScriptSizeMultipliers->1,
+      ScriptBaselineShifts->{1, 1}],
+     DisplayForm], "+", 
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"i", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "j"}]},
+         "KroneckerDeltaSeq"]}], "+", 
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j", ",", "k"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "k"}]},
+         "KroneckerDeltaSeq"]}]}], "]"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", "j", ",", "k"}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.980991852758971*^9, 3.980991876445428*^9}, {
+  3.980996432850412*^9, 3.9809964455585546`*^9}},
+ CellLabel->"Out[44]=",ExpressionUUID->"94c5e116-4dcb-43a6-90e1-c5338e2f301b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   SuperscriptBox["n", "2"], " ", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     TagBox[
+      StyleBox[
+       TemplateBox[{"c", 
+         RowBox[{"k", 
+           TagBox[
+            StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+            StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+         "\"\[Dagger]\""},
+        "Subsuperscript"],
+       ScriptSizeMultipliers->1,
+       ScriptBaselineShifts->{1, 1}],
+      DisplayForm], ",", 
+     RowBox[{"{", "k", "}"}]}], "]"}]}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"j", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}], "+", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"k", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], 
+          "\"\[Dagger]\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm], 
+      StyleBox["\[CenterDot]",
+       FontColor->RGBColor[0, 1, 0]], 
+      TagBox[
+       StyleBox[
+        TemplateBox[{"c", 
+          RowBox[{"j", 
+            TagBox[
+             StyleBox["\"\[DoubleUpArrow]\"", FontColor -> RGBColor[1, 0, 0]],
+              StyleForm[#, FontColor -> RGBColor[1, 0, 0]]& ]}], "\"\""},
+         "Subsuperscript"],
+        ScriptSizeMultipliers->1,
+        ScriptBaselineShifts->{1, 1}],
+       DisplayForm]}], " ", 
+     RowBox[{"scalar", "[", 
+      RowBox[{"f", "[", 
+       RowBox[{"k", ",", "j", ",", "k"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"j", ",", "k"}], "}"}]}], "]"}]}]], "Output",
+ CellChangeTimes->{{3.980991852758971*^9, 3.980991876445428*^9}, {
+  3.980996432850412*^9, 3.9809964455624037`*^9}},
+ CellLabel->"Out[45]=",ExpressionUUID->"4ed7c4de-2eab-483b-ad8e-048365efb08a"],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.980991852758971*^9, 3.980991876445428*^9}, {
+  3.980996432850412*^9, 3.980996445565481*^9}},
+ CellLabel->"Out[46]=",ExpressionUUID->"8903fcd4-2970-4154-aee2-b07fe5293cb2"]
+}, Open  ]]
+},
+WindowSize->{808, 662},
+WindowMargins->{{Automatic, 22}, {40, Automatic}},
+FrontEndVersion->"14.0 for Mac OS X x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"54ec678b-1e10-4757-a491-83368dd6032e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 213, 4, 30, "Input",ExpressionUUID->"58097483-bfb8-4e66-b2b5-8bd01a001306"],
+Cell[796, 28, 494, 8, 24, "Print",ExpressionUUID->"146d4882-7592-4678-9812-1c3df0ce8e58"]
+}, Open  ]],
+Cell[1305, 39, 844, 20, 115, "Input",ExpressionUUID->"0796d7a5-20f6-4966-a5d2-87da07cd247a"],
+Cell[CellGroupData[{
+Cell[2174, 63, 469, 12, 30, "Input",ExpressionUUID->"f5bb8f4c-c3f0-425c-a1f7-9146a86247d7"],
+Cell[2646, 77, 1143, 33, 44, "Output",ExpressionUUID->"b134fd34-697a-495a-bfe3-170b408edf65"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3826, 115, 273, 6, 30, "Input",ExpressionUUID->"394fa82b-f623-4d87-bf8e-4c60c0cfe1c3"],
+Cell[4102, 123, 279, 4, 34, "Output",ExpressionUUID->"9b46971a-d47e-4363-a885-46110ff377b2"]
+}, Open  ]],
+Cell[4396, 130, 295, 7, 30, "Input",ExpressionUUID->"3b41aff6-df5f-42ed-afdc-381a01f4ad68"],
+Cell[CellGroupData[{
+Cell[4716, 141, 630, 16, 52, "Input",ExpressionUUID->"5f158822-045a-4bd8-aa9a-48b0c0bc98a4"],
+Cell[5349, 159, 1324, 38, 44, "Output",ExpressionUUID->"868c9b6b-d14d-4663-9653-9882ab7f9699"],
+Cell[6676, 199, 1170, 32, 44, "Output",ExpressionUUID->"e0485568-1742-4d69-84a4-a1bad320b8d3"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7883, 236, 1022, 26, 94, "Input",ExpressionUUID->"d6277fa7-c507-4d76-8672-453b831b42da"],
+Cell[8908, 264, 2224, 66, 44, "Output",ExpressionUUID->"95c39068-62a0-46d2-9a49-42b881a97817"],
+Cell[11135, 332, 2204, 65, 44, "Output",ExpressionUUID->"81a2c30f-b3b0-465c-adaf-4ab30911b365"],
+Cell[13342, 399, 320, 5, 34, "Output",ExpressionUUID->"82ba7144-4a01-4ede-b7ff-556f2584af24"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13699, 409, 969, 25, 94, "Input",ExpressionUUID->"6dc3d6db-21cd-4204-9003-ddf3dc3d2356"],
+Cell[14671, 436, 2184, 65, 44, "Output",ExpressionUUID->"0db76e30-953f-4b11-9d5e-da7feddf1a22"],
+Cell[16858, 503, 2161, 64, 44, "Output",ExpressionUUID->"ff67bedb-3a3b-48d6-baa9-e00d3f54b663"],
+Cell[19022, 569, 278, 4, 34, "Output",ExpressionUUID->"7afa15fe-e39d-4983-b976-4b44989196c0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19337, 578, 1070, 28, 94, "Input",ExpressionUUID->"b6b0354c-2c71-40d9-9b34-b2088abac8e1"],
+Cell[20410, 608, 2328, 69, 44, "Output",ExpressionUUID->"9830c63e-0ee0-4668-80f4-54399413fc0c"],
+Cell[22741, 679, 2129, 63, 44, "Output",ExpressionUUID->"7d48b34e-3ed7-4038-a957-d21d6df3f5e9"],
+Cell[24873, 744, 293, 4, 34, "Output",ExpressionUUID->"77980180-aa98-4ef2-9fdb-445a4b617240"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[25203, 753, 1196, 32, 94, "Input",ExpressionUUID->"a01fb66b-14a6-47c7-9d8c-965c65ac4d35"],
+Cell[26402, 787, 2438, 73, 44, "Output",ExpressionUUID->"f9d7bae5-aa41-4202-bb1c-7efbf8daf72b"],
+Cell[28843, 862, 2321, 69, 44, "Output",ExpressionUUID->"6b9c7553-1a68-4818-93e7-f8911226603e"],
+Cell[31167, 933, 269, 4, 34, "Output",ExpressionUUID->"28e2bddb-42d2-4905-9e4b-132d4a46740f"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[31473, 942, 808, 21, 73, "Input",ExpressionUUID->"6ec650a9-c7dc-4bf5-801b-3f8ac18fbd4b"],
+Cell[32284, 965, 1453, 42, 44, "Output",ExpressionUUID->"57f0699c-c44e-4e2f-adb5-1974ac3feae8"],
+Cell[33740, 1009, 1321, 37, 44, "Output",ExpressionUUID->"fcf732ad-0beb-4b4d-a1a6-7188266be821"],
+Cell[35064, 1048, 295, 4, 34, "Output",ExpressionUUID->"462d56c7-16e5-4186-8d56-1988f3aa2dcb"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[35396, 1057, 1318, 36, 94, "Input",ExpressionUUID->"e1c4c83a-8f00-41a9-9f5d-40d07f82632f"],
+Cell[36717, 1095, 2621, 78, 44, "Output",ExpressionUUID->"d61287ff-22f8-476f-ab3c-e5cd40324db7"],
+Cell[39341, 1175, 2452, 72, 44, "Output",ExpressionUUID->"6e2ea439-3381-4bb1-a708-bd41d9bab1aa"],
+Cell[41796, 1249, 324, 5, 34, "Output",ExpressionUUID->"38134c6f-a266-4a56-a78b-e91ea2518aef"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[42157, 1259, 1300, 36, 94, "Input",ExpressionUUID->"de5fdb3a-7692-4516-bfea-f0958157384e"],
+Cell[43460, 1297, 2602, 77, 44, "Output",ExpressionUUID->"4b5a636c-b0eb-4a71-980c-f67ae79a356c"],
+Cell[46065, 1376, 2476, 73, 44, "Output",ExpressionUUID->"d4a1e0f4-c625-4713-afa5-9dba5bbe2eb5"],
+Cell[48544, 1451, 277, 4, 34, "Output",ExpressionUUID->"a3a7f31e-e38d-4085-a40b-cc2a05391842"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[48858, 1460, 935, 25, 94, "Input",ExpressionUUID->"f2964bef-f366-4e1e-8692-233a1f050943"],
+Cell[49796, 1487, 1867, 54, 44, "Output",ExpressionUUID->"4a960bf5-aeef-4b5a-8288-e08a8042e97b"],
+Cell[51666, 1543, 1897, 56, 44, "Output",ExpressionUUID->"d8da191f-0729-4086-9d57-dcaca34a055d"],
+Cell[53566, 1601, 273, 4, 34, "Output",ExpressionUUID->"f1d9d51a-42a1-4104-99bb-f398f63eb365"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[53876, 1610, 1082, 29, 94, "Input",ExpressionUUID->"58431b79-78e2-49d5-8c72-982e62b273e6"],
+Cell[54961, 1641, 1684, 49, 44, "Output",ExpressionUUID->"ab7cf8f9-c5bf-40d8-8426-9fd9e170de5a"],
+Cell[56648, 1692, 2503, 73, 44, "Output",ExpressionUUID->"d293bfbd-adaf-4998-a210-8ab39425d5cf"],
+Cell[59154, 1767, 295, 4, 34, "Output",ExpressionUUID->"09d0ded5-9e78-4c3a-8cea-b2e790033a66"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[59486, 1776, 932, 25, 94, "Input",ExpressionUUID->"bf05a100-ff2c-4012-806a-4f25e564f8b8"],
+Cell[60421, 1803, 1500, 44, 54, "Output",ExpressionUUID->"7e36cba5-6c35-447b-8519-4075925f6e1b"],
+Cell[61924, 1849, 1379, 40, 53, "Output",ExpressionUUID->"5fc3fd67-81ed-4e37-a847-67674b59fbab"],
+Cell[63306, 1891, 224, 3, 34, "Output",ExpressionUUID->"cdedc9f3-5ac8-4c0e-9b8b-cc2b28246c09"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[63567, 1899, 1225, 33, 94, "Input",ExpressionUUID->"9cc7738d-4133-4cff-bcd5-54eac06b546a"],
+Cell[64795, 1934, 1769, 52, 54, "Output",ExpressionUUID->"b6af1e4d-88d7-422d-98cb-a6ccc0665711"],
+Cell[66567, 1988, 2833, 84, 65, "Output",ExpressionUUID->"b9c1504f-1979-43a5-aad2-48e6d31c0233"],
+Cell[69403, 2074, 273, 4, 34, "Output",ExpressionUUID->"6c021c8a-60f8-4c67-b43b-44bd92c2c5d6"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[69713, 2083, 1142, 31, 94, "Input",ExpressionUUID->"86fb7c9c-1cf9-47b7-bbb6-f3d3637c12a8"],
+Cell[70858, 2116, 2038, 60, 44, "Output",ExpressionUUID->"94c5e116-4dcb-43a6-90e1-c5338e2f301b"],
+Cell[72899, 2178, 2953, 89, 76, "Output",ExpressionUUID->"4ed7c4de-2eab-483b-ad8e-048365efb08a"],
+Cell[75855, 2269, 222, 3, 57, "Output",ExpressionUUID->"8903fcd4-2970-4154-aee2-b07fe5293cb2"]
+}, Open  ]]
+}
+]
+*)
+
