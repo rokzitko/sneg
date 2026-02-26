@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.18 Feb 2026";
+snegidstring = "sneg.m 2.0.19 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1577,10 +1577,19 @@ in quantum mechanics", quant-ph/990069. *)
 
 conj[conj[a_]] := a;
 
+(* Simplify into absolute values *)
+ruleAbs = {
+  z_ Conjugate[z_] :> Abs[z]^2,
+  z_ conj[z_] :> Abs[z]^2
+};
+
 (**** Symbolic sums ****)
 
 (* No sum at all *)
 sum[z_, {}] := z;
+
+(* Pull sum in front of non-commutative multiplications. *)
+nc[a___, sum[f_, {q__}], c___] := sum[nc[a, f, c], {q}];
 
 (* The indexes must be sorted for the simplifications to work correctly *)
 sum[z_, it_List] := sum[z, Sort[it]] /; Not[OrderedQ[it]];
@@ -1669,8 +1678,12 @@ komutator[x1:sum[a1_, it1_List], x2:sum[a2_, it2_List]] /; sumAutoRename :=
   snegsumJoinWithRenaming[a1, a2, it1, it2, True];
 
 (* Multiple sums *)
-sum[sum[a_, it1_List], it2_List] :=
-  sum[a, snegsumJoin[it1, it2]];
+sum[b_. sum[a_, it1_List], it2_List] :=
+  sum[b a, snegsumJoin[it1, it2]];
+sum[b_. sum[a_, it1_List] + c_, it2_List] :=
+  sum[b a, snegsumJoin[it1, it2]] + sum[c, it2];
+sum[b_ (sum[a_, it1_List] + c_), it2_List] :=
+  sum[b a, snegsumJoin[it1, it2]] + sum[b c, it2];
 
 (* Thread the first argument *)
 rulesumThread = {
@@ -1691,16 +1704,17 @@ sum[a_ + b_, it_List] :> sum[a, it] + sum[b, it],
 sum[a_, it_List] :> sum[ExpandAll[a], it]
 };
 
+sumExpand[expr_] := expr //. rulesumExpand;
+
 (* Expand[] here, not ExpandAll[], we don't want to blow up the denominators *)
 ruleExpandUnderSum = {
   sum[a_, it_List] :> sum[Expand[a], it]
 };
 
+(* Does not expand under sums as rulesumExpand does. *)
 rulesumDistribute = {
   sum[a_ + b_, it_List] :> sum[a, it] + sum[b, it]
 };
-
-sumExpand[expr_] := expr //. rulesumExpand;
 
 rulesumCollect = {
 Plus[z1_. sum[a1_, it_List], z2_. sum[a2_, it_List]] :> sum[z1 a1+z2 a2, it],
@@ -1711,13 +1725,57 @@ Plus[z1_. sum[a1_, it1_List], z2_. sum[a2_, it2_List]] /;
       int = Intersection[it1, it2];
       sum[sum[z1 a1, Complement[it1, int]]
          +sum[z2 a2, Complement[it2, int]], int]
-    ],
-
-nc[a___, sum[b_,it_List], c___] :> sum[nc[a, b, c], it]
+    ]
 };
 
 sumCollect[expr_] := expr //. rulesumCollect;
 
+(* scalar[] marker for explicitly declaring numerical (non-operator) expressions.
+   Speed optimization. Particularly useful for expressions involving sum[]. *)
+
+(* Always pulled out of noncommutative multiply blocks *)
+nc[a___, b_. scalar[x_], c___] := scalar[x] nc[a, b, c];
+
+(* Drop zeros *)
+scalar[0] := 0;
+scalar[0.] := 0;
+scalar[0.+I 0.] := 0;
+
+(* Sums of scalars are numeric quantities. *)
+isnumericQ[sum[scalar[_], {__}]] := True;
+
+(* A scalar is a scalar... *)
+scalar[a_. scalar[b_]] := scalar[a b];
+
+(* scalar is greedy: it absorbs all non-operator quantities *)
+a_  scalar[b_] /; isnumericQ[a] ^:= scalar[a b];
+scalar[a_] + scalar[b_] ^:= scalar[a + b];
+scalar[a_] scalar[b_] ^:= scalar[a b];
+
+(* Conjugation handling. Note that we use conj[] for scalar, too, instead of Conjugate[]. *)
+conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
+
+(* Speed optimization for vev[] *)
+vev[scalar[x_] a_] := scalar[x] vev[a];
+vev[scalar[x_]] := 0;
+
+(* Pull sums out of scalar[] placeholders! *)
+scalar[a_. sum[b_, {q__}]] := sum[scalar[a  b], {q}];
+
+(* Transformation rules involving scalar[] blocks *)
+rulestripscalar = {
+  scalar[x_] :> x
+};
+
+rulesimplifyscalar = {
+  scalar[x_] :> scalar[Simplify[x]]
+};
+
+rulecollectscalar = {
+  sum[a_ scalar[z1_] + a_ scalar[z2_] + b_., {q_}] :> sum[a scalar[z1 + z2] + b, {q}]
+};
+
+(* Simplification rules for KroneckerDelta in sum[] expressions. *)
 rulesumSimplifyKD = {
   sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; MemberQ[it, n1] :>
     sum[a //. {n1 :> n2}, Complement[it, {n1}]] + sum[b, it],
@@ -1751,6 +1809,9 @@ rulesumSimplifyKD = {
 };
 
 sumSimplifyKD[expr_] := expr //. rulesumSimplifyKD;
+
+(* Optimization *)
+sumSimplifyKD[expr_] /; FreeQ[expr, KroneckerDelta[__]] := expr;
 
 (* Replace indexes with abstract indexes ndxfunc[i] with i=1,...,nrindexes *)
 (* Be careful: this is only useful for fine-tuned applications to address
@@ -4442,20 +4503,6 @@ vev[a_/b_] /; isnumericQ[b] := vev[nc[a]]/b;
 conj[1/a_] := 1/conj[a];
 conj[nc[a__]/b_] := conj[nc[a]]/conj[b];
 sum[a_./(n_ b_ + n_ c_), l_List] /; isnumericQ[n] && sumFactorizableQ[n, l] := (1/n) sum[a/(b + c), l];
-
-(* scalar[] marker for explicitly defined numerical blocks.
-Particularly useful for expressions involving sum[]. *)
-nc[a___, b_ scalar[x_], c___] := scalar[x] nc[a, b, c];
-conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
-vev[scalar[x_] a_] := scalar[x] vev[a];
-vev[scalar[x_]] := 0;
-scalar[0] := 0;
-
-rulescalargather = {
-  scalar[x_] b_ /; isnumericQ[b] :> scalar[x b],
-  scalar[a_] + scalar[b_] :> scalar[a + b],
-  scalar[a_] scalar[b_] :> scalar[a b]
-};
 
 (* Improved zeroonvac function; tries harder to drop terms. *)
 Zeroonvac[a_ + b_] := Zeroonvac[a] + Zeroonvac[b];
