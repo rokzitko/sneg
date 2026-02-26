@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.20 Feb 2026";
+snegidstring = "sneg.m 2.0.21 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1843,6 +1843,12 @@ sumSimplifyKD[expr_] := expr //. rulesumSimplifyKD;
 
 (* Optimization *)
 sumSimplifyKD[expr_] /; FreeQ[expr, KroneckerDelta[__]] := expr;
+
+(* Collect KroneckerDelta[] in sums, prior to simplification. *)
+rulesumCollectKD = {
+  sum[a_, {q__}] :> sum[Collect[a, KroneckerDelta[__]], {q}]
+};
+sumCollectSimplifyKD[expr_] := sumSimplifyKD[expr //. rulesumCollectKD];
 
 (* Replace indexes with abstract indexes ndxfunc[i] with i=1,...,nrindexes *)
 (* Be careful: this is only useful for fine-tuned applications to address

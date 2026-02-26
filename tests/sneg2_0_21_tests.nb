@@ -1,0 +1,295 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9818,        287]
+NotebookOptionsPosition[      8309,        254]
+NotebookOutlinePosition[      8706,        270]
+CellTagsIndexPosition[      8663,        267]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "sneg`"}], ";"}]], "Input",
+ CellChangeTimes->{{3.9810916920079937`*^9, 3.98109169623036*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"2dd731a6-8c4b-4011-9e90-a0fc94bdcaca"],
+
+Cell[BoxData["\<\"sneg 2.0.21 Copyright (C) 2002-2026 Rok Zitko\"\>"], "Print",
+ CellChangeTimes->{3.981091696896271*^9, 3.981091900148483*^9, 
+  3.981094551219767*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"e6d2c5ad-3975-44dc-9ff9-8fa3cd76f9e2"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"snegfreeindexes", "[", 
+   RowBox[{"i", ",", "j", ",", "k", ",", "l"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.981091698727096*^9, 3.981091705926906*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"83c945a6-1e25-4ce2-a6a0-ee068e334232"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"s", "=", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"f", "[", 
+       RowBox[{"i", ",", "j"}], "]"}], 
+      RowBox[{"KroneckerDelta", "[", 
+       RowBox[{"i", ",", "j"}], "]"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "j"}], "}"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expr", "=", 
+   RowBox[{"sumSimplifyKD", "[", "s", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"expr", "==", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{"f", "[", 
+     RowBox[{"j", ",", "j"}], "]"}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.9810917074881496`*^9, 3.981091743215274*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"db503b12-2fea-487c-a929-4984b685a20f"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.981091714843646*^9, 3.981091743558765*^9}, 
+   3.981094552095257*^9},
+ CellLabel->"Out[5]=",ExpressionUUID->"44902398-441a-42b3-ae9b-91b1557e8db4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"s", "=", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j"}], "]"}], 
+        RowBox[{"KroneckerDelta", "[", 
+         RowBox[{"i", ",", "j"}], "]"}]}], "+", 
+       RowBox[{
+        RowBox[{"g", "[", 
+         RowBox[{"i", ",", "j"}], "]"}], 
+        RowBox[{"KroneckerDelta", "[", 
+         RowBox[{"i", ",", "j"}], "]"}]}]}], ")"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "j"}], "}"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expr", "=", 
+   RowBox[{"sumSimplifyKD", "[", "s", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"expr", "==", 
+  RowBox[{
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"j", ",", "j"}], "]"}], ",", 
+     RowBox[{"{", "j", "}"}]}], "]"}], "+", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{"g", "[", 
+      RowBox[{"j", ",", "j"}], "]"}], ",", 
+     RowBox[{"{", "j", "}"}]}], "]"}]}]}]}], "Input",
+ CellChangeTimes->{{3.981091753247384*^9, 3.98109180814211*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"b119aad7-3849-4092-9461-877153a756e8"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{{3.981091766899969*^9, 3.981091808460476*^9}, 
+   3.9810945521008873`*^9},
+ CellLabel->"Out[8]=",ExpressionUUID->"270440ed-c161-410d-843b-be28d3c28df8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"s", "=", 
+   RowBox[{"sum", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"f", "[", 
+          RowBox[{"i", ",", "j"}], "]"}], 
+         RowBox[{"KroneckerDelta", "[", 
+          RowBox[{"i", ",", "j"}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"g", "[", 
+          RowBox[{"i", ",", "j"}], "]"}], 
+         RowBox[{"KroneckerDelta", "[", 
+          RowBox[{"i", ",", "j"}], "]"}]}]}], ")"}], 
+      RowBox[{"h", "[", 
+       RowBox[{"i", ",", "j"}], "]"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "j"}], "}"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expr", "=", 
+   RowBox[{"sumSimplifyKD", "[", "s", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"expr", "==", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"h", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", 
+         RowBox[{"i", ",", "j"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "j"}]},
+         "KroneckerDeltaSeq"]}], "+", 
+       RowBox[{
+        RowBox[{"g", "[", 
+         RowBox[{"i", ",", "j"}], "]"}], " ", 
+        TemplateBox[{
+          RowBox[{"i", ",", "j"}]},
+         "KroneckerDeltaSeq"]}]}], ")"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "j"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expr", "=", 
+   RowBox[{"expr", "/.", "rulesumCollectKD"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"expr", "==", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], "+", 
+       RowBox[{"g", "[", 
+        RowBox[{"i", ",", "j"}], "]"}]}], ")"}], " ", 
+     RowBox[{"h", "[", 
+      RowBox[{"i", ",", "j"}], "]"}], " ", 
+     TemplateBox[{
+       RowBox[{"i", ",", "j"}]},
+      "KroneckerDeltaSeq"]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", "j"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expr", "=", 
+   RowBox[{"sumSimplifyKD", "[", "expr", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"expr", "==", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"j", ",", "j"}], "]"}], "+", 
+       RowBox[{"g", "[", 
+        RowBox[{"j", ",", "j"}], "]"}]}], ")"}], " ", 
+     RowBox[{"h", "[", 
+      RowBox[{"j", ",", "j"}], "]"}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sumCollectSimplifyKD", "[", "s", "]"}], "==", 
+  RowBox[{"sum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"f", "[", 
+        RowBox[{"j", ",", "j"}], "]"}], "+", 
+       RowBox[{"g", "[", 
+        RowBox[{"j", ",", "j"}], "]"}]}], ")"}], " ", 
+     RowBox[{"h", "[", 
+      RowBox[{"j", ",", "j"}], "]"}]}], ",", 
+    RowBox[{"{", "j", "}"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.981091793406335*^9, 3.98109180438064*^9}, {
+  3.981091854687786*^9, 3.981091863910782*^9}, {3.98109190393238*^9, 
+  3.981091988368791*^9}, {3.9810920284694633`*^9, 3.981092049406538*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"88153d4d-c9fd-4056-896c-c83a553b3c79"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.981091796448866*^9, 3.981091864578053*^9, {3.981091905720301*^9, 
+   3.981091989130892*^9}, {3.981092034528964*^9, 3.981092049577347*^9}, 
+   3.981094552107131*^9},
+ CellLabel->"Out[11]=",ExpressionUUID->"86fe16df-0b0b-4db7-9eb1-c398e15e2da6"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.981091796448866*^9, 3.981091864578053*^9, {3.981091905720301*^9, 
+   3.981091989130892*^9}, {3.981092034528964*^9, 3.981092049577347*^9}, 
+   3.981094552108302*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"352e8ff0-1ff2-45c1-a26a-635b8fa0354f"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.981091796448866*^9, 3.981091864578053*^9, {3.981091905720301*^9, 
+   3.981091989130892*^9}, {3.981092034528964*^9, 3.981092049577347*^9}, 
+   3.981094552109514*^9},
+ CellLabel->"Out[15]=",ExpressionUUID->"44f2d272-c854-4c33-90a2-c519109c8ea1"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.981091796448866*^9, 3.981091864578053*^9, {3.981091905720301*^9, 
+   3.981091989130892*^9}, {3.981092034528964*^9, 3.981092049577347*^9}, 
+   3.9810945521116753`*^9},
+ CellLabel->"Out[16]=",ExpressionUUID->"16f56dd5-a780-4956-afb3-1daa3369e715"]
+}, Open  ]]
+},
+WindowSize->{808, 662},
+WindowMargins->{{Automatic, 33}, {46, Automatic}},
+FrontEndVersion->"14.0 for Mac OS X x86 (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"54ec678b-1e10-4757-a491-83368dd6032e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 212, 4, 30, "Input",ExpressionUUID->"2dd731a6-8c4b-4011-9e90-a0fc94bdcaca"],
+Cell[795, 28, 272, 5, 24, "Print",ExpressionUUID->"e6d2c5ad-3975-44dc-9ff9-8fa3cd76f9e2"]
+}, Open  ]],
+Cell[1082, 36, 274, 5, 30, "Input",ExpressionUUID->"83c945a6-1e25-4ce2-a6a0-ee068e334232"],
+Cell[CellGroupData[{
+Cell[1381, 45, 779, 22, 73, "Input",ExpressionUUID->"db503b12-2fea-487c-a929-4984b685a20f"],
+Cell[2163, 69, 201, 3, 34, "Output",ExpressionUUID->"44902398-441a-42b3-ae9b-91b1557e8db4"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2401, 77, 1171, 35, 73, "Input",ExpressionUUID->"b119aad7-3849-4092-9461-877153a756e8"],
+Cell[3575, 114, 203, 3, 34, "Output",ExpressionUUID->"270440ed-c161-410d-843b-be28d3c28df8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3815, 122, 3268, 101, 182, "Input",ExpressionUUID->"88153d4d-c9fd-4056-896c-c83a553b3c79"],
+Cell[7086, 225, 299, 5, 34, "Output",ExpressionUUID->"86fe16df-0b0b-4db7-9eb1-c398e15e2da6"],
+Cell[7388, 232, 299, 5, 34, "Output",ExpressionUUID->"352e8ff0-1ff2-45c1-a26a-635b8fa0354f"],
+Cell[7690, 239, 299, 5, 34, "Output",ExpressionUUID->"44f2d272-c854-4c33-90a2-c519109c8ea1"],
+Cell[7992, 246, 301, 5, 34, "Output",ExpressionUUID->"16f56dd5-a780-4956-afb3-1daa3369e715"]
+}, Open  ]]
+}
+]
+*)
+
