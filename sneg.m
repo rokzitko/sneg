@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.19 Feb 2026";
+snegidstring = "sneg.m 2.0.20 Feb 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -1677,13 +1677,44 @@ komutator[x1:sum[a1_, it1_List], x2:sum[a2_, it2_List]] /; sumAutoRename :=
   snegsumJoinWithRenaming[a1, a2, it1, it2, False] -
   snegsumJoinWithRenaming[a1, a2, it1, it2, True];
 
-(* Multiple sums *)
+(* Sum of sum *)
 sum[b_. sum[a_, it1_List], it2_List] :=
   sum[b a, snegsumJoin[it1, it2]];
 sum[b_. sum[a_, it1_List] + c_, it2_List] :=
   sum[b a, snegsumJoin[it1, it2]] + sum[c, it2];
 sum[b_ (sum[a_, it1_List] + c_), it2_List] :=
   sum[b a, snegsumJoin[it1, it2]] + sum[b c, it2];
+
+(* Factorization sum -> sum*sum. *)
+FactorSeparableSumCustom[sum[expr_, idx_List]] :=
+ Module[{facs, facIdx, vertsF, vertsI, edges, comps, termFromComp, k, s},
+  facs = If[Head[expr] === Times, List @@ expr, {expr}];
+  facIdx[fac_] := Select[idx, Not @ FreeQ[fac, #] &];
+  vertsF = Table[{"F", k}, {k, Length[facs]}];
+  vertsI = Table[{"I", s}, {s, idx}];
+  edges = Flatten @ Table[
+    UndirectedEdge[{"F", k}, {"I", s}], {k, Length[facs]}, {s, facIdx[facs[[k]]]} ];
+
+  (* include isolated indices as singleton components by explicitly adding them as vertices *)
+  comps = ConnectedComponents @ Graph[Join[vertsF, vertsI], edges];
+
+  termFromComp[c_] := Module[{fk, ii, subexpr, kkk, sss},
+    fk = facs[[ Cases[c, {"F", kkk_} :> kkk] ]];
+    ii = Cases[c, {"I", sss_} :> sss];
+    subexpr = Times @@ fk /. Times[] -> 1;
+    Which[
+     ii === {},                          subexpr,                 (* factor-only: pull out *)
+     fk === {},                          sum[1, ii],              (* index-only: empty factor -> 1 *)
+     True,                               sum[subexpr, ii]         (* mixed: usual *)
+    ]
+  ];
+
+   Times @@ (termFromComp /@ comps)
+];
+
+rulesumFactor = {
+  s:sum[_, _List] :> FactorSeparableSumCustom[s]
+};
 
 (* Thread the first argument *)
 rulesumThread = {
