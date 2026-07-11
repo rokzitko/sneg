@@ -1828,7 +1828,7 @@ rulesumSimplifyKD = {
     sum[(scalar[z] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c] a, it] + sum[b, it],
 
   sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n1] :>
-    sum[(scalar[z/d] a/d) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c/d] a, it] + sum[b, it],
+    sum[(scalar[z/d] a) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c/d] a, it] + sum[b, it],
 
   sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n2] :>
     sum[(scalar[z/d] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c/d] a, it] + sum[b, it],

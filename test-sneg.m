@@ -1201,6 +1201,11 @@ snegfreeindexes[sigma, sigma1, tau];
 
 Conjugate[k] ^= k; (* Wave vectors are real *)
 
+Print["* sumSimplifyKD[] *"];
+test[ sumSimplifyKD[sum[scalar[(KroneckerDelta[k, k1] z)/U] a[CR, k], {k}]],
+  scalar[z/U] a[CR, k1] ];
+test[ sumSimplifyKD[sum[scalar[(KroneckerDelta[k1, k] z)/U] a[CR, k], {k}]],
+  scalar[z/U] a[CR, k1] ];
 
 Print["* vev *"];
 
