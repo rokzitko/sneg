@@ -229,10 +229,10 @@ tdtr1FAST[eig_List, mat_] := Module[{ord1, ord2, do1},
     Message[tdtr1FAST::unordered, ord1, ord2]; Return[Infinity]
   ];
 
-  do1[{vals_, vecs_}, matrix_] := 
-        Tr[vecs.matrix.Transpose[vecs], List] . Exp[-beta vals];
-      
-  Total @ MapThread[do1, {eig[[All, 2]], mat[[All, 2]]}]
+  do1[qn_, {vals_, vecs_}, matrix_] := 
+        deg[qn] (Tr[vecs.matrix.Transpose[vecs], List] . Exp[-beta vals]);
+       
+  Total @ MapThread[do1, {eig[[All, 1]], eig[[All, 2]], mat[[All, 2]]}]
 ];
 
 (* Prepare matrices of operators for fast calculations. *)
@@ -262,7 +262,7 @@ spectral2FAST[eig_List, lmat_] := Module[{},
         Outer[(Exp[-beta #1] + Exp[-beta #2])Delta[omega + (#1 - #2)] &, 
               vals1, vals2];
       skpdts = Abs[vecs1.mat.Transpose[vecs2]]^2;
-      Chop @ Total[factors skpdts, 2]
+      deg[qn1] deg[qn2] (Chop @ Total[factors skpdts, 2])
     ];
   Expand @ Total @ Map[do1, lmat]
 ];
