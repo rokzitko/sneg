@@ -1588,8 +1588,11 @@ ruleAbs = {
 (* No sum at all *)
 sum[z_, {}] := z;
 
-(* Pull sum in front of non-commutative multiplications. *)
-nc[a___, sum[f_, {q__}], c___] := sum[nc[a, f, c], {q}];
+(* Pull isolated sums in front of non-commutative multiplications. Avoid
+index capture and leave nested/product sums to the auto-renaming rules. *)
+nc[a___, sum[f_, {q__}], c___] /;
+  FreeQ[{a, c}, sum[_, _List]] && FreeOfIndexQ[{a, c}, {q}] :=
+    sum[nc[a, f, c], {q}];
 
 (* The indexes must be sorted for the simplifications to work correctly *)
 sum[z_, it_List] := sum[z, Sort[it]] /; Not[OrderedQ[it]];
@@ -1680,9 +1683,11 @@ komutator[x1:sum[a1_, it1_List], x2:sum[a2_, it2_List]] /; sumAutoRename :=
 (* Sum of sum *)
 sum[b_. sum[a_, it1_List], it2_List] :=
   sum[b a, snegsumJoin[it1, it2]];
-sum[b_. sum[a_, it1_List] + c_, it2_List] :=
+(* Keep nested sums intact while auto-renaming is enabled, so product-of-sums
+rules still see the full expression and can rename dummy-index collisions. *)
+sum[b_. sum[a_, it1_List] + c_, it2_List] /; (!sumAutoRename) :=
   sum[b a, snegsumJoin[it1, it2]] + sum[c, it2];
-sum[b_ (sum[a_, it1_List] + c_), it2_List] :=
+sum[b_ (sum[a_, it1_List] + c_), it2_List] /; (!sumAutoRename) :=
   sum[b a, snegsumJoin[it1, it2]] + sum[b c, it2];
 
 (* Factorization sum -> sum*sum. *)
