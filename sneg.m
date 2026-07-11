@@ -1647,17 +1647,19 @@ ssJWRnewname[n_, allnames_List, expr_:1] := Module[{ns, i, nn},
 ];
 
 snegsumJoinWithRenaming[a1_, a0___, a2_, it1_List, it2_List, reverse_:False] :=
-Module[{l, rule, allnames},
+Module[{l, rule, allnames, captureContext, freshContext, nn},
   l = it1;
   rule = {};
   allnames = Union[it1, it2];
-  Scan[ If[FreeQ[l, #] && FreeQ[a1, #],
+  captureContext = {a1, a0};
+  freshContext = {a1, a0, a2};
+  Scan[ If[FreeQ[l, #] && FreeQ[captureContext, #],
     AppendTo[l, #],
     (* else *)
-    nn = ssJWRnewname[#, allnames, a1];
+    nn = ssJWRnewname[#, allnames, freshContext];
     AppendTo[l, nn];
     AppendTo[allnames, nn];
-    AppendTo[rule, # :> nn] ]&, it2];
+    AppendTo[rule, # -> nn] ]&, it2];
   If[reverse == False,
     sum[nc[a1, a0, a2 /. rule], Sort @ l],
     sum[nc[a2 /. rule, a0, a1], Sort @ l]

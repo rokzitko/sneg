@@ -1401,6 +1401,12 @@ If[$VersionNumber >= 5.1,
   test[ nc[sum[expr1[kd], {kd}], sum[expr2[kd], {kd}]],
     sum[expr1[kd] ~ nc ~ expr2[kd1], {kd, kd1}] ];
 
+  test[ nc[sum[expr1[ka], {ka}], expr2[kb], sum[expr3[kb], {kb}]],
+    sum[nc[expr1[ka], expr2[kb], expr3[kb1]], {ka, kb1}] ];
+
+  test[ nc[sum[expr1[ka], {ka}], expr2[kb, kb1], sum[expr3[kb], {kb}]],
+    sum[nc[expr1[ka], expr2[kb, kb1], expr3[kb2]], {ka, kb2}] ];
+
   (* Guard nc[] sum pullout against dummy-index capture and nested sums. *)
   test[ nc[expr1[ka], sum[expr2[kd], {kd}], expr3[kb]],
     sum[nc[expr1[ka], expr2[kd], expr3[kb]], {kd}] ];
