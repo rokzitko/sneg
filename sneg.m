@@ -3279,8 +3279,8 @@ projector2[op_?AtomQ] := projector2[op[]];
 projector02[op_?AtomQ] := projector02[op[]];
 projectorE[op_?AtomQ] := projectorE[op[]];
 projectorO[op_?AtomQ] := projectorO[op[]];
-projectorEphi[op_?AtomQ] := projectorEphi[op[]];
-projectorOphi[op_?AtomQ] := projectorOphi[op[]];
+projectorEphi[op_?AtomQ, phi_] := projectorEphi[op[], phi];
+projectorOphi[op_?AtomQ, phi_] := projectorOphi[op[], phi];
 
 
 (**** Operations on basis sets ****)

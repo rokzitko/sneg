@@ -971,6 +971,8 @@ nc[c[0, 0], c[1, 0]] + nc[c[0, 1], c[1, 1]] +
 test[ projector[c[], PROJ02],
 1 - nc[c[0, 0], c[1, 0]] - nc[c[0, 1], c[1, 1]] - 
   2 nc[c[0, 0], c[0, 1], c[1, 0], c[1, 1]] ];
+test[ projectorEphi[c, phi], projectorEphi[c[], phi] ];
+test[ projectorOphi[c, phi], projectorOphi[c[], phi] ];
 
 
 Print["*** Bra-ket notation ***"];
