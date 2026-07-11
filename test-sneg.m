@@ -611,6 +611,10 @@ test[ orthogvc[{1/2 vc[1, 0, 0], 1/3vc[1, 0, 0] + 1/4 vc[0, 1, 0],
 
 Print["****** GENERATION OF BASIS STATES ******"];
 
+Print["** basis with no symmetries **"];
+test[ bzQ[nonebasisvc[{c[]}]], True ];
+test[ nonebasisvc[{c[]}], {{{}, {vc[0, 0], vc[0, 1], vc[1, 0], vc[1, 1]}}} ];
+
 Print["** (Q,Sz) basis **"];
 oplist = {c[], d[]};
 makebasis[oplist];

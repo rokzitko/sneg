@@ -4052,7 +4052,7 @@ quickDBLSZ[basisops1_, basisops2_, fnc_] := Module[{bz1, bz2},
 
 (* bzQ[b] returns True if the argument b is of the correct form to
    represent a basis: a list of {{quantum numbers}, {states}} pairs. *)
-bzQ[{ {{__},{___}}.. }] = True;
+bzQ[{ {{___},{___}}.. }] = True;
 bzQ[_] = False;
 
 (* makematricesbzop[] and makematricesbzvc[] produce a table of operator
