@@ -2936,10 +2936,9 @@ interleave[l__] := Flatten[ Transpose[{l}], 1];
 (************* BASIS with no symmetries ***************)
 
 (* Make basis with no symmetries, i.e. no good quantum numbers. *)
-nonebasisvc[l_List] := Module[{nr},
-  makebasis[l];
-  nr = Length[l];
-  {{{}, Table[ vc @@ IntegerDigits[i, 2, 2nr], {i, 0, 4^nr-1}]}}
+nonebasisvc[l_List] := Module[{n},
+  n = Length[makebasis[l]];
+  {{{}, Table[ vc @@ IntegerDigits[i, 2, n], {i, 0, 2^n-1}]}}
 ];
 
 nonebasis[l_List] := bzvc2bzop @ nonebasisvc[l];
@@ -2948,11 +2947,10 @@ nonebasis[l_List] := bzvc2bzop @ nonebasisvc[l];
 
 (* Make a basis with good quantum number Q *)
 
-qbasisvc[l_List] := Module[{nr, b},
-  makebasis[l];
-  nr = Length[l];
-  b = Table[ vc @@ IntegerDigits[i, 2, 2nr], {i, 0, 4^nr-1}];
-  b = Map[{{Count[#, 1, {1}] - nr}, {#}}&, b];
+qbasisvc[l_List] := Module[{n, b},
+  n = Length[makebasis[l]];
+  b = Table[ vc @@ IntegerDigits[i, 2, n], {i, 0, 2^n-1}];
+  b = Map[{{Count[#, 1, {1}] - n/2}, {#}}&, b];
   b = mergebasis[b];
   b
 ];

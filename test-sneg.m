@@ -615,6 +615,22 @@ Print["** basis with no symmetries **"];
 test[ bzQ[nonebasisvc[{c[]}]], True ];
 test[ nonebasisvc[{c[]}], {{{}, {vc[0, 0], vc[0, 1], vc[1, 0], vc[1, 1]}}} ];
 
+snegspinlessfermionoperators[spinlessop];
+snegfermionoperators[spin32op];
+spinof[spin32op] ^= 3/2;
+
+test[ nonebasisvc[{spinlessop[]}], {{{}, {vc[0], vc[1]}}} ];
+test[ Length[nonebasisvc[{spin32op[]}][[1, 2]]], 16 ];
+
+Print["** basis with U(1) charge symmetry **"];
+test[ qbasisvc[{c[]}],
+{{{-1}, {vc[0, 0]}}, {{0}, {vc[0, 1], vc[1, 0]}},
+ {{1}, {vc[1, 1]}}} ];
+test[ qbasisvc[{spinlessop[]}],
+{{{-1/2}, {vc[0]}}, {{1/2}, {vc[1]}}} ];
+test[ Map[{First[#], Length[Last[#]]}&, qbasisvc[{spin32op[]}]],
+{{{-2}, 1}, {{-1}, 4}, {{0}, 6}, {{1}, 4}, {{2}, 1}} ];
+
 Print["** (Q,Sz) basis **"];
 oplist = {c[], d[]};
 makebasis[oplist];
