@@ -1061,6 +1061,20 @@ nc[ket[0], bra[1]] + Sqrt[2]*nc[ket[1], bra[2]] +
 Sqrt[3]*nc[ket[2], bra[3]] + 2*nc[ket[3], bra[4]] + 
 Sqrt[5]*nc[ket[4], bra[5]]
 ];
+test[ phononbasis[{1, 1, 1}],
+{ket[0, 0, 0], ket[0, 0, 1], ket[0, 1, 0], ket[0, 1, 1],
+ ket[1, 0, 0], ket[1, 0, 1], ket[1, 1, 0], ket[1, 1, 1]}
+];
+test[ ketbratensorproduct[
+  nc[ket[ka], bra[ba]], nc[ket[kb], bra[bb]], nc[ket[kc], bra[bc]]],
+nc[ket[ka, kb, kc], bra[ba, bb, bc]]
+];
+test[ phononnumber[2, {1, 1, 1}],
+nc[ket[0, 1, 0], bra[0, 1, 0]] +
+nc[ket[0, 1, 1], bra[0, 1, 1]] +
+nc[ket[1, 1, 0], bra[1, 1, 0]] +
+nc[ket[1, 1, 1], bra[1, 1, 1]]
+];
 
 Print["** Grassman numbers **"];
 sneggrassmanconstants[zz, z1, z2];

@@ -3689,20 +3689,27 @@ ap[ket[i___], vc[j___, ket[k___]]] := vc[j, ket @@ bkcombine[{i}, {k}]] /;
 ap[a___, x1:bra[i___], vc[j___, x2:ket[k___]]] := ap[a, vc[j]] braketrule[x1, x2] /;
   pairpattern[{i}, {k}];
 
-(* Tensor product of two operator expressions in terms of ket,bra terms *)
-ketbratensorproduct[x1_, x2_] := Module[{y1, y2},
+ketbratensorproduct[x_] := x;
+
+(* Tensor product of operator expressions in terms of ket,bra terms *)
+ketbratensorproduct[x1_, x2_] := Module[{w1, w2, y1, y2, width},
+  width[x_] := Max[0, Sequence @@ Cases[x,
+    (ket[a___] | bra[a___]) :> Length[{a}], Infinity]];
+  w1 = width[x1];
+  w2 = width[x2];
   y1 = x1 /. {
-    ket[a__] :> ket[a, Null],
-    bra[a__] :> bra[a, Null]
+    ket[a___] :> ket @@ Join[{a}, ConstantArray[Null, w2]],
+    bra[a___] :> bra @@ Join[{a}, ConstantArray[Null, w2]]
   };
   y2 = x2 /. {
-    ket[a__] :> ket[Null, a],
-    bra[a__] :> bra[Null, a]
+    ket[a___] :> ket @@ Join[ConstantArray[Null, w1], {a}],
+    bra[a___] :> bra @@ Join[ConstantArray[Null, w1], {a}]
   };
   nc[y1, y2]
 ];
 
-ketbratensorproduct[x_] := x;
+ketbratensorproduct[x1_, x2_, rest__] :=
+  Fold[ketbratensorproduct, x1, {x2, rest}];
 
 (* Merge argument lists of neighboring bra/ket terms. *)
 ruletensor = {
@@ -3731,29 +3738,29 @@ phononx[Nph_Integer] := phononplus[Nph] + phononminus[Nph];
 
 (* Extension to multiple phonons *)
 phononbasis[cutoffs : {_Integer ..}] :=
-  Flatten[Outer[nc[#1, #2] /. ruletensor &, Sequence @@ Map[phononbasis, cutoffs]], 1];
+  Flatten[Outer[(nc[##] //. ruletensor) &, Sequence @@ Map[phononbasis, cutoffs]], Length[cutoffs]-1];
 
 phononid[Nph_Integer] := Sum[nc[ket[i], bra[i]], {i, 0, Nph}];
 
-phononnumber[i_, cutoffs : {_Integer ..}] := Module[{},
+phononnumber[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
   ops = Table[If[j == i, phononnumber, phononid], {j, nr}];
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
-phononplus[i_, cutoffs : {_Integer ..}] := Module[{},
+phononplus[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
   ops = Table[If[j == i, phononplus, phononid], {j, nr}];
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
-phononminus[i_, cutoffs : {_Integer ..}] := Module[{},
+phononminus[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
   ops = Table[If[j == i, phononminus, phononid], {j, nr}];
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
-phononx[i_, cutoffs : {_Integer ..}] := Module[{},
+phononx[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
   ops = Table[If[j == i, phononx, phononid], {j, nr}];
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
