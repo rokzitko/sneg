@@ -2333,8 +2333,8 @@ SetAttributes[{isospinxyz, isospin, isospinx, isospiny, isospinz,
 
 isospinxyz[op_?fermionQ[j___], n_:0] := Module[{nam, nbar},
   nam = nambu[op[j], n];
-  nambar = conj /@ nam;
-  1/2 VMV[nam, #, nambar]& /@ {PauliX, PauliY, PauliZ}
+  nbar = conj /@ nam;
+  1/2 VMV[nam, #, nbar]& /@ {PauliX, PauliY, PauliZ}
 ];
 
 isospin[x__] := isospinxyz[x];

@@ -172,6 +172,10 @@ snegfermionoperators[c, d, e];
 snegrealconstants[x];  
 
 (** Tests **)
+Sneg`nambar = "sentinel";
+test[isospinxyz[c[]]; Sneg`nambar, "sentinel"];
+Clear[Sneg`nambar];
+
 test[operatorQ[nc], False ];
 
 Print["** Operators **"];
