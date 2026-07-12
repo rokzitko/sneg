@@ -163,25 +163,25 @@ sum2expr[eig_List, expr_] := Module[{},
   ]
 ];
 
-(* Thermodynamic trace : Tr[e^(-beta H) expr] = sum_mn exp(-beta E_m)
-    <m| expr |n>. NOTE: this is redundant; use tdtr1expr[] instead. *)
+(* Thermodynamic trace : Tr[e^(-beta H) expr] = sum_m exp(-beta E_m)
+    <m| expr |m>. NOTE: this is redundant; use tdtr1expr[] instead. *)
 
 tdtr2expr[eig_List, expr_] := Module[{},
-  sum2[eig, 
+  sum1[eig,
     Total[Exp[-beta #1[[1]]] *
-      Outer[braket[#1, expr, #2]&, #1[[2]], #2[[2]]], 2] &
+      Diagonal[Outer[braket[#1, expr, #2]&, #1[[2]], #1[[2]]]]] &
   ]
 ];
 
-(* Thermodynamic trace : Tr[e^(-beta H) expr] = sum_mn exp(-beta E_m)
-    <m| expr |n>. NOTE: also redundant; use tdtr1expr[] instead. *)
+(* Thermodynamic trace : Tr[e^(-beta H) expr] = sum_m exp(-beta E_m)
+    <m| expr |m>. NOTE: also redundant; use tdtr1expr[] instead. *)
 
 tdtr2exprALT[eig_List, expr_] := Module[{},
-  sum2[eig, 
-    Total[ (* Element by element product!! *)
-      Outer[Exp[-beta #1] &, #1[[1]], #2[[1]]] *
-      Outer[braket[#1, expr, #2]&, #1[[2]], #2[[2]]],
-   2] &]
+  sum1[eig,
+    Tr[ (* Element by element product!! *)
+      Outer[Exp[-beta #1] &, #1[[1]], #1[[1]]] *
+      Outer[braket[#1, expr, #2]&, #1[[2]], #1[[2]]]
+   ] &]
 ];
 
 (* Spectral function calculation: Tr[e^(-beta H) expr] = 
