@@ -294,6 +294,7 @@ test[ conj[c[AN, UP]], c[CR, UP] ];
 test[ conj[a+b], conj[a] + conj[b] ];
 test[ conj[nc[a, b]], nc[conj[b], conj[a]] ];
 test[ conj[nc[c[CR], d[CR]]], -nc[c[AN], d[AN]] ];
+test[ conj[scalar[z]], scalar[conj[z]] ];
 test[ conj[{a,b}], {conj[a], conj[b]} ];
 
 Print["** Vacuum expectation value **"];
@@ -589,6 +590,7 @@ test[ scalarproduct[a, 2 b], 2 scalarproduct[a, b] ];
 test[ scalarproduct[a, x b], x scalarproduct[a, b] ];
 
 test[ scalarproduct[ 1/2 vc[1,0,0], 1/3 vc[1,0,0] ], 1/6 ];
+test[ scalarproductvc[ scalar[z] vc[1], vc[1] ], scalar[conj[z]] ];
 
 Print["* scalarproductop[] *"];
 test[ scalarproductop[ c[CR,UP], c[CR,UP] ] , 1 ];

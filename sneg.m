@@ -1801,6 +1801,7 @@ scalar[a_] + scalar[b_] ^:= scalar[a + b];
 scalar[a_] scalar[b_] ^:= scalar[a b];
 
 (* Conjugation handling. Note that we use conj[] for scalar, too, instead of Conjugate[]. *)
+conj[scalar[x_]] := scalar[conj[x]];
 conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
 
 (* Speed optimization for vev[] *)
@@ -2761,6 +2762,9 @@ snegsesquilinearoperator[scalarproductvc];
 SetAttributes[{scalarproduct, scalarproductvc, scalarproductop}, Listable];
 
 scalarproductvc[a_vc, b_vc] := If[a === b, 1, 0];
+
+scalarproductvc[scalar[z_] a_, b_] := scalar[conj[z]] scalarproductvc[a, b];
+scalarproductvc[a_, scalar[z_] b_] := scalar[z] scalarproductvc[a, b];
 
 scalarproductvc[a_, 0.] := 0;
 scalarproductvc[0., b_] := 0;
