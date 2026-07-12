@@ -630,6 +630,10 @@ test[ Normal[matrixrepresentationvcsparse[(1+I) c[AN, UP], basvc]],
 test[ Normal[matrixrepresentationvcsparse[(1-I) d[CR, UP], basvc]],
   matrixrepresentationvc[(1-I) d[CR, UP], basvc] ];
 
+makebasis[{c[]}];
+test[ Quiet[Check[matrixrepresentationvcfast[c[CR, UP], {vc[0, 0]}], $Failed]],
+  {{0}} ];
+
 Print["*** Orthogonalisation ***"];
 
 test[ snegorthog[{{0, 1}}] =!= {}, True ];

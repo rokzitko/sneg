@@ -4422,7 +4422,9 @@ matrixrepresentationvcfast[a_, l_List] := Module[{n = Length[l]},
     indexvalue2list[
       Sort[
         (sum2list @ Collect[Chop[ap[a, #]], l]) /.
-          x_. v_vc :> {Position[l, v][[1,1]], x}
+          x_. v_vc :> Module[{pos = Position[l, v]},
+            If[pos === {}, 0, {pos[[1, 1]], x}]
+          ]
       ],
     n] &,
   l] // Transpose
