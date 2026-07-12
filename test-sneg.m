@@ -1181,6 +1181,8 @@ test[acmtcount[{zz}], 1];
 test[acmtcount[{zz, conj[zz]}], 2];
 test[acmtcount[{c[CR]}], 1];
 test[acmtcount[{c[CR], c[AN]}], 2];
+test[acmtcount[{m1}], 1];
+test[acmtcount[{m1[1]}], 1];
 test[acmtcount[{c[CR], c[AN], zz}], 3];
 test[acmtcount[{c[CR], c[AN], zz, conj[zz]}], 4];
 
@@ -1192,6 +1194,7 @@ test[nc[int[z1],int[z1],z1], 0];
 
 test[ nc[int[z1], z1, z2], z2 ];
 test[ nc[int[z1], z2, z1], -z2 ];
+test[ nc[int[z1], m1, z1], -m1 ];
 test[ nc[int[z2], z1, z2], -z1 ];
 test[ nc[int[z2], z2, z1], z1 ];
 

@@ -1308,7 +1308,7 @@ coh[z_, c_[k___]] := nc[Exp[-nc[conj[z], z]/2], Exp[nc[c[CR, k], z]], VACUUM];
 
 (* Count the number of operators with anticommuting properties *)
 
-acmtcount[l_List] := Count[l, _?((fermionQ[#] || grassmanQ[#]) &), 1];
+acmtcount[l_List] := Count[l, _?((fermionQ[#] || majoranaQ[#] || grassmanQ[#]) &), 1];
 
 
 (* Berezin integral *)
