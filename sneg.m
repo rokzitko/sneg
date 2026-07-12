@@ -1219,20 +1219,24 @@ commute; bosonic and fermionic operators are assumed to commute. *)
 (* Creation operators always moved to the left *)
 
 nc[a___, x1:op1_?fermionQ[i1_,___], x2:op2_?fermionQ[i2_,___], b___] /;
-  ( (op1 =!= op2) && (i1 == AN && i2 == CR) ) := -nc[a, x2, x1, b];
+  ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
+    (i1 == AN && i2 == CR) ) := -nc[a, x2, x1, b];
 
 nc[a___, x1:op1_?bosonQ[i1_,___], x2:op2_?bosonQ[i2_,___], b___] /;
-  ( (op1 =!= op2) && (i1 == AN && i2 == CR) ) := nc[a, x2, x1, b];
+  ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
+    (i1 == AN && i2 == CR) ) := nc[a, x2, x1, b];
 
 (* In the case of the same *type* of operators, sort according to Head
 (symbol), i.e. in the alphabetical order. *)
 
 nc[a___, x1:op1_?fermionQ[i1_,___], x2:op2_?fermionQ[i2_,___], b___] /;
-  ( (op1 =!= op2) && (i1 === i2) && !OrderedQ[{x1,x2}]) :=
+  ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
+    (i1 === i2) && !OrderedQ[{x1,x2}]) :=
     -nc[a, x2, x1, b];
 
 nc[a___, x1:op1_?bosonQ[i1_,___], x2:op2_?bosonQ[i2_,___], b___] /;
-  ( (op1 =!= op2) && (i1 === i2) && !OrderedQ[{x1,x2}]) :=
+  ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
+    (i1 === i2) && !OrderedQ[{x1,x2}]) :=
     nc[a, x2, x1, b];
 
 (* Support for expansion blocking. *)
