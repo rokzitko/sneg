@@ -199,7 +199,7 @@ spectral2expr[eig_List, expr_] := Module[{expreig},
     Total[ (* Element by element product! *)
       Outer[(Exp[-beta #1] + Exp[-beta #2]) *
         Delta[omega + (#1 - #2)]&, #1[[1]], #2[[1]]] *
-      Outer[scalarproductvc[#1, #2]^2 &, #1[[2]], #2[[2]]],
+      Outer[Abs[scalarproductvc[#1, #2]]^2 &, #1[[2]], #2[[2]]],
    2] &, checkspectral] // Chop
 ];
 
