@@ -566,6 +566,7 @@ test[ ap[nc[c[CR,UP], c[CR,DO]], vac], vc[1, 1, 0, 0] ];
 test[ ap[nc[c[CR,UP], d[CR,UP], c[CR,DO]], vac], -vc[1, 1, 1, 0] ];  
 test[ ap[nc[ c[CR, UP], d[CR, UP], c[CR, DO], d[CR, DO]], vac],
   -vc[1, 1, 1, 1] ];
+test[ ap[sum[c[CR, UP], {i}], vac], sum[1, {i}] vc[1, 0, 0, 0] ];
 
 test[ ap[{c[CR, UP], c[CR, DO], d[CR, UP], d[AN, UP]}, vac],
 {vc[1, 0, 0, 0], vc[0, 1, 0, 0], vc[0, 0, 1, 0], 0}];
@@ -1415,6 +1416,9 @@ test[ vevwick[nc[d[CR], expr]], 0 ];
 Print["* Test for numericity *"];
 test[ isnumericQ[k], True ];
 test[ isnumericQ[UnitStep[k] UnitStep[k1]], True ];
+test[ isnumericQ[sum[1, {k}]], True ];
+test[ isnumericQ[sum[UnitStep[k], {k}]], True ];
+test[ isnumericQ[sum[c[CR, k], {k}]], False ];
 
 
 Print["* Test acmt rules *"];
