@@ -1294,6 +1294,8 @@ acmt[x1:op_[j1__], x2:op_[j2__]] /; majoranaQ[op] :=
   If[Length[{j1}] == Length[{j2}],
     Inner[KroneckerDelta, {j1}, {j2}, Times], 0];
 
+acmt[x1:op1_[___], x2:op2_[___]] /; majoranaQ[op1] && majoranaQ[op2] && op1 =!= op2 := 0;
+
 acmt[op1_Symbol, op2_Symbol] /; majoranaQ[op1] && majoranaQ[op2] && op1 =!= op2 := 0;
 
 

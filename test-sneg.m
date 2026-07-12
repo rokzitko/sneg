@@ -169,6 +169,7 @@ test[wick[{a, b}], {wick[a], wick[b]}];
   
 (* Some definitions for later use *)
 snegfermionoperators[c, d, e];
+snegmajoranaoperators[m1, m2];
 snegrealconstants[x];  
 
 (** Tests **)
@@ -276,6 +277,10 @@ test[ antikomutator[c[CR], c[AN]], 1 ];
 test[ antikomutator[c[CR], d[CR]], 0 ];
 test[ antikomutator[c[CR], d[AN]], 0 ];
 test[ antikomutator[c[AN], d[AN]], 0 ];
+
+Print["** Majorana anti-commutators **"];
+test[ acmt[m2[1], m1[1]], 0 ];
+test[ nc[m2[1], m1[1]], -nc[m1[1], m2[1]] ];
 
 Print["** Conjugation **"];
 test[ conj[1], 1 ];
