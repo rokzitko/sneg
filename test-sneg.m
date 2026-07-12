@@ -81,8 +81,8 @@ test[a_, b_, workingversion_:0, negate_:False] := Module[{aa, bb, failed},
 test[a_] := Print["sneg-test error. Missing right side. Left=", a];
 
 (* Self-test: test if test[] really tests! *)
-If[test[ "self", "test" ] === False,
-  Print["*** Self-test OK. *** (ignore the \"test[] failed.\" message) "];
+If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
+  Print["*** Self-test OK. ***"];
   testfailed--,
   (* else *)
   Print["*** Self-test FAILED. ***"];
@@ -1604,9 +1604,11 @@ test[ wickorder[2, nc[c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma],
   KroneckerDelta[k1, k3]*KroneckerDelta[k2, k4])*UnitStep[-k1]*
  UnitStep[-k2] ];
 
-test[ wickorder[2, nc[c[0, k1, 1, 1], c[0, k2, 1, 1], c[1, k1, 1, 1], 
-  c[1, k2, 1, 1]] ] // Simplify,
-(-1 + KroneckerDelta[k1, k2]^2)*UnitStep[-k1]*UnitStep[-k2] ];
+test[ SimplifyKD[
+  wickorder[2, nc[c[0, k1, 1, 1], c[0, k2, 1, 1], c[1, k1, 1, 1], 
+    c[1, k2, 1, 1]] ] -
+  ((-1 + KroneckerDelta[k1, k2]^2)*UnitStep[-k1]*UnitStep[-k2])],
+  0 ];
 
 (*
 test[ wickorder[2, nc[c[0, k, 1, 0], c[1, k, 1, 1], c[1, k1, 1, 1], 
@@ -1655,8 +1657,10 @@ test[SimplifyKD[vevwick[nc[c[CR, k, UP], c[AN, k, UP], c[CR, k1, UP], c[AN, k1, 
 test[SimplifyKD[vevwick[nc[c[CR, k, UP], c[AN, k1, UP], c[CR, k, UP], c[AN, k1, UP]]]], 
   KroneckerDelta[k, k1]*UnitStep[-k]];
 
-test[SimplifyKD[vevwick[nc[c[AN, k, UP], c[CR, k, UP], c[AN, k1, UP], c[CR, k1, UP]]]], 
-  (KroneckerDelta[k, k1]*UnitStep[-k] + UnitStep[k])*UnitStep[k1]];
+test[SimplifyKD[
+  vevwick[nc[c[AN, k, UP], c[CR, k, UP], c[AN, k1, UP], c[CR, k1, UP]]] -
+  ((KroneckerDelta[k, k1]*UnitStep[-k] + UnitStep[k])*UnitStep[k1])], 
+  0];
 
 Module[{y1, y2, y3},
   y1 = normalorder[c[CR, k1, alpha, sigma] ~ nc ~ c[AN, k2, alpha, sigma]];
