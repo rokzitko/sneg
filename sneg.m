@@ -4109,7 +4109,7 @@ makematricesbzvc[op_, basis_?bzQ] := Map[
    subspaces. FNC is either matrixrepresentationvc or
    matrixrepresentationop. *)
 
-mambpair[{qn1_, vecs1_}, {qn2_, vecs2_}, op_, FNC_] := Module[{pair, matrep},
+mambpair[{qn1_, vecs1_}, {qn2_, vecs2_}, op_, FNC_] := Module[{pair, matrep, tot},
   pair = {qn1, qn2};
   matrep = FNC[op, vecs1, vecs2];
   (* TRICK: Drop combinations of subspaces that do not contribute. *)

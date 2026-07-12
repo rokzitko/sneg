@@ -609,6 +609,11 @@ H = t^2/U number[c[]]
 bas = {1, c[CR,UP]};
 test[ matrixrepresentationop[H, bas, bas], {{0, 0}, {0, t^2/U}} ];
 
+test[ (Clear[Sneg`tot];
+       mambpair[{{0}, {a}}, {{1}, {b}}, op,
+         Function[{oparg, vecs1, vecs2}, {{1}}]];
+       ValueQ[Sneg`tot]), False ];
+
 Print["* matrixrepresentationvcsparse[] *"];
 makebasis[{c[], d[]}];
 basvc = {vc[0, 0, 0, 0], vc[1, 0, 0, 0]};
