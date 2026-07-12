@@ -818,6 +818,13 @@ test[ap[spindown[expr], VACUUM], spindownvc[ap[expr, VACUUM]]];
 *)
 
 Print["** (Q,S) basis **"];
+test[ Quiet[qsbasis[{spinlessop[]}], qsbasis::spin], $Failed ];
+test[ Quiet[Check[qsbasis[{spinlessop[]}], qsbasisSpinMessage,
+  qsbasis::spin], qsbasis::spin], qsbasisSpinMessage ];
+test[ Quiet[qsbasisvc[{spinlessop[]}], qsbasisvc::spin], $Failed ];
+test[ Quiet[Check[qsbasisvc[{spinlessop[]}], qsbasisvcSpinMessage,
+  qsbasisvc::spin], qsbasisvc::spin], qsbasisvcSpinMessage ];
+
 oplist = {c[], d[]};
 makebasis[oplist];
 test[ Simplify @ qsbasis[oplist],

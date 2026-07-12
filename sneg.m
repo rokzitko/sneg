@@ -426,10 +426,12 @@ spin projection quantum numbers (Q,S_z) in occupation number representation.",
 "qszbasis"];
 UsageWithMore[qsbasis,
 "qsbasis[{ops}] returns the basis with well defined charge and
-total spin quantum numbers (Q,S) in creation operator representation."];
+total spin quantum numbers (Q,S) in creation operator representation.
+Operators ops must be spin-1/2 fermion operators."];
 UsageWithMore[qsbasisvc,
 "qsbasisvc[{ops}] returns the basis with well defined charge and
-total spin quantum numbers (Q,S) in occupation number representation."];
+total spin quantum numbers (Q,S) in occupation number representation.
+Operators ops must be spin-1/2 fermion operators."];
 UsageWithMore[zeroonvac,
 "zeroonvac[expr] drops vacuum-annihilating parts of expression expr."];
 UsageWithMore[VACUUM,
@@ -2963,10 +2965,24 @@ qbasis[l_List] := bzvc2bzop @ qbasisvc[l];
 (* Make a basis of good quantum numbers Q and S *)
 (* Convention: always use the highest possible Sz, i.e. Sz == S ! *)
 
+qsbasis::spin = "qsbasis requires spin-1/2 fermion operators. Unsupported operators: ``. Use qbasis, nonebasis, or qszbasis for spinless operators.";
+qsbasisvc::spin = "qsbasisvc requires spin-1/2 fermion operators. Unsupported operators: ``. Use qbasisvc, nonebasisvc, or qszbasisvc for spinless operators.";
+
+qsbasisSpinHalfOperatorQ[op_[___]] :=
+  fermionQ[op] === True && TrueQ[spinof[op] == 1/2];
+qsbasisSpinHalfOperatorQ[_] := False;
+
+qsbasisBadOps[l_List] := Select[l, !qsbasisSpinHalfOperatorQ[#]&];
+
 qsbasisvcold[l_List] := bzop2bzvc[ qsbasis[l] ];
 
 
-qsbasisvc[l_List] := Module[{},
+qsbasisvc[l_List] := Module[{bad},
+  bad = qsbasisBadOps[l];
+  If[bad =!= {},
+    Message[qsbasisvc::spin, bad];
+    Return[$Failed]
+  ];
   makebasis[l];
   qsbasisvc[{}, l]
 ];
@@ -3018,7 +3034,12 @@ spinflip[op_[i_, j___, sigma_]] := op[i, j, 1-sigma];
    of all single-particle operators. *)
 (* makebasis is called automatically. While not necessary, such behave
    is desirable for consistency with qszbasis[]. *)
-qsbasis[l_List] := Module[{},
+qsbasis[l_List] := Module[{bad},
+  bad = qsbasisBadOps[l];
+  If[bad =!= {},
+    Message[qsbasis::spin, bad];
+    Return[$Failed]
+  ];
   makebasis[l];
   qsbasis[{}, l]
 ];

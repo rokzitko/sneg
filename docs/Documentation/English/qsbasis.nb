@@ -61,7 +61,9 @@ Cell[TextData[{
   " and spin ",
   Cell[BoxData[
       \(TraditionalForm\`\(\(S\)\(\ \)\)\)]],
-  "quantum numbers in creation operator representation.\n\[FilledSmallSquare] \
+  "quantum numbers in creation operator representation. Operators ",
+  StyleBox["ops", "MR"],
+  " must be spin-1/2 fermion operators.\n\[FilledSmallSquare] \
 ",
   StyleBox["qsbasisvc[{ops}]", "MR"],
   " returns the basis with well defined charge ",
@@ -69,7 +71,9 @@ Cell[TextData[{
   " and spin ",
   Cell[BoxData[
       \(TraditionalForm\`\(\(S\)\(\ \)\)\)]],
-  "quantum numbers in occupation number representation."
+  "quantum numbers in occupation number representation. Operators ",
+  StyleBox["ops", "MR"],
+  " must be spin-1/2 fermion operators."
 }], "Usage",
   CellTags->{"qsbasis", "qsbasisvc"}],
 
