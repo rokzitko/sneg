@@ -2003,6 +2003,7 @@ vev[_?fermionQ[__]] := 0;
 vevwick[_?fermionQ[__]] := 0;
 
 vev[_?bosonQ[__]] := 0;
+vevwick[_?bosonQ[__]] := 0;
 
 (* Odd number of operators *)
 vev[x:HoldPattern[nc[_?fermionQ[__]..]]] /; OddQ[Length[x]] := 0;

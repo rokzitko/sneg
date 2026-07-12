@@ -1431,6 +1431,13 @@ test[ vevwick[c[CR]], 0 ];
 test[ vevwick[c[AN]], 0 ];
 test[ vevwick[d[CR]], 0 ];
 test[ vevwick[d[AN]], 0 ];
+
+snegbosonoperators[wickboson];
+test[ vevwick[wickboson[CR]], 0 ];
+test[ vevwick[wickboson[AN]], 0 ];
+test[ normalorderwick[wickboson[CR]], wickboson[CR] ];
+test[ normalorderwick[wickboson[AN]], wickboson[AN] ];
+
 test[ vevwick[nc[c[CR, 1], c[CR, 2], c[CR, 3]]], 0 ];
 test[ vevwick[nc[d[CR, 1], d[CR, 2], d[CR, 3]]], 0 ];
 
