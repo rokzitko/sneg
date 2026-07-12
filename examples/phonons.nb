@@ -5686,7 +5686,7 @@ Cell[CellGroupData[{
 Cell[BoxData[{
     \(\(diagSetupBasisQS[];\)\), "\[IndentingNewLine]", 
     \(\(Nph = 8;\)\[IndentingNewLine]\), "\[IndentingNewLine]", 
-    \(\(bz = transformtoPH[bz, Nph];\)\), "\[IndentingNewLine]", 
+    \(\(bz = transformtoPH[bz, {Nph}];\)\), "\[IndentingNewLine]",
     \(\(bvc = bzop2bzvc[bz];\)\), "\[IndentingNewLine]", 
     \(\(Scan[\((baza[#[\([1]\)]] = #[\([2]\)])\) &, 
         bz];\)\), "\[IndentingNewLine]", 
@@ -18034,4 +18034,3 @@ Cell[746433, 17891, 57, 1, 23, "Print"]
 (*******************************************************************
 End of Mathematica Notebook file.
 *******************************************************************)
-

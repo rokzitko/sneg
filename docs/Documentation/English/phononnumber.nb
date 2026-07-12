@@ -291,7 +291,7 @@ Cell[BoxData[{
     \(\(bz0 = qsbasisvc[{c[1], c[2]}];\)\), "\[IndentingNewLine]", 
     \(MatrixForm[bz0]\), "\[IndentingNewLine]", 
     \(\(Nph = 5;\)\), "\[IndentingNewLine]", 
-    \(\(bz = transformtoPHvc[bz0, Nph];\)\), "\[IndentingNewLine]", 
+    \(\(bz = transformtoPH[bz0, {Nph}];\)\), "\[IndentingNewLine]",
     \(states = \(Select[bz, First[#] \[Equal] {\(-1\), 1/2} &]\)[\([1, 
           2]\)]\), "\[IndentingNewLine]", 
     \(\)}], "Input",
@@ -4320,4 +4320,3 @@ Cell[190139, 4203, 67, 2, 25, "Output"]
 (*******************************************************************
 End of Mathematica Notebook file.
 *******************************************************************)
-

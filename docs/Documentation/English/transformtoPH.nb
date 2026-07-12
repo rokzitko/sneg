@@ -58,7 +58,7 @@ Cell[TextData[{
   StyleBox["transformtoPH[", "MR"],
   StyleBox["bz", "IT"],
   StyleBox[", ", "MR"],
-  StyleBox["Nph", "IT"],
+  StyleBox["{Nph}", "IT"],
   StyleBox["]", "MR"],
   " generates a direct product of basis ",
   StyleBox["bz", "IT"],
@@ -127,7 +127,7 @@ Cell["Test basic functionality", "ExampleText"],
 Cell[CellGroupData[{
 
 Cell[BoxData[
-    \(transformtoPH[{{{a}, {a1, a2}}, {{b}, {b1}}}, 3] // 
+    \(transformtoPH[{{{a}, {a1, a2}}, {{b}, {b1}}}, {3}] //
       MatrixForm\)], "Input",
   CellLabel->"In[4]:="],
 
@@ -375,7 +375,7 @@ Cell[BoxData[{
     \(\(\(MatrixForm[bz]\)\(\[IndentingNewLine]\)
     \)\), "\[IndentingNewLine]", 
     \(\(Nph = 5;\)\), "\[IndentingNewLine]", 
-    \(\(\(bzph = transformtoPH[bz, Nph];\)\(\[IndentingNewLine]\)
+    \(\(\(bzph = transformtoPH[bz, {Nph}];\)\(\[IndentingNewLine]\)
     \)\), "\[IndentingNewLine]", 
     \(H = 
       U/2  pow[number[c[]] - 1, 2] + \[Omega]\ phononnumber[Nph] + 
@@ -1195,4 +1195,3 @@ Cell[44836, 1058, 3216, 69, 456, "Output"]
 (*******************************************************************
 End of Mathematica Notebook file.
 *******************************************************************)
-
