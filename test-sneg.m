@@ -1313,6 +1313,12 @@ test[ sumSimplifyKD[sum[scalar[(KroneckerDelta[k1, k] z)/U] a[CR, k], {k}]],
 test[ sumSimplifyKD[sum[KroneckerDelta[k, k+1] f[k], {k}]],
   sum[KroneckerDelta[k, k+1] f[k], {k}] ];
 
+test[ SimplifyKD[KroneckerDelta[k1, k2]^2], KroneckerDelta[k1, k2] ];
+test[ SimplifyKD[KroneckerDelta[k1, k2]^(-1)],
+  KroneckerDelta[k1, k2]^(-1) ];
+test[ SimplifyKD[UnitStep[k]^2], UnitStep[k] ];
+test[ SimplifyKD[UnitStep[k]^(-1)], UnitStep[k]^(-1) ];
+
 Print["* vev *"];
 
 test[ vev[c[CR]], 0];

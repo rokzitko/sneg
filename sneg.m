@@ -4381,8 +4381,8 @@ SimplifyKDfunc[expr_] := (expr //. {
   UnitStep[k_]+UnitStep[-k_] -> 1,
   1 - UnitStep[-k_] :> UnitStep[k],
   UnitStep[-k_] -1 :> -UnitStep[k],
-  HoldPattern[KroneckerDelta[x__]^n_Integer] :> KroneckerDelta[x],
-  HoldPattern[UnitStep[x__]^n_Integer] :> UnitStep[x]
+  HoldPattern[KroneckerDelta[x__]^n_Integer?Positive] :> KroneckerDelta[x],
+  HoldPattern[UnitStep[x__]^n_Integer?Positive] :> UnitStep[x]
   });
   
 SimplifyKD[expr_] := Simplify[expr,
