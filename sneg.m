@@ -3579,10 +3579,14 @@ spinbasis[{a_?halfintegerQ, b_?halfintegerQ}] :=
                      spinbasis[b, {0, 1}],
                      Function[{sz1, sz2}, sz1+sz2] ];
 
-spinbasis[{a_?halfintegerQ, b__}] :=
-  basistensorproduct[spinbasis[a, {1, 0}],
-                     spinbasis[b, {0, 1}],
-                     Function[{sz1, sz2}, sz1+sz2] ];
+spinbasis[spins:{_?halfintegerQ, _?halfintegerQ, __?halfintegerQ}] :=
+  Module[{n, pos, bases},
+    n = Length[spins];
+    pos[i_] := Table[If[j == i, 1, 0], {j, n}];
+    bases = MapIndexed[spinbasis[#1, pos[First[#2]]] &, spins];
+    Fold[basistensorproduct[#1, #2, Function[{sz1, sz2}, sz1+sz2]] &,
+         First[bases], Rest[bases]]
+  ];
 
 (* Apply rule to the basis states (vektor form) in 'baza'.
 Used by transformbasis[]. *)
