@@ -4368,14 +4368,15 @@ sum2list[i_] := {i};
 
 (* Similar to matrixrepresentationvc[], but this function
 returns a sparse matrix and it is significantly faster. *)
-(* UNTESTED! *)
-matrixrepresentationvcsparse[a_, l_List] := Module[{},
+matrixrepresentationvcsparse[a_, l_List] := Module[{n = Length[l]},
   SparseArray[Select[Flatten[
     Table[
       (sum2list @ Collect[ap[a, l[[i]]], l]) /.
-        x_. v_vc :> ({i, Position[l, v][[1, 1]]} :> x),
-      {i, Length[l]}],
-    1], (#=!=0)&]]
+        x_. v_vc :> Module[{pos = Position[l, v]},
+          If[pos === {}, 0, {pos[[1, 1]], i} -> x]
+        ],
+      {i, n}],
+    1], (#=!=0)&], {n, n}]
 ];
 
 (* Similar to matrixrepresentationvc[], but significantly faster. *)

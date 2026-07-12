@@ -600,6 +600,22 @@ H = t^2/U number[c[]]
 bas = {1, c[CR,UP]};
 test[ matrixrepresentationop[H, bas, bas], {{0, 0}, {0, t^2/U}} ];
 
+Print["* matrixrepresentationvcsparse[] *"];
+makebasis[{c[], d[]}];
+basvc = {vc[0, 0, 0, 0], vc[1, 0, 0, 0]};
+test[ Normal[matrixrepresentationvcsparse[I c[CR, UP], basvc]],
+  {{0, 0}, {I, 0}} ];
+test[ Normal[matrixrepresentationvcsparse[(1+I) c[AN, UP], basvc]],
+  {{0, 1+I}, {0, 0}} ];
+test[ Normal[matrixrepresentationvcsparse[(1-I) d[CR, UP], basvc]],
+  {{0, 0}, {0, 0}} ];
+test[ Normal[matrixrepresentationvcsparse[I c[CR, UP], basvc]],
+  matrixrepresentationvc[I c[CR, UP], basvc] ];
+test[ Normal[matrixrepresentationvcsparse[(1+I) c[AN, UP], basvc]],
+  matrixrepresentationvc[(1+I) c[AN, UP], basvc] ];
+test[ Normal[matrixrepresentationvcsparse[(1-I) d[CR, UP], basvc]],
+  matrixrepresentationvc[(1-I) d[CR, UP], basvc] ];
+
 Print["*** Orthogonalisation ***"];
 
 test[ orthogvc[{1/2 vc[1, 0, 0], 1/3vc[1, 0, 0] + 1/4 vc[0, 1, 0]},
