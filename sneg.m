@@ -2999,6 +2999,9 @@ qsbasisvc[l_List] := Module[{bad},
     Return[$Failed]
   ];
   makebasis[l];
+  If[l === {},
+    Return[{{{0, 0}, {vacuum[]}}}]
+  ];
   qsbasisvc[{}, l]
 ];
 
@@ -3056,6 +3059,9 @@ qsbasis[l_List] := Module[{bad},
     Return[$Failed]
   ];
   makebasis[l];
+  If[l === {},
+    Return[{{{0, 0}, {1}}}]
+  ];
   qsbasis[{}, l]
 ];
 
@@ -3097,6 +3103,7 @@ sbasisvc[l_List] := Module[{bvc},
   bvc
 ];
 
+sbasis[{}] := (makebasis[{}]; {{{0}, {1}}});
 sbasis[l_List] := bzvc2bzop @ sbasisvc[l];
 
 (********** BASIS with U(1) spin invariance only **********)

@@ -844,6 +844,10 @@ test[ap[spindown[expr], VACUUM], spindownvc[ap[expr, VACUUM]]];
 *)
 
 Print["** (Q,S) basis **"];
+test[ qsbasisvc[{}], {{{0, 0}, {vc[]}}} ];
+test[ qsbasis[{}], {{{0, 0}, {1}}} ];
+test[ sbasisvc[{}], {{{0}, {vc[]}}} ];
+test[ sbasis[{}], {{{0}, {1}}} ];
 test[ Quiet[qsbasis[{spinlessop[]}], qsbasis::spin], $Failed ];
 test[ Quiet[Check[qsbasis[{spinlessop[]}], qsbasisSpinMessage,
   qsbasis::spin], qsbasis::spin], qsbasisSpinMessage ];
