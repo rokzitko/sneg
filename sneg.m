@@ -2112,9 +2112,12 @@ ordering. This is then used for more general expression, for example in
 conjunction with Wick's theorem. *)
 
 vev[nc[op1_[i1_, k1_, j1___], op2_[i2_, k2_, j2___]]] :=
-  KroneckerDelta[op1, op2] KroneckerDelta[{j1}, {j2}] KroneckerDelta[k1, k2] *
-  (If[i1 == CR && i2 == AN, UnitStep[-k1], 0]
-  + If[i1 == AN && i2 == CR, UnitStep[k1], 0]) /;
+  If[op1 === op2,
+    KroneckerDelta[{j1}, {j2}] KroneckerDelta[k1, k2] *
+    (If[i1 == CR && i2 == AN, UnitStep[-k1], 0]
+    + If[i1 == AN && i2 == CR, UnitStep[k1], 0]),
+    0
+  ] /;
   fermionQ[op1] && fermionQ[op2] &&
   ordering[op1] === SEA && ordering[op2] === SEA;
 

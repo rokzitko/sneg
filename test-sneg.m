@@ -1348,6 +1348,11 @@ test[ vev[nc[c[CR, k], c[AN, k]]], UnitStep[-k]];
 test[ SimplifyKD[vev[nc[c[AN, k1], c[CR, k2]]]], KroneckerDelta[k1, 
   k2]*UnitStep[k2]];
 test[ vev[nc[c[CR, k1], c[AN, k2]]], KroneckerDelta[k1, k2]*UnitStep[-k1]];
+test[ Module[{old = ordering[d], result},
+  ordering[d] = SEA;
+  result = vev[nc[c[AN, -1], d[CR, -1]]];
+  ordering[d] = old;
+  result], 0];
   
 test[ Simplify[vev[nc[c[tip, k1], c[AN, k2]]]], -((-1 + If[tip == 0, UnitStep[k2], 
 0])*KroneckerDelta[k1, k2])];
