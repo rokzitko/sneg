@@ -3161,7 +3161,7 @@ normvc[expr_] := Sqrt @ vev[ scalarproductvc[expr, expr] ];
 annihilate the vacuum and "normalizes" the reminder *)
 applytocr[op_, expr_] := Module[{b},
   b = zeroonvac[nc[op, expr]];
-  b / normop[b]
+  If[b =!= 0, b / normop[b], 0]
 ];
 
 (* Smarter spindown: drops parts which annihilate vacuum and "normalizes"
@@ -3170,7 +3170,7 @@ spindown::Usage = "spindown[v] effectively applies the spin-lowering
 operator to the state v in the creation operator representation.";
 spindown[a_] := Module[{b},
   b = zeroonvac[SPINDOWN[a]];
-  b / normop[b]
+  If[b =!= 0, b / normop[b], 0]
 ];
 
 

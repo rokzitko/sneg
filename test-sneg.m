@@ -737,6 +737,10 @@ mergebasis[{{1, {a, b}}, {2, {c, d}}, {1, {a2, b2}},
     {2, {c2, d2}}}]
 ];
 
+Print["** applytocr/spindown zero normalization **"];
+test[applytocr[c[AN, UP], c[CR, DO]], 0];
+test[spindown[c[CR, DO]], 0];
+
 (* TEMPORARILY COMMENTED OUT
 Print["** spindown **"];
 test[spindown[c[CR, UP]], c[0, 0]];
