@@ -1464,7 +1464,7 @@ cmt[op_[i___, SPININDEXy], op_[i___, SPININDEXp]] /; spinQ[op] = -I op[i, SPININ
 cmt[op_[i___, SPININDEXx], op_[i___, SPININDEXm]] /; spinQ[op] =  1 op[i, SPININDEXz];
 cmt[op_[i___, SPININDEXy], op_[i___, SPININDEXm]] /; spinQ[op] = -I op[i, SPININDEXz];
 
-cmt[op_[i1__, j1_], op_[i2__, j2_]] :=
+cmt[op_[i1__, j1_], op_[i2__, j2_]] /; spinQ[op] :=
   If[Length[{i1}] == Length[{i2}],
     +Inner[KroneckerDelta, {i1}, {i2}, Times], 0] cmt[op[i1, j1], op[i1, j2]];
 

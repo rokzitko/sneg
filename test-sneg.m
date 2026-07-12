@@ -266,6 +266,7 @@ test[ nc[c[AN], c[AN]], 0];
 Print["** Commutators **"];
 test[ komutator[c, d], nc[c, d] - nc[d, c] ];
 test[ antikomutator[c, d], nc[c, d] + nc[d, c] ];
+test[ cmt[g[1, 2], g[1, 3]], cmt[g[1, 2], g[1, 3]] ];
 
 Print["** Canonical anti-commutators **"];
 test[ antikomutator[c[CR], c[CR]], 0 ];
