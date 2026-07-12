@@ -664,9 +664,9 @@ KSubsets[s_List, k_Integer] := Prepend[Map[s[[#]] &, KS[Length[s], k]], s[[Range
 (* Mathematica >6.x required *)
 (* OLD 1: snegorthog[m_] := Orthogonalize[m, Method->"Householder"]; *)
 (* OLD 2: snegorthog[m_] := Orthogonalize[m, Dot[Conjugate[#1], #2] &]; *)
+snegzeroarrayQ[m_] := And @@ (TrueQ[Simplify[# == 0]] & /@ Flatten[m]);
 snegorthog[m_] := Orthogonalize[m, Simplify[Dot[Conjugate[#1], #2]] &];
-snegorthog[{{0}}] := {};
-snegorthog[m_] /; Tr[Abs[m]] == 0 := {};
+snegorthog[m_] /; snegzeroarrayQ[m] := {};
 
 (* When PrettyOutput is set to True, nc[] is formated in infix notation with
 CenterDot and operators are formated in familiar notation with daggers,

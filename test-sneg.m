@@ -624,6 +624,10 @@ test[ Normal[matrixrepresentationvcsparse[(1-I) d[CR, UP], basvc]],
 
 Print["*** Orthogonalisation ***"];
 
+test[ snegorthog[{{0, 1}}] =!= {}, True ];
+test[ snegorthog[{{0, 1}, {0, 0}}] =!= {}, True ];
+test[ snegorthog[{{Sin[x]^2 + Cos[x]^2 - 1}}], {} ];
+
 test[ orthogvc[{1/2 vc[1, 0, 0], 1/3vc[1, 0, 0] + 1/4 vc[0, 1, 0]},
   {vc[1, 0, 0], vc[0, 1, 0], vc[0, 0, 1]}],
 {vc[1, 0, 0], vc[0, 1, 0]} ];
