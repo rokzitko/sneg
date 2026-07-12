@@ -1290,6 +1290,8 @@ test[ sumSimplifyKD[sum[scalar[(KroneckerDelta[k, k1] z)/U] a[CR, k], {k}]],
   scalar[z/U] a[CR, k1] ];
 test[ sumSimplifyKD[sum[scalar[(KroneckerDelta[k1, k] z)/U] a[CR, k], {k}]],
   scalar[z/U] a[CR, k1] ];
+test[ sumSimplifyKD[sum[KroneckerDelta[k, k+1] f[k], {k}]],
+  sum[KroneckerDelta[k, k+1] f[k], {k}] ];
 
 Print["* vev *"];
 

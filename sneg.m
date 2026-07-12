@@ -1821,23 +1821,23 @@ rulecollectscalar = {
 
 (* Simplification rules for KroneckerDelta in sum[] expressions. *)
 rulesumSimplifyKD = {
-  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; MemberQ[it, n1] :>
-    sum[a //. {n1 :> n2}, Complement[it, {n1}]] + sum[b, it],
+  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; (MemberQ[it, n1] && FreeQ[n2, n1]) :>
+    sum[a /. {n1 :> n2}, Complement[it, {n1}]] + sum[b, it],
 
-  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; MemberQ[it, n2] :>
-    sum[a //. {n2 :> n1}, Complement[it, {n2}]] + sum[b, it],
+  sum[KroneckerDelta[n1_, n2_] a_. + b_., it_List] /; (MemberQ[it, n2] && FreeQ[n1, n2]) :>
+    sum[a /. {n2 :> n1}, Complement[it, {n2}]] + sum[b, it],
 
-  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; MemberQ[it, n1] :>
-    sum[(scalar[z] a) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c] a, it] + sum[b, it],
+  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; (MemberQ[it, n1] && FreeQ[n2, n1]) :>
+    sum[(scalar[z] a) /. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c] a, it] + sum[b, it],
 
-  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; MemberQ[it, n2] :>
-    sum[(scalar[z] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c] a, it] + sum[b, it],
+  sum[scalar[KroneckerDelta[n1_, n2_] z_ + c_.] a_. + b_., it_List] /; (MemberQ[it, n2] && FreeQ[n1, n2]) :>
+    sum[(scalar[z] a) /. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c] a, it] + sum[b, it],
 
-  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n1] :>
-    sum[(scalar[z/d] a) //. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c/d] a, it] + sum[b, it],
+  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; (MemberQ[it, n1] && FreeQ[n2, n1]) :>
+    sum[(scalar[z/d] a) /. {n1 :> n2}, Complement[it, {n1}]] + sum[scalar[c/d] a, it] + sum[b, it],
 
-  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; MemberQ[it, n2] :>
-    sum[(scalar[z/d] a) //. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c/d] a, it] + sum[b, it],
+  sum[scalar[(KroneckerDelta[n1_, n2_] z_ + c_.)/d_] a_. + b_., it_List] /; (MemberQ[it, n2] && FreeQ[n1, n2]) :>
+    sum[(scalar[z/d] a) /. {n2 :> n1}, Complement[it, {n2}]] + sum[scalar[c/d] a, it] + sum[b, it],
 
   HoldPattern[sum[a1_ + a2_, x:{i___, n1_, n2_, j___}]] /;
     (FreeQ[a1, n2] && FreeQ[a2, n1]) :>
