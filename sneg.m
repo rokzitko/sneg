@@ -1275,7 +1275,7 @@ nc[a___, z1_?grassmanQ, z2_?grassmanQ, b___] /; (!OrderedQ[{z1,z2}]) :=
 
 nc[a___, z_, b___, z_, c___] /; grassmanQ[z] := 0;
 
-nc[a___, b_, z_, c___] /; (fermionQ[b] && grassmanQ[z]) :=
+nc[a___, b_, z_, c___] /; ((fermionQ[b] || majoranaQ[b]) && grassmanQ[z]) :=
   -nc[a, z, b, c];
 
 
@@ -1295,6 +1295,9 @@ acmt[x1:op_[j1__], x2:op_[j2__]] /; majoranaQ[op] :=
     Inner[KroneckerDelta, {j1}, {j2}, Times], 0];
 
 acmt[x1:op1_[___], x2:op2_[___]] /; majoranaQ[op1] && majoranaQ[op2] && op1 =!= op2 := 0;
+
+(* Consistent with nc[op, op] == 1/2 for Majorana operators, so {op, op} == 1. *)
+acmt[op_Symbol, op_Symbol] /; majoranaQ[op] := 1;
 
 acmt[op1_Symbol, op2_Symbol] /; majoranaQ[op1] && majoranaQ[op2] && op1 =!= op2 := 0;
 

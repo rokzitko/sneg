@@ -280,6 +280,7 @@ test[ antikomutator[c[AN], d[AN]], 0 ];
 
 Print["** Majorana anti-commutators **"];
 test[ acmt[m2[1], m1[1]], 0 ];
+test[ acmt[m1, m1], 1 ];
 test[ nc[m2[1], m1[1]], -nc[m1[1], m2[1]] ];
 
 Print["** Conjugation **"];
@@ -1191,6 +1192,8 @@ test[komutator[z1,z2], 2 nc[z1, z2]];
 test[nc[c[CR], zz], -nc[zz, c[CR]]];
 test[nc[c[CR], z1, z2], nc[z1, z2, c[CR]]];
 test[nc[z1, c[CR], z2], -nc[z1, z2, c[CR]]];
+test[nc[m1, z1], -nc[z1, m1]];
+test[nc[m1, z1] + nc[z1, m1], 0];
 test[conj @ nc[z1,z2,c[CR]], -nc[conj[z1], conj[z2], c[AN]]];
 
 Print["* acmtcount *"];
