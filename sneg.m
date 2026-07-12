@@ -504,10 +504,10 @@ UsageWithMore[spinketbraZ,
 "spinketbraZ[S] returns the Z-component of the spin operator for spin S
 in the bra-ket representation.", "spinketbraX"];
 UsageWithMore[spinketbraP,
-"spinketbraP[S] returns the spin lowering operator for spin S
+"spinketbraP[S] returns the spin raising operator for spin S
 in the bra-ket representation.", "spinketbraX"];
 UsageWithMore[spinketbraM,
-"spinketbraM[S] returns the spin raising operator for spin S
+"spinketbraM[S] returns the spin lowering operator for spin S
 in the bra-ket representation.", "spinketbraX"];
 UsageWithMore[spinbasis,
 "spinbasis[S] returns the basis for spin S in the ket representation.", "spinbra"];
