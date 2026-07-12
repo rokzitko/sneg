@@ -2390,8 +2390,12 @@ manyisospin[ops_List, ns1_:Null] := Module[{len, ns, ixyz, ii},
 
 (* Basis states for a single site *)
 SetAttributes[basis, Listable];
-basis[op_?fermionQ[j___]] := 
-  {1, op[CR,j,UP], op[CR,j,DO], nc[op[CR,j,DO], op[CR,j,UP]]};
+basis[op_?fermionQ[j___]] := Module[{ops},
+  ops = mbfunc[op[j]];
+  Join[{1}, Flatten[
+    Table[(nc @@ Reverse[#])& /@ KSubsets[ops, n], {n, Length[ops]}],
+    1]]
+];
 
 (* Integer powers of operators *)
 SetAttributes[pow, Listable];

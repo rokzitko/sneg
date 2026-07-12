@@ -659,9 +659,17 @@ test[ bzQ[nonebasisvc[{c[]}]], True ];
 test[ nonebasisvc[{c[]}], {{{}, {vc[0, 0], vc[0, 1], vc[1, 0], vc[1, 1]}}} ];
 
 snegspinlessfermionoperators[spinlessop];
+snegfermionoperators[spin1op];
 snegfermionoperators[spin32op];
+spinof[spin1op] ^= 1;
 spinof[spin32op] ^= 3/2;
 
+test[ basis[spinlessop[]], {1, spinlessop[CR, 0]} ];
+test[ basis[spin1op[]], {1, spin1op[CR, 1], spin1op[CR, 0],
+  spin1op[CR, -1], nc[spin1op[CR, 0], spin1op[CR, 1]],
+  nc[spin1op[CR, -1], spin1op[CR, 1]],
+  nc[spin1op[CR, -1], spin1op[CR, 0]],
+  nc[spin1op[CR, -1], spin1op[CR, 0], spin1op[CR, 1]]} ];
 test[ nonebasisvc[{spinlessop[]}], {{{}, {vc[0], vc[1]}}} ];
 test[ Length[nonebasisvc[{spin32op[]}][[1, 2]]], 16 ];
 
