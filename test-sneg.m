@@ -373,6 +373,60 @@ test[ spiny[c[]], (I*nc[c[0, 0], c[1, 1]] - I*nc[c[0, 1], c[1, 0]])/2 ];
 test[ spinz[c[]], (nc[c[0, 1], c[1, 1]] - nc[c[0, 0], c[1, 0]])/2 ];
 test[ spinplus[c[]], nc[c[0, 1], c[1, 0]] ];
 test[ spinminus[c[]], nc[c[0, 0], c[1, 1]] ];
+test[
+  MatchQ[SnegSimplify[Expand[spinx[c[]]]],
+    HoldPattern[HoldForm[spinx[c[]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifySpin[Expand[spiny[c[3]]]],
+    HoldPattern[HoldForm[spiny[c[3]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifySpin[Expand[spinz[c[3]]]],
+    HoldPattern[HoldForm[spinz[c[3]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifySpin[Expand[2 spinx[c[3]]]],
+    HoldPattern[2 HoldForm[spinx[c[3]]]]],
+  True
+];
+test[
+  SnegSimplifySpin[Expand[I spiny[c[3]]]] /.
+    HoldPattern[HoldForm[spiny[c[3]]]] -> 1,
+  I
+];
+test[
+  SnegSimplifySpin[Simplify[2 I spinz[c[3]]]] /.
+    HoldPattern[HoldForm[spinz[c[3]]]] -> 1,
+  2 I
+];
+test[
+  SnegSimplifySpin[Simplify[-2 I spinx[c[3]]]] /.
+    HoldPattern[HoldForm[spinx[c[3]]]] -> 1,
+  -2 I
+];
+test[
+  MatchQ[SnegSimplifySpin[
+      Expand[4 nc[spinx[c[3]], spiny[d[4]]]]],
+    HoldPattern[
+      4 nc[HoldForm[spinx[c[3]]], HoldForm[spiny[d[4]]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifySpin[
+      Expand[nc[spinx[c[3]], spinz[d[4]]]]],
+    HoldPattern[
+      nc[HoldForm[spinx[c[3]]], HoldForm[spinz[d[4]]]]]],
+  True
+];
+test[
+  FreeQ[Sneg`ruleSnegSimplifySpin,
+    Alternatives[Sneg`l1, Sneg`l2, Sneg`ir2]],
+  True
+];
 
 Print["** spinspin[] **"];
 test[ spinspin[c[], c[]], (3*(nc[c[0, 0], c[1, 0]] + nc[c[0, 1], c[1, 1]] + 
@@ -497,6 +551,26 @@ test[ hop[c[], d[], DO], nc[c[0, 0], d[1, 0]] + nc[d[0, 0], c[1, 0]] ];
 test[ hop[c[], d[]],
  nc[c[0, 0], d[1, 0]] + nc[c[0, 1], d[1, 1]] + nc[d[0, 0], c[1, 0]] + 
   nc[d[0, 1], c[1, 1]]
+];
+test[
+  MatchQ[SnegSimplify[Expand[hop[c[], d[]]]],
+    HoldPattern[HoldForm[hop[c[], d[]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifyHop[Expand[3 hop[c[3], d[4]]]],
+    HoldPattern[3 HoldForm[hop[c[3], d[4]]]]],
+  True
+];
+test[
+  MatchQ[SnegSimplifyHop[Expand[-2 twohop[c[3], d[4]]]],
+    HoldPattern[-2 HoldForm[twohop[c[3], d[4]]]]],
+  True
+];
+test[
+  FreeQ[Sneg`ruleSnegSimplifyHop,
+    Alternatives[Sneg`op1, Sneg`op2, Sneg`ir2]],
+  True
 ];
 
 Print["** twohop[] **"];

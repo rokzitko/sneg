@@ -4224,26 +4224,26 @@ ruleSnegSimplifySpin =
 
     (* Rules for a single spin operator *)
 
-    rule1  = Thread[(spinxyz[op1[i1___]] /. ir1) :> (l1 /. ir2)];
-    rule1a = Thread[(Expand[spinxyz[op1[i1___]]] /. ir1) :> (l1 /. ir2)];
-    rule1b = Thread[(Expand[2spinxyz[op1[i1___]]] /. ir1) :> (2l1 /. ir2)];
-    rule1c = Thread[(Expand[I spinxyz[op1[i1___]]] /. ir1) :> (I l1 /. ir2)];
-    rule1d = Thread[(Expand[2I spinxyz[op1[i1___]]] /. ir1) :> (2I l1 /. ir2)];
-    rule1e = Thread[(Simplify[2I spinxyz[op1[i1___]]] /. ir1) :> (2I l1 /. ir2)];
-    rule1f = Thread[(Simplify[-2I spinxyz[op1[i1___]]] /. ir1) :> (-2I l1 /. ir2)];
+    rule1  = Thread[(spinxyz[op1[i1___]] /. ir1) -> (l1 /. ir2)];
+    rule1a = Thread[(Expand[spinxyz[op1[i1___]]] /. ir1) -> (l1 /. ir2)];
+    rule1b = Thread[(Expand[2spinxyz[op1[i1___]]] /. ir1) -> (2l1 /. ir2)];
+    rule1c = Thread[(Expand[I spinxyz[op1[i1___]]] /. ir1) -> (I l1 /. ir2)];
+    rule1d = Thread[(Expand[2I spinxyz[op1[i1___]]] /. ir1) -> (2I l1 /. ir2)];
+    rule1e = Thread[(Simplify[2I spinxyz[op1[i1___]]] /. ir1) -> (2I l1 /. ir2)];
+    rule1f = Thread[(Simplify[-2I spinxyz[op1[i1___]]] /. ir1) -> (-2I l1 /. ir2)];
 
     (* Rules for products of spin operators *)
 
     rule2 = Thread[
           Flatten[Expand[
                   4 outer[spinxyz[op1[i1___]], spinxyz[op2[i2___]]]] /.
-                ir1, 1] :>
+                ir1, 1] ->
             Flatten[Expand[4 outer[l1, l2]] /. ir2, 1]];
 
     rule2b = Thread[
           Flatten[Expand[
                   outer[spinxyz[op1[i1___]], spinxyz[op2[i2___]]]] /.
-                ir1, 1] :>
+                ir1, 1] ->
             Flatten[Expand[outer[l1, l2]] /. ir2, 1]];
 
     (* Some symmetrized combinations of spin - spin products *)
@@ -4282,9 +4282,9 @@ ruleSnegSimplifyHop = Block[{op1, op2, ir1, ir2, rule1, rule2},
   fermionQ[op2] ^= True;
   ir1 = {op1 -> a_?operatorQ, op2 -> b_?operatorQ};
   ir2 = {op1 -> a, op2 -> b};
-  rule1 = Expand[z_. hop[op1[i___], op2[j___]] /. ir1] :>
+  rule1 = Expand[z_. hop[op1[i___], op2[j___]] /. ir1] ->
     (z HoldForm[hop[op1[i], op2[j]]] /. ir2);
-    rule2 = Expand[z_. twohop[op1[i___], op2[j___]] /. ir1] :>
+    rule2 = Expand[z_. twohop[op1[i___], op2[j___]] /. ir1] ->
     (z HoldForm[twohop[op1[i], op2[j]]] /. ir2);
   {rule1, rule2}
  ];
