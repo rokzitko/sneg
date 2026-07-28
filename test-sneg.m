@@ -1757,7 +1757,23 @@ test[ wick[nc[c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma],
   UnitStep[-k3] ];
 
 Print["* vevwick[] *"];
+
+test[vevwick2[nc[c[CR, k1, sigma1], c[AN, k2, sigma]]],
+  KroneckerDelta[k1, k2]*KroneckerDelta[sigma1, sigma]*UnitStep[-k1]];
+test[vevwicknew[nc[c[CR, k1, sigma1], c[AN, k2, sigma]]],
+  KroneckerDelta[k1, k2]*KroneckerDelta[sigma1, sigma]*UnitStep[-k1]];
+test[vevwick2[nc[c[CR, k1], d[AN, k2]]], 0];
+test[vevwicknew[nc[c[CR, k1], d[AN, k2]]], 0];
+
 test[SimplifyKD[vevwick[nc[c[CR, k1, UP], c[AN, k2, UP], c[CR, k3, UP], c[AN, k4, UP]]]], 
+UnitStep[-k1]*(KroneckerDelta[k1, k2]*KroneckerDelta[k3, k4]*UnitStep[-k3] + KroneckerDelta[k1, k4]*
+KroneckerDelta[k2, k3]*UnitStep[k3])];
+
+test[SimplifyKD[vevwick2[nc[c[CR, k1, UP], c[AN, k2, UP], c[CR, k3, UP], c[AN, k4, UP]]]],
+UnitStep[-k1]*(KroneckerDelta[k1, k2]*KroneckerDelta[k3, k4]*UnitStep[-k3] + KroneckerDelta[k1, k4]*
+KroneckerDelta[k2, k3]*UnitStep[k3])];
+
+test[SimplifyKD[vevwicknew[nc[c[CR, k1, UP], c[AN, k2, UP], c[CR, k3, UP], c[AN, k4, UP]]]],
 UnitStep[-k1]*(KroneckerDelta[k1, k2]*KroneckerDelta[k3, k4]*UnitStep[-k3] + KroneckerDelta[k1, k4]*
 KroneckerDelta[k2, k3]*UnitStep[k3])];
 

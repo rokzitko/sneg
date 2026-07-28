@@ -4051,17 +4051,16 @@ thus this version of vevwick is not fully general! It is much faster,
 though. Added 4.3.2010 *)
 
 sneglinearoperatorFirst[vevwick2];
-vevwick2[HoldPattern[x : nc[l__]]] := Module[{ic, ia, ndc, nda},
+vevwick2[HoldPattern[x : nc[l__]]] := Module[{ic, ia, crops, anops},
   ic = indecesCR[x];
   ia = indecesAN[x];
   If[Length[ic] != Length[ia], Return[0]];
   (* Bug trap *)
-  ndc = Check[Extract[x, Map[{#} &, ic]] /. op_[CR, i___] :> {op, i},
-              Null];
-  nda = Check[Extract[x, Map[{#} &, ia]] /. op_[AN, i___] :> {op, i},
-              Null];
-  If[ndc === Null || nda === Null, Return[Problem[{l}]] ];
-  If[Sort[ndc] =!= Sort[nda], Return[0]];
+  crops = Check[Extract[x, Map[{#} &, ic]], Null];
+  anops = Check[Extract[x, Map[{#} &, ia]], Null];
+  If[crops === Null || anops === Null, Return[Problem[{l}]] ];
+  (* Symbolic indexes may still contract through KroneckerDelta. *)
+  If[Sort[Head /@ crops] =!= Sort[Head /@ anops], Return[0]];
   (* The term contributes. Perform the calculation! *)
   vevwick[x]
 ];
@@ -4596,18 +4595,22 @@ vevwicknew[op_?operatorQ[__]] := 0; (* single operator *)
 vevwicknew[HoldPattern[l_nc]] /; OddQ[Length[l]] := 0;
 
 vevwicknew[HoldPattern[l_nc]] /; EvenQ[Length[l]] :=
- Module[{oplist, l1, l2, crops, conjcrops, pos, l3, contributions},
+ Module[{oplist, l1, l2, crops, pos, l3, contributions},
   oplist = List @@ l;
   l1 = indecesCR[l];
   l2 = indecesAN[l];
 
-  (* Extract creation operators and conjugate them *)
+  (* Extract creation operators *)
   crops = Map[l[[#]] &, l1];
-  conjcrops = conj /@ crops;
 
-  (* Locate these in the operator list *)
-  pos = Map[Position[oplist, #, {1}] &, conjcrops];
-  pos = Replace[pos, {n_} :> n, {2}];
+  (* Index equality may remain symbolic, so match by operator head and let
+     contract[] produce the corresponding KroneckerDelta factors. *)
+  pos = Map[
+    Function[crop,
+      Select[l2, Head[oplist[[#]]] === Head[crop] &]
+    ],
+    crops
+  ];
 
   (* Generate all allowed permutations *)
   l3 = allcombinations[pos];
