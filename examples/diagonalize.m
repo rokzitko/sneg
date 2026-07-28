@@ -187,20 +187,17 @@ tdtr2exprALT[eig_List, expr_] := Module[{},
 (* Spectral function calculation: Tr[e^(-beta H) expr] = 
     sum_mn exp[-beta (E_m - E_n)] |<m| expr |n>|^2 delta(E_m - E_n). *)
 
-spectral2expr[eig_List, expr_] := Module[{expreig},
+spectral2expr[eig_List, expr_] := Module[{expreig, s2eapply},
   s2eapply[l_List] := Map[Simplify @ ap[expr, #]&, l];
 
   expreig = Map[{#[[1]], {#[[2,1]], s2eapply @ #[[2,2]]}}&, eig];
 
-  checkspectral[{q1_, sz1_}, {q2_, sz2_}] := 
-    ( (q2+1) == q1 ) && ( (sz2+1/2) == sz1 );
-
-  sum2[eig, expreig, (* We use the 3rd version of sum2[] function. *)
+  sum2[eig, expreig,
     Total[ (* Element by element product! *)
       Outer[(Exp[-beta #1] + Exp[-beta #2]) *
         Delta[omega + (#1 - #2)]&, #1[[1]], #2[[1]]] *
       Outer[Abs[scalarproductvc[#1, #2]]^2 &, #1[[2]], #2[[2]]],
-   2] &, checkspectral] // Chop
+   2] &] // Chop
 ];
 
 
