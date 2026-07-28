@@ -1186,6 +1186,42 @@ simplifications. *)
 snegOrderedQ[x1:op_[___], x2:op_[___]] /;
   (fermionQ[op] && ordering[op] === SEA) := OrderedQ[{x1, x2}];
 
+(* Ordering of fermionic operators with different heads. Determine the
+creation/annihilation role of each operator independently. If a role is not
+known, retain the raw CR/AN index as the fallback ordering key. *)
+snegOrderedQ[
+  x1:op1_?fermionQ[i1_,___],
+  x2:op2_?fermionQ[i2_,___]
+] /; (op1 =!= op2) := Module[
+  {creation1, annihilation1, creation2, annihilation2, type1, type2},
+  If[ordering[op1] === NONE || ordering[op2] === NONE, Return[True]];
+
+  creation1 = TrueQ[iscreation[x1]];
+  annihilation1 = TrueQ[isannihilation[x1]];
+  creation2 = TrueQ[iscreation[x2]];
+  annihilation2 = TrueQ[isannihilation[x2]];
+
+  type1 = Which[
+    creation1 && !annihilation1, CR,
+    annihilation1 && !creation1, AN,
+    True, i1
+  ];
+  type2 = Which[
+    creation2 && !annihilation2, CR,
+    annihilation2 && !creation2, AN,
+    True, i2
+  ];
+
+  Which[
+    MemberQ[{CR, AN}, type1] && MemberQ[{CR, AN}, type2],
+      OrderedQ[{{type1, x1}, {type2, x2}}],
+    type1 === type2,
+      OrderedQ[{x1, x2}],
+    True,
+      True
+  ]
+];
+
 (* Ordering of bosonic operators *)
 snegOrderedQ[x1 : op_[___], x2 : op_[___]] /;
   (bosonQ[op] && ordering[op] === NONE) := True;
@@ -1220,19 +1256,15 @@ commute; bosonic and fermionic operators are assumed to commute. *)
 
 nc[a___, x1:op1_?fermionQ[i1_,___], x2:op2_?fermionQ[i2_,___], b___] /;
   ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
-    (i1 == AN && i2 == CR) ) := -nc[a, x2, x1, b];
+    snegOrderedQ[x1, x2] === False ) := -nc[a, x2, x1, b];
 
 nc[a___, x1:op1_?bosonQ[i1_,___], x2:op2_?bosonQ[i2_,___], b___] /;
   ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
     (i1 == AN && i2 == CR) ) := nc[a, x2, x1, b];
 
-(* In the case of the same *type* of operators, sort according to Head
-(symbol), i.e. in the alphabetical order. *)
-
-nc[a___, x1:op1_?fermionQ[i1_,___], x2:op2_?fermionQ[i2_,___], b___] /;
-  ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
-    (i1 === i2) && !OrderedQ[{x1,x2}]) :=
-    -nc[a, x2, x1, b];
+(* In the case of the same *type* of bosonic operators, sort according to
+Head (symbol), i.e. in alphabetical order. Fermionic operators are handled
+by snegOrderedQ[] above. *)
 
 nc[a___, x1:op1_?bosonQ[i1_,___], x2:op2_?bosonQ[i2_,___], b___] /;
   ( (op1 =!= op2) && ordering[op1] =!= NONE && ordering[op2] =!= NONE &&
@@ -1408,6 +1440,11 @@ nc[a___, Exp[b_], c___] /; (isnumericQ @ Simplify @ pow[b, 2]) :=
 
 (* acmt[] returns 1 if one operator is creation operator, and the other
 operator is the annihilation operators, while all other indexes are equal. *)
+
+(* Fermionic operators with different heads obey canonical
+anti-commutation relations. *)
+acmt[x1:op1_?fermionQ[___], x2:op2_?fermionQ[___]] /;
+  (op1 =!= op2) := 0;
 
 acmt[op_[i_, ___], op_[i_, ___]] /; fermionQ[op] := 0;
 

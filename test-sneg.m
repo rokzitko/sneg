@@ -278,6 +278,665 @@ test[ antikomutator[c[CR], d[CR]], 0 ];
 test[ antikomutator[c[CR], d[AN]], 0 ];
 test[ antikomutator[c[AN], d[AN]], 0 ];
 
+Print["** Exhaustive fermion ordering regression **"];
+
+Module[
+  {
+    savedOrdering = DownValues[ordering], stateRows, modes,
+    effectiveRank, expectedCrossOrderedQ, expectedSameOrderedQ,
+    orderingSignature, expectedSignature, failureSummary,
+    rowsC, rowsD, modeC, modeD, rowC, rowD, left, right,
+    leftMode, rightMode, expected, actual, label,
+    orientation,
+    classificationFailures = {}, crossComparatorFailures = {},
+    crossProductFailures = {}, sameComparatorFailures = {},
+    crossAcmtFailures = {}, crossAnticommutatorFailures = {},
+    orderingTestK1, orderingTestK2
+  },
+
+  (* Each row contains a label, an operator, its raw EMPTY rank, its
+     effective SEA rank, and whether the SEA role is known. *)
+  stateRows[op_, symbolicMomentum_] := {
+    {"CR+", op[CR, 1], CR, CR, True},
+    {"CR-", op[CR, -1], CR, AN, True},
+    {"AN+", op[AN, 1], AN, AN, True},
+    {"AN-", op[AN, -1], AN, CR, True},
+    {"CR0", op[CR, 0], CR, CR, False},
+    {"AN0", op[AN, 0], AN, AN, False},
+    {"CRsym", op[CR, symbolicMomentum], CR, CR, False},
+    {"ANsym", op[AN, symbolicMomentum], AN, AN, False},
+    {"CRbare", op[CR], CR, CR, False},
+    {"ANbare", op[AN], AN, AN, False}
+  };
+
+  modes = {EMPTY, SEA, NONE};
+  rowsC = stateRows[c, orderingTestK1];
+  rowsD = stateRows[d, orderingTestK2];
+
+  effectiveRank[mode_, row_] := If[mode === SEA, row[[4]], row[[3]]];
+
+  (* Different heads use an independent effective rank for each operand.
+     NONE is an absolute barrier. *)
+  expectedCrossOrderedQ[mode1_, state1_, mode2_, state2_] :=
+    Module[{rank1, rank2},
+      If[mode1 === NONE || mode2 === NONE, Return[True]];
+      rank1 = effectiveRank[mode1, state1];
+      rank2 = effectiveRank[mode2, state2];
+      Which[
+        rank1 === CR && rank2 === AN, True,
+        rank1 === AN && rank2 === CR, False,
+        rank1 === rank2, OrderedQ[{state1[[2]], state2[[2]]}],
+        True, True
+      ]
+    ];
+
+  (* This mirrors the existing same-head contract and is strictly a
+     preservation check; the cross-head fix must not alter it. *)
+  expectedSameOrderedQ[mode_, state1_, state2_] := Which[
+    mode === NONE, True,
+    mode === EMPTY, OrderedQ[{state1[[2]], state2[[2]]}],
+    mode === SEA && state1[[5]] && state2[[5]] &&
+      state1[[4]] === CR && state2[[4]] === AN, True,
+    mode === SEA && state1[[5]] && state2[[5]] &&
+      state1[[4]] === AN && state2[[4]] === CR, False,
+    True, OrderedQ[{state1[[2]], state2[[2]]}]
+  ];
+
+  (* Convert an evaluated product to inert data. This prevents the expected
+     expression from being canonicalized by the implementation under test. *)
+  orderingSignature[expr_] := Module[{value = expr},
+    Which[
+      Head[value] === nc, {1, List @@ value},
+      MatchQ[value, Times[-1, _nc]], {-1, List @@ (-value)},
+      True, {"unexpected", value}
+    ]
+  ];
+
+  expectedSignature[isOrdered_, op1_, op2_] :=
+    If[isOrdered, {1, {op1, op2}}, {-1, {op2, op1}}];
+
+  failureSummary[failures_List] := {
+    Length[failures],
+    If[failures === {}, {}, Take[failures, Min[Length[failures], 12]]]
+  };
+
+  Block[{ordering},
+    DownValues[ordering] = savedOrdering;
+
+    (* Verify all built-in creation/annihilation classifications, including
+       the zero, symbolic, and missing-momentum fallback classes. *)
+    Do[
+      ordering[c] = modeC;
+      Do[
+        expected = Which[
+          modeC === SEA && rowC[[5]],
+            {rowC[[4]] === CR, rowC[[4]] === AN},
+          modeC === SEA,
+            {False, False},
+          True,
+            {rowC[[3]] === CR, rowC[[3]] === AN}
+        ];
+        actual = {
+          TrueQ[iscreation[rowC[[2]]]],
+          TrueQ[isannihilation[rowC[[2]]]]
+        };
+        If[actual =!= expected,
+          AppendTo[classificationFailures,
+            {{modeC, rowC[[1]]}, actual, expected}]
+        ],
+        {rowC, rowsC}
+      ],
+      {modeC, modes}
+    ];
+
+    (* Exhaustive 3x3 ordering-mode matrix, ten state classes per head,
+       and both head orientations: 1800 distinct pair situations. *)
+    Do[
+      ordering[c] = modeC;
+      ordering[d] = modeD;
+      Do[
+        Do[
+          left = If[orientation === 1, rowC, rowD];
+          right = If[orientation === 1, rowD, rowC];
+          leftMode = If[orientation === 1, modeC, modeD];
+          rightMode = If[orientation === 1, modeD, modeC];
+          label = {
+            modeC, modeD, rowC[[1]], rowD[[1]],
+            If[orientation === 1, "c,d", "d,c"]
+          };
+
+          expected = expectedCrossOrderedQ[
+            leftMode, left, rightMode, right];
+          actual = snegOrderedQ[left[[2]], right[[2]]];
+          If[actual =!= expected,
+            AppendTo[crossComparatorFailures, {label, actual, expected}]
+          ];
+
+          expected = expectedSignature[expected, left[[2]], right[[2]]];
+          actual = orderingSignature[nc[left[[2]], right[[2]]]];
+          If[actual =!= expected,
+            AppendTo[crossProductFailures, {label, actual, expected}]
+          ],
+          {orientation, 2}
+        ],
+        {rowC, rowsC}, {rowD, rowsD}
+      ],
+      {modeC, modes}, {modeD, modes}
+    ];
+
+    (* Same-head comparator preservation matrix: 300 situations. *)
+    Do[
+      ordering[c] = modeC;
+      Do[
+        expected = expectedSameOrderedQ[modeC, rowC, rowD /. d -> c];
+        actual = snegOrderedQ[rowC[[2]], rowD[[2]] /. d -> c];
+        If[actual =!= expected,
+          AppendTo[sameComparatorFailures,
+            {{modeC, rowC[[1]], rowD[[1]]}, actual, expected}]
+        ],
+        {rowC, rowsC}, {rowD, rowsD}
+      ],
+      {modeC, modes}
+    ];
+
+    (* Distinct declared fermion heads have a zero canonical
+       anticommutator for every index and momentum class. *)
+    ordering[c] = EMPTY;
+    ordering[d] = EMPTY;
+    Do[
+      actual = acmt[rowC[[2]], rowD[[2]]];
+      If[actual =!= 0,
+        AppendTo[crossAcmtFailures,
+          {{rowC[[1]], rowD[[1]], "c,d"}, actual, 0}]
+      ];
+      actual = acmt[rowD[[2]], rowC[[2]]];
+      If[actual =!= 0,
+        AppendTo[crossAcmtFailures,
+          {{rowC[[1]], rowD[[1]], "d,c"}, actual, 0}]
+      ];
+
+      actual = anticommutator[rowC[[2]], rowD[[2]]];
+      If[actual =!= 0,
+        AppendTo[crossAnticommutatorFailures,
+          {{rowC[[1]], rowD[[1]], "c,d"}, actual, 0}]
+      ],
+      {rowC, rowsC}, {rowD, rowsD}
+    ];
+  ];
+
+  test[failureSummary[classificationFailures], {0, {}}];
+  test[failureSummary[sameComparatorFailures], {0, {}}];
+  test[failureSummary[crossComparatorFailures], {0, {}}];
+  test[failureSummary[crossProductFailures], {0, {}}];
+  test[failureSummary[crossAcmtFailures], {0, {}}];
+  test[failureSummary[crossAnticommutatorFailures], {0, {}}];
+  test[DownValues[ordering], savedOrdering];
+];
+
+Module[
+  {
+    savedOrdering = DownValues[ordering],
+    savedSnegOrderedQ = DownValues[snegOrderedQ],
+    orderingSignature, expectedSignature, expectedByRank,
+    physicalRank, failureSummary, orderingAssumeK1,
+    orderingAssumeK2, type1, type2, sign1, sign2, rank1, rank2,
+    op1, op2, actual, expected, permutation, permuted,
+    case, canonical, canonicalIndex, vacuumCases,
+    assumptionFailures = {}, extraIndexFailures = {},
+    symbolicTypeFailures = {}, customHookFailures = {},
+    multiOperatorFailures = {}, vacuumFailures = {},
+    noneBarrierFailures = {}, dispatchFailures = {},
+    restorationFailures = {}, extraIndexCases, symbolicTypeCases,
+    canonicalTriples, fourthHead, fourStates, canonicalFour,
+    repeatedCanonical
+  },
+
+  orderingSignature[expr_] := Module[{value = expr},
+    Which[
+      Head[value] === nc, {1, List @@ value},
+      MatchQ[value, Times[-1, _nc]], {-1, List @@ (-value)},
+      True, {"unexpected", value}
+    ]
+  ];
+
+  expectedSignature[isOrdered_, left_, right_] :=
+    If[isOrdered, {1, {left, right}}, {-1, {right, left}}];
+
+  expectedByRank[leftRank_, left_, rightRank_, right_] := Which[
+    leftRank === CR && rightRank === AN, True,
+    leftRank === AN && rightRank === CR, False,
+    leftRank === rightRank, OrderedQ[{left, right}],
+    True, True
+  ];
+
+  physicalRank[type_, sign_] := If[
+    sign > 0,
+    type,
+    If[type === CR, AN, CR]
+  ];
+
+  failureSummary[failures_List] := {
+    Length[failures],
+    If[failures === {}, {}, Take[failures, Min[Length[failures], 12]]]
+  };
+
+  Block[{ordering},
+    DownValues[ordering] = savedOrdering;
+    ordering[c] = SEA;
+    ordering[d] = SEA;
+    ordering[e] = SEA;
+
+    (* Resolve symbolic SEA momenta through all 16 raw-type/sign classes
+       and check both head orientations. *)
+    Do[
+      UpValues[orderingAssumeK1] = {};
+      UpValues[orderingAssumeK2] = {};
+      If[sign1 > 0,
+        orderingAssumeK1 /: orderingAssumeK1 > 0 = True,
+        orderingAssumeK1 /: orderingAssumeK1 < 0 = True
+      ];
+      If[sign2 > 0,
+        orderingAssumeK2 /: orderingAssumeK2 > 0 = True,
+        orderingAssumeK2 /: orderingAssumeK2 < 0 = True
+      ];
+
+      op1 = c[type1, orderingAssumeK1];
+      op2 = d[type2, orderingAssumeK2];
+      rank1 = physicalRank[type1, sign1];
+      rank2 = physicalRank[type2, sign2];
+
+      expected = expectedByRank[rank1, op1, rank2, op2];
+      actual = snegOrderedQ[op1, op2];
+      If[actual =!= expected,
+        AppendTo[assumptionFailures,
+          {{type1, sign1, type2, sign2, "c,d", "orderedQ"},
+            actual, expected}]
+      ];
+      actual = orderingSignature[nc[op1, op2]];
+      expected = expectedSignature[expected, op1, op2];
+      If[actual =!= expected,
+        AppendTo[assumptionFailures,
+          {{type1, sign1, type2, sign2, "c,d", "product"},
+            actual, expected}]
+      ];
+
+      expected = expectedByRank[rank2, op2, rank1, op1];
+      actual = snegOrderedQ[op2, op1];
+      If[actual =!= expected,
+        AppendTo[assumptionFailures,
+          {{type1, sign1, type2, sign2, "d,c", "orderedQ"},
+            actual, expected}]
+      ];
+      actual = orderingSignature[nc[op2, op1]];
+      expected = expectedSignature[expected, op2, op1];
+      If[actual =!= expected,
+        AppendTo[assumptionFailures,
+          {{type1, sign1, type2, sign2, "d,c", "product"},
+            actual, expected}]
+      ],
+      {type1, {CR, AN}}, {sign1, {-1, 1}},
+      {type2, {CR, AN}}, {sign2, {-1, 1}}
+    ];
+    UpValues[orderingAssumeK1] = {};
+    UpValues[orderingAssumeK2] = {};
+
+    (* Trailing indexes and unequal arities must not affect the physical
+       classification or introduce a cross-head delta term. *)
+    extraIndexCases = {
+      {"opposite roles", c[CR, -1, 7, UP], AN,
+        d[AN, -2, 9, DO], CR},
+      {"same creators reverse heads", d[CR, 2, 4], CR,
+        c[AN, -1, 3, UP], CR},
+      {"same annihilators reverse heads", d[AN, 2, 4, DO], AN,
+        c[CR, -1, 3], AN},
+      {"different arity", c[CR, -1, 1], AN,
+        d[AN, -1, 1, 2, 3, UP], CR},
+      {"same trailing indexes", c[CR, -1, 1, UP], AN,
+        d[AN, -1, 1, UP], CR},
+      {"symbolic fallback", c[AN, orderingAssumeK1, 1, UP], AN,
+        d[CR, orderingAssumeK2, 1, UP], CR}
+    };
+    Do[
+      expected = expectedByRank[case[[3]], case[[2]], case[[5]], case[[4]]];
+      actual = snegOrderedQ[case[[2]], case[[4]]];
+      If[actual =!= expected,
+        AppendTo[extraIndexFailures,
+          {{case[[1]], "orderedQ"}, actual, expected}]
+      ];
+      actual = orderingSignature[nc[case[[2]], case[[4]]]];
+      expected = expectedSignature[expected, case[[2]], case[[4]]];
+      If[actual =!= expected,
+        AppendTo[extraIndexFailures,
+          {{case[[1]], "product"}, actual, expected}]
+      ];
+      If[acmt[case[[2]], case[[4]]] =!= 0,
+        AppendTo[extraIndexFailures,
+          {{case[[1]], "acmt"}, acmt[case[[2]], case[[4]]], 0}]
+      ],
+      {case, extraIndexCases}
+    ];
+
+    (* Unsupported first-index values retain legacy fail-closed behavior;
+       equal symbolic types are still sorted by head. *)
+    symbolicTypeCases = {
+      {"unknown-left", c[tip, 1], d[CR, 1], True},
+      {"unknown-right", d[CR, 1], c[tip, 1], True},
+      {"both-unknown-ordered", c[tip, 2], d[tip, 1], True},
+      {"both-unknown-reversed", d[tip, 1], c[tip, 2], False}
+    };
+    Do[
+      actual = snegOrderedQ[case[[2]], case[[3]]];
+      If[actual =!= case[[4]],
+        AppendTo[symbolicTypeFailures,
+          {{case[[1]], "orderedQ"}, actual, case[[4]]}]
+      ];
+      actual = orderingSignature[nc[case[[2]], case[[3]]]];
+      expected = expectedSignature[case[[4]], case[[2]], case[[3]]];
+      If[actual =!= expected,
+        AppendTo[symbolicTypeFailures,
+          {{case[[1]], "product"}, actual, expected}]
+      ],
+      {case, symbolicTypeCases}
+    ];
+
+    (* Every permutation of representative three-head canonical strings
+       must produce the parity sign and the same final order. *)
+    canonicalTriples = {
+      {c[AN, -1, 1], d[AN, -2, 1], e[CR, -1, 1]},
+      {c[CR, 1, 1], d[CR, 2, 1], e[AN, 1, 1]},
+      {c[AN, -1, 1], d[CR, orderingAssumeK1, 1], e[AN, 1, 1]},
+      {c[CR, -1, 1], d[AN, 1, 1], e[CR, -2, 1]}
+    };
+    Do[
+      permuted = canonical[[permutation]];
+      actual = TimeConstrained[
+        orderingSignature[Apply[nc, permuted]], 5, $TimedOut];
+      expected = {Signature[permutation], canonical};
+      If[actual =!= expected,
+        AppendTo[multiOperatorFailures,
+          {{"three heads", canonicalIndex, permutation}, actual, expected}]
+      ],
+      {canonicalIndex, Length[canonicalTriples]},
+      {canonical, {canonicalTriples[[canonicalIndex]]}},
+      {permutation, Permutations[Range[3]]}
+    ];
+
+    (* Four-head and repeated-head permutations exercise parity,
+       termination, and composition with the unchanged same-head rules. *)
+    Block[{listfermionoperators = listfermionoperators},
+      snegfermionoperators[fourthHead];
+      ordering[fourthHead] = SEA;
+      fourStates = {
+        {c[AN, -1, 1], CR},
+        {d[CR, 1, 1], CR},
+        {e[AN, 1, 1], AN},
+        {fourthHead[CR, -1, 1], AN}
+      };
+      canonicalFour = First /@ Sort[fourStates,
+        expectedByRank[#1[[2]], #1[[1]], #2[[2]], #2[[1]]] &];
+      Do[
+        permuted = canonicalFour[[permutation]];
+        actual = TimeConstrained[
+          orderingSignature[Apply[nc, permuted]], 5, $TimedOut];
+        expected = {Signature[permutation], canonicalFour};
+        If[actual =!= expected,
+          AppendTo[multiOperatorFailures,
+            {{"four heads", permutation}, actual, expected}]
+        ],
+        {permutation, Permutations[Range[4]]}
+      ];
+    ];
+
+    repeatedCanonical = {
+      c[CR, 1, 11], c[AN, -1, 22],
+      d[CR, 1, 11], d[AN, -1, 22]
+    };
+    Do[
+      permuted = repeatedCanonical[[permutation]];
+      actual = TimeConstrained[
+        orderingSignature[Apply[nc, permuted]], 5, $TimedOut];
+      expected = {Signature[permutation], repeatedCanonical};
+      If[actual =!= expected,
+        AppendTo[multiOperatorFailures,
+          {{"repeated heads", permutation}, actual, expected}]
+      ],
+      {permutation, Permutations[Range[4]]}
+    ];
+
+    (* A NONE head is an absolute barrier, while active operators on one
+       side of that barrier may still sort among themselves. *)
+    ordering[d] = NONE;
+    actual = orderingSignature[
+      nc[e[CR, 1], d[CR, 1], c[CR, 1]]];
+    expected = {1, {e[CR, 1], d[CR, 1], c[CR, 1]}};
+    If[actual =!= expected,
+      AppendTo[noneBarrierFailures,
+        {{"both sides blocked"}, actual, expected}]
+    ];
+    actual = orderingSignature[
+      nc[d[CR, 1], e[CR, 1], c[CR, 1]]];
+    expected = {-1, {d[CR, 1], c[CR, 1], e[CR, 1]}};
+    If[actual =!= expected,
+      AppendTo[noneBarrierFailures,
+        {{"active suffix"}, actual, expected}]
+    ];
+
+    ordering[d] = SEA;
+
+    (* Cross-head ordering must expose the correct physical annihilator to
+       the vacuum rules and agree with Wick evaluation. *)
+    vacuumCases = {
+      {"right vacuum reordered",
+        nc[c[CR, -1], d[AN, -1], VACUUM], 0},
+      {"left vacuum reordered",
+        nc[conj[VACUUM], c[CR, -1], d[AN, -1]], 0},
+      {"right vacuum already physical",
+        nc[c[AN, -1], d[CR, -1], VACUUM], 0},
+      {"zeroonvac reordered",
+        zeroonvac[nc[c[CR, -1], d[AN, -1]]], 0},
+      {"negative four-point vev",
+        vev[nc[c[CR, -1], d[CR, -1],
+          c[AN, -1], d[AN, -1]]], -1},
+      {"negative four-point wick",
+        vevwick[nc[c[CR, -1], d[CR, -1],
+          c[AN, -1], d[AN, -1]]], -1},
+      {"negative four-point vacuum",
+        nc[conj[VACUUM], c[CR, -1], d[CR, -1],
+          c[AN, -1], d[AN, -1], VACUUM], -1},
+      {"positive four-point vev",
+        vev[nc[c[AN, 1], d[AN, 1], c[CR, 1], d[CR, 1]]], -1},
+      {"positive four-point vacuum",
+        nc[conj[VACUUM], c[AN, 1], d[AN, 1],
+          c[CR, 1], d[CR, 1], VACUUM], -1}
+    };
+    Do[
+      If[case[[2]] =!= case[[3]],
+        AppendTo[vacuumFailures,
+          {case[[1]], case[[2]], case[[3]]}]
+      ],
+      {case, vacuumCases}
+    ];
+
+    (* Exercise supported customization paths on isolated operator heads. *)
+    Module[
+      {
+        hookC, hookD, customCreator, customAnnihilator,
+        customBoth, customNeither, customSymbolic, customExact,
+        customUpValue, customNonBoolean, customNone,
+        customOrderingResult, customOrdering, customCases,
+        savedFermionList = listfermionoperators
+      },
+      Block[{listfermionoperators = savedFermionList, snegOrderedQ},
+        DownValues[snegOrderedQ] = savedSnegOrderedQ;
+        snegfermionoperators[hookC, hookD];
+        ordering[hookC] = customOrdering;
+        ordering[hookD] = customOrdering;
+
+        hookC /: iscreation[hookC[_, customCreator]] = True;
+        hookC /: isannihilation[hookC[_, customCreator]] = False;
+        hookD /: iscreation[hookD[_, customCreator]] = True;
+        hookD /: isannihilation[hookD[_, customCreator]] = False;
+        hookC /: iscreation[hookC[_, customAnnihilator]] = False;
+        hookC /: isannihilation[hookC[_, customAnnihilator]] = True;
+        hookD /: iscreation[hookD[_, customAnnihilator]] = False;
+        hookD /: isannihilation[hookD[_, customAnnihilator]] = True;
+
+        hookC /: iscreation[hookC[_, customBoth]] = True;
+        hookC /: isannihilation[hookC[_, customBoth]] = True;
+        hookD /: iscreation[hookD[_, customBoth]] = True;
+        hookD /: isannihilation[hookD[_, customBoth]] = True;
+        hookC /: iscreation[hookC[_, customNeither]] = False;
+        hookC /: isannihilation[hookC[_, customNeither]] = False;
+        hookD /: iscreation[hookD[_, customNeither]] = False;
+        hookD /: isannihilation[hookD[_, customNeither]] = False;
+        hookC /: iscreation[hookC[_, customSymbolic]] = customOrderingResult;
+        hookC /: isannihilation[hookC[_, customSymbolic]] = customOrderingResult;
+        hookD /: iscreation[hookD[_, customSymbolic]] = customOrderingResult;
+        hookD /: isannihilation[hookD[_, customSymbolic]] = customOrderingResult;
+
+        customCases = {
+          {"custom raw AN creator", hookC[AN, customCreator],
+            hookD[CR, customAnnihilator], True},
+          {"custom raw CR annihilator", hookC[CR, customAnnihilator],
+            hookD[AN, customCreator], False},
+          {"contradictory hooks", hookC[AN, customBoth],
+            hookD[CR, customBoth], False},
+          {"false hooks", hookC[AN, customNeither],
+            hookD[CR, customNeither], False},
+          {"non-Boolean hooks", hookC[AN, customSymbolic],
+            hookD[CR, customSymbolic], False}
+        };
+        Do[
+          actual = snegOrderedQ[case[[2]], case[[3]]];
+          If[actual =!= case[[4]],
+            AppendTo[customHookFailures,
+              {{case[[1]], "orderedQ"}, actual, case[[4]]}]
+          ];
+          actual = orderingSignature[nc[case[[2]], case[[3]]]];
+          expected = expectedSignature[case[[4]], case[[2]], case[[3]]];
+          If[actual =!= expected,
+            AppendTo[customHookFailures,
+              {{case[[1]], "product"}, actual, expected}]
+          ],
+          {case, customCases}
+        ];
+
+        snegOrderedQ[
+          hookC[CR, customExact], hookD[AN, customExact]] = False;
+        snegOrderedQ[
+          hookD[AN, customExact], hookC[CR, customExact]] = True;
+        actual = orderingSignature[
+          nc[hookC[CR, customExact], hookD[AN, customExact]]];
+        expected = {-1,
+          {hookD[AN, customExact], hookC[CR, customExact]}};
+        If[actual =!= expected,
+          AppendTo[customHookFailures,
+            {{"exact comparator", "product"}, actual, expected}]
+        ];
+
+        hookC /: snegOrderedQ[
+          hookC[CR, customUpValue], hookD[AN, customUpValue]] = False;
+        hookD /: snegOrderedQ[
+          hookD[AN, customUpValue], hookC[CR, customUpValue]] = True;
+        actual = orderingSignature[
+          nc[hookC[CR, customUpValue], hookD[AN, customUpValue]]];
+        expected = {-1,
+          {hookD[AN, customUpValue], hookC[CR, customUpValue]}};
+        If[actual =!= expected,
+          AppendTo[customHookFailures,
+            {{"UpValue comparator", "product"}, actual, expected}]
+        ];
+
+        snegOrderedQ[
+          hookC[AN, customNonBoolean],
+          hookD[CR, customNonBoolean]] = customOrderingResult;
+        actual = orderingSignature[
+          nc[hookC[AN, customNonBoolean],
+            hookD[CR, customNonBoolean]]];
+        expected = {1,
+          {hookC[AN, customNonBoolean],
+            hookD[CR, customNonBoolean]}};
+        If[actual =!= expected,
+          AppendTo[customHookFailures,
+            {{"non-Boolean comparator", "product"}, actual, expected}]
+        ];
+
+        ordering[hookC] = NONE;
+        ordering[hookD] = EMPTY;
+        snegOrderedQ[
+          hookC[CR, customNone], hookD[AN, customNone]] = False;
+        actual = orderingSignature[
+          nc[hookC[CR, customNone], hookD[AN, customNone]]];
+        expected = {1, {hookC[CR, customNone], hookD[AN, customNone]}};
+        If[actual =!= expected,
+          AppendTo[customHookFailures,
+            {{"NONE overrides comparator", "product"}, actual, expected}]
+        ];
+      ];
+    ];
+
+    (* The new cross-head fermion rule must not capture other operator
+       families or alter their established signs and NONE behavior. *)
+    Module[
+      {bosonC, bosonD, savedBosonList = listbosonoperators},
+      Block[{listbosonoperators = savedBosonList},
+        snegbosonoperators[bosonC, bosonD];
+
+        actual = orderingSignature[
+          nc[bosonC[AN, 1], bosonD[CR, 1]]];
+        expected = {1, {bosonD[CR, 1], bosonC[AN, 1]}};
+        If[actual =!= expected,
+          AppendTo[dispatchFailures,
+            {{"cross-head bosons"}, actual, expected}]
+        ];
+
+        ordering[bosonC] = NONE;
+        actual = orderingSignature[
+          nc[bosonC[AN, 1], bosonD[CR, 1]]];
+        expected = {1, {bosonC[AN, 1], bosonD[CR, 1]}};
+        If[actual =!= expected,
+          AppendTo[dispatchFailures,
+            {{"boson NONE"}, actual, expected}]
+        ];
+
+        ordering[c] = EMPTY;
+        actual = orderingSignature[nc[c[AN, 1], bosonD[CR, 1]]];
+        expected = {1, {bosonD[CR, 1], c[AN, 1]}};
+        If[actual =!= expected,
+          AppendTo[dispatchFailures,
+            {{"fermion-boson"}, actual, expected}]
+        ];
+
+        actual = orderingSignature[nc[c[CR, 1], m1[1]]];
+        expected = {-1, {m1[1], c[CR, 1]}};
+        If[actual =!= expected,
+          AppendTo[dispatchFailures,
+            {{"Dirac-Majorana"}, actual, expected}]
+        ];
+      ];
+    ];
+  ];
+
+  test[failureSummary[assumptionFailures], {0, {}}];
+  test[failureSummary[extraIndexFailures], {0, {}}];
+  test[failureSummary[symbolicTypeFailures], {0, {}}];
+  test[failureSummary[customHookFailures], {0, {}}];
+  test[failureSummary[multiOperatorFailures], {0, {}}];
+  test[failureSummary[vacuumFailures], {0, {}}];
+  test[failureSummary[noneBarrierFailures], {0, {}}];
+  test[failureSummary[dispatchFailures], {0, {}}];
+
+  If[DownValues[ordering] =!= savedOrdering,
+    AppendTo[restorationFailures,
+      {"ordering", DownValues[ordering], savedOrdering}]
+  ];
+  If[DownValues[snegOrderedQ] =!= savedSnegOrderedQ,
+    AppendTo[restorationFailures,
+      {"snegOrderedQ", DownValues[snegOrderedQ], savedSnegOrderedQ}]
+  ];
+  test[failureSummary[restorationFailures], {0, {}}];
+];
+
 Print["** Majorana anti-commutators **"];
 test[ acmt[m2[1], m1[1]], 0 ];
 test[ acmt[m1, m1], 1 ];
