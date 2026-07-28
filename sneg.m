@@ -4419,39 +4419,59 @@ sum2list[i_] := {i};
 
 (* Similar to matrixrepresentationvc[], but this function
 returns a sparse matrix and it is significantly faster. *)
-matrixrepresentationvcsparse[a_, l_List] := Module[{n = Length[l]},
+matrixrepresentationvcsparse[a_, l_List] := Module[
+  {n = Length[l], parts, states, bracoeffs},
+  parts = Replace[Expand /@ l,
+    HoldPattern[x_. v_vc] :> {x, v}, {1}];
+  If[!And @@ Map[MatchQ[#, {_, _vc}] &, parts],
+    Return[SparseArray[matrixrepresentationvc[a, l]]]
+  ];
+  states = parts[[All, 2]];
+  If[!DuplicateFreeQ[states],
+    Return[SparseArray[matrixrepresentationvc[a, l]]]
+  ];
+  bracoeffs = conj /@ parts[[All, 1]];
   SparseArray[Select[Flatten[
     Table[
-      (sum2list @ Collect[ap[a, l[[i]]], l]) /.
-        x_. v_vc :> Module[{pos = Position[l, v]},
-          If[pos === {}, 0, {pos[[1, 1]], i} -> x]
+      (sum2list @ Collect[ap[a, l[[i]]], states]) /.
+        x_. v_vc :> Module[{pos = Position[states, v], row},
+          If[pos === {}, 0,
+            row = pos[[1, 1]];
+            {row, i} -> bracoeffs[[row]] x
+          ]
         ],
       {i, n}],
     1], (#=!=0)&], {n, n}]
 ];
 
 (* Similar to matrixrepresentationvc[], but significantly faster. *)
-(* NOTE: only applicable for simple monomial vectors!! *)
-matrixrepresentationvcfast[a_, l_List] := Module[{n = Length[l]},
-  Map[
-    indexvalue2list[
-      Sort[
-        (sum2list @ Collect[Chop[ap[a, #]], l]) /.
-          x_. v_vc :> Module[{pos = Position[l, v]},
-            If[pos === {}, 0, {pos[[1, 1]], x}]
-          ]
-      ],
-    n] &,
-  l] // Transpose
-];
+(* Simple monomial vectors use the optimized path. Other bases fall back
+to matrixrepresentationvc[]. *)
+matrixrepresentationvcfast[a_, l_List] :=
+  matrixrepresentationvcfast[a, l, l];
 
-matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[{n = Length[l1]},
+matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[
+  {n = Length[l1], parts, states, bracoeffs},
+  parts = Replace[Expand /@ l1,
+    HoldPattern[x_. v_vc] :> {x, v}, {1}];
+  If[!And @@ Map[MatchQ[#, {_, _vc}] &, parts],
+    Return[matrixrepresentationvc[a, l1, l2]]
+  ];
+  states = parts[[All, 2]];
+  If[!DuplicateFreeQ[states],
+    Return[matrixrepresentationvc[a, l1, l2]]
+  ];
+  bracoeffs = conj /@ parts[[All, 1]];
   Map[
     indexvalue2list[
       Sort[
-        (sum2list @ Collect[Chop[ap[a, #]], l1]) /.
-        x_. v_vc :> Module[{pos = Position[l1, v]},
-          If[pos==={},0,{pos[[1,1]], x}] ]
+        (sum2list @ Collect[ap[a, #], states]) /.
+        x_. v_vc :> Module[{pos = Position[states, v], row},
+          If[pos === {}, 0,
+            row = pos[[1, 1]];
+            {row, bracoeffs[[row]] x}
+          ]
+        ]
       ],
     n] &,
   l2] // Transpose

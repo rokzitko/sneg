@@ -635,6 +635,30 @@ makebasis[{c[]}];
 test[ Quiet[Check[matrixrepresentationvcfast[c[CR, UP], {vc[0, 0]}], $Failed]],
   {{0}} ];
 
+basvc = {-vc[1, 0]};
+test[ matrixrepresentationvcfast[1, basvc],
+  matrixrepresentationvc[1, basvc] ];
+test[ Normal[matrixrepresentationvcsparse[1, basvc]],
+  matrixrepresentationvc[1, basvc] ];
+
+basvc = {I vc[1, 0]};
+test[ matrixrepresentationvcfast[1, basvc],
+  matrixrepresentationvc[1, basvc] ];
+test[ Normal[matrixrepresentationvcsparse[1, basvc]],
+  matrixrepresentationvc[1, basvc] ];
+
+basvc = {(vc[1, 0] + I vc[0, 1])/Sqrt[2]};
+test[ matrixrepresentationvcfast[1, basvc],
+  matrixrepresentationvc[1, basvc] ];
+test[ Normal[matrixrepresentationvcsparse[1, basvc]],
+  matrixrepresentationvc[1, basvc] ];
+
+test[ matrixrepresentationvcfast[1, {I vc[1, 0]}, {-vc[1, 0]}],
+  matrixrepresentationvc[1, {I vc[1, 0]}, {-vc[1, 0]}] ];
+
+basvc = {vc[0, 0], vc[1, 0]};
+test[ matrixrepresentationvcfast[1.*^-12, basvc][[1, 1]], 1.*^-12 ];
+
 Print["*** Orthogonalisation ***"];
 
 test[ snegorthog[{{0, 1}}] =!= {}, True ];
