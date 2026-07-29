@@ -1846,7 +1846,7 @@ conj[scalar[x_] a_] := scalar[conj[x]] conj[a];
 
 (* Speed optimization for vev[] *)
 vev[scalar[x_] a_] := scalar[x] vev[a];
-vev[scalar[x_]] := 0;
+vev[scalar[x_]] := x;
 
 (* Pull sums out of scalar[] placeholders! *)
 scalar[a_. sum[b_, {q__}]] := sum[scalar[a  b], {q}];
@@ -2813,6 +2813,9 @@ scalarproductvc[a_vc, b_vc] := If[a === b, 1, 0];
 
 scalarproductvc[scalar[z_] a_, b_] := scalar[conj[z]] scalarproductvc[a, b];
 scalarproductvc[a_, scalar[z_] b_] := scalar[z] scalarproductvc[a, b];
+
+scalarproductop[scalar[z_] a_, b_] := scalar[conj[z]] scalarproductop[a, b];
+scalarproductop[a_, scalar[z_] b_] := scalar[z] scalarproductop[a, b];
 
 scalarproductvc[a_, 0.] := 0;
 scalarproductvc[0., b_] := 0;
