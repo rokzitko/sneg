@@ -2398,6 +2398,18 @@ If[$VersionNumber >= 5.1,
     sum[nc[expr1[ka], expr3[kb1]] + 
     nc[sum[expr2[kb], {kb}], expr3[kb1]], {ka, kb1}]];
 ];
+
+Print["* sumCollect[] *"];
+
+test[ sumCollect[ka sum[expr1[ka], {ka}] + sum[expr2[ka], {ka}]],
+  ka sum[expr1[ka], {ka}] + sum[expr2[ka], {ka}] ];
+
+test[ sumCollect[
+    kb sum[expr1[ka, kb], {ka, kb}] + sum[expr2[ka, kc], {ka, kc}]],
+  kb sum[expr1[ka, kb], {ka, kb}] + sum[expr2[ka, kc], {ka, kc}] ];
+
+test[ sumCollect[2 sum[expr1[ka], {ka}] + 3 sum[expr2[ka], {ka}]],
+  sum[2 expr1[ka] + 3 expr2[ka], {ka}] ];
     
 Print["* Utility functions *"];
 
