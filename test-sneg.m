@@ -1862,6 +1862,9 @@ test[ nc[bra[Null, Null], ket[Null, Null]], 1 ];
 test[ nc[bra[Null, Null, x, Null], ket[Null, Null, y, Null]],
   KroneckerDelta[x,y] ];
 
+test[ Apply[List, nc[bra[Null, 2], ket[1, Null]]],
+  {bra[Null, 2], ket[1, Null]} ];
+
 test[ nc[ket[1], bra[1], c[]], nc[c[], ket[1], bra[1]] ];
 test[ nc[bra[], c[]], nc[c[], bra[]] ];
 test[ nc[c[], bra[], d[]], nc[c[], d[], bra[]] ];
@@ -1872,6 +1875,20 @@ test[ nc[ket[Null, y1], ket[x1, Null]], ket[x1, y1] ];
 test[ nc[ket[x1, Null], ket[Null, y1]], ket[x1, y1] ];
 test[ nc[bra[Null, y2], bra[x2, Null]], bra[x2, y2] ];
 test[ nc[bra[x2, Null], bra[Null, y2]], bra[x2, y2] ];
+
+test[
+  nc[bra[1, Null], bra[Null, 2], ket[1, Null]],
+  nc[bra[1, Null], nc[bra[Null, 2], ket[1, Null]]]
+];
+
+test[
+  nc[ket[tensorK1, Null], bra[tensorB1, Null],
+    ket[Null, tensorK2], bra[Null, tensorB2]],
+  nc[ket[tensorK1, tensorK2], bra[tensorB1, tensorB2]]
+];
+
+test[ nc[ket[1], bra[2], ket[2], bra[3]],
+  nc[ket[1], bra[3]] ];
 
 test[ nc[ nc[bra[x2, Null], bra[Null, y2]], nc[ket[Null, y1], ket[x1, Null]] ],
 KroneckerDelta[x1, x2] KroneckerDelta[y1, y2] ];

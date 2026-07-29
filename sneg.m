@@ -3604,9 +3604,19 @@ nc[a___, bra[i1___], bra[i2___], b___] /;
 nc[a___, ket[i1___], ket[i2___], b___] /;
   compatiblepattern[{i1}, {i2}] := nc[a, ket @@ bkcombine[{i1}, {i2}], b];
 
-(* Trick: bra and ket from orthogonal Hilbert spaces: we may commute them! *)
-nc[a___, x1:bra[i1___], x2:ket[i2___], b___] /;
-   compatiblepattern[{i1}, {i2}] := nc[a, x2, x1, b];
+(* Tensor product of rank-one operators on disjoint Hilbert factors. A bare
+bra-ket pair with complementary support remains unevaluated. *)
+nc[a___,
+   ket[k1___], bra[r1___],
+   ket[k2___], bra[r2___],
+   d___] /;
+    pairpattern[{k1}, {r1}] &&
+    pairpattern[{k2}, {r2}] &&
+    compatiblepattern[{k1}, {k2}] :=
+  nc[a,
+    ket @@ bkcombine[{k1}, {k2}],
+    bra @@ bkcombine[{r1}, {r2}],
+    d];
 
 (* Conjugation *)
 conj[ket[k___]] := bra[k];
