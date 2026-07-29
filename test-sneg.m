@@ -951,6 +951,10 @@ test[ conj[c[CR]], c[AN] ];
 test[ conj[c[CR, UP]], c[AN, UP] ];
 test[ conj[c[AN]], c[CR] ];
 test[ conj[c[AN, UP]], c[CR, UP] ];
+test[ conj[conj[c[symbolicType, 1]]], c[symbolicType, 1] ];
+snegbosonoperators[conjBoson];
+test[ conj[conj[conjBoson[symbolicType, 1]]],
+  conjBoson[symbolicType, 1] ];
 test[ conj[a+b], conj[a] + conj[b] ];
 test[ conj[nc[a, b]], nc[conj[b], conj[a]] ];
 test[ conj[nc[c[CR], d[CR]]], -nc[c[AN], d[AN]] ];

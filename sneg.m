@@ -1598,10 +1598,10 @@ conj[a_ + b_] := conj[a] + conj[b];
 conj[nc[a_, b__]] := conj[nc[b]] ~ nc ~ conj[a];
 
 (* Complex (Dirac) fermion *)
-conj[op_?fermionQ[i_, j___]] := op[If[i == CR, AN, CR], j];
+conj[op_?fermionQ[i_, j___]] := op[CR + AN - i, j];
 
 (* Boson *)
-conj[op_?bosonQ[i_, j___]] := op[If[i == CR, AN, CR], j];
+conj[op_?bosonQ[i_, j___]] := op[CR + AN - i, j];
 
 (* Real (Majorana) fermion *)
 conj[x:op_?majoranaQ[___]] := x;
