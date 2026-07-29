@@ -1803,10 +1803,13 @@ rulesumDistribute = {
 };
 
 rulesumCollect = {
-Plus[z1_. sum[a1_, it_List], z2_. sum[a2_, it_List]] :> sum[z1 a1+z2 a2, it],
+Plus[z1_. sum[a1_, it_List], z2_. sum[a2_, it_List]] /;
+  sumFactorizableQ[z1, it] && sumFactorizableQ[z2, it] :>
+    sum[z1 a1+z2 a2, it],
 
 Plus[z1_. sum[a1_, it1_List], z2_. sum[a2_, it2_List]] /;
-  Intersection[it1, it2] =!= {} :>
+  Intersection[it1, it2] =!= {} &&
+  sumFactorizableQ[z1, it1] && sumFactorizableQ[z2, it2] :>
     Module[{int},
       int = Intersection[it1, it2];
       sum[sum[z1 a1, Complement[it1, int]]
