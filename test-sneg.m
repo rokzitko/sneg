@@ -2436,6 +2436,9 @@ test[ contractedpairs[3, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
   {} ];
 
 Print["* Contractions *"];
+snegfermionoperators[noneWickFermion];
+ordering[noneWickFermion] = NONE;
+
 test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
       contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}] ]; (* test test[] *)
 
@@ -2458,6 +2461,9 @@ test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
 
 test[ contractone[{1, 1, {c[CR, k, alpha, sigma], c[AN, k, alpha, sigma]}}, 
   {1, 2}], {2, UnitStep[-k], {1, 1}} ];
+test[ contractone[{1, 1,
+    {noneBosonA[AN], aa, noneBosonA[CR]}}, {1, 3}],
+  {2, 1, {wickslot[1, 0], aa, wickslot[1, 0]}} ];
 
 test[ remainder[{2, 2, a[CR, sigma], 1, 1}], dd[a[0, sigma]] ];
 test[ remainder[{2,1}], -1 ];
@@ -2465,6 +2471,10 @@ test[ remainder[{1,1}], 1 ];
 test[ remainder[{2,2,1,1}], 1 ];
 test[ remainder[{2,1,1}], 1 ];
 test[ remainder[{4,3,2,1}], 1 ];
+test[ remainder[{wickslot[2, 0], wickslot[1, 0],
+    wickslot[2, 0], wickslot[1, 0]}], 1 ];
+test[ remainder[{wickslot[2, 1], wickslot[1, 1],
+    wickslot[2, 1], wickslot[1, 1]}], -1 ];
 
 test[ contract[{a[AN, sigma], a[CR, sigma]}, {{1,2}}], 1 ];
 test[ contract[{c[CR, k], c[AN, k]}, {{1,2}}], UnitStep[-k] ];
@@ -2489,6 +2499,25 @@ test[ contract[{c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma],
 test[ contract[{c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma], 
     c[AN, k3, alpha, sigma], c[AN, k4, alpha, sigma]}, {{1, 4}, {2, 3}}],
   KroneckerDelta[k1, k4]*KroneckerDelta[k2, k3]*UnitStep[-k1]*UnitStep[-k2] ];
+
+test[ contract[
+    {noneBosonA[AN], noneBosonB[AN],
+      noneBosonA[CR], noneBosonB[CR]},
+    {{1, 3}, {2, 4}}], 1 ];
+test[ contract[
+    {noneWickFermion[AN, 1], noneWickFermion[AN, 2],
+      noneWickFermion[CR, 1], noneWickFermion[CR, 2]},
+    {{1, 3}, {2, 4}}], -1 ];
+test[ contract[
+    {noneBosonA[AN], noneWickFermion[AN],
+      noneBosonA[CR], noneWickFermion[CR]},
+    {{1, 3}, {2, 4}}], 1 ];
+test[ contract[
+    {noneWickFermion[AN], noneBosonA[CR], noneWickFermion[CR]},
+    {{1, 3}}], dd[noneBosonA[CR]] ];
+test[ contract[
+    {noneBosonA[AN], noneWickFermion[CR], noneBosonA[CR]},
+    {{1, 3}}], dd[noneWickFermion[CR]] ];
 
 
 Print["* wickorder[] *"];
@@ -2526,6 +2555,13 @@ test[ SimplifyKD[
   ((-1 + KroneckerDelta[k1, k2]^2)*UnitStep[-k1]*UnitStep[-k2])],
   0 ];
 
+test[ wickorder[1, nc[
+    noneBosonA[AN], noneBosonA[AN], noneBosonA[CR]]],
+  2 dd[noneBosonA[AN]] ];
+test[ wickorder[2, nc[
+    noneBosonA[AN, 1], noneBosonA[AN, 2],
+    noneBosonA[CR, 1], noneBosonA[CR, 2]]], 1 ];
+
 (*
 test[ wickorder[2, nc[c[0, k, 1, 0], c[1, k, 1, 1], c[1, k1, 1, 1], 
   c[0, k1, 1, 1]] ],  0 ];
@@ -2533,7 +2569,18 @@ test[ wickorder[2, nc[c[0, k, 1, 0], c[1, k, 1, 1], c[1, k1, 1, 1],
   
 Print["* wick[] *"];
 
-(* TO DO: add tests! *)
+test[ wick[], 1 ];
+test[ wick[sum[
+    nc[noneBosonA[AN, noneBosonI], noneBosonA[CR, noneBosonJ]],
+    {noneBosonI}]],
+  sum[dd[nc[
+      noneBosonA[AN, noneBosonI], noneBosonA[CR, noneBosonJ]]] +
+    KroneckerDelta[noneBosonI, noneBosonJ], {noneBosonI}] ];
+
+test[ wick[nc[
+    noneBosonA[AN], noneBosonA[AN], noneBosonA[CR]]],
+  dd[nc[noneBosonA[AN], noneBosonA[AN], noneBosonA[CR]]] +
+    2 dd[noneBosonA[AN]] ];
 
 test[ wick[nc[c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma], 
   c[CR, k3, alpha, tau], c[AN, k4, alpha, tau]]] // Expand,
@@ -2559,6 +2606,81 @@ test[ wick[nc[c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma],
   UnitStep[-k3] ];
 
 Print["* vevwick[] *"];
+
+test[ vevwick[], 1 ];
+test[ vevwick[sum[
+    nc[noneBosonA[AN, noneBosonI], noneBosonA[CR, noneBosonJ]],
+    {noneBosonI}]],
+  sum[KroneckerDelta[noneBosonI, noneBosonJ], {noneBosonI}] ];
+
+Module[{boson4, boson6, indexedBoson4, mixed4, expected},
+  boson4 = nc[
+    noneBosonA[AN], noneBosonA[AN],
+    noneBosonA[CR], noneBosonA[CR]];
+  test[
+    {vev[boson4], vevwick[boson4],
+      vevwick2[boson4], vevwicknew[boson4]},
+    {2, 2, 2, 2}
+  ];
+  test[ normalorderwick[boson4], -2 + boson4 ];
+
+  boson6 = nc[
+    noneBosonA[AN], noneBosonA[AN], noneBosonA[AN],
+    noneBosonA[CR], noneBosonA[CR], noneBosonA[CR]];
+  test[
+    {vev[boson6], vevwick[boson6],
+      vevwick2[boson6], vevwicknew[boson6]},
+    {6, 6, 6, 6}
+  ];
+
+  test[
+    {vevwick[nc[
+        noneBosonA[AN, 1], noneBosonA[AN, 2],
+        noneBosonA[CR, 1], noneBosonA[CR, 2]]],
+      vevwick[nc[
+        noneBosonA[AN, 1], noneBosonA[AN, 2],
+        noneBosonA[CR, 2], noneBosonA[CR, 1]]]},
+    {1, 1}
+  ];
+
+  indexedBoson4 = nc[
+    noneBosonA[AN, noneBosonI],
+    noneBosonA[AN, noneBosonJ],
+    noneBosonA[CR, noneBosonK],
+    noneBosonA[CR, noneBosonL]];
+  expected =
+    KroneckerDelta[noneBosonI, noneBosonK]
+      KroneckerDelta[noneBosonJ, noneBosonL] +
+    KroneckerDelta[noneBosonI, noneBosonL]
+      KroneckerDelta[noneBosonJ, noneBosonK];
+  test[
+    {vevwick[indexedBoson4], vevwick2[indexedBoson4],
+      vevwicknew[indexedBoson4]},
+    ConstantArray[expected, 3]
+  ];
+
+  mixed4 = nc[
+    noneBosonA[AN], noneWickFermion[AN],
+    noneBosonA[CR], noneWickFermion[CR]];
+  test[
+    {vevwick[mixed4], vevwick2[mixed4], vevwicknew[mixed4]},
+    {1, 1, 1}
+  ];
+];
+
+Module[{ops, failures},
+  ops = {
+    noneBosonA[AN, 1], noneBosonA[AN, 2],
+    noneBosonA[CR, 1], noneBosonA[CR, 2]
+  };
+  failures = Select[Permutations[ops], Function[p,
+    With[{x = Apply[nc, p], expected = vev[Apply[nc, p]]},
+      {vevwick[x], vevwick2[x], vevwicknew[x]} =!=
+        ConstantArray[expected, 3]
+    ]
+  ]];
+  test[failures, {}];
+];
 
 test[vevwick2[nc[c[CR, k1, sigma1], c[AN, k2, sigma]]],
   KroneckerDelta[k1, k2]*KroneckerDelta[sigma1, sigma]*UnitStep[-k1]];

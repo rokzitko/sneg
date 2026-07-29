@@ -4033,37 +4033,52 @@ contraction[x1 : op1_[t1_, i1___], x2 : op2_[t2_, i2___]] /;
     (ordering[op] =!= NONE) :=
        nc[x1, x2] - normalorder[x1 ~ nc ~ x2];
 
-(* Contract one pair.  ctr is an order index that replaces the contracted
-operators in the operator string, factor is the prefactor of the string and
-ops is the string that we are currently applying the contraction to. *)
+(* Bosonic endpoints are even. Preserve the historical odd behavior for all
+other operators, including custom operator types. *)
+wickparity[x_] := If[TrueQ[bosonQ[x]], 0, 1];
+
+(* Keep legacy integer markers for odd endpoints. remainder[] converts them
+to parity-tagged markers before calculating the permutation sign. *)
+wickmark[n_Integer, x_] :=
+  If[wickparity[x] === 0, wickslot[n, 0], n];
+
+wickswapsign[p1_Integer, p2_Integer] :=
+  If[p1 === 1 && p2 === 1, -1, 1];
+
+(* Contract one pair. ctr is an order index that labels the contracted
+endpoints, factor is the prefactor of the string and ops is the string that
+we are currently applying the contraction to. *)
 
 contractone[{ctr_, factor_, ops_List}, {i1_, i2_}] :=
-  Module[{l = ops, c},
+  Module[{l = ops, c, x1 = ops[[i1]], x2 = ops[[i2]]},
     (* Preserve order! *)
     If[i1 < i2,
-      c = contraction[l[[i1]], l[[i2]]],
-      c = contraction[l[[i2]], l[[i1]]]
+      c = contraction[x1, x2],
+      c = contraction[x2, x1]
     ];
-    l[[i1]] = ctr;
-    l[[i2]] = ctr;
+    l[[i1]] = wickmark[ctr, x1];
+    l[[i2]] = wickmark[ctr, x2];
     {ctr + 1, c*factor, l}
   ];
 
-(* Return the remaining operator string. The integer number indexed
-placeholders are commuted to the beginning of the list and ordered:
-this gives the correct sign of the remaining operator string. Sign is
-flipped whenever two neighboring integers are transposed, and when an
-integer and a neighboring operator are transposed. Note: List2 is a
-non-Listable List. *)
+(* Return the remaining operator string. Endpoint markers are commuted to
+the beginning of the list and ordered. A sign is introduced only when both
+crossing endpoints are odd. Note: List2 is a non-Listable List. *)
 
 remainder[{ops__}] := Module[{ops2},
-  ops2 = List2[ops] //. {
-    List2[a___, nr1_Integer, nr2_Integer, b___] :>
-        -List2[a, nr2, nr1, b] /; nr2 < nr1,
-    List2[a___, x : c_[i__], nr_Integer, b___] :>
-        -List2[a, nr, x, b] /; operatorQ[c]
+  (* Bare integers are legacy odd endpoint markers. Replace only at level 1
+  so integer operator indexes remain untouched. *)
+  ops2 = Replace[List2[ops], nr_Integer :> wickslot[nr, 1], {1}];
+  ops2 = ops2 //. {
+    List2[a___,
+      p1:wickslot[nr1_Integer, q1_Integer],
+      p2:wickslot[nr2_Integer, q2_Integer], b___] :>
+        wickswapsign[q1, q2] List2[a, p2, p1, b] /; nr2 < nr1,
+    List2[a___, x:c_[i__],
+      p:wickslot[nr_Integer, q_Integer], b___] :>
+        wickswapsign[wickparity[x], q] List2[a, p, x, b] /; operatorQ[c]
   };
-  ops2 = ops2 /. {x : List2[i__] :> DeleteCases[x, _Integer, {1}]};
+  ops2 = ops2 /. {x:List2[i__] :> DeleteCases[x, _wickslot, {1}]};
   ops2 = ops2 /. {List2[i___] :> dd[nc[i]]}
 ];
 
