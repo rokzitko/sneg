@@ -966,6 +966,38 @@ test[ vev[c[CR]], 0 ];
 test[ vev[nc[c[AN], c[CR]]], 1 ];
 test[ vev[nc[c[CR], c[AN]]], 0 ];
 
+snegbosonoperators[noneBosonA, noneBosonB];
+snegfreeindexes[noneBosonI, noneBosonJ, noneBosonK, noneBosonL];
+ordering[noneBosonA] = NONE;
+ordering[noneBosonB] = NONE;
+
+test[ contraction[noneBosonA[AN, noneBosonI],
+    noneBosonA[CR, noneBosonJ]],
+  KroneckerDelta[noneBosonI, noneBosonJ] ];
+test[ vev[nc[noneBosonA[AN], noneBosonA[CR]]], 1 ];
+test[ vevwick[nc[noneBosonA[AN, noneBosonI],
+    noneBosonA[CR, noneBosonJ]]],
+  KroneckerDelta[noneBosonI, noneBosonJ] ];
+test[ vev[nc[noneBosonA[AN, noneBosonI],
+    noneBosonA[CR, noneBosonJ]]],
+  KroneckerDelta[noneBosonI, noneBosonJ] ];
+test[ vev[nc[noneBosonA[CR], noneBosonA[AN]]], 0 ];
+test[ vev[nc[noneBosonA[AN], noneBosonB[CR]]], 0 ];
+test[ vev[nc[noneBosonA[AN], noneBosonA[AN],
+    noneBosonA[CR], noneBosonA[CR]]], 2 ];
+test[ vev[nc[noneBosonA[AN], noneBosonB[AN],
+    noneBosonA[CR], noneBosonB[CR]]], 1 ];
+test[ vev[nc[noneBosonA[AN, noneBosonI],
+    noneBosonA[AN, noneBosonJ],
+    noneBosonA[CR, noneBosonK],
+    noneBosonA[CR, noneBosonL]]],
+  KroneckerDelta[noneBosonI, noneBosonK]
+      KroneckerDelta[noneBosonJ, noneBosonL] +
+    KroneckerDelta[noneBosonI, noneBosonL]
+      KroneckerDelta[noneBosonJ, noneBosonK] ];
+test[ normalorder[nc[noneBosonA[AN], noneBosonA[CR]]],
+  -1 + nc[noneBosonA[AN], noneBosonA[CR]] ];
+
 Print["** zeroonvac[] **"];
 test[ zeroonvac[1], 1 ];
 test[ zeroonvac[a+b], zeroonvac[a] + zeroonvac[b] ];

@@ -1163,8 +1163,12 @@ snegOrderedQ[x1 : op_[___], x2 : op_[___]] /;
 
 isannihilation[op_[t_, j___]] /; (ordering[op] == NONE) := (t == AN);
 iscreation[op_[t_, j___]] /; (ordering[op] == NONE) := (t == CR);
-contraction[op_[AN, j1___], op_[CR, j2___]] /; (ordering[op] == NONE) :=
-  If[{j1} === {j2}, 1, 0, 0];
+contraction[x1:op_[AN, j1___], x2:op_[CR, j2___]] /;
+  (ordering[op] == NONE) :=
+    If[TrueQ[bosonQ[op]],
+      cmt[x1, x2],
+      If[{j1} === {j2}, 1, 0, 0]
+    ];
 contraction[op_[___], op_[___]] /; (ordering[op] == NONE) := 0;
 
 (* NEW RULES for ordering=SEA, 25. 3. 2007 *)
@@ -2091,14 +2095,21 @@ vevwick[ nc[x:op_?fermionQ[__], ___] ] /; iscreation[x] := 0;
 vev[ nc[x:op_?bosonQ[CR,___]] ] := 0;
 
 
-(* Special rules for bosons *)
-
-  (* VEV of a string of identical bosonic operators must be zero.
-  The equivalent rule for fermionic operators is not necessary, due
-  to Pauli exclusion rule with is enforced at all times in the definition
-  of nc[] multiplication. *)
-
-vev[ HoldPattern[ nc[op_?bosonQ[___]..] ] ] := 0;
+(* Evaluate residual bosonic annihilation-creation inversions without
+changing the ordering of the original nc expression. *)
+vev[HoldPattern[nc[
+    a___,
+    x1_,
+    x2_,
+    b___
+  ]]] /; (TrueQ[bosonQ[x1]] && TrueQ[bosonQ[x2]] &&
+    TrueQ[isannihilation[x1]] && TrueQ[iscreation[x2]] &&
+    (ordering[Head[x1]] === NONE || ordering[Head[x2]] === NONE)) :=
+  vev[nc[a, x2, x1, b]] +
+    If[Head[x1] === Head[x2],
+      cmt[x1, x2] vev[nc[a, b]],
+      0
+    ];
 
 
 (* Special rules for vev in the case of ordering=SEA *)
