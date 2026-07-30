@@ -2787,10 +2787,10 @@ sneglinearoperator[vc2ops];
 SetAttributes[vc2ops, Listable];
 
 (* Special case: expressions with a trailing ket vector. *)
-vc2ops[vc[l__, ket[k__]]] := nc[vc2ops[vc[l]], ket[k]];
+vc2ops[vc[l___, ket[k__]]] := nc[vc2ops[vc[l]], ket[k]];
 
 vc2ops::incom = "Incompatible lenghts of vc[] and BASIS.";
-vc2ops[x:vc[l__]] := Module[{a},
+vc2ops[x:vc[l___]] := Module[{a},
   If[Length[{l}] != Length[BASIS],
     Message[vc2ops::incom]; Infinity,
     nc @@ Pick[BASIS, x, 1]

@@ -1352,6 +1352,13 @@ test[ vc2ops[2a], 2 vc2ops[a] ];
 test[ vc2ops[x a], x vc2ops[a] ];
 test[ vc2ops[a, 2, b], 2 vc2ops[a, b] ];
 
+makebasis[{}];
+test[ vc2ops[vacuum[]], 1 ];
+test[ vc2ops[vc[ket[0]]], ket[0] ];
+
+makebasis[{c[], d[]}];
+test[ Quiet[vc2ops[vc[]], vc2ops::incom], Infinity ];
+
 (* OLD test[ vc2opsmap[{vac, ap[c[CR, UP], vac]}],
 {1, c[CR,UP]} ]; *)
 
