@@ -269,6 +269,19 @@ test[ komutator[c, d], nc[c, d] - nc[d, c] ];
 test[ antikomutator[c, d], nc[c, d] + nc[d, c] ];
 test[ cmt[g[1, 2], g[1, 3]], cmt[g[1, 2], g[1, 3]] ];
 
+snegspinoperators[spinTestA, spinTestB];
+test[ cmt[spinTestA[1], spinTestB[2]], 0 ];
+test[ komutator[spinTestA[1], spinTestB[2]], 0 ];
+test[ commutator[
+    spinTestA[spinSiteA, spinComponentA],
+    spinTestB[spinSiteB, spinComponentB]], 0 ];
+test[ komutator[spinTestA[1], spinTestA[2]], I spinTestA[3] ];
+
+spinTestA /: cmt[
+  spinTestA[spinHook], spinTestB[spinHook]] = customSpinCommutator;
+test[ commutator[spinTestA[spinHook], spinTestB[spinHook]],
+  customSpinCommutator ];
+
 Print["** Canonical anti-commutators **"];
 test[ antikomutator[c[CR], c[CR]], 0 ];
 test[ antikomutator[c[AN], c[AN]], 0 ];

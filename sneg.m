@@ -1518,6 +1518,8 @@ cmt[op1_?spinQ[i1___], op2_?spinQ[i2___]] /; (op1 =!= op2) = 0;
 
 (* (Anti-)commutators *)
 SetAttributes[komutator, Listable];
+komutator[x1:op1_?spinQ[___], x2:op2_?spinQ[___]] /;
+  op1 =!= op2 := cmt[x1, x2];
 komutator[a_, b_] := nc[a, b] - nc[b, a];
 
 SetAttributes[antikomutator, Listable];
