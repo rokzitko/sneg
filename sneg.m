@@ -651,12 +651,14 @@ KS = Compile[{{n, _Integer}, {k, _Integer}},
 
 KSubsets[l_List,0] := { {} }
 KSubsets[l_List,1] := Partition[l,1]
-KSubsets[l_List,2] := Flatten[Table[{l[[i]], l[[j]]},
-                                    {i, Length[l]-1},
-                                    {j, i+1, Length[l]}
-                              ],
-                              1
-                      ]
+KSubsets[l_List,2] := Module[{i, j},
+  Flatten[Table[{l[[i]], l[[j]]},
+                {i, Length[l]-1},
+                {j, i+1, Length[l]}
+          ],
+          1
+  ]
+]
 KSubsets[l_List,k_Integer?Positive] := {l} /; (k == Length[l])
 KSubsets[l_List,k_Integer?Positive] := {}  /; (k > Length[l])
 KSubsets[s_List, k_Integer] := Prepend[Map[s[[#]] &, KS[Length[s], k]], s[[Range[k] ]] ]
@@ -2201,8 +2203,9 @@ SetAttributes[number, Listable];
 number[op_?fermionQ[j___], sigma_] := op[CR, j, sigma] ~ nc ~ op[AN, j, sigma];
 number[op_?fermionQ[j___]] /; spinof[op] == 1/2 :=
   number[op[j], UP] + number[op[j], DO];
-number[op_?fermionQ[j___]] /; spinof[op] != 1/2 :=
-  Sum[number[op[j], s], {s, -spinof[op], +spinof[op]}];
+number[op_?fermionQ[j___]] /; spinof[op] != 1/2 := Module[{s},
+  Sum[number[op[j], s], {s, -spinof[op], +spinof[op]}]
+];
 
 (* Number operator for abstract function argument *)
 number[fn_Function, sigma_] := fn[CR, sigma] ~ nc ~ fn[AN, sigma];
@@ -2221,7 +2224,7 @@ isozsq[op_?fermionQ[j___]] := pow[number[op[j]]-1, 2];
 SetAttributes[hubbard, Listable];
 hubbard[op_?fermionQ[j___]] /; spinof[op] == 1/2 :=
   number[op[j], UP] ~ nc ~ number[op[j], DO];
-hubbard[op_?fermionQ[j___]] /; spinof[op] != 1/2 := Module[{smin, smax},
+hubbard[op_?fermionQ[j___]] /; spinof[op] != 1/2 := Module[{smin, smax, s1, s2},
   smin = -spinof[op];
   smax = +spinof[op];
   Sum[Sum[number[op[j], s1] ~ nc ~ number[op[j], s2],
@@ -2232,9 +2235,10 @@ hubbard[op_?fermionQ, a___] /; AtomQ[op] := hubbard[op[], a];
 
 (* The Hubbard model for operator op[], nn sites and parameters
    U, t and eps *)
-hamiltonian[Hubbard, op_[j___], nn_, U_, t_, eps_] :=
+hamiltonian[Hubbard, op_[j___], nn_, U_, t_, eps_] := Module[{i},
   Sum[eps number[op[i, j]] + U hubbard[op[i, j]], {i, 1, nn}] +
-  t Sum[hop[op[i, j], op[i+1, j]], {i, 1, nn-1}];
+  t Sum[hop[op[i, j], op[i+1, j]], {i, 1, nn-1}]
+];
 
 (* Inter-site charge-charge interaction *)
 chargecharge[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] :=
@@ -2263,7 +2267,7 @@ spinxyzgen[g_] := Module[{cr, an},
   1/2 VMV[cr, #, an]& /@ {PauliX, PauliY, PauliZ}
 ];
 
-spinxyzgen[g_, spin_?halfintegerQ] := Module[{cr, an},
+spinxyzgen[g_, spin_?halfintegerQ] := Module[{cr, an, s},
   cr = Table[g[s], {s, +spin, -spin, -1}];
   an = conj /@ cr;
   VMV[cr, #, an]& /@
@@ -2328,8 +2332,9 @@ spinspin[op1_?fermionQ[j1___], fn2_Function] :=
 spinspin[fn1_Function, op2_?fermionQ[j2___]] :=
   spinspin[fn1, op2[#1, j2, #2]&];
 
-spinspin[op1_?spinQ[j1___], op2_?spinQ[j2___]] :=
-  Sum[nc[op1[j1, i], op2[j2, i]], {i, 3}];
+spinspin[op1_?spinQ[j1___], op2_?spinQ[j2___]] := Module[{i},
+  Sum[nc[op1[j1, i], op2[j2, i]], {i, 3}]
+];
 
 (* Recall: S1 . S2 = S1^z S2^z + 1/2 (S1^+ S2^- + S1^- S2^+) *)
 (* Note: spinspin[a,b] = spinspinz[a,b] + spinspinxy[a,b] -> no factor 1/2
@@ -2429,7 +2434,7 @@ isospinminus[op_, n___] /; AtomQ[op] := isospinminus[op[], n];
 
 (* Sum of isospin generators for operators enlisted in ops. *)
 manyisospin::unequallength = "Different lengths: ops=`` ns=``.";
-manyisospin[ops_List, ns1_:Null] := Module[{len, ns, ixyz, ii},
+manyisospin[ops_List, ns1_:Null] := Module[{len, ns, ixyz, ii, i},
   len = Length[ops];
   If[ns1 === Null, ns = Table[0, {len}], ns = ns1];
   If[Length[ns] != len,
@@ -2443,7 +2448,7 @@ manyisospin[ops_List, ns1_:Null] := Module[{len, ns, ixyz, ii},
 
 (* Basis states for a single site *)
 SetAttributes[basis, Listable];
-basis[op_?fermionQ[j___]] := Module[{ops},
+basis[op_?fermionQ[j___]] := Module[{ops, n},
   ops = mbfunc[op[j]];
   Join[{1}, Flatten[
     Table[(nc @@ Reverse[#])& /@ KSubsets[ops, n], {n, Length[ops]}],
@@ -2496,8 +2501,9 @@ hop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
   hop[op1[j1], op2[j2], UP] + hop[op1[j1], op2[j2], DO];
 
 hop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
-  (spinof[op1] == spinof[op2] != 1/2) :=
-  Sum[ hop[op1[j1], op2[j2], s], {s, -spinof[op1], spinof[op1]} ];
+  (spinof[op1] == spinof[op2] != 1/2) := Module[{s},
+  Sum[ hop[op1[j1], op2[j2], s], {s, -spinof[op1], spinof[op1]} ]
+];
 
 hop[fn1_Function, fn2_Function, sigma_] :=
   fn1[CR, sigma] ~ nc ~ fn2[AN, sigma] +
@@ -2571,10 +2577,12 @@ genanhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
 
 (* Hopping with spin-flip *)
 SetAttributes[spinfliphop, Listable];
-spinfliphop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] := Sum[
-  op1[CR, j1, sigma] ~ nc ~ op2[AN, j2, 1-sigma] +
-  op2[CR, j2, sigma] ~ nc ~ op1[AN, j1, 1-sigma],
-{sigma, DO, UP} ];
+spinfliphop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] := Module[{sigma},
+  Sum[
+    op1[CR, j1, sigma] ~ nc ~ op2[AN, j2, 1-sigma] +
+    op2[CR, j2, sigma] ~ nc ~ op1[AN, j1, 1-sigma],
+  {sigma, DO, UP} ]
+];
 
 (* Hopping with hole operators:
 c^\dag_{k,\sigma} f_\sigma} + f^\dag_\sigma c_{k\sigma}
@@ -2587,8 +2595,9 @@ holehop[oph_?fermionQ[jh___], opf_?fermionQ[jf___], sigma_] :=
 oph[AN, jh, sigma] ~ nc ~ opf[AN, jf, 1-sigma] +
 opf[CR, jf, sigma] ~ nc ~ oph[CR, jh, 1-sigma];
 
-holehop[oph_?fermionQ[jh___], opf_?fermionQ[jf___]] :=
-  Sum[holehop[oph[jh], opf[jf], sigma], {sigma, DO, UP}];
+holehop[oph_?fermionQ[jh___], opf_?fermionQ[jf___]] := Module[{sigma},
+  Sum[holehop[oph[jh], opf[jf], sigma], {sigma, DO, UP}]
+];
 
 (* 2-electron hopping operator *)
 SetAttributes[twohop, Listable];
@@ -2609,9 +2618,11 @@ hopphi[op1_?fermionQ[j1___], op2_?fermionQ[j2___], phi_] /;
 (* Hopping with spin-flip and phase change *)
 SetAttributes[spinfliphopphi, Listable];
 spinfliphopphi[op1_?fermionQ[j1___], op2_?fermionQ[j2___], phi_] :=
-  Sum[Exp[I phi] op1[CR, j1, sigma]~nc~op2[AN, j2, 1 - sigma] +
-  Exp[-I phi] op2[CR, j2, sigma]~nc~op1[AN, j1, 1 - sigma],
-        {sigma, DO, UP}];
+  Module[{sigma},
+    Sum[Exp[I phi] op1[CR, j1, sigma]~nc~op2[AN, j2, 1 - sigma] +
+    Exp[-I phi] op2[CR, j2, sigma]~nc~op1[AN, j1, 1 - sigma],
+          {sigma, DO, UP}]
+  ];
 
 (* Current operator *)
 (*
@@ -2663,8 +2674,9 @@ S=1/2). *)
 SetAttributes[mbfunc, Listable];
 mbfunc[op_[j___]] /; spinof[op] == 1/2 :=
   { op[CR, j, UP], op[CR, j, DO] };
-mbfunc[op_[j___]] /; spinof[op] != 1/2 :=
-  Table[ op[CR, j, s], {s, +spinof[op], -spinof[op], -1} ];
+mbfunc[op_[j___]] /; spinof[op] != 1/2 := Module[{s},
+  Table[ op[CR, j, s], {s, +spinof[op], -spinof[op], -1} ]
+];
 
 
 (* BASIS holds a (global) list of creation operators for all possible

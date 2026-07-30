@@ -1312,6 +1312,41 @@ test[
   True
 ];
 
+Print["** Iterator capture regression **"];
+snegfermionoperators[{captureSpinA, 1}, {captureSpinB, 1}];
+snegspinoperators[captureJ, captureK];
+
+Module[{alphaQ},
+  alphaQ[make_Function, q_Symbol] := Module[
+    {u = Unique["Global`alphaIndex$"]},
+    SameQ[make[q], make[u] /. u -> q]
+  ];
+
+  test[ alphaQ[number[captureSpinA[#]] &, Sneg`s], True ];
+  test[ alphaQ[hubbard[captureSpinA[#]] &, Sneg`s1], True ];
+  test[ alphaQ[hubbard[captureSpinA[#]] &, Sneg`s2], True ];
+  test[ alphaQ[
+      hamiltonian[Hubbard, c[#], 2, U, t, eps] &, Sneg`i], True ];
+  test[ alphaQ[spinxyz[captureSpinA[#]] &, Sneg`s], True ];
+  test[ alphaQ[spinspin[captureJ[#], captureK[captureFixed]] &,
+    Sneg`i], True ];
+  test[ alphaQ[manyisospin[{c[#], d[captureFixed]}] &, Sneg`i], True ];
+  test[ alphaQ[hop[captureSpinA[#], captureSpinB[captureFixed]] &,
+    Sneg`s], True ];
+
+  test[ alphaQ[basis[c[#]] &, Sneg`n], True ];
+  test[ alphaQ[basis[c[#]] &, Sneg`i], True ];
+  test[ alphaQ[basis[c[#]] &, Sneg`j], True ];
+  test[ alphaQ[basis[captureSpinA[#]] &, Sneg`s], True ];
+  test[ alphaQ[mbfunc[captureSpinA[#]] &, Sneg`s], True ];
+
+  test[ alphaQ[spinfliphop[c[#], d[captureFixed]] &,
+    Sneg`sigma], True ];
+  test[ alphaQ[holehop[c[#], d[captureFixed]] &, Sneg`sigma], True ];
+  test[ alphaQ[spinfliphopphi[c[#], d[captureFixed], phi] &,
+    Sneg`sigma], True ];
+];
+
 Print["** twohop[] **"];
 test[ twohop[c[], d[]],
 nc[c[0, 0], c[0, 1], d[1, 0], d[1, 1]] + 
