@@ -1017,6 +1017,36 @@ test[ number[c[], UP], nc[c[0, 1], c[1, 1]] ];
 test[ number[c[], DO], nc[c[0, 0], c[1, 0]] ];
 test[ number[c[]], nc[c[0, 0], c[1, 0]] + nc[c[0, 1], c[1, 1]]];
 
+snegbosonoperators[simplifyNumberBoson];
+test[
+  MatchQ[
+    SnegSimplifyNumber[
+      nc[simplifyNumberBoson[CR], simplifyNumberBoson[AN]]],
+    HoldPattern[HoldForm[number[simplifyNumberBoson[]]]]],
+  True
+];
+test[
+  MatchQ[
+    SnegSimplifyNumber[
+      nc[simplifyNumberBoson[CR, 2, 3],
+        simplifyNumberBoson[AN, 2, 3]]],
+    HoldPattern[HoldForm[number[simplifyNumberBoson[2, 3]]]]],
+  True
+];
+test[
+  MatchQ[
+    SnegSimplify[
+      nc[simplifyNumberBoson[CR, 7], simplifyNumberBoson[AN, 7]]],
+    HoldPattern[HoldForm[number[simplifyNumberBoson[7]]]]],
+  True
+];
+test[
+  MatchQ[
+    SnegSimplifyNumber[nc[c[CR, 4, UP], c[AN, 4, UP]]],
+    HoldPattern[HoldForm[number[c[4], 1]]]],
+  True
+];
+
 Print["** hubbard[] **"];
 test[ hubbard[c[]], -nc[c[0, 0], c[0, 1], c[1, 0], c[1, 1]] ];
 

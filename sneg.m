@@ -4285,8 +4285,10 @@ allsnegsimplifyrules = {Automatic, SnegSimplifyNumber, SnegSimplifySpin,
       SnegSimplifyHop, SnegSimplifyHubbard, SnegSimplifyMisc};
 
 SnegSimplifyNumber[expr_] :=
-  expr //. {nc[op_[CR, j___, sigma_], op_[AN, j___, sigma_]] :>
-              HoldForm[number[op[j], sigma]] /; operatorQ[op],
+  expr //. {nc[op_[CR, j___], op_[AN, j___]] :>
+              HoldForm[number[op[j]]] /; bosonQ[op],
+            nc[op_[CR, j___, sigma_], op_[AN, j___, sigma_]] :>
+              HoldForm[number[op[j], sigma]] /; fermionQ[op],
             Expand[z_. (HoldForm[number[i_, 1]] + HoldForm[number[i_, 0]]) ] :>
               z HoldForm[number[i]]};
 
