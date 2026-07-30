@@ -2823,6 +2823,11 @@ snegsesquilinearoperator[scalarproduct];
 snegsesquilinearoperator[scalarproductvc];
 SetAttributes[{scalarproduct, scalarproductvc, scalarproductop}, Listable];
 
+scalarproductvc[
+  vc[a___, ket[k1___]], vc[b___, ket[k2___]]
+] /; pairpattern[{k1}, {k2}] :=
+  scalarproductvc[vc[a], vc[b]] braketrule[bra[k1], ket[k2]];
+
 scalarproductvc[a_vc, b_vc] := If[a === b, 1, 0];
 
 scalarproductvc[scalar[z_] a_, b_] := scalar[conj[z]] scalarproductvc[a, b];
@@ -3259,6 +3264,7 @@ spindownvc::Usage = "spindownvc[v] effectively applies the spin-lowering
 operator to the state v in the occupation number representation.";
 
 sneglinearoperator[spindownvc1];
+spindownvc1[vc[a___, k:ket[___]]] := ap[k, spindownvc1[vc[a]]];
 spindownvc1[a_vc] := Module[{b, fn},
   b = List @@ Partition[a,2];
   fn[vc[1,0], {i_}] := vc @@ (Join @@ MapAt[vc[0,1]&, b, i]);
@@ -3811,7 +3817,7 @@ ketbratensorproduct[x_] := x;
 (* Tensor product of operator expressions in terms of ket,bra terms *)
 ketbratensorproduct[x1_, x2_] := Module[{w1, w2, y1, y2, width},
   width[x_] := Max[0, Sequence @@ Cases[x,
-    (ket[a___] | bra[a___]) :> Length[{a}], Infinity]];
+    (ket[a___] | bra[a___]) :> Length[{a}], {0, Infinity}]];
   w1 = width[x1];
   w2 = width[x2];
   y1 = x1 /. {

@@ -1362,6 +1362,10 @@ test[ scalarproduct[a, x b], x scalarproduct[a, b] ];
 
 test[ scalarproduct[ 1/2 vc[1,0,0], 1/3 vc[1,0,0] ], 1/6 ];
 test[ scalarproductvc[ scalar[z] vc[1], vc[1] ], scalar[conj[z]] ];
+test[ scalarproductvc[
+    vc[0, ket[Null, tensorI]], vc[0, ket[Null, tensorJ]]],
+  KroneckerDelta[tensorI, tensorJ] ];
+test[ scalarproductvc[vc[1, ket[tensorI]], vc[0, ket[tensorJ]]], 0 ];
 
 Print["* scalarproductop[] *"];
 test[ scalarproductop[ c[CR,UP], c[CR,UP] ] , 1 ];
@@ -1571,6 +1575,8 @@ mergebasis[{{1, {a, b}}, {2, {c, d}}, {1, {a2, b2}},
 Print["** applytocr/spindown zero normalization **"];
 test[applytocr[c[AN, UP], c[CR, DO]], 0];
 test[spindown[c[CR, DO]], 0];
+test[spindownvc[vc[1, 0, ket[tensorX]]], vc[0, 1, ket[tensorX]]];
+test[spindownvc[vc[ket[tensorX]]], 0];
 
 (* TEMPORARILY COMMENTED OUT
 Print["** spindown **"];
@@ -1996,6 +2002,8 @@ test[ ketbratensorproduct[
   nc[ket[ka], bra[ba]], nc[ket[kb], bra[bb]], nc[ket[kc], bra[bc]]],
 nc[ket[ka, kb, kc], bra[ba, bb, bc]]
 ];
+test[ ketbratensorproduct[ket[1], ket[2]], ket[1, 2] ];
+test[ ketbratensorproduct[ket[ka], ket[kb], ket[kc]], ket[ka, kb, kc] ];
 test[ phononnumber[2, {1, 1, 1}],
 nc[ket[0, 1, 0], bra[0, 1, 0]] +
 nc[ket[0, 1, 1], bra[0, 1, 1]] +
