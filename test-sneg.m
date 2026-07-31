@@ -1588,6 +1588,20 @@ test[ matrixrepresentationvcfast[1, {I vc[1, 0]}, {-vc[1, 0]}],
 basvc = {vc[0, 0], vc[1, 0]};
 test[ matrixrepresentationvcfast[1.*^-12, basvc][[1, 1]], 1.*^-12 ];
 
+Module[{auxBasis, auxGram},
+  auxBasis = {vc[ket[matrixKetA]], vc[ket[matrixKetB]]};
+  auxGram = {
+    {1, KroneckerDelta[matrixKetA, matrixKetB]},
+    {KroneckerDelta[matrixKetA, matrixKetB], 1}
+  };
+  test[ matrixrepresentationvcfast[1, auxBasis], auxGram ];
+  test[ Normal[matrixrepresentationvcsparse[1, auxBasis]], auxGram ];
+  test[
+    matrixrepresentationvcfast[1, {First[auxBasis]}, {Last[auxBasis]}],
+    {{KroneckerDelta[matrixKetA, matrixKetB]}}
+  ];
+];
+
 Print["*** Orthogonalisation ***"];
 
 test[ snegorthog[{{0, 1}}] =!= {}, True ];

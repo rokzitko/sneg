@@ -4536,7 +4536,8 @@ matrixrepresentationvcsparse[a_, l_List] := Module[
     Return[SparseArray[matrixrepresentationvc[a, l]]]
   ];
   states = parts[[All, 2]];
-  If[!DuplicateFreeQ[states],
+  (* Auxiliary kets can have symbolic or user-defined overlaps. *)
+  If[!FreeQ[states, _ket] || !DuplicateFreeQ[states],
     Return[SparseArray[matrixrepresentationvc[a, l]]]
   ];
   bracoeffs = conj /@ parts[[All, 1]];
@@ -4567,7 +4568,8 @@ matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[
     Return[matrixrepresentationvc[a, l1, l2]]
   ];
   states = parts[[All, 2]];
-  If[!DuplicateFreeQ[states],
+  (* Auxiliary kets can have symbolic or user-defined overlaps. *)
+  If[!FreeQ[states, _ket] || !DuplicateFreeQ[states],
     Return[matrixrepresentationvc[a, l1, l2]]
   ];
   bracoeffs = conj /@ parts[[All, 1]];
