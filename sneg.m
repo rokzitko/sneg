@@ -2197,6 +2197,10 @@ direct[l1_List, l2_List] := Flatten @ outer[l1, l2];
 
 (*** Auxiliary functions for operator construction ***)
 
+(* Abstract-orbital Function arguments are creation-defined: fn[CR, sigma]
+   is authoritative. The corresponding annihilation expression is always
+   derived as conj[fn[CR, sigma]]; fn[AN, sigma] is never evaluated. *)
+
 (* Number operator *)
 SetAttributes[number, Listable];
 
@@ -2208,7 +2212,9 @@ number[op_?fermionQ[j___]] /; spinof[op] != 1/2 := Module[{s},
 ];
 
 (* Number operator for abstract function argument *)
-number[fn_Function, sigma_] := fn[CR, sigma] ~ nc ~ fn[AN, sigma];
+number[fn_Function, sigma_] := With[{cr = fn[CR, sigma]},
+  cr ~ nc ~ conj[cr]
+];
 number[fn_Function] := number[fn, UP] + number[fn, DO];
 
 (* Number operator for bosonic operators *)
@@ -2505,9 +2511,10 @@ hop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
   Sum[ hop[op1[j1], op2[j2], s], {s, -spinof[op1], spinof[op1]} ]
 ];
 
-hop[fn1_Function, fn2_Function, sigma_] :=
-  fn1[CR, sigma] ~ nc ~ fn2[AN, sigma] +
-  fn2[CR, sigma] ~ nc ~ fn1[AN, sigma];
+hop[fn1_Function, fn2_Function, sigma_] := With[{
+  seed = fn1[CR, sigma] ~ nc ~ conj[fn2[CR, sigma]]},
+  seed + conj[seed]
+];
 
 hop[fn1_Function, fn2_Function] :=
   hop[fn1, fn2, UP] + hop[fn1, fn2, DO];
@@ -2534,9 +2541,10 @@ anomaloushop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
   (spinof[op1] == spinof[op2] == 1/2) :=
   anomaloushop[op1[j1], op2[j2], UP] + anomaloushop[op1[j1], op2[j2], DO];
 
-anomaloushop[fn1_Function, fn2_Function, sigma_] :=
-  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
-  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+anomaloushop[fn1_Function, fn2_Function, sigma_] := With[{
+  seed = fn1[CR, sigma] ~ nc ~ fn2[CR, 1-sigma]},
+  seed + conj[seed]
+];
 
 anomaloushop[fn1_Function, fn2_Function] :=
   anomaloushop[fn1, fn2, UP] + anomaloushop[fn1, fn2, DO];
@@ -2555,9 +2563,10 @@ anhop[op1_?fermionQ[j1___], op2_?fermionQ[j2___]] /;
   (spinof[op1] == spinof[op2] == 1/2) :=
   anhop[op1[j1], op2[j2], UP] - anhop[op1[j1], op2[j2], DO]; (* sign! *)
 
-anhop[fn1_Function, fn2_Function, sigma_] :=
-  fn1[CR, sigma]   ~ nc ~ fn2[CR, 1-sigma] +
-  fn2[AN, 1-sigma] ~ nc ~ fn1[AN, sigma];
+anhop[fn1_Function, fn2_Function, sigma_] := With[{
+  seed = fn1[CR, sigma] ~ nc ~ fn2[CR, 1-sigma]},
+  seed + conj[seed]
+];
 
 anhop[fn1_Function, fn2_Function] :=
   anhop[fn1, fn2, UP] - anhop[fn1, fn2, DO]; (* sign! *)

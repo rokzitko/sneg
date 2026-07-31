@@ -1312,6 +1312,69 @@ test[
   True
 ];
 
+Print["** Abstract orbital functions **"];
+complexAbstractOrbital =
+  (c[#1, #2] + I d[#1, #2])/Sqrt[2]&;
+orthogonalAbstractOrbital =
+  (c[#1, #2] - I d[#1, #2])/Sqrt[2]&;
+
+test[
+  Module[{anCalls = 0, fn},
+    fn = Function[{type, sigma},
+      If[type === AN, anCalls++];
+      (c[type, sigma] + I d[type, sigma])/Sqrt[2]
+    ];
+    number[fn, UP];
+    hop[fn, fn, UP];
+    anomaloushop[fn, fn, UP];
+    anhop[fn, fn, UP];
+    spinxyz[fn];
+    spinspin[fn, fn];
+    anCalls
+  ],
+  0
+];
+test[
+  expvop[number[complexAbstractOrbital, UP],
+    complexAbstractOrbital[CR, UP]],
+  1
+];
+test[
+  {braketop[complexAbstractOrbital[CR, UP],
+      hop[complexAbstractOrbital, orthogonalAbstractOrbital, UP],
+      orthogonalAbstractOrbital[CR, UP]],
+    braketop[orthogonalAbstractOrbital[CR, UP],
+      hop[complexAbstractOrbital, orthogonalAbstractOrbital, UP],
+      complexAbstractOrbital[CR, UP]]},
+  {1, 1}
+];
+test[
+  Expand /@ {
+    conj[anomaloushop[complexAbstractOrbital,
+        orthogonalAbstractOrbital, UP]] -
+      anomaloushop[complexAbstractOrbital,
+        orthogonalAbstractOrbital, UP],
+    conj[anhop[complexAbstractOrbital,
+        orthogonalAbstractOrbital]] -
+      anhop[complexAbstractOrbital, orthogonalAbstractOrbital]},
+  {0, 0}
+];
+test[
+  Expand /@ {
+    conj[hop[complexAbstractOrbital, c[]]] -
+      hop[complexAbstractOrbital, c[]],
+    conj[anomaloushop[complexAbstractOrbital, c[]]] -
+      anomaloushop[complexAbstractOrbital, c[]],
+    conj[anhop[complexAbstractOrbital, c[]]] -
+      anhop[complexAbstractOrbital, c[]]},
+  {0, 0, 0}
+];
+test[
+  Expand /@ (conj /@ spinxyz[complexAbstractOrbital] -
+    spinxyz[complexAbstractOrbital]),
+  {0, 0, 0}
+];
+
 Print["** Iterator capture regression **"];
 snegfermionoperators[{captureSpinA, 1}, {captureSpinB, 1}];
 snegspinoperators[captureJ, captureK];
