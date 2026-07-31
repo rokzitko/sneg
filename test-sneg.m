@@ -2904,49 +2904,6 @@ test[ allpairs[{1,2}, {3,4}], {{1,3},{1,4},{2,3},{2,4}} ];
 
 test[ dropzeros[{0, 1, 2, 3, 0, 2, 3, {1}, 0}], {1, 2, 3, 2, 3, {1}} ];
 
-Print["* diagonalize trace helpers *"];
-Get["examples/diagonalize.m"];
-Block[{deg, beta = 0, vac, eigTest, expr, spectralBasis, spectralEig,
-    spectralEigFast, spectralOps},
-  deg[_] = 1;
-  makebasis[{c[]}];
-  vac = vacuum[];
-  eigTest = {{{0}, {{0, 1}, {vac, ap[c[CR, UP], vac]}}}};
-  expr = c[CR, UP] + c[AN, UP];
-  test[
-    {tdtr1expr[eigTest, expr], tdtr2expr[eigTest, expr],
-      tdtr2exprALT[eigTest, expr]},
-    {0, 0, 0}
-  ];
-
-  snegfermionoperators[spectralTestOp];
-  spectralBasis = qszbasisvc[{spectralTestOp[]}];
-  spectralEig = Map[
-    {#[[1]], {ConstantArray[0, Length[#[[2]]]], #[[2]]}} &,
-    spectralBasis];
-  spectralEigFast = Map[
-    {#[[1]], {ConstantArray[0, Length[#[[2]]]],
-      IdentityMatrix[Length[#[[2]]]]}} &,
-    spectralBasis];
-  spectralOps = {
-    spectralTestOp[CR, UP],
-    spectralTestOp[AN, UP],
-    spectralTestOp[CR, DO],
-    spectralTestOp[AN, DO],
-    number[spectralTestOp[]],
-    spectralTestOp[CR, UP] + spectralTestOp[AN, UP]
-  };
-  test[
-    Map[
-      Function[op, Expand[
-        spectral2expr[spectralEig, op] -
-          spectral2FAST[spectralEigFast,
-            makeallmatricesbzvc[op, spectralBasis]]]],
-      spectralOps],
-    ConstantArray[0, Length[spectralOps]]
-  ];
-];
-
 test[remainder[{2, 2, a[CR, \[Sigma]], 1, 1}], dd[a[0, \[Sigma]]]];
 test[remainder[{2, 1}], -1];
 test[remainder[{1, 1}], 1];

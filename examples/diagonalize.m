@@ -83,9 +83,8 @@ diagonalize[params_] := Module[{Hmat1},
    eig = {#[[1]], Eigensystem @ #[[2]]} & /@ Hmat1;
       
    (* Normalize eigenvectors *)
-   eig[[All, 2, 2]] = Chop[ 
-    eig[[All, 2, 2]] / Map[Norm, eig[[All, 2, 2]], {2}] 
-   ];
+   eig[[All, 2, 2]] =
+    eig[[All, 2, 2]] / Map[Norm, eig[[All, 2, 2]], {2}];
       
    (* Occupation number representation *)
    eig2 = eig /. {{q_, sz_}, {val_, vec_}} :> 
@@ -197,7 +196,7 @@ spectral2expr[eig_List, expr_] := Module[{expreig, s2eapply},
       Outer[(Exp[-beta #1] + Exp[-beta #2]) *
         Delta[omega + (#1 - #2)]&, #1[[1]], #2[[1]]] *
       Outer[Abs[scalarproductvc[#1, #2]]^2 &, #1[[2]], #2[[2]]],
-   2] &] // Chop
+   2] &]
 ];
 
 
@@ -259,7 +258,7 @@ spectral2FAST[eig_List, lmat_] := Module[{},
         Outer[(Exp[-beta #1] + Exp[-beta #2])Delta[omega + (#1 - #2)] &, 
               vals1, vals2];
       skpdts = Abs[Conjugate[vecs1].mat.Transpose[vecs2]]^2;
-      deg[qn1] deg[qn2] (Chop @ Total[factors skpdts, 2])
+      deg[qn1] deg[qn2] Total[factors skpdts, 2]
     ];
   Expand @ Total @ Map[do1, lmat]
 ];
