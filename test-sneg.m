@@ -2632,7 +2632,81 @@ test[ contractedpairs[3, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
 
 Print["* Contractions *"];
 snegfermionoperators[noneWickFermion];
+snegfreeindexes[noneWickI, noneWickJ, noneWickK, noneWickL];
 ordering[noneWickFermion] = NONE;
+
+test[ contraction[noneWickFermion[AN], noneWickFermion[CR]], 1 ];
+test[
+  contraction[noneWickFermion[AN, noneWickI],
+    noneWickFermion[CR, noneWickJ]],
+  KroneckerDelta[noneWickI, noneWickJ]
+];
+test[
+  contraction[noneWickFermion[AN, noneWickI],
+      noneWickFermion[CR, noneWickJ]] /. noneWickJ -> noneWickI,
+  1
+];
+test[
+  contraction[noneWickFermion[AN, noneWickI, noneWickK],
+    noneWickFermion[CR, noneWickJ, noneWickL]],
+  KroneckerDelta[noneWickI, noneWickJ]
+    KroneckerDelta[noneWickK, noneWickL]
+];
+test[
+  contraction[noneWickFermion[AN, noneWickI],
+    noneWickFermion[CR, noneWickJ, noneWickK]],
+  0
+];
+test[
+  contraction[noneWickFermion[AN, 1], noneWickFermion[CR, 2]],
+  0
+];
+test[
+  {contraction[noneWickFermion[CR, noneWickI],
+      noneWickFermion[AN, noneWickJ]],
+    contraction[noneWickFermion[AN, noneWickI],
+      noneWickFermion[AN, noneWickJ]],
+    contraction[noneWickFermion[CR, noneWickI],
+      noneWickFermion[CR, noneWickJ]]},
+  {0, 0, 0}
+];
+
+Module[{pair, four, pairExpected, fourExpected},
+  pair = nc[noneWickFermion[AN, noneWickI],
+    noneWickFermion[CR, noneWickJ]];
+  pairExpected = KroneckerDelta[noneWickI, noneWickJ];
+  test[
+    {vevwick[pair], vevwick2[pair], vevwicknew[pair]},
+    ConstantArray[pairExpected, 3]
+  ];
+
+  four = nc[
+    noneWickFermion[AN, noneWickI],
+    noneWickFermion[AN, noneWickJ],
+    noneWickFermion[CR, noneWickK],
+    noneWickFermion[CR, noneWickL]
+  ];
+  fourExpected =
+    KroneckerDelta[noneWickI, noneWickL]
+      KroneckerDelta[noneWickJ, noneWickK] -
+    KroneckerDelta[noneWickI, noneWickK]
+      KroneckerDelta[noneWickJ, noneWickL];
+  test[
+    {vevwick[four], vevwick2[four], vevwicknew[four]},
+    ConstantArray[fourExpected, 3]
+  ];
+];
+
+snegfermionoperators[noneWickHookFermion];
+ordering[noneWickHookFermion] = NONE;
+noneWickHookFermion /:
+  acmt[noneWickHookFermion[AN, i_], noneWickHookFermion[CR, j_]] :=
+    noneWickHook[i, j];
+test[
+  contraction[noneWickHookFermion[AN, noneWickI],
+    noneWickHookFermion[CR, noneWickJ]],
+  noneWickHook[noneWickI, noneWickJ]
+];
 
 test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
       contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}] ]; (* test test[] *)

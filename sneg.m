@@ -1167,9 +1167,10 @@ isannihilation[op_[t_, j___]] /; (ordering[op] == NONE) := (t == AN);
 iscreation[op_[t_, j___]] /; (ordering[op] == NONE) := (t == CR);
 contraction[x1:op_[AN, j1___], x2:op_[CR, j2___]] /;
   (ordering[op] == NONE) :=
-    If[TrueQ[bosonQ[op]],
-      cmt[x1, x2],
-      If[{j1} === {j2}, 1, 0, 0]
+    Which[
+      TrueQ[bosonQ[op]], cmt[x1, x2],
+      TrueQ[fermionQ[op]], acmt[x1, x2],
+      True, If[{j1} === {j2}, 1, 0, 0]
     ];
 contraction[op_[___], op_[___]] /; (ordering[op] == NONE) := 0;
 
