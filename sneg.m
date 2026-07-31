@@ -3435,7 +3435,7 @@ orthogop[vecs_?VectorQ, basis_?VectorQ] := Module[{m, l},
   m = Simplify[m]; (* See below! *)
   l = snegorthog[m];
   l = Simplify[l];
-  l = Select[l, Norm[#] != 0 &]; (* Drop zero vectors *)
+  l = Select[l, Not[snegzeroarrayQ[#]] &]; (* Drop proven zero vectors *)
   Expand @ Map[(# . basis)&, l]
 ];
 
@@ -3450,7 +3450,7 @@ orthogvc[vecs_?VectorQ, basis_?VectorQ] := Module[{m, l},
   m = Simplify[m];
   l = snegorthog[m];
   l = Simplify[l];
-  l = Select[l, Norm[#] != 0 &]; (* Drop zero vectors *)
+  l = Select[l, Not[snegzeroarrayQ[#]] &]; (* Drop proven zero vectors *)
   Expand @ Map[(# . basis)&, l]
 ];
 

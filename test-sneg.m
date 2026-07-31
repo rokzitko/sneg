@@ -1593,6 +1593,27 @@ Print["*** Orthogonalisation ***"];
 test[ snegorthog[{{0, 1}}] =!= {}, True ];
 test[ snegorthog[{{0, 1}, {0, 0}}] =!= {}, True ];
 test[ snegorthog[{{Sin[x]^2 + Cos[x]^2 - 1}}], {} ];
+test[ snegzeroarrayQ[{orthogUnknown, 0}], False ];
+test[ snegzeroarrayQ[{Sin[x]^2 + Cos[x]^2 - 1, 0}], True ];
+
+snegrealconstants[orthogPhase];
+Module[{phaseVC, phaseOP},
+  phaseVC = vc[1, 0] + Exp[I orthogPhase] vc[0, 1];
+  test[
+    orthogvc[{phaseVC}, {vc[1, 0], vc[0, 1]}],
+    {vc[1, 0]/Sqrt[2] + Exp[I orthogPhase] vc[0, 1]/Sqrt[2]}
+  ];
+  test[
+    normvc[First[orthogvc[{phaseVC}, {vc[1, 0], vc[0, 1]}]]],
+    1
+  ];
+
+  phaseOP = 1 + Exp[I orthogPhase] c[CR, UP];
+  test[
+    orthogop[{phaseOP}, {1, c[CR, UP]}],
+    {1/Sqrt[2] + Exp[I orthogPhase] c[CR, UP]/Sqrt[2]}
+  ];
+];
 
 test[ orthogvc[{1/2 vc[1, 0, 0], 1/3vc[1, 0, 0] + 1/4 vc[0, 1, 0]},
   {vc[1, 0, 0], vc[0, 1, 0], vc[0, 0, 1]}],
