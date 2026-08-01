@@ -78,28 +78,37 @@ adapted to more involved calculations.
 
 ## Installation
 
-SNEG is a Wolfram Language package and requires no compilation. Download
-the [main branch archive](https://github.com/rokzitko/sneg/archive/refs/heads/main.zip)
-or clone the GitHub repository.
+SNEG is a Wolfram Language package and requires no compilation. With
+Mathematica 12.1 or newer, install or update the latest release directly
+from Mathematica:
 
-In Mathematica, evaluate the following expression to determine the
-recommended per-user installation location:
+```wl
+PacletInstall[
+  "https://github.com/rokzitko/sneg/releases/latest/download/SNEG.paclet"
+]
+```
+
+Load the installed package and check its version with:
+
+```wl
+Needs["Sneg`"]
+$SnegVersion
+```
+
+Remove the installed paclet with `PacletUninstall["SNEG"]`.
+
+For Mathematica versions 7 through 12.0, download the
+[main branch archive](https://github.com/rokzitko/sneg/archive/refs/heads/main.zip)
+or clone the repository. Place it in the per-user application directory
+returned by:
 
 ```wl
 FileNameJoin[{$UserBaseDirectory, "Applications", "sneg"}]
 ```
 
-Place the repository at the returned path. If an archive extracts to a
-directory such as `sneg-main`, rename that directory to `sneg`. Load the
-package and check its version with:
-
-```wl
-<< sneg`
-$SnegVersion
-```
-
-Installation is optional. A checkout at any location can be loaded
-directly:
+The directory must be named `sneg`; rename an extracted `sneg-main`
+directory if necessary. Load a legacy installation with `<< sneg``.
+A checkout at any location can also be loaded directly:
 
 ```wl
 Get["/absolute/path/to/sneg/sneg.m"]
@@ -150,6 +159,12 @@ The exact-diagonalization example has a separate regression suite:
 
 ```sh
 wolframscript -file examples/test-diagonalize.m
+```
+
+Build the release paclet with:
+
+```sh
+wolframscript -file build-paclet.m
 ```
 
 ## Compatibility
