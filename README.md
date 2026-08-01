@@ -1,209 +1,167 @@
-# SNEG - Mathematica package for calculations with non-commuting operators of the second quantization algebra
+# SNEG - Mathematica package for calculations with noncommuting operators of the second-quantization algebra
 
-Copyright (C) 2006-2023 Rok Zitko
+Copyright (C) 2002-2026 Rok Zitko
 
+SNEG is a Wolfram Language package for symbolic calculations with
+operators of second quantization, with particular emphasis on
+anticommuting fermionic operators. It defines operator algebras through
+transformation rules and provides utilities for constructing operators,
+states, bases, and matrix representations.
 
-The SNEG library is a package for Mathematica computer algebra
-system. It provides a framework for performing calculations using the
-operators of the second quantisation with an emphasis on the
-anti-commuting fermionic operators. It consists of a collection of
-transformation rules that define the algebra of operators and a number
-of utility functions.
+At its core is `nc`, a noncommutative multiplication operation that
+automatically rewrites operators into a canonical form according to
+selected commutation and anticommutation rules. Conventional normal
+ordering places creation operators before annihilation operators;
+particle-hole and no-reordering conventions are also available.
+Canonical ordering simplifies expressions and supports efficient
+matrix-element evaluation in a chosen basis.
 
-The foundation is a definition of non-commutative multiplication with
-automatic reordering of operators in a standard form (usually the
-conventional normal ordering with creation operators preceding the
-annihilation operators), which takes into account selected
-(anti)commutation rules. Standard form reordering allows
-simplifications of expressions and the choice of normal ordering
-permits efficient evaluation of matrix elements in a given basis.
-
-The library makes otherwise tedious calculations a routine
-operation. Especially, it prevents inauspicious sign errors when
-commuting fermionic operators.
-
+SNEG automates sign-sensitive manipulations that are otherwise tedious
+and error-prone.
 
 ## Features
 
-* Collection of utility functions that generate various operator
-expressions, such as electron number, electron spin and isospin,
-1-electron and 2-electron hopping, projection operators, spin-spin and
-charge-charge inter-site coupling, etc. These functions can be applied
-to construct the Hamiltonian and operators for observables.
+* Operator declarations and canonical algebras for fermionic, spinless
+  fermionic, bosonic, Majorana, and spin operators, with `EMPTY`, `SEA`,
+  and `NONE` ordering conventions.
 
-* Manipulation of operator expressions: canonical conjugation, spin
-inversion.
+* High-level constructors for particle number, spin, isospin, Nambu
+  operators, Hubbard interactions, ordinary and anomalous hopping,
+  projection operators, and spin-spin and charge-charge couplings.
 
-* Calculation of vacuum expectation values of operator expressions.
+* Canonical conjugation, commutators and anticommutators, spin inversion,
+  normal ordering, vacuum expectation values, and Wick expansion.
 
-* Occupation-number representation of states and evaluation of
-operator-vector expressions. Occupation-number representations allows
-great speed-up in applying a string of operators on a basis state.
+* Occupation-number representations of states, efficient application of
+  operator strings to states, and conversion between state and
+  product-of-operators representations.
 
-* Transformations from product-of-operators to occupation-number
-representations of states and vice-versa.
+* Generation of symmetry-adapted bases with well-defined `Q` and `S_z`,
+  `Q` and `S`, or `I` and `S`, with optional reflection parity.
 
-* Generation of basis states with well-defined particle number Q and
-spin projection Sz, well-defined number Q and spin S, or well-defined
-isospin I and spin S. For models with reflection symmetry, a parity
-quantum number can also be introduced. 
+* Basis manipulation, transformation, merging, decomposition, and
+  orthogonalization utilities.
 
-* Utility functions for manipulating sets of basis states: conversions
-between various representations, mapping a function to each state,
-transformations of basis, merging several sets of basis states,
-orthogonalization, etc.
+* Dense and sparse matrix representations of operators in a chosen
+  basis.
 
-* Generation of matrix representations of operators in a given basis
+* Symbolic sums over free and dummy indexes, including automatic index
+  renaming and simplification of Kronecker deltas.
 
-* Support for free (dummy) indexes and summed-over indexes: it is easy
-to write multiple sums over wave-numbers k_i and spins
-sigma_i. Automatic simplifications can be performed in such sums,
-which take into account that multiple summed-over indexes can be
-interchanged, etc.
+* Dirac bra-ket notation that can be combined with second-quantization
+  operator expressions.
 
-* Support for Dirac's bra-ket notation. Bra-ket notation can be
-intermixed with the second-quantization operators notation.
+* Particle-hole-aware ordering and Wick contractions for filled Fermi
+  seas.
 
-* Distinction between particle and hole operators. This distinction is
-used in the standard normal ordering (creation operators are those
-that create a particle or a hole) and in the applications of the Wick
-theorem (see next entry).
+* Anticommuting Grassmann variables and fermionic coherent states.
 
-* Simplifications using Wick's theorem, in particular calculation of
-the ground state (vacuum) expectation values.
+* Finite single- and multi-mode phonon bases and operators, including
+  fermion-phonon tensor-product bases.
 
-* Support for commuting bosonic operators.
-
-* Support for anti-commuting Grassman variables and fermionic coherent states.
-
-* Support for real (Majorana) fermions.
-
-* Support for spin operators.
-
-* Automatic simplification of expressions with exponential functions
-of operators using the Baker-Campbell-Hausdorff formula.
-
-* Built-in support for pretty printing of operator expressions,
-obviating the need to use the Notation package. Colors are used to
-further improve readability.
-
-* Code for rewritting an operator expression in terms of higher-level
-functions, such as number, hopping, electron-electron repulsion, spin,
-etc. operators.
-
-* Support for converting compact ASCII operator-string expressions to
-the SNEG internal representation and vice-versa. This functionality is
-currently in the testing stage. See the examples in the file
-snegtoascii_asciitosneg.nb.
-
+* Selected Baker-Hausdorff simplifications and noncommutative operator
+  power-series expansions.
 
 ## Applications
 
-SNEG forms the basis of "NRG Ljubljana", a framework for performing
-numerical renormalization group calculations for quantum impurity
-problems, such as Kondo and Anderson impurity models
-(http://nrgljubljana.ijs.si/). In the past, it has also been applied
-to perform exact diagonalizations on Hubbard clusters, perturbation
-theory to higher orders and calculation of commutators of complex
-operator expressions. It should also be suitable for educational
-purposes, since it simplifies tedious calculations with
-second-quantization operators, much like Mathematica simplified
-learning calculus. A number of examples is included in the SNEG
-library distribution; they can easily be extended to non-trivial
-calculations.
+SNEG provides the symbolic foundation of
+[NRG Ljubljana](https://github.com/rokzitko/nrgljubljana), a framework
+for numerical renormalization group calculations for quantum impurity
+problems such as Kondo and Anderson impurity models. It has also been
+used for exact diagonalization of Hubbard clusters, high-order
+perturbation theory, and commutators of complex operator expressions.
+
+The package is also suitable for teaching second-quantization methods:
+it exposes the algebra while automating lengthy sign-sensitive steps.
+The [`examples`](examples/) directory contains notebooks that can be
+adapted to more involved calculations.
 
 ## Installation
 
-Download the latest version from the main branch on github or
-[here](https://github.com/rokzitko/sneg/archive/refs/heads/master.zip).
-The package can be installed by extracting to your 
-'$InstallationDirectory\AddOns\Applications\' directory. The
-installation directoy can be found by running `$InstallationDirectory`
-in a Wolfram language kernel. Alternatively, the package can be
-installed through the Mathematica provided GUI by going to `File >
-Install... > type: Application > Source: From directory` and selecting
-the downloaded `sneg` folder. (Note: rename the directory to `sneg`
-before doing the File > Install, i.e., remove any `-main` or `-2.0.0`
-parts of the directory name. Mathematica does not seem to like minus
-signs in the paths.)
+SNEG is a Wolfram Language package and requires no compilation. Download
+the [main branch archive](https://github.com/rokzitko/sneg/archive/refs/heads/main.zip)
+or clone the GitHub repository.
 
-The package is correctly installed if one can run 
+In Mathematica, evaluate the following expression to determine the
+recommended per-user installation location:
+
+```wl
+FileNameJoin[{$UserBaseDirectory, "Applications", "sneg"}]
 ```
+
+Place the repository at the returned path. If an archive extracts to a
+directory such as `sneg-main`, rename that directory to `sneg`. Load the
+package and check its version with:
+
+```wl
 << sneg`
+$SnegVersion
 ```
 
-On MacOS, the installation directory is
-$HOME/Mathematica/Applications/sneg/. You can clone the github
-repository into this folder.
+Installation is optional. A checkout at any location can be loaded
+directly:
+
+```wl
+Get["/absolute/path/to/sneg/sneg.m"]
+```
 
 ## Documentation
 
-Documentation for SNEG library is located in Documentation/English
-directory. This directory should be copied to your local Applications
-directory, then merged in your Mathematica help system using Rebuild
-Help Index in Help menu. The relevant pages are then located in
-"Add-ons & Links" tab, in the section "sneg documentation".
+Function-reference notebooks are available in
+[`docs/Documentation/English`](docs/Documentation/English/), including a
+legacy [`quickstart.nb`](docs/Documentation/English/quickstart.nb). They
+were created for Mathematica's former help browser and should be opened
+directly; the old "Rebuild Help Index" integration is not supported by
+modern Mathematica versions.
 
-In the directory docs/ there is an older version of a SNEG manual
-and a long version of an article describing the SNEG package.
+Additional material includes:
 
-A number of example Mathematica notebooks can be found in the
-directory examples/.
+* Example notebooks and scripts in [`examples`](examples/).
+* The early minimalist [SNEG manual](docs/manual/manual.pdf).
+* The bundled preprint of the
+  [Computer Physics Communications article](docs/CPC_paper/paper.pdf).
 
+When publishing work that uses SNEG, please cite Rok Zitko, "SNEG -
+Mathematica package for symbolic calculations with
+second-quantization-operator expressions," *Computer Physics
+Communications* **182** (2011), 2259-2264,
+[doi:10.1016/j.cpc.2011.05.013](https://doi.org/10.1016/j.cpc.2011.05.013).
 
 ## License
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-The full text of the GPL General Public License can be found
-in file LICENSE.
-
+SNEG is free software distributed under the GNU General Public License,
+version 2 or, at your option, any later version. See
+[`LICENSE`](LICENSE) for the license text.
 
 ## Contributing to SNEG
 
-If you make improvements to SNEG, you are encouraged to share them
-with other users. Bug reports (and fixes) are very welcome as well.
-The contact information is in the next section.
+Bug reports, fixes, new regression tests, and documentation improvements
+are welcome through
+[GitHub issues](https://github.com/rokzitko/sneg/issues) and
+[pull requests](https://github.com/rokzitko/sneg/pulls).
 
-Interesting directions for possible further extensions are improved
-support for bosonic operators (basis construction, simplifications in
-the case of bosons); performance improvements; code simplifications;
-and improved documentation.
+Run the core regression suite from the repository root with:
 
+```sh
+wolframscript -file test-sneg.m
+```
+
+The exact-diagonalization example has a separate regression suite:
+
+```sh
+wolframscript -file examples/test-diagonalize.m
+```
 
 ## Compatibility
 
-SNEG was mostly developed and tested using Mathematica 5.2. It was
-also tested to work under Mathematica 5.0 and 5.1, as well as under
-new versions 6, 7, and 8. The author tries his best to make SNEG
-compatible across different versions of Mathematica.
+The current SNEG code requires Mathematica 7 or newer. It has been
+tested with Mathematica versions through 15.
 
+## Contact information
 
-## Contact information:
+GitHub repository: <https://github.com/rokzitko/sneg>
 
-SNEG library home-page: http://nrgljubljana.ijs.si/sneg
-
-Github repository: https://github.com/rokzitko/sneg
-
-Rok Zitko
-"Jozef Stefan" Institute
-F1 - Theoretical physics
-Jamova 39
-SI-1000 Ljubljana
-Slovenia
-
-
-  rok.zitko@ijs.si (preferred contact address)
-
+* Rok Zitko
+* "Jozef Stefan" Institute, F1 - Theoretical physics
+* Jamova 39, SI-1000 Ljubljana, Slovenia
+* Email: [rok.zitko@ijs.si](mailto:rok.zitko@ijs.si)
