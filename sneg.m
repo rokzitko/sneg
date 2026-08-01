@@ -2606,8 +2606,8 @@ h_{k,-\sigma} f_\sigma + f^\dag_\sigma h^\dag_{k,-\sigma}
 
 SetAttributes[holehop, Listable];
 holehop[oph_?fermionQ[jh___], opf_?fermionQ[jf___], sigma_] :=
-oph[AN, jh, sigma] ~ nc ~ opf[AN, jf, 1-sigma] +
-opf[CR, jf, sigma] ~ nc ~ oph[CR, jh, 1-sigma];
+  oph[AN, jh, 1-sigma] ~ nc ~ opf[AN, jf, sigma] +
+  opf[CR, jf, sigma] ~ nc ~ oph[CR, jh, 1-sigma];
 
 holehop[oph_?fermionQ[jh___], opf_?fermionQ[jf___]] := Module[{sigma},
   Sum[holehop[oph[jh], opf[jf], sigma], {sigma, DO, UP}]

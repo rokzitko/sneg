@@ -1312,6 +1312,39 @@ test[
   True
 ];
 
+Print["** holehop[] **"];
+Module[{holeHops, pairUP, pairDO},
+  holeHops = {
+    holehop[c[], d[], UP],
+    holehop[c[], d[], DO],
+    holehop[c[], d[], holeSpin]
+  };
+  test[
+    holeHops,
+    {anomaloushop[d[], c[], UP],
+      anomaloushop[d[], c[], DO],
+      anomaloushop[d[], c[], holeSpin]}
+  ];
+  test[
+    Expand /@ (conj /@ holeHops - holeHops),
+    {0, 0, 0}
+  ];
+
+  pairUP = nc[d[CR, UP], c[CR, DO]];
+  pairDO = nc[d[CR, DO], c[CR, UP]];
+  test[
+    {braketop[pairUP, holeHops[[1]], 1],
+      braketop[1, holeHops[[1]], pairUP],
+      braketop[pairDO, holeHops[[2]], 1],
+      braketop[1, holeHops[[2]], pairDO]},
+    {1, 1, 1, 1}
+  ];
+  test[
+    holehop[c[], d[]],
+    anomaloushop[d[], c[]]
+  ];
+];
+
 Print["** Abstract orbital functions **"];
 complexAbstractOrbital =
   (c[#1, #2] + I d[#1, #2])/Sqrt[2]&;
