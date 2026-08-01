@@ -2213,6 +2213,50 @@ test[nc[m1, z1], -nc[z1, m1]];
 test[nc[m1, z1] + nc[z1, m1], 0];
 test[conj @ nc[z1,z2,c[CR]], -nc[conj[z1], conj[z2], c[AN]]];
 
+test[isnumericQ[z1], False];
+test[
+  {vev[z1], vevwick[z1], vevwick2[z1], vevwicknew[z1]},
+  ConstantArray[z1, 4]
+];
+test[
+  {vev[nc[z1, z2]], vevwick[nc[z1, z2]],
+    vevwick2[nc[z1, z2]], vevwicknew[nc[z1, z2]]},
+  ConstantArray[nc[z1, z2], 4]
+];
+test[
+  {vev[nc[z1, c[AN], c[CR]]],
+    vev[nc[c[AN], z1, c[CR]]],
+    vev[nc[c[AN], c[CR], z1]]},
+  {z1, -z1, z1}
+];
+test[vev[nc[z1, c[AN], z2, c[CR]]], -nc[z1, z2]];
+test[vev[nc[c[AN], z1, z2, c[CR]]], nc[z1, z2]];
+test[vev[nc[m1, z1, m1]], -z1/2];
+test[
+  {normalorder[nc[z1, c[AN], c[CR]]],
+    normalorderwick[nc[z1, c[AN], c[CR]]]},
+  ConstantArray[-nc[z1, c[CR], c[AN]], 2]
+];
+
+snegfermionoperators[grassVevFermion];
+ordering[grassVevFermion] = NONE;
+test[
+  {vevwick[nc[z1, grassVevFermion[AN], grassVevFermion[CR]]],
+    vevwick2[nc[z1, grassVevFermion[AN], grassVevFermion[CR]]],
+    vevwicknew[nc[z1, grassVevFermion[AN], grassVevFermion[CR]]]},
+  ConstantArray[z1, 3]
+];
+
+snegbosonoperators[grassVevBoson];
+ordering[grassVevBoson] = NONE;
+Module[{expr = nc[grassVevBoson[AN], z1, grassVevBoson[CR]]},
+  test[expr, nc[z1, grassVevBoson[AN], grassVevBoson[CR]]];
+  test[
+    {vev[expr], vevwick[expr], vevwick2[expr], vevwicknew[expr]},
+    ConstantArray[z1, 4]
+  ];
+];
+
 Print["* acmtcount *"];
 test[acmtcount[{}], 0];
 test[acmtcount[{2}], 0];
@@ -2246,6 +2290,11 @@ test[ nc[int[z2, z1], z2, z1], -1];
 (* ??? *)
 
 test[ nc[ int[z1], int[z2], z2, z1], -1 ];
+test[ nc[int[z1], vev[nc[z1, c[AN], c[CR]]]], 1 ];
+test[
+  nc[int[z1, z2], vev[nc[z1, z2, c[AN], c[CR]]]],
+  1
+];
 
 Print["* Creation/annihilation *"];
 

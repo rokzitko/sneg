@@ -1066,6 +1066,8 @@ sneglinearoperator[op_] := {
    for example, vev[], zeroonvac[].*)
 
 sneglinearoperatorFirst[op_] := {
+  op[z_?grassmanQ] := z;
+  op[HoldPattern[nc[z_?grassmanQ, rest__]]] := nc[z, op[nc[rest]]];
   op[z_?isnumericQ] := z;
   op[z_?isnumericQ, b__] := z op[b];
   op[z_?isnumericQ b_, c___] := z op[b, c]; (* Important: b_, not b__ ! *)
@@ -1313,6 +1315,8 @@ nc[a___, z1_?grassmanQ, z2_?grassmanQ, b___] /; (!OrderedQ[{z1,z2}]) :=
   -nc[a, z2, z1, b];
 
 nc[a___, z_, b___, z_, c___] /; grassmanQ[z] := 0;
+
+nc[a___, b_?bosonQ, z_?grassmanQ, c___] := nc[a, z, b, c];
 
 nc[a___, b_, z_, c___] /; ((fermionQ[b] || majoranaQ[b]) && grassmanQ[z]) :=
   -nc[a, z, b, c];
