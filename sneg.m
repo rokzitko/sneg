@@ -2677,6 +2677,16 @@ invertspin[HoldPattern[ nc[a__] ]] := nc @@ Map[invertspin, {a}];
 
 (************** AP **************)
 
+(* FINITE-BASIS CONVENTION:
+   mbfunc[], BASIS, vacuum[], ap[], the basis generators, vc/operator
+   conversions, and lrmap[] use bare-particle occupations relative to the
+   zero-particle vacuum. They represent modes using op[CR,...] and do not
+   follow ordering[op].
+
+   Consequently, this subsystem does not construct a Fermi-sea
+   quasiparticle/hole basis for SEA operators. Operator-form finite bases
+   are supported only with EMPTY-vacuum semantics. *)
+
 (* mbfunc[] expands each generic operator a[j] into a pair of creation
 operators for both spin orientations. This function is used in basis
 construction in makebasis[] and in lrmap[] for constructing a mapping
