@@ -3903,27 +3903,52 @@ phononbasis[cutoffs : {_Integer ..}] :=
 
 phononid[Nph_Integer] := Sum[nc[ket[i], bra[i]], {i, 0, Nph}];
 
+phononnumber::mode = "Mode index `1` must be an integer from 1 through `2`.";
+phononplus::mode = "Mode index `1` must be an integer from 1 through `2`.";
+phononminus::mode = "Mode index `1` must be an integer from 1 through `2`.";
+phononx::mode = "Mode index `1` must be an integer from 1 through `2`.";
+
 phononnumber[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
-  ops = Table[If[j == i, phononnumber, phononid], {j, nr}];
+  If[!IntegerQ[i] || i < 1 || i > nr,
+    Message[phononnumber::mode, i, nr];
+    Return[$Failed]
+  ];
+  ops = ConstantArray[phononid, nr];
+  ops[[i]] = phononnumber;
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
 phononplus[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
-  ops = Table[If[j == i, phononplus, phononid], {j, nr}];
+  If[!IntegerQ[i] || i < 1 || i > nr,
+    Message[phononplus::mode, i, nr];
+    Return[$Failed]
+  ];
+  ops = ConstantArray[phononid, nr];
+  ops[[i]] = phononplus;
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
 phononminus[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
-  ops = Table[If[j == i, phononminus, phononid], {j, nr}];
+  If[!IntegerQ[i] || i < 1 || i > nr,
+    Message[phononminus::mode, i, nr];
+    Return[$Failed]
+  ];
+  ops = ConstantArray[phononid, nr];
+  ops[[i]] = phononminus;
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 
 phononx[i_, cutoffs : {_Integer ..}] := Module[{nr, ops},
   nr = Length[cutoffs];
-  ops = Table[If[j == i, phononx, phononid], {j, nr}];
+  If[!IntegerQ[i] || i < 1 || i > nr,
+    Message[phononx::mode, i, nr];
+    Return[$Failed]
+  ];
+  ops = ConstantArray[phononid, nr];
+  ops[[i]] = phononx;
   ketbratensorproduct @@ MapThread[#1[#2] &, {ops, cutoffs}]
 ];
 

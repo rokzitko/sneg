@@ -2227,6 +2227,42 @@ nc[ket[1, 1, 0], bra[1, 1, 0]] +
 nc[ket[1, 1, 1], bra[1, 1, 1]]
 ];
 
+test[
+  Quiet[
+    {phononnumber[3, {1, 1}], phononplus[3, {1, 1}],
+      phononminus[3, {1, 1}], phononx[3, {1, 1}]},
+    {phononnumber::mode, phononplus::mode,
+      phononminus::mode, phononx::mode}],
+  ConstantArray[$Failed, 4]
+];
+test[
+  {Quiet[Check[phononnumber[3, {1, 1}], phononModeMessage,
+      phononnumber::mode], phononnumber::mode],
+    Quiet[Check[phononplus[3, {1, 1}], phononModeMessage,
+      phononplus::mode], phononplus::mode],
+    Quiet[Check[phononminus[3, {1, 1}], phononModeMessage,
+      phononminus::mode], phononminus::mode],
+    Quiet[Check[phononx[3, {1, 1}], phononModeMessage,
+      phononx::mode], phononx::mode]},
+  ConstantArray[phononModeMessage, 4]
+];
+test[
+  Quiet[
+    Map[phononnumber[#, {1, 1}] &, {0, -1, 3, 3/2, 1., phononMode}],
+    phononnumber::mode],
+  ConstantArray[$Failed, 6]
+];
+test[
+  {phononnumber[1, {2}], phononplus[1, {2}],
+    phononminus[1, {2}], phononx[1, {2}]},
+  {phononnumber[2], phononplus[2], phononminus[2], phononx[2]}
+];
+test[
+  {phononnumber[1, {1, 1}], phononnumber[2, {1, 1}]},
+  {ketbratensorproduct[phononnumber[1], phononid[1]],
+    ketbratensorproduct[phononid[1], phononnumber[1]]}
+];
+
 Print["** Grassman numbers **"];
 sneggrassmanconstants[zz, z1, z2];
 test[conj[conj[zz]], zz];
