@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.0.24 Aug 2026";
+snegidstring = "sneg.m 2.1 Aug 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -4801,4 +4801,8 @@ ruleFullSimplifyUnderSum = {
   sum[a_, {q__}] :> sum[FullSimplify[a], {q}]
 };
 
+EndPackage[];
+
+(* Backward-compatible lowercase loader context. *)
+BeginPackage["sneg`", {"Sneg`"}];
 EndPackage[];

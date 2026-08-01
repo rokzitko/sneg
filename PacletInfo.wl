@@ -1,6 +1,6 @@
 PacletObject[<|
   "Name" -> "SNEG",
-  "Version" -> "2.0.24",
+  "Version" -> "2.1",
   "WolframVersion" -> "12.1+",
   "Description" ->
     "Symbolic calculations with noncommuting second-quantization operators",
@@ -9,7 +9,7 @@ PacletObject[<|
   "URL" -> "https://github.com/rokzitko/sneg",
   "Support" -> "https://github.com/rokzitko/sneg/issues",
   "Extensions" -> {
-    {"Kernel", "Root" -> "Kernel", "Context" -> {"Sneg`"}},
+    {"Kernel", "Root" -> "Kernel", "Context" -> {"Sneg`", "sneg`"}},
     {"Asset", "Assets" -> {
       {"Source", "./sneg.m"},
       {"License", "./LICENSE"},

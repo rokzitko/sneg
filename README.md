@@ -91,9 +91,11 @@ PacletInstall[
 Load the installed package and check its version with:
 
 ```wl
-Needs["Sneg`"]
+Needs["sneg`"]
 $SnegVersion
 ```
+
+The canonical capitalization `Needs["Sneg`"]` is also supported.
 
 Remove the installed paclet with `PacletUninstall["SNEG"]`.
 

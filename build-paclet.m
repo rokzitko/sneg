@@ -11,7 +11,7 @@ pacletVersion = paclet["Version"];
 packageVersions = StringCases[
   Import[FileNameJoin[{repoRoot, "sneg.m"}], "Text"],
   RegularExpression[
-    "snegidstring\\s*=\\s*\"sneg\\.m\\s+([0-9]+\\.[0-9]+\\.[0-9]+)"
+    "snegidstring\\s*=\\s*\"sneg\\.m\\s+([0-9]+(?:\\.[0-9]+)+)"
   ] -> "$1"
 ];
 

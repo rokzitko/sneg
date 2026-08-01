@@ -89,6 +89,13 @@ If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
   Exit[];
 ];
 
+Print["** Package contexts **"];
+test[$SnegVersion, "2.1"];
+test[MemberQ[$Packages, "sneg`"], True];
+test[MemberQ[$ContextPath, "Sneg`"], True];
+test[Context[number], "Sneg`"];
+test[Check[Needs["sneg`"]; True, False, Needs::nocont], True];
+
 Print["** Listable functions **"];
 test[nc[{a, b}, c], {nc[a, c], nc[b, c]}];
 test[nc[{a, b}, {c, d}], {nc[a, c], nc[b, d]}];
