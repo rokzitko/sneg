@@ -1283,6 +1283,9 @@ test[ pow[c[], 1], c[] ];
 test[ pow[c[], 2], nc[c[], c[]] ];
 test[ pow[c[], 3], nc[c[], c[], c[]] ];
 test[ pow[c[], 4], nc[c[], c[], c[], c[]] ];
+test[ snegSeries[Exp[A], 2], 1 + A + nc[A, A]/2 ];
+test[ snegSeries[Sin[A], 3], A - nc[A, A, A]/6 ];
+test[ snegSeries[Exp[A]], snegSeries[Exp, A, 5] ];
 
 Print["** hop[] **"];
 test[ hop[c[], d[], UP], nc[c[0, 1], d[1, 1]] + nc[d[0, 1], c[1, 1]] ];

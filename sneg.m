@@ -4496,8 +4496,10 @@ snegSeries[f_, expr_, n_:5] := Module[{s, x, pw},
   s /. x^pw_. :> fastpow[expr, pw]  (* pow -> fastpow, 25.8.2010 *)
 ];
 
-snegSeries[f_[expr_], n_:5] := snegSeries[f, expr, n];
-snegSeries[E^expr_, n_:5] := snegSeries[Exp, expr, n];
+snegSeries[f_[expr_], n_] := snegSeries[f, expr, n];
+snegSeries[f_[expr_]] := snegSeries[f, expr, 5];
+snegSeries[E^expr_, n_] := snegSeries[Exp, expr, n];
+snegSeries[E^expr_] := snegSeries[Exp, expr, 5];
 
 (* Example: snegSeries[Exp[c]] *)
 
