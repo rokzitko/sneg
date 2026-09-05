@@ -663,9 +663,6 @@ KSubsets[l_List,k_Integer?Positive] := {l} /; (k == Length[l])
 KSubsets[l_List,k_Integer?Positive] := {}  /; (k > Length[l])
 KSubsets[s_List, k_Integer] := Prepend[Map[s[[#]] &, KS[Length[s], k]], s[[Range[k] ]] ]
 
-(* Mathematica >6.x required *)
-(* OLD 1: snegorthog[m_] := Orthogonalize[m, Method->"Householder"]; *)
-(* OLD 2: snegorthog[m_] := Orthogonalize[m, Dot[Conjugate[#1], #2] &]; *)
 snegzeroarrayQ[m_] := And @@ (TrueQ[Simplify[# == 0]] & /@ Flatten[m]);
 snegorthog[m_] := Orthogonalize[m, Simplify[Dot[Conjugate[#1], #2]] &];
 snegorthog[m_] /; snegzeroarrayQ[m] := {};
@@ -2196,9 +2193,6 @@ VMV[v1_, m_, v2_] := (v1 ~ inner ~ m) ~ inner ~ v2;
 
 (* Direct product of two lists. May be used in in basis construction. *)
 direct[l1_List, l2_List] := Flatten @ outer[l1, l2];
-
-(* DEPRECATED: mdot[a_, b_] := Inner[nc, a, b]; *)
-
 
 (*** Auxiliary functions for operator construction ***)
 
