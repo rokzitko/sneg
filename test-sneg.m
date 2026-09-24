@@ -33,11 +33,11 @@
 
 Check[reslt=Get["sneg.m"], 
   Print["Messages detected. Aborting."];
-  Exit[];
+  Exit[1];
 ];
 If[reslt == $Failed,
   Print["Loading failed. Aborting."];
-  Exit[];
+  Exit[1];
 ];
 
 Print["test-sneg.m $Id: test-sneg.m,v 1.9 2007/12/03 15:46:57 rok Exp rok $"];
@@ -78,7 +78,11 @@ test[a_, b_, workingversion_:0, negate_:False] := Module[{aa, bb, failed},
 ];
 
 (* Trap missing right sides in the tests *)
-test[a_] := Print["sneg-test error. Missing right side. Left=", a];
+test[a_] := (
+  Print["sneg-test error. Missing right side. Left=", a];
+  testfailed++;
+  False
+);
 
 (* Self-test: test if test[] really tests! *)
 If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
@@ -86,7 +90,7 @@ If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
   testfailed--,
   (* else *)
   Print["*** Self-test FAILED. ***"];
-  Exit[];
+  Exit[1];
 ];
 
 Print["** Package contexts **"];
@@ -3269,4 +3273,4 @@ If[testfailed == 0,
 ];
 
 
-Exit[];
+Exit[If[testfailed == 0, 0, 1]];
