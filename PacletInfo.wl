@@ -1,6 +1,6 @@
 PacletObject[<|
   "Name" -> "SNEG",
-  "Version" -> "2.1",
+  "Version" -> "2.1.1",
   "WolframVersion" -> "12.1+",
   "Description" ->
     "Symbolic calculations with noncommuting second-quantization operators",

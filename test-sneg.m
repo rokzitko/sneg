@@ -90,7 +90,7 @@ If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
 ];
 
 Print["** Package contexts **"];
-test[$SnegVersion, "2.1"];
+test[$SnegVersion, "2.1.1"];
 test[MemberQ[$Packages, "sneg`"], True];
 test[MemberQ[$ContextPath, "Sneg`"], True];
 test[Context[number], "Sneg`"];
@@ -1322,6 +1322,104 @@ test[
   True
 ];
 
+Print["** matrixhop[] **"];
+test[ matrixhop[IdentityMatrix[2], c[], d[]], hop[c[], d[]] ];
+test[ matrixhop[ConstantArray[0, {2, 2}], c[], d[]], 0 ];
+test[ matrixhop[PauliX, c[], d[]], spinfliphop[c[], d[]] ];
+test[ matrixhop[PauliY, c[], d[]],
+  -I nc[c[CR, UP], d[AN, DO]] + I nc[c[CR, DO], d[AN, UP]] +
+   I nc[d[CR, DO], c[AN, UP]] - I nc[d[CR, UP], c[AN, DO]]
+];
+test[ matrixhop[PauliZ, c[], d[]],
+  Expand[hop[c[], d[], UP] - hop[c[], d[], DO]] ];
+test[ matrixhop[I IdentityMatrix[2], c[], c[]], 0 ];
+
+Module[{z},
+  (* Matrix coefficients are scalars without requiring a declaration. *)
+  test[ matrixhop[z IdentityMatrix[2], c[], d[]], genhop[z, c[], d[]] ];
+  test[ matrixhop[{{0, z}, {0, 0}}, c[3, 5], d[4, 6]],
+    z nc[c[CR, 3, 5, UP], d[AN, 4, 6, DO]] +
+      Conjugate[z] nc[d[CR, 4, 6, DO], c[AN, 3, 5, UP]] ];
+];
+
+Module[{t11, t12, t21, t22, mat, h, states, zero},
+  snegcomplexconstants[t11, t12, t21, t22];
+  mat = {{t11, t12}, {t21, t22}};
+  h = matrixhop[mat, c[3], d[4]];
+  states = {c[CR, 3, UP], c[CR, 3, DO], d[CR, 4, UP], d[CR, 4, DO]};
+  zero = ConstantArray[0, {2, 2}];
+  (* Independent check of spin ordering, off-diagonal signs, and H.c. *)
+  test[ matrixrepresentationop[h, states],
+    ArrayFlatten[{{zero, mat}, {ConjugateTranspose[mat], zero}}] ];
+  test[ Expand[conj[h] - h], 0 ];
+  test[ Expand[matrixhop[ConjugateTranspose[mat], d[4], c[3]] - h], 0 ];
+  test[ matrixhop[SparseArray[mat], c[3], d[4]], h ];
+];
+
+(* Pauli decomposition must not lose a small floating-point entry through
+   cancellation between large identity and Pauli-Z coefficients. *)
+test[ Coefficient[
+    matrixhop[{{1.*^20, 0}, {0, 1.}}, c[], d[]],
+    nc[c[CR, DO], d[AN, DO]]], 1. ];
+test[ Coefficient[Expand[
+    matrixhop[{{1.*^20, Sin[x]}, {Sin[x], 1.}}, c[], d[]]],
+    nc[c[CR, DO], d[AN, DO]]], 1. ];
+
+Module[{theta, complexAngle, assumedAngle, axis, rotation, h, seed,
+    states, zero, expected},
+  snegrealconstants[theta];
+  snegcomplexconstants[complexAngle];
+  states = {c[CR, UP], c[CR, DO], d[CR, UP], d[CR, DO]};
+  zero = ConstantArray[0, {2, 2}];
+  Do[
+    (* Pass a precomputed MatrixExp result, not just an inline call. *)
+    rotation = MatrixExp[I theta axis];
+    h = matrixhop[rotation, c[], d[]];
+    seed = VMV[{c[CR, UP], c[CR, DO]}, I axis, {d[AN, UP], d[AN, DO]}];
+    expected = Cos[theta] hop[c[], d[]] + Sin[theta] (seed + conj[seed]);
+    test[ Expand[h - expected], 0 ];
+    test[ Expand[conj[h] - h], 0 ];
+    test[ h /. theta -> 0, hop[c[], d[]] ];
+    (* Check simplification itself, in particular for the diagonal rotation
+       whose raw MatrixExp entries are complex exponentials. *)
+    test[ !FreeQ[h, Cos[theta]] && !FreeQ[h, Sin[theta]] &&
+      FreeQ[h, Power[E, _]], True ],
+    {axis, {PauliX, PauliY, PauliZ, (PauliX + 2 PauliY + 3 PauliZ)/Sqrt[14]}}
+  ];
+  test[ Expand[matrixhop[MatrixExp[theta PauliX], c[], d[]] -
+      Cosh[theta] hop[c[], d[]] - Sinh[theta] spinfliphop[c[], d[]]], 0 ];
+  test[ Assuming[Element[assumedAngle, Reals],
+      matrixhop[MatrixExp[I assumedAngle PauliZ], c[], d[]]] /.
+      assumedAngle -> theta,
+    matrixhop[MatrixExp[I theta PauliZ], c[], d[]] ];
+
+  (* Do not assume that a rotation parameter is real. Compare a complex
+     substitution against the independently evaluated one-particle matrix. *)
+  h = matrixhop[MatrixExp[I complexAngle PauliZ], c[], d[]];
+  test[ Expand[conj[h] - h], 0 ];
+  rotation = MatrixExp[I ((1 + I)/3) PauliZ];
+  expected = ArrayFlatten[{{zero, rotation}, {ConjugateTranspose[rotation], zero}}];
+  test[ Max[Abs[Flatten[N[
+      matrixrepresentationop[h /. complexAngle -> (1 + I)/3, states] -
+        expected]]]] < 10^-12, True ];
+];
+
+Module[{spinless, spinone, boson, invalidMatrices},
+  snegspinlessfermionoperators[spinless];
+  snegfermionoperators[{spinone, 1}];
+  snegbosonoperators[boson];
+  invalidMatrices = {1, {1, 2}, {{1, 0}}, {{1, 0}, {0}}, IdentityMatrix[3]};
+  test[ Quiet[matrixhop[#, c[], d[]] & /@ invalidMatrices, matrixhop::matrix],
+    ConstantArray[$Failed, Length[invalidMatrices]] ];
+  test[ Quiet[Check[matrixhop[IdentityMatrix[3], c[], d[]], matrixHopMessage,
+      matrixhop::matrix], matrixhop::matrix], matrixHopMessage ];
+  test[ Quiet[matrixhop[IdentityMatrix[2], #, d[]] & /@
+      {spinless[], spinone[], boson[]}, matrixhop::op],
+    {$Failed, $Failed, $Failed} ];
+  test[ Quiet[Check[matrixhop[IdentityMatrix[2], c[], spinone[]],
+      matrixHopMessage, matrixhop::op], matrixhop::op], matrixHopMessage ];
+];
+
 Print["** holehop[] **"];
 Module[{holeHops, pairUP, pairDO},
   holeHops = {
@@ -1369,6 +1467,7 @@ test[
     ];
     number[fn, UP];
     hop[fn, fn, UP];
+    matrixhop[PauliY, fn, fn];
     anomaloushop[fn, fn, UP];
     anhop[fn, fn, UP];
     spinxyz[fn];
@@ -1416,6 +1515,21 @@ test[
   Expand /@ (conj /@ spinxyz[complexAbstractOrbital] -
     spinxyz[complexAbstractOrbital]),
   {0, 0, 0}
+];
+
+Module[{mat, h, states, zero},
+  mat = {{1 + I, 2 - I}, {3 I, -2}};
+  h = matrixhop[mat, complexAbstractOrbital, orthogonalAbstractOrbital];
+  states = {complexAbstractOrbital[CR, UP], complexAbstractOrbital[CR, DO],
+    orthogonalAbstractOrbital[CR, UP], orthogonalAbstractOrbital[CR, DO]};
+  zero = ConstantArray[0, {2, 2}];
+  test[ matrixrepresentationop[h, states],
+    ArrayFlatten[{{zero, mat}, {ConjugateTranspose[mat], zero}}] ];
+  test[ Expand[conj[h] - h], 0 ];
+  test[ Expand[matrixhop[mat, complexAbstractOrbital, c[]] -
+      matrixhop[mat, complexAbstractOrbital, c[#1, #2]&]], 0 ];
+  test[ Expand[matrixhop[mat, c[], complexAbstractOrbital] -
+      matrixhop[mat, c[#1, #2]&, complexAbstractOrbital]], 0 ];
 ];
 
 Print["** Iterator capture regression **"];

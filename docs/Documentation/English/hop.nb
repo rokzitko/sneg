@@ -36,9 +36,6 @@ Notebook reader applications are available free of charge from
 Wolfram Research.
 *******************************************************************)
 
-(*CacheID: 232*)
-
-
 (*NotebookFileLineBreakTest
 NotebookFileLineBreakTest*)
 (*NotebookOptionsPosition[    350917,       8487]*)
@@ -80,6 +77,25 @@ operators ",
   StyleBox["d", "TI"],
   " for spin \[Sigma] electrons."
 }], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["matrixhop[T, c, d]", "MR"],
+  " returns c-dagger T d plus its Hermitian conjugate, summed over both spin \
+indices. T is a dense or sparse 2 by 2 matrix with rows and columns ordered \
+as {UP, DO}. The endpoints must be spin-1/2 fermion operators or \
+creation-defined abstract-orbital Functions."
+}], "Usage"],
+
+Cell[TextData[{
+  "\[FilledSmallSquare] ",
+  StyleBox["matrixhop", "MR"],
+  " attempts to simplify symbolic matrices in the identity/Pauli basis under \
+the current $Assumptions. For example, after snegrealconstants[theta], ",
+  StyleBox["matrixhop[MatrixExp[I theta PauliY], c[], d[]]", "MR"],
+  " uses the decomposition Cos[theta] IdentityMatrix[2] + I Sin[theta] PauliY. \
+Precomputed MatrixExp results can also be passed as the matrix argument."
+}], "Notes"],
 
 Cell[TextData[{
   "\[FilledSmallSquare] Operators ",
@@ -8598,4 +8614,3 @@ Cell[310925, 7773, 39940, 708, 184, 3503, 253, "GraphicsData", "PostScript", \
 (*******************************************************************
 End of Mathematica Notebook file.
 *******************************************************************)
-

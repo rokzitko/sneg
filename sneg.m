@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.1 Aug 2026";
+snegidstring = "sneg.m 2.1.1 Sep 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -321,6 +321,13 @@ UsageWithMore[hop,
 "hop[a[i], b[j]] returns the electron hopping operator between
 sites a[i] and b[j]. hop[a[i], b[j], sigma] with sigma=UP | DO
 does the same for a single spin projection sigma."];
+UsageWithMore[matrixhop,
+"matrixhop[T, a[i], b[j]] returns a^dagger . T . b plus its Hermitian
+conjugate, summed over both spin indices. T is a dense or
+sparse 2 by 2 matrix in the spin basis {UP, DO}. The operators must be
+spin-1/2 fermions or creation-defined abstract-orbital Functions.
+Pauli decomposition is used to simplify symbolic matrices, including
+results of MatrixExp, under the current $Assumptions.", "hop"];
 UsageWithMore[anomaloushop,
 "anomaloushop[a[i], b[j]] returns the anomalous hopping operator between
 sites a[i] and b[j]."];
@@ -2520,6 +2527,55 @@ hop[fn1_Function, fn2_Function] :=
 
 hop[fn1_Function, op2_?fermionQ[j2___]] := hop[fn1, op2[#1, j2, #2]&];
 hop[op1_?fermionQ[j1___], fn2_Function] := hop[op1[#1, j1, #2]&, fn2];
+
+(* Matrix-valued hopping. Rows and columns are ordered as {UP, DO}.
+   This constructor is not Listable: a matrix is a single argument. *)
+matrixhop::matrix = "Expected a 2 by 2 hopping matrix, got ``.";
+matrixhop::op = "Expected a spin-1/2 fermion operator or an abstract-orbital Function, got ``.";
+
+matrixhopCreation[op_?fermionQ[j___]] /; TrueQ[spinof[op] == 1/2] :=
+  {op[CR, j, UP], op[CR, j, DO]};
+matrixhopCreation[fn_Function] := {fn[CR, UP], fn[CR, DO]};
+matrixhopCreation[op_] := (Message[matrixhop::op, op]; $Failed);
+
+matrixhop[T_, op1_, op2_] := Module[
+  {mat, cr1, cr2, terms, paulis, coefficients, conjugates},
+  If[!MatrixQ[T] || Dimensions[T] =!= {2, 2},
+    Message[matrixhop::matrix, T];
+    Return[$Failed]
+  ];
+  mat = If[Head[T] === SparseArray, Normal[T], T];
+  cr1 = matrixhopCreation[op1];
+  If[cr1 === $Failed, Return[$Failed]];
+  cr2 = matrixhopCreation[op2];
+  If[cr2 === $Failed, Return[$Failed]];
+  terms = Outer[nc, cr1, conj[cr2]];
+
+  (* T = Sum[t_mu sigma_mu], with t_mu = Tr[T.sigma_mu]/2.
+     Simplify the four scalars, rather than the operator expression.
+     Work with evaluated matrices so that precomputed MatrixExp results
+     benefit as well. Numeric matrices and matrices containing inexact
+     numbers use the direct contraction below to avoid roundoff from
+     decomposing and reconstructing their entries. *)
+  If[!MatrixQ[mat, NumericQ] && FreeQ[mat, _?InexactNumberQ],
+    paulis = {IdentityMatrix[2], PauliX, PauliY, PauliZ};
+    coefficients = Simplify[ExpToTrig[Tr[mat.#]/2 & /@ paulis]];
+    If[LeafCount[coefficients] < LeafCount[Flatten[mat]],
+      terms = Total[Flatten[# terms]] & /@ paulis;
+      conjugates = Simplify[Conjugate[coefficients]];
+      Return[Total[MapThread[
+        Which[
+          #1 === #2, #1 (#3 + conj[#3]),
+          #1 === -#2, #1 (#3 - conj[#3]),
+          True, #1 #3 + #2 conj[#3]
+        ] &, {coefficients, conjugates, terms}]]]
+    ]
+  ];
+
+  (* Matrix entries are scalars even if they have not been declared as
+     SNEG constants. Conjugate them separately from the operator terms. *)
+  Total[Flatten[mat terms + Conjugate[mat] conj[terms]]]
+];
 
 (* Generic hopping with a complex-valued parameter t *)
 genhop[t_, op1_?fermionQ[j1___], op2_?fermionQ[j2___], sigma_] :=
