@@ -1180,6 +1180,15 @@ contraction[x1:op_[AN, j1___], x2:op_[CR, j2___]] /;
     ];
 contraction[op_[___], op_[___]] /; (ordering[op] == NONE) := 0;
 
+(* Independent operator families still have zero cross contractions when
+   automatic reordering is disabled. Respect a custom fermionic acmt. *)
+contraction[x1:op1_[t1_, j1___], x2:op2_[t2_, j2___]] /;
+  (op1 =!= op2 && ordering[op1] === NONE && ordering[op2] === NONE &&
+   (TrueQ[fermionQ[op1]] || TrueQ[bosonQ[op1]]) &&
+   (TrueQ[fermionQ[op2]] || TrueQ[bosonQ[op2]])) :=
+    If[t1 === AN && t2 === CR && TrueQ[fermionQ[op1]] && TrueQ[fermionQ[op2]],
+      acmt[x1, x2], 0];
+
 (* NEW RULES for ordering=SEA, 25. 3. 2007 *)
 
 snegOrderedQ[x1:op_[i1_, k1___], x2:op_[i2_, k2___]] /;
@@ -1941,7 +1950,8 @@ sumAbstractIndex[expr_, ndxfunc_] := Module[{ r },
   SetAttributes[ndxfunc, NumericFunction];
   r = sum[a_, it_List] :> Module[{rule, len, i},
         len = Length[it];
-        rule = Table[it[[i]] :> ndxfunc[i], {i, len}];
+        (* Evaluate each replacement while its iterator is in scope. *)
+        rule = Table[it[[i]] -> ndxfunc[i], {i, len}];
         sum[a //. rule, it //. rule]
       ];
   expr /. r
@@ -1951,9 +1961,9 @@ sumNameIndex::usage =
 "sumNameIndex[expr] is to be used in conjunction with
 sumAbstractIndex[expr].";
 
-sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len},
+sumNameIndex[expr_, ndxfunc_, li_List] := Module[ {len, i},
   len = Length[li];
-  expr //. Table[ndxfunc[i] :> li[[i]], {i, len}]
+  expr //. Table[ndxfunc[i] -> li[[i]], {i, len}]
 ];
 
 rulesumStripSums = {
@@ -2061,9 +2071,11 @@ sneglinearoperatorFirst /@ {vev, vevwick};
 SetAttributes[{vev, vevwick}, Listable];
 vev[_?fermionQ[__]] := 0;
 vevwick[_?fermionQ[__]] := 0;
+vevwick2[_?fermionQ[__]] := 0;
 
 vev[_?bosonQ[__]] := 0;
 vevwick[_?bosonQ[__]] := 0;
+vevwick2[_?bosonQ[__]] := 0;
 
 (* Odd number of operators *)
 vev[x:HoldPattern[nc[_?fermionQ[__]..]]] /; OddQ[Length[x]] := 0;
@@ -4096,13 +4108,13 @@ enain[i_, n_] := Table[If[j == i, 1, 0], {j, n}];
 (* Given a set of operators "oldbasis", a set of operators "newbasis" and
 a set of operator expressions for newbasis, produce the transformation
 rules from the oldbasis to the new basis! *)
-snegold2newrules[oldbasis_, newbasis_, rules_] := Module[{n, ob, mat, x},
+snegold2newrules[oldbasis_, newbasis_, rules_] := Module[{n, ob, mat, x, i},
   n = Length[oldbasis];
   If[n != Length[newbasis],
     Print["Mismatching lengths."];
     Return[];
   ];
-  ob = Table[oldbasis[[i]] :> enain[i, n], {i, Length[oldbasis]}];
+  ob = Table[oldbasis[[i]] -> enain[i, n], {i, Length[oldbasis]}];
   mat = rules /. ob;
   x = Norm[mat . Transpose[Conjugate[mat]] - IdentityMatrix[n]];
   If[x != 0,
@@ -4149,7 +4161,7 @@ contractedpairs[nr_, l_List] := contractedpairs[nr,l] =
 (* Contraction of two operators according to the standard definition:
 substract the normal ordered expression. *)
 contraction[x1 : op1_[t1_, i1___], x2 : op2_[t2_, i2___]] /;
-    (ordering[op] =!= NONE) :=
+    (ordering[op1] =!= NONE || ordering[op2] =!= NONE) :=
        nc[x1, x2] - normalorder[x1 ~ nc ~ x2];
 
 (* Bosonic endpoints are even. Preserve the historical odd behavior for all
@@ -4329,7 +4341,7 @@ mambpair[{qn1_, vecs1_}, {qn2_, vecs2_}, op_, FNC_] := Module[{pair, matrep, tot
   matrep = FNC[op, vecs1, vecs2];
   (* TRICK: Drop combinations of subspaces that do not contribute. *)
   tot = Total[Abs[matrep], 2];
-  If[tot =!= 0, {pair, matrep}, HoldComplete[Sequence[]]]
+  If[!TrueQ[tot == 0], {pair, matrep}, HoldComplete[Sequence[]]]
 ];
 
 listofpairs[l1_, l2_] := Flatten[Outer[List, l1, l2, 1], 1];
@@ -4745,16 +4757,21 @@ SU2merge[{qn1_, l1_}, {qn2_, l2_},
      Map[{combineqnfn[First[#], qn1, qn2], {Last[#]}} &, states]
  ];
 
-SU2combine[op1_, op2_, {s1_, s2_}, fixspin1fnc_, fixspin2fnc_] :=
+SU2combine[op1_, op2_, {s1_, s2_}, fixspin1fnc_, fixspin2fnc_] := Module[
+ {s, sz1, sz2},
   Table[
-   {s, Sum[
-     With[{cg = ClebschGordan[{s1, sz1}, {s2, sz2}, {s, s}]},
-      If[cg =!= 0,
-         cg  nc[fixspin1fnc[op1, s1, sz1] , fixspin2fnc[op2, s2, sz2]],
-         0]
-      ], {sz1, -s1, s1}, {sz2, -s2, s2}]},
+    {s, Sum[
+     (* The projection selection rule also avoids nonphysical-argument
+        messages for terms whose coefficient is known to vanish. *)
+     If[sz1 + sz2 == s,
+      With[{cg = ClebschGordan[{s1, sz1}, {s2, sz2}, {s, s}]},
+       If[cg =!= 0,
+          cg  nc[fixspin1fnc[op1, s1, sz1] , fixspin2fnc[op2, s2, sz2]],
+          0]
+      ], 0], {sz1, -s1, s1}, {sz2, -s2, s2}]},
    {s, Abs[s1 - s2], s1 + s2}
-  ];
+  ]
+];
 
 fixspin[op_, s_, s_] := op;
 fixspin[op_, s_, sz_] /; sz < s := Nest[spindown, op, s - sz];

@@ -31,7 +31,7 @@
   14. 7. 2011 - subtraction (with Expand) instead of comparison
 *)
 
-Check[reslt=Get["sneg.m"], 
+Check[reslt=Get[FileNameJoin[{DirectoryName[$InputFileName], "sneg.m"}]],
   Print["Messages detected. Aborting."];
   Exit[1];
 ];
@@ -50,19 +50,23 @@ test succeeded. *)
 
 testpassed = 0;
 testfailed = 0;
+testlabel = "";
+testtimeout = 60;
 
 (* If negate == True, we test for inequality! *)
 
-test[a_, b_, workingversion_:0, negate_:False] := Module[{aa, bb, failed},
-  aa = ReleaseHold[a];
-  bb = ReleaseHold[b];
-  If[negate == False,
-    failed = (aa =!= bb),
-    (* else *)
-    failed = (aa === bb)
-  ];
+test[a_, b_, workingversion_:0, negate_:False] := Module[
+  {aa, bb, failed, evaluationFailed = Unique["testEvaluationFailed"]},
+  aa = CheckAbort[TimeConstrained[
+    Check[ReleaseHold[a], evaluationFailed], testtimeout, evaluationFailed],
+    evaluationFailed];
+  bb = CheckAbort[TimeConstrained[
+    Check[ReleaseHold[b], evaluationFailed], testtimeout, evaluationFailed],
+    evaluationFailed];
+  failed = aa === evaluationFailed || bb === evaluationFailed ||
+    If[negate === False, aa =!= bb, aa === bb];
   If[failed,
-    Print["test[] failed."];
+    Print["test[] failed.", If[testlabel === "", "", " " <> testlabel]];
     Print[HoldForm[a], " ==> ", aa];
     Print["*******************"];
     Print[HoldForm[b], " ==> ", bb];
@@ -74,6 +78,23 @@ test[a_, b_, workingversion_:0, negate_:False] := Module[{aa, bb, failed},
 
     testpassed ++;
     Return[True];
+  ];
+];
+
+SetAttributes[testcase, HoldAll];
+testcase[name_, actual_, expected_] :=
+  Block[{testlabel = name}, test[actual, expected]];
+
+(* Also catch failures in setup and in calculations performed before an
+   assertion. A group must execute at least one assertion. *)
+SetAttributes[testgroup, HoldRest];
+testgroup[name_, body_] := Module[
+  {before = testpassed + testfailed, result, failure = Unique["testGroupFailed"]},
+  Print["** ", name, " **"];
+  result = CheckAbort[TimeConstrained[Check[body, failure], 180, failure], failure];
+  If[result === failure || before === testpassed + testfailed,
+    Print["Test group failed or did not complete: ", name];
+    testfailed++
   ];
 ];
 
@@ -91,6 +112,20 @@ If[Block[{Print = Function[Null]}, test[ "self", "test" ]] === False,
   (* else *)
   Print["*** Self-test FAILED. ***"];
   Exit[1];
+];
+
+test::probe = "Intentional test-harness message.";
+harnessProbes = Block[{$Messages = {}, Print = Function[Null],
+    testpassed = 0, testfailed = 0, testtimeout = 1/10},
+  {test[Message[test::probe]; 1, 1],
+   test[Abort[], 1],
+   test[Pause[1]; 1, 1],
+   test[Message[test::probe]; 1, Message[test::probe]; 1],
+   test[Abort[], 0, 0, True]}
+];
+If[harnessProbes =!= ConstantArray[False, 5],
+  Print["*** Failure-handling self-test FAILED. ***"];
+  Exit[1]
 ];
 
 Print["** Package contexts **"];
@@ -278,7 +313,8 @@ test[ nc[c[AN], c[AN]], 0];
 Print["** Commutators **"];
 test[ komutator[c, d], nc[c, d] - nc[d, c] ];
 test[ antikomutator[c, d], nc[c, d] + nc[d, c] ];
-test[ cmt[g[1, 2], g[1, 3]], cmt[g[1, 2], g[1, 3]] ];
+test[ MatchQ[cmt[g[1, 2], g[1, 3]],
+  HoldPattern[cmt[g[1, 2], g[1, 3]]]], True ];
 
 snegspinoperators[spinTestA, spinTestB];
 test[ cmt[spinTestA[1], spinTestB[2]], 0 ];
@@ -1922,7 +1958,6 @@ test[spindown[c[CR, DO]], 0];
 test[spindownvc[vc[1, 0, ket[tensorX]]], vc[0, 1, ket[tensorX]]];
 test[spindownvc[vc[ket[tensorX]]], 0];
 
-(* TEMPORARILY COMMENTED OUT
 Print["** spindown **"];
 test[spindown[c[CR, UP]], c[0, 0]];
 test[spindown[c[CR, 1, UP]], c[0, 1, 0]];
@@ -2001,7 +2036,6 @@ test[ap[spindown[expr], VACUUM], spindownvc[ap[expr, VACUUM]]];
 expr = 1/Sqrt[2](nc[c[CR, 1, DO], c[CR, 2, UP], c[CR, 3, UP]] - 
         nc[c[CR, 1, UP], c[CR, 2, DO], c[CR, 3, UP]]);
 test[ap[spindown[expr], VACUUM], spindownvc[ap[expr, VACUUM]]];
-*)
 
 Print["** (Q,S) basis **"];
 test[ qsbasisvc[{}], {{{0, 0}, {vc[]}}} ];
@@ -2748,10 +2782,8 @@ Print["* Tests of vev[] *"];
 test[ vev[number[c[k, alpha]]], 2UnitStep[-k] ];
 test[ vev[number[c[k, alpha], sigma]], UnitStep[-k] ];
 
-(* 
-test[ vev[nc[c[AN, k, alpha, sigma], c[CR, k, alpha, sigma]]],
+test[ SimplifyKD[vev[nc[c[AN, k, alpha, sigma], c[CR, k, alpha, sigma]]]],
 UnitStep[k] ];
-*)
 test[ vev[nc[c[AN, k, alpha, sigma], c[CR, k, alpha, sigma]]],
 1-UnitStep[-k] ];
 
@@ -2760,10 +2792,8 @@ test[ vev[nc[c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma]]],
 test[ vev[nc[c[AN, k, 1, UP], c[CR, k, 1, DO], c[AN, k1, 1, UP], 
   c[CR, k1, 1, UP]]], 0 ];
 
-(*
-  test[ vev[nc[c[AN, k, 1, UP], c[CR, k, 1, UP], c[AN, k1, 1, UP],
-  c[CR, k1, 1, UP]]], UnitStep[k]*UnitStep[k1] ];
-*)
+test[ SimplifyKD[vevwick[nc[c[AN, k, 1, UP], c[CR, k, 1, UP], c[AN, k1, 1, UP],
+  c[CR, k1, 1, UP]]]], UnitStep[k]*UnitStep[k1] ];
 
 Print["* Tests of normal ordering *"];
 test[ vev[normalorder[
@@ -2955,9 +2985,6 @@ test[
 ];
 
 test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
-      contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}] ]; (* test test[] *)
-
-test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
       {2, contraction[aa, cc], {1, bb, 1, dd}} ];
 
 test[ contraction[c[CR, k, alpha, sigma], c[AN, k1, alpha1, sigma1]],
@@ -2970,9 +2997,6 @@ test[ contraction[c[AN, k, alpha, sigma], c[CR, k1, alpha1, sigma1]]
   (KroneckerDelta[alpha, alpha1] KroneckerDelta[sigma, sigma1] - 
    KroneckerDelta[{alpha, sigma}, {alpha1, sigma1}] UnitStep[-k1])//Simplify
 ];
-
-test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
-      contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}] ];
 
 test[ contractone[{1, 1, {c[CR, k, alpha, sigma], c[AN, k, alpha, sigma]}}, 
   {1, 2}], {2, UnitStep[-k], {1, 1}} ];
@@ -3003,9 +3027,10 @@ test[ contract[{c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma],
     c[CR, k3, alpha, sigma], c[AN, k4, alpha, sigma]}, {{1, 2}, {3, 4}} ],
   KroneckerDelta[k1, k2]*KroneckerDelta[k3, k4]*UnitStep[-k1]*UnitStep[-k3] ];
 
-(* XXX test[ contract[{c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma], 
-    c[CR, k3, alpha, sigma], c[AN, k4, alpha, sigma]}, {{1, 4}, {3, 2}}],
-  KroneckerDelta[k1, k4]*KroneckerDelta[k2, k3]*UnitStep[-k1]*UnitStep[-k3] ]; *)
+(* The reversed second pair contracts an annihilator with a creator. *)
+test[ SimplifyKD[contract[{c[CR, k1, alpha, sigma], c[AN, k2, alpha, sigma],
+    c[CR, k3, alpha, sigma], c[AN, k4, alpha, sigma]}, {{1, 4}, {3, 2}}]],
+  KroneckerDelta[k1, k4]*KroneckerDelta[k2, k3]*UnitStep[-k1]*UnitStep[k3] ];
 
 test[ contract[{c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma], 
     c[AN, k3, alpha, sigma], c[AN, k4, alpha, sigma]}, {{1, 3}, {2, 4}}],
@@ -3077,10 +3102,10 @@ test[ wickorder[2, nc[
     noneBosonA[AN, 1], noneBosonA[AN, 2],
     noneBosonA[CR, 1], noneBosonA[CR, 2]]], 1 ];
 
-(*
-test[ wickorder[2, nc[c[0, k, 1, 0], c[1, k, 1, 1], c[1, k1, 1, 1], 
-  c[0, k1, 1, 1]] ],  0 ];
-*)
+test[ wickorder[2, nc[c[0, k, 1, 0], c[0, k1, 1, 1],
+  c[1, k, 1, 1], c[1, k1, 1, 1]]], 0 ];
+test[ vevwick[nc[c[0, k, 1, 0], c[1, k, 1, 1], c[1, k1, 1, 1],
+  c[0, k1, 1, 1]]], 0 ];
   
 Print["* wick[] *"];
 
@@ -3265,6 +3290,798 @@ test[remainder[{1, 1}], 1];
 test[remainder[{2, 2, 1, 1}], 1];
 test[remainder[{2, 1, 1}], 1];
 test[remainder[{4, 3, 2, 1}], 1];
+
+(*** Independent finite-space checks ***
+   The reference matrices below use the Jordan-Wigner construction on binary
+   occupation strings. They do not use nc, ap, Wick contractions, or SNEG's
+   matrix constructors. Exact phase checks complement invariant checks. *)
+
+Begin["SnegRegression`"];
+
+fockstates[n_] := vc @@@ Tuples[{0, 1}, n];
+fockcreate[1, 1] := {{0, 0}, {1, 0}};
+fockcreate[n_, k_] := KroneckerProduct @@ Table[
+  Which[j < k, {{1, 0}, {0, -1}},
+        j == k, {{0, 0}, {1, 0}},
+        True, IdentityMatrix[2]], {j, n}];
+coordinates[v_, states_List] := Coefficient[Expand[v], #] & /@ states;
+zerotest[name_, value_] := testcase[name,
+  And @@ (TrueQ[Simplify[#] === 0] & /@ Flatten[{value}]), True];
+
+checkbasis[name_, bz_, states_, observables_, eigenvalues_] := Module[
+  {sector, vectors, values, j, label},
+  testcase[name <> " structure", bzQ[bz], True];
+  Do[
+    vectors = coordinates[#, states] & /@ sector[[2]];
+    values = eigenvalues[sector[[1]]];
+    label = name <> " " <> ToString[sector[[1]], InputForm];
+    testcase[label <> " nonempty sector", Length[vectors] > 0, True];
+    zerotest[label <> " finite-space support", sector[[2]] - vectors.states];
+    zerotest[label <> " orthonormality",
+      Conjugate[vectors].Transpose[vectors] - IdentityMatrix[Length[vectors]]];
+    Do[
+      zerotest[label <> " quantum number " <> ToString[j],
+        (observables[[j]].# - values[[j]] #) & /@ vectors],
+      {j, Length[observables]}],
+    {sector, bz}];
+];
+
+(* Isolate the mutable package state used by the following groups. *)
+savedRegressionOrdering = DownValues[ordering];
+Block[{BASIS = BASIS, PrettyOutput = False,
+    listfermionoperators = listfermionoperators,
+    listbosonoperators = listbosonoperators,
+    listspinoperators = listspinoperators,
+    listmajoranaoperators = listmajoranaoperators,
+    listrealconstants = listrealconstants,
+    listcomplexconstants = listcomplexconstants,
+    listintegerconstants = listintegerconstants,
+    listgrassmanconstants = listgrassmanconstants,
+    listfreeindexes = listfreeindexes, nnop, Tminus, ordering},
+DownValues[ordering] = savedRegressionOrdering;
+
+testgroup["Symmetry-adapted finite bases",
+ Module[{f, ops, states, cr, an, qmat, szmat, spmat, smmat, ss,
+     bz, bzop, n, j, v, ref, expected, single},
+  snegfermionoperators[f];
+  Do[
+    ops = Table[f[j], {j, n}];
+    states = fockstates[2 n];
+    cr = Table[fockcreate[2 n, j], {j, 2 n}];
+    an = Transpose /@ cr;
+    qmat = Total[MapThread[Dot, {cr, an}]] - n IdentityMatrix[4^n];
+    szmat = Sum[(cr[[2 j-1]].an[[2 j-1]] - cr[[2 j]].an[[2 j]])/2, {j, n}];
+    spmat = Sum[cr[[2 j-1]].an[[2 j]], {j, n}];
+    smmat = Transpose[spmat];
+    ss = szmat.szmat + (spmat.smmat + smmat.spmat)/2;
+
+    bz = qsbasisvc[ops];
+    checkbasis["QS " <> ToString[n], bz, states, {qmat, szmat, ss},
+      {#[[1]], #[[2]], #[[2]] (#[[2]] + 1)} &];
+    testcase["QS multiplicity-weighted dimension",
+      Total[(2 #[[1, 2]] + 1) Length[#[[2]]] & /@ bz], 4^n];
+    bzop = qsbasis[ops];
+    testcase["QS operator/occupation convention", Expand[bzop2bzvc[bzop]], Expand[bz]];
+    testcase["QS round trip", Expand[bzop2bzvc[bzvc2bzop[bz]]], Expand[bz]];
+
+    bz = qszbasisvc[ops];
+    checkbasis["QSZ", bz, states, {qmat, szmat}, # &];
+    testcase["QSZ dimension", Total[Length[#[[2]]] & /@ bz], 4^n];
+    (* The two enumerators use different orders within a sector. *)
+    testcase["QSZ specialized implementation",
+      {First[#], Sort[Last[#]]} & /@ qszbasisvc[ops, 1/2],
+      {First[#], Sort[Last[#]]} & /@ bz];
+    bz = qbasisvc[ops];
+    checkbasis["Q", bz, states, {qmat}, # &];
+    testcase["Q binomial sector sizes", Length[#[[2]]] & /@ bz,
+      Table[Binomial[2 n, j], {j, 0, 2 n}]];
+    testcase["Q operator conversion", bzop2bzvc[qbasis[ops]], bz];
+    bz = szbasisvc[ops];
+    checkbasis["SZ", bz, states, {szmat}, # &];
+    testcase["SZ dimension", Total[Length[#[[2]]] & /@ bz], 4^n];
+    testcase["SZ operator conversion", bzop2bzvc[szbasis[ops]], bz];
+    bz = sbasisvc[ops];
+    checkbasis["S", bz, states, {szmat, ss}, {First[#], First[#] (First[#]+1)} &];
+    testcase["S multiplicity-weighted dimension",
+      Total[(2 First[#[[1]]] + 1) Length[#[[2]]] & /@ bz], 4^n];
+    testcase["S operator conversion", Expand[bzop2bzvc[sbasis[ops]]], Expand[bz]];
+    testcase["Unrestricted basis", nonebasisvc[ops], {{{}, states}}];
+    testcase["Unrestricted operator conversion", bzop2bzvc[nonebasis[ops]], {{{}, states}}],
+    {n, 1, 3}];
+
+  testcase["One-site QS phases", qsbasisvc[{f[1]}],
+    {{{-1, 0}, {vc[0, 0]}}, {{0, 1/2}, {vc[1, 0]}}, {{1, 0}, {-vc[1, 1]}}}];
+  bz = qsbasisvc[{f[1], f[2]}];
+  testcase["Two-site singlet phase", keyselect[bz, {0, 0}][[1, 2, 2]],
+    (vc[0, 1, 1, 0] - vc[1, 0, 0, 1])/Sqrt[2]];
+  testcase["Two-site triplet phase", keyselect[bz, {0, 1}][[1, 2]], {-vc[1, 0, 1, 0]}];
+
+  states = fockstates[4];
+  cr = Table[fockcreate[4, j], {j, 4}];
+  an = Transpose /@ cr;
+  smmat = cr[[2]].an[[1]] + cr[[4]].an[[3]];
+  Do[
+    ref = smmat.coordinates[v, states];
+    expected = If[ref === ConstantArray[0, 16], ref, ref/Sqrt[Conjugate[ref].ref]];
+    zerotest["Occupation spin lowering", coordinates[spindownvc[v], states] - expected];
+    zerotest["Operator spin lowering", coordinates[ops2vc[spindown[vc2ops[v]]], states] - expected],
+    {v, states}];
+  single = (vc[1, 0, 0, 1] - vc[0, 1, 1, 0])/Sqrt[2];
+  testcase["Singlet lowering", spindownvc[single], 0];
+  testcase["Triplet lowering ladder",
+    NestList[spindownvc, vc[1, 0, 1, 0], 3],
+    {vc[1, 0, 1, 0], (vc[0, 1, 1, 0] + vc[1, 0, 0, 1])/Sqrt[2], vc[0, 1, 0, 1], 0}];
+ ]];
+
+testgroup["Independent operator and rectangular matrices",
+ Module[{f, states, cr, an, ops, mats, op, mat, left, right, lmat, rmat,
+     j, bz, bzop, expected, sector1, sector2, values, dispatch, h, href, parameter},
+  snegfermionoperators[f];
+  makebasis[{f[1], f[2]}];
+  states = fockstates[4];
+  cr = Table[fockcreate[4, j], {j, 4}];
+  an = Transpose /@ cr;
+  h = (1+I) nc[f[CR, 1, UP], f[AN, 2, DO]] +
+      (1-I) nc[f[CR, 2, DO], f[AN, 1, UP]] + 3 number[f[1]] + 2 hubbard[f[2]];
+  href = (1+I) cr[[1]].an[[4]] + (1-I) cr[[4]].an[[1]] +
+    3 (cr[[1]].an[[1]] + cr[[2]].an[[2]]) + 2 cr[[3]].an[[3]].cr[[4]].an[[4]];
+  ops = Join[BASIS, conj[BASIS], {h}];
+  mats = Join[cr, an, {href}];
+  Do[
+    op = ops[[j]]; mat = mats[[j]];
+    testcase["Dense occupation matrix", matrixrepresentationvc[op, states], mat];
+    testcase["Fast occupation matrix", matrixrepresentationvcfast[op, states], mat];
+    testcase["Sparse occupation matrix", Normal[matrixrepresentationvcsparse[op, states]], mat];
+    testcase["Operator-form matrix", matrixrepresentationop[op, vc2ops[states]], mat];
+    dispatch = opdispatch[op];
+    testcase["Dispatch action", states /. dispatch, Transpose[mat].states];
+    zerotest["Matrix adjoint", matrixrepresentationvc[conj[op], states] - ConjugateTranspose[mat]],
+    {j, Length[ops]}];
+
+  (* Complex monomials, dependent states, superpositions, and zero vectors
+     exercise both optimized and fallback paths with unequal bra/ket sizes. *)
+  Do[
+    left = pair[[1]]; right = pair[[2]];
+    lmat = coordinates[#, states] & /@ left;
+    rmat = coordinates[#, states] & /@ right;
+    expected = Conjugate[lmat].href.Transpose[rmat];
+    testcase["Rectangular dense", matrixrepresentationvc[h, left, right], expected];
+    testcase["Rectangular fast", matrixrepresentationvcfast[h, left, right], expected];
+    testcase["Rectangular operator", matrixrepresentationop[h, vc2ops[left], vc2ops[right]], expected],
+    {pair, {
+      {{I states[[9]], -2 states[[2]]}, {states[[2]], (1+I) states[[9]], states[[1]]}},
+      {{states[[9]], I states[[9]]}, {states[[9]], states[[2]], states[[1]]}},
+      {{(states[[9]]+I states[[2]])/Sqrt[2], 0}, {states[[9]], states[[2]], states[[1]]}}
+    }}];
+  left = {states[[9]], I states[[9]], 0};
+  lmat = coordinates[#, states] & /@ left;
+  testcase["Sparse dependent-state fallback", Normal[matrixrepresentationvcsparse[h, left]],
+    Conjugate[lmat].href.Transpose[lmat]];
+
+  bz = qszbasisvc[{f[1], f[2]}];
+  bzop = bzvc2bzop[bz];
+  expected = Table[
+    lmat = coordinates[#, states] & /@ sector1[[2]];
+    {sector1[[1]], Conjugate[lmat].href.Transpose[lmat]}, {sector1, bz}];
+  testcase["Diagonal occupation blocks", makematricesbzvc[h, bz], expected];
+  testcase["Diagonal operator blocks", makematricesbzop[h, bzop], expected];
+  expected = {};
+  Do[
+    lmat = coordinates[#, states] & /@ sector1[[2]];
+    rmat = coordinates[#, states] & /@ sector2[[2]];
+    values = Conjugate[lmat].cr[[1]].Transpose[rmat];
+    If[Total[Abs[values], 2] =!= 0,
+      AppendTo[expected, {{sector1[[1]], sector2[[1]]}, values}]],
+    {sector1, bz}, {sector2, bz}];
+  testcase["All occupation blocks", makeallmatricesbzvc[f[CR, 1, UP], bz], expected];
+  testcase["All operator blocks", makeallmatricesbzop[f[CR, 1, UP], bzop], expected];
+  testcase["Zero blocks omitted", makeallmatricesbzvc[0, bz], {}];
+  testcase["Zero operator blocks omitted", makeallmatricesbzop[0, bzop], {}];
+  testcase["Machine-zero blocks omitted", makeallmatricesbzvc[0. h, bz], {}];
+  testcase["Undecidable symbolic blocks retained",
+    mambpair[{{0}, {1}}, {{1}, {1}}, 1, Function[{o, l, r}, {{parameter}}]],
+    {{{0}, {1}}, {{parameter}}}];
+  testcase["Tiny nonzero blocks retained", Length[makeallmatricesbzvc[10.^-14 f[CR, 1, UP], bz]],
+    Length[expected]];
+ ]];
+
+testgroup["Isospin, product bases, and projections",
+ Module[{f, states, cr, an, n1, n2, sz, sp, ss, ip1, ip2, ip, iz, ii,
+     phases, tm, qs, bz, projected, projectorMatrix},
+  snegfermionoperators[f];
+  states = fockstates[4];
+  cr = Table[fockcreate[4, j], {j, 4}]; an = Transpose /@ cr;
+  n1 = cr[[1]].an[[1]] + cr[[2]].an[[2]];
+  n2 = cr[[3]].an[[3]] + cr[[4]].an[[4]];
+  sz = (cr[[1]].an[[1]] - cr[[2]].an[[2]] + cr[[3]].an[[3]] - cr[[4]].an[[4]])/2;
+  sp = cr[[1]].an[[2]] + cr[[3]].an[[4]];
+  ss = sz.sz + (sp.Transpose[sp] + Transpose[sp].sp)/2;
+  iz = (n1 + n2 - 2 IdentityMatrix[16])/2;
+  Do[
+    nnop[f[1]] = phases[[1]]; nnop[f[2]] = phases[[2]];
+    ip1 = (-1)^phases[[1]] cr[[1]].cr[[2]];
+    ip2 = (-1)^phases[[2]] cr[[3]].cr[[4]];
+    ip = ip1 + ip2;
+    ii = iz.iz + (ip.Transpose[ip] + Transpose[ip].ip)/2;
+    tm = isospinminus[f[1], phases[[1]]] + isospinminus[f[2], phases[[2]]];
+    qs = qsbasisvc[{f[1], f[2]}];
+    bz = transformQStoIS[qs, tm];
+    checkbasis["IS", bz, states, {iz, ii, sz, ss},
+      {#[[1]], #[[1]] (#[[1]]+1), #[[2]], #[[2]] (#[[2]]+1)} &];
+    testcase["IS dimension", Total[(2 #[[1, 1]]+1) (2 #[[1, 2]]+1) Length[#[[2]]] & /@ bz], 16];
+    Tminus = tm;
+    testcase["Implicit isospin lowering", transformQStoIS[qs], bz];
+    testcase["Quick IS basis", Expand[bzop2bzvc[quickISObasis[{f[1], f[2]}]]], Expand[bz]];
+    bz = bzop2bzvc[quickISOSZbasis[{f[1], f[2]}]];
+    checkbasis["ISZ", bz, states, {iz, ii, sz}, {#[[1]], #[[1]] (#[[1]]+1), #[[2]]} &];
+    testcase["ISZ dimension", Total[(2 #[[1, 1]]+1) Length[#[[2]]] & /@ bz], 16];
+    bz = bzop2bzvc[quickSU2basis[{f[1], f[2]}]];
+    checkbasis["Isospin only", bz, states, {iz, ii}, {First[#], First[#] (First[#]+1)} &];
+    testcase["Isospin-only dimension", Total[(2 First[#[[1]]]+1) Length[#[[2]]] & /@ bz], 16],
+    {phases, {{0, 0}, {0, 1}}}];
+  Block[{Tminus},
+    testcase["Missing lowering operator", Quiet[transformQStoIS[qs], transformQStoIS::Tminus], $Failed]];
+
+  bz = bzop2bzvc[quickDBLSZ[{f[1]}, {f[2]}, qszbasis]];
+  checkbasis["Two charges and SZ", bz, states,
+    {n1 - IdentityMatrix[16], n2 - IdentityMatrix[16], sz}, # &];
+  testcase["Two-charge dimension", Total[Length[#[[2]]] & /@ bz], 16];
+  testcase["Product basis restores all modes", BASIS,
+    {f[CR, 1, UP], f[CR, 1, DO], f[CR, 2, UP], f[CR, 2, DO]}];
+  bz = bzop2bzvc[quickDBL[{f[1]}, {f[2]}, quickSU2basis]];
+  ip1 = cr[[1]].cr[[2]]; ip2 = cr[[3]].cr[[4]];
+  checkbasis["Two isospins", bz, states,
+    {(n1-IdentityMatrix[16]).(n1-IdentityMatrix[16])/4 + (ip1.Transpose[ip1]+Transpose[ip1].ip1)/2,
+     (n2-IdentityMatrix[16]).(n2-IdentityMatrix[16])/4 + (ip2.Transpose[ip2]+Transpose[ip2].ip2)/2},
+    {#[[1]] (#[[1]]+1), #[[2]] (#[[2]]+1)} &];
+  testcase["Two-isospin dimension", Total[(2 #[[1, 1]]+1) (2 #[[1, 2]]+1) Length[#[[2]]] & /@ bz], 16];
+  bz = bzop2bzvc[quickDBLSZ[{f[1]}, {f[2]}, quickISOSZbasis]];
+  checkbasis["Two isospins and SZ", bz, states, {sz}, {Last[#]} &];
+  testcase["Two-isospin SZ dimension", Total[(2 #[[1, 1]]+1) (2 #[[1, 2]]+1) Length[#[[2]]] & /@ bz], 16];
+
+  qs = qsbasisvc[{f[1], f[2]}];
+  projected = transformbasis[qs, projector1[f[1]]];
+  projectorMatrix = n1 - 2 cr[[1]].an[[1]].cr[[2]].an[[2]];
+  checkbasis["Projected QS", projected, states, {projectorMatrix}, {1} &];
+  testcase["Projected dimension", Total[(2 #[[1, 2]]+1) Length[#[[2]]] & /@ projected], 8];
+  testcase["Projection removes all sectors", transformbasis[qs, 0], {}];
+  testcase["Projection within one sector",
+    transformfunc[{vc[1, 0, 0, 0], vc[0, 0, 1, 0]}, projector1[f[1]]], {vc[1, 0, 0, 0]}];
+  testcase["Remove a complex state",
+    Length[remove1state[{vc[1, 0, 0, 0], vc[0, 0, 1, 0]},
+      (vc[1, 0, 0, 0] + I vc[0, 0, 1, 0])/Sqrt[2]]], 1];
+  bz = bzop2bzvc[spinlessbasis[qbasis[{f[1], f[2]}]]];
+  checkbasis["Spinless projection", bz, states,
+    {cr[[2]].an[[2]] + cr[[4]].an[[4]]}, {0} &];
+  testcase["Spinless dimension", Total[Length[#[[2]]] & /@ bz], 4];
+ ]];
+
+testgroup["Reflection parity",
+ Module[{f, states, bits, reflect, bzop, evenodd, bz},
+  snegfermionoperators[f];
+  bits = Tuples[{0, 1}, 4]; states = vc @@@ bits;
+  reflect = Table[If[r === v[[{3, 4, 1, 2}]],
+    (-1)^((v[[1]]+v[[2]]) (v[[3]]+v[[4]])), 0], {r, bits}, {v, bits}];
+  bzop = qsbasis[{f[1], f[2]}];
+  evenodd = transformtoLR[bzop, {f[1], f[2]}];
+  bz = bzop2bzvc[evenodd];
+  checkbasis["Reflection", bz, states, {reflect}, {Last[#]} &];
+  testcase["Reflection completeness", Total[(2 #[[1, 2]]+1) Length[#[[2]]] & /@ bz], 16];
+  testcase["Occupation reflection transform",
+    Expand[transformtoLRvc[bzop, {f[1], f[2]}, vacuum[]]], Expand[bz]];
+  testcase["Both reflection parities", Union[bz[[All, 1, -1]]], {-1, 1}];
+  testcase["Reflection is an involution", reflect.reflect, IdentityMatrix[16]];
+ ]];
+
+testgroup["SU2 coupling and spin kets",
+ Module[{f, j, localz, localp, cr, an, sz, sp, totalz, totalp, totalss,
+     bz, states, firstspin, secondspin, coupled, triplet, singlet, fresh, index},
+  snegfermionoperators[f];
+  cr = {fockcreate[2, 1], fockcreate[2, 2]}; an = Transpose /@ cr;
+  sz = (cr[[1]].an[[1]] - cr[[2]].an[[2]])/2;
+  sp = cr[[1]].an[[2]];
+  Do[
+    localz = DiagonalMatrix[Range[j, -j, -1]];
+    localp = Table[If[m == n+1, Sqrt[(j-n) (j+n+1)], 0], {m, j, -j, -1}, {n, j, -j, -1}];
+    totalz = KroneckerProduct[sz, IdentityMatrix[2 j+1]] + KroneckerProduct[IdentityMatrix[4], localz];
+    totalp = KroneckerProduct[sp, IdentityMatrix[2 j+1]] + KroneckerProduct[IdentityMatrix[4], localp];
+    totalss = totalz.totalz + (totalp.Transpose[totalp] + Transpose[totalp].totalp)/2;
+    states = Flatten[Table[vc @@ Join[bits, {ket[m]}], {bits, Tuples[{0, 1}, 2]}, {m, j, -j, -1}], 1];
+    bz = SU2basistensorproduct[qsbasis[{f[]}], {First[spinbasis[j]]},
+      Last, First, qsspincombinefnc, fixspin, fixspinket];
+    bz = bzop2bzvc[bz];
+    checkbasis["Coupled spin " <> ToString[j], bz, states, {totalz, totalss},
+      {Last[#], Last[#] (Last[#]+1)} &];
+    testcase["Coupled spin dimension", Total[(2 Last[#[[1]]]+1) Length[#[[2]]] & /@ bz], 4 (2 j+1)];
+    testcase["Spin-ket identity", matrixrepresentationop[spinketbraI[j], spinket[j]], IdentityMatrix[2 j+1]];
+    testcase["Spin-ket raising", matrixrepresentationop[spinketbraP[j], spinket[j]], localp];
+    testcase["Spin-ket lowering", matrixrepresentationop[spinketbraM[j], spinket[j]], Transpose[localp]],
+    {j, {0, 1/2, 1, 3/2}}];
+
+  (* Independent callbacks for two complementary tensor factors. *)
+  firstspin[k_, s_, m_] := k /. ket[_, b_] :> ket[m, b];
+  secondspin[k_, s_, m_] := k /. ket[a_, _] :> ket[a, m];
+  coupled = SU2basistensorproduct[
+    {{{1/2}, {ket[1/2, Null]}}}, {{{1/2}, {ket[Null, 1/2]}}},
+    First, First, Function[{s, q1, q2}, {s}], firstspin, secondspin];
+  singlet = (ket[1/2, -1/2] - ket[-1/2, 1/2])/Sqrt[2];
+  triplet = ket[1/2, 1/2];
+  testcase["Clebsch-Gordan singlet phase", Expand[coupled[[1]]], Expand[{{0}, {singlet}}]];
+  testcase["Clebsch-Gordan triplet phase", coupled[[2]], {{1}, {triplet}}];
+  zerotest["Two-spin singlet exchange", nc[spinketbraspinspin[{1/2, 1/2}], singlet] + 3 singlet/4];
+  testcase["Two-spin triplet exchange", nc[spinketbraspinspin[{1/2, 1/2}], triplet], triplet/4];
+  testcase["Spin-ket Cartesian components", spinketbraXYZ[1/2],
+    {spinketbraX[1/2], spinketbraY[1/2], spinketbraZ[1/2]}];
+  testcase["Spin-ket all components", spinketbraOPS[1/2],
+    {spinketbraX[1/2], spinketbraY[1/2], spinketbraZ[1/2], spinketbraP[1/2], spinketbraM[1/2]}];
+  Do[
+    testcase["SU2 iterator hygiene",
+      SU2combine[f[CR, index, UP], ket[1/2], {1/2, 1/2}, fixspin, fixspinket],
+      SU2combine[f[CR, fresh, UP], ket[1/2], {1/2, 1/2}, fixspin, fixspinket] /. fresh -> index],
+    {index, {Sneg`s, Sneg`sz1, Sneg`sz2}}];
+ ]];
+
+testgroup["Finite phonons and fermion-phonon products",
+ Module[{f, n, cutoff, states, raising, lowering, numbers, bz, bvc, coords,
+     fermionStates, allStates, cr, an, nmat, h, reference, reflection, bits, extra},
+  Do[
+    states = Table[ket[k], {k, 0, n}];
+    raising = Table[If[r == c+1, Sqrt[c+1], 0], {r, 0, n}, {c, 0, n}];
+    lowering = Transpose[raising]; numbers = DiagonalMatrix[Range[0, n]];
+    testcase["Phonon basis", phononbasis[n], states];
+    testcase["Phonon creation matrix", matrixrepresentationop[phononplus[n], states], raising];
+    testcase["Phonon annihilation matrix", matrixrepresentationop[phononminus[n], states], lowering];
+    testcase["Phonon number matrix", matrixrepresentationop[phononnumber[n], states], numbers];
+    testcase["Phonon identity matrix", matrixrepresentationop[phononid[n], states], IdentityMatrix[n+1]];
+    testcase["Truncated boson commutator",
+      matrixrepresentationop[commutator[phononminus[n], phononplus[n]], states],
+      DiagonalMatrix[Join[ConstantArray[1, n], {-n}]]];
+    testcase["Phonon upper boundary", nc[phononplus[n], ket[n]], 0];
+    testcase["Phonon lower boundary", nc[phononminus[n], ket[0]], 0],
+    {n, 0, 3}];
+  cutoff = {1, 2};
+  states = ket @@@ Tuples[{Range[0, 1], Range[0, 2]}];
+  testcase["Unequal phonon cutoffs", phononbasis[cutoff], states];
+  Do[
+    raising = Table[If[r == c+1, Sqrt[c+1], 0], {r, 0, cutoff[[n]]}, {c, 0, cutoff[[n]]}];
+    reference = If[n == 1, KroneckerProduct[raising, IdentityMatrix[3]], KroneckerProduct[IdentityMatrix[2], raising]];
+    testcase["Multimode raising", matrixrepresentationop[phononplus[n, cutoff], states], reference];
+    testcase["Multimode lowering", matrixrepresentationop[phononminus[n, cutoff], states], Transpose[reference]];
+    testcase["Multimode number", matrixrepresentationop[phononnumber[n, cutoff], states], reference.Transpose[reference]];
+    testcase["Multimode displacement", matrixrepresentationop[phononx[n, cutoff], states], reference + Transpose[reference]],
+    {n, 2}];
+  testcase["Different phonon modes commute", commutator[phononminus[1, cutoff], phononplus[2, cutoff]], 0];
+
+  snegfermionoperators[f];
+  bz = transformtoPH[qszbasis[{f[]}], cutoff];
+  bvc = bzop2bzvc[bz];
+  fermionStates = Tuples[{0, 1}, 2];
+  allStates = Flatten[Table[vc @@ Join[bits, {state}], {bits, fermionStates}, {state, states}], 1];
+  cr = {fockcreate[2, 1], fockcreate[2, 2]}; an = Transpose /@ cr;
+  nmat = cr[[1]].an[[1]] + cr[[2]].an[[2]];
+  checkbasis["Fermion-phonon quantum numbers", bvc, allStates,
+    {KroneckerProduct[nmat-IdentityMatrix[4], IdentityMatrix[6]],
+     KroneckerProduct[(cr[[1]].an[[1]]-cr[[2]].an[[2]])/2, IdentityMatrix[6]]}, # &];
+  testcase["Fermion-phonon dimension", Total[Length[#[[2]]] & /@ bvc], 24];
+  h = 2 number[f[]] + 3 hubbard[f[]] + 5 phononnumber[1, cutoff] +
+    7 phononnumber[2, cutoff] + 11 nc[number[f[]]-1, phononx[1, cutoff]];
+  reference = KroneckerProduct[2 nmat + 3 cr[[1]].an[[1]].cr[[2]].an[[2]], IdentityMatrix[6]] +
+    KroneckerProduct[IdentityMatrix[4], 5 KroneckerProduct[DiagonalMatrix[{0, 1}], IdentityMatrix[3]] +
+      7 KroneckerProduct[IdentityMatrix[2], DiagonalMatrix[{0, 1, 2}]]] +
+    11 KroneckerProduct[nmat-IdentityMatrix[4], KroneckerProduct[{{0, 1}, {1, 0}}, IdentityMatrix[3]]];
+  coords = coordinates[#, allStates] & /@ Flatten[bvc[[All, 2]], 1];
+  testcase["Coupled fermion-phonon Hamiltonian",
+    matrixrepresentationvc[h, Flatten[bvc[[All, 2]], 1]], Conjugate[coords].reference.Transpose[coords]];
+
+  bz = transformtoPH[qszbasis[{f[1], f[2]}], {1}];
+  extra = {ket[k_] :> (-1)^k ket[k]};
+  bvc = bzop2bzvc[transformtoLR[bz, {f[1], f[2]}, extra]];
+  bits = Tuples[{0, 1}, 4];
+  reflection = KroneckerProduct[
+    Table[If[r === v[[{3, 4, 1, 2}]], (-1)^((v[[1]]+v[[2]]) (v[[3]]+v[[4]])), 0], {r, bits}, {v, bits}],
+    DiagonalMatrix[{1, -1}]];
+  allStates = Flatten[Table[vc @@ Join[v, {ket[k]}], {v, bits}, {k, 0, 1}], 1];
+  checkbasis["Phonon reflection sign", bvc, allStates, {reflection}, {Last[#]} &];
+  testcase["Phonon reflection dimension", Total[Length[#[[2]]] & /@ bvc], 32];
+ ]];
+
+testgroup["Wick contractions against finite Fock spaces",
+ Module[{f, g, b, otherBoson, cr, matrices, ops, words, word, value, expected,
+     actual, failures, mode, vacuumIndex, bp, mixedWords, hook, i, j},
+  snegfermionoperators[f, g];
+  cr = {fockcreate[2, 1], fockcreate[2, 2]};
+  matrices = {Transpose[cr[[1]]], cr[[1]], Transpose[cr[[2]]], cr[[2]]};
+  words = Join[Flatten[Table[Tuples[Range[4], n], {n, 0, 4}], 1],
+    {{1, 3, 2, 1, 4, 2}, {1, 3, 4, 2, 1, 2}, {1, 2, 3, 4, 1, 2},
+     {1, 3, 2, 4, 1, 3, 2, 4}, {1, 2, 1, 2, 3, 4, 3, 4}}];
+  Do[
+    ordering[f] = mode; ordering[g] = mode;
+    ops = If[mode === SEA, {f[AN, -1], f[CR, -1], g[AN, 1], g[CR, 1]},
+      {f[AN], f[CR], g[AN], g[CR]}];
+    vacuumIndex = If[mode === SEA, 3, 1];
+    failures = {};
+    Do[
+      expected = Fold[Dot, IdentityMatrix[4], matrices[[word]]][[vacuumIndex, vacuumIndex]];
+      value = nc @@ ops[[word]];
+      actual = {vevwick[value], vevwick2[value], vevwicknew[value]};
+      If[actual =!= ConstantArray[expected, 3], AppendTo[failures, {word, actual, expected}]],
+      {word, words}];
+    testcase["Fermion Wick " <> ToString[mode],
+      {Length[failures], Take[failures, Min[8, Length[failures]]]}, {0, {}}],
+    {mode, {NONE, EMPTY, SEA}}];
+
+  ordering[f] = NONE; ordering[g] = NONE;
+  snegbosonoperators[b]; ordering[b] = NONE;
+  bp = Table[If[r == c+1, Sqrt[c+1], 0], {r, 0, 3}, {c, 0, 3}];
+  matrices = Join[KroneckerProduct[#, IdentityMatrix[4]] & /@ matrices,
+    {KroneckerProduct[IdentityMatrix[4], Transpose[bp]], KroneckerProduct[IdentityMatrix[4], bp]}];
+  ops = {f[AN], f[CR], g[AN], g[CR], b[AN], b[CR]};
+  mixedWords = Join[Permutations[{1, 2, 5, 6}],
+    {{5, 5, 6, 6}, {5, 5, 5, 6, 6, 6}, {1, 5, 3, 2, 6, 4},
+     {5, 1, 5, 2, 6, 6}, {1, 5, 2, 6, 1, 2}, {5, 6, 1, 3, 2, 4}}];
+  failures = {};
+  Do[
+    expected = Fold[Dot, IdentityMatrix[16], matrices[[word]]][[1, 1]];
+    value = nc @@ ops[[word]];
+    actual = Simplify[{vevwick[value], vevwick2[value], vevwicknew[value]}];
+    If[actual =!= ConstantArray[expected, 3], AppendTo[failures, {word, actual, expected}]],
+    {word, mixedWords}];
+  testcase["Mixed-statistics Wick",
+    {Length[failures], Take[failures, Min[8, Length[failures]]]}, {0, {}}];
+
+  snegfermionoperators[hook]; ordering[hook] = NONE;
+  hook /: acmt[hook[AN, i_], hook[CR, j_]] := 3 KroneckerDelta[i, j];
+  testcase["Custom contraction normalization",
+    {vevwick[nc[hook[AN, 1], hook[AN, 2], hook[CR, 2], hook[CR, 1]]],
+     vevwicknew[nc[hook[AN, 1], hook[AN, 2], hook[CR, 2], hook[CR, 1]]]}, {9, 9}];
+  f /: acmt[f[AN], g[CR]] = 7;
+  testcase["Custom cross-family contraction", contraction[f[AN], g[CR]], 7];
+  testcase["Custom cross-family Wick pair", vevwick[nc[f[AN], g[CR]]], 7];
+  snegbosonoperators[otherBoson]; ordering[otherBoson] = NONE;
+  testcase["Independent unordered boson contraction", contraction[b[AN], otherBoson[CR]], 0];
+  value = nc[b[AN], otherBoson[AN], b[CR], otherBoson[CR]];
+  testcase["Independent unordered boson Wick", {vevwick[value], vevwick2[value], vevwicknew[value]}, {1, 1, 1}];
+  ordering[f] = EMPTY;
+  ordering[Sneg`op] = NONE;
+  testcase["Contraction uses its actual operator heads", contraction[f[AN], f[CR]], 1];
+ ]];
+
+testgroup["Hamiltonian constructors and observables",
+ Module[{f, states, cr, an, id, nup, ndown, n1, pair, forward,
+     phase, z, constructors, references, projectors, pmats, j, k, h, ref,
+     sx1, sy1, sz1, sx2, sy2, sz2},
+  snegfermionoperators[f]; snegrealconstants[phase]; snegcomplexconstants[z];
+  makebasis[{f[1], f[2]}]; states = fockstates[4];
+  cr = Table[fockcreate[4, j], {j, 4}]; an = Transpose /@ cr; id = IdentityMatrix[16];
+  nup = cr[[1]].an[[1]]; ndown = cr[[2]].an[[2]];
+  n1 = nup + ndown;
+  pair = cr[[1]].cr[[2]];
+  forward = cr[[1]].an[[3]] + cr[[2]].an[[4]];
+  sx1 = (cr[[1]].an[[2]] + cr[[2]].an[[1]])/2;
+  sy1 = (cr[[1]].an[[2]] - cr[[2]].an[[1]])/(2 I);
+  sz1 = (nup - ndown)/2;
+  sx2 = (cr[[3]].an[[4]] + cr[[4]].an[[3]])/2;
+  sy2 = (cr[[3]].an[[4]] - cr[[4]].an[[3]])/(2 I);
+  sz2 = (cr[[3]].an[[3]] - cr[[4]].an[[4]])/2;
+  constructors = {
+    isozsq[f[1]], isospinx[f[1]], isospiny[f[1]], isospinz[f[1]],
+    isospinplus[f[1]], isospinminus[f[1]], bcs[f[1], Pi/2], bcs[z, f[1]],
+    genhop[z, f[1], f[2]], hopphi[f[1], f[2], phase], currentphi[f[1], f[2], phase],
+    current[f[1], f[2]], spinfliphopphi[f[1], f[2], phase],
+    genanhop[z, f[1], f[2]], spinspinsymmetric[{f[1], f[2]}],
+    spinspinx[f[1], f[2]], spinspiny[f[1], f[2]], spinss[f[1]]};
+  h = Exp[I phase] forward + Exp[-I phase] Transpose[forward];
+  ref = cr[[1]].cr[[4]] - cr[[2]].cr[[3]];
+  references = {
+    (n1-id).(n1-id), (pair+Transpose[pair])/2, (pair-Transpose[pair])/(2 I), (n1-id)/2,
+    pair, Transpose[pair], I pair-I Transpose[pair], z pair+Conjugate[z] Transpose[pair],
+    z forward+Conjugate[z] Transpose[forward], h, I (h.n1-n1.h),
+    I ((forward+Transpose[forward]).n1-n1.(forward+Transpose[forward])),
+    Exp[I phase] (cr[[1]].an[[4]]+cr[[2]].an[[3]]) + Exp[-I phase] (cr[[4]].an[[1]]+cr[[3]].an[[2]]),
+    z ref+Conjugate[z] Transpose[ref], sx1.sx2+sy1.sy2+sz1.sz2,
+    sx1.sx2, sy1.sy2, 3 (n1-2 nup.ndown)/4};
+  Do[
+    zerotest["Constructor matrix " <> ToString[j], matrixrepresentationvc[constructors[[j]], states] - references[[j]]],
+    {j, Length[constructors]}];
+  zerotest["Singlet anomalous hopping", commutator[spinplus[f[1]]+spinplus[f[2]], anhop[f[1], f[2]]]];
+  zerotest["Spin-resolved current", current[f[1], f[2]] - current[f[1], f[2], UP] - current[f[1], f[2], DO]];
+  testcase["Current reverses direction", current[f[1], f[2]], -current[f[2], f[1]]];
+
+  projectors = {projector0[f[1]], projectorUP[f[1]], projectorDO[f[1]], projector2[f[1]]};
+  pmats = {(id-nup).(id-ndown), nup.(id-ndown), ndown.(id-nup), nup.ndown};
+  testcase["Local projector matrices", matrixrepresentationvc[#, states] & /@ projectors, pmats];
+  testcase["Projector completeness", Total[projectors], 1];
+  Do[testcase["Projector multiplication", nc[projectors[[j]], projectors[[k]]],
+    If[j == k, projectors[[j]], 0]], {j, 4}, {k, 4}];
+  testcase["Single-occupancy projector", matrixrepresentationvc[projector1[f[1]], states], pmats[[2]]+pmats[[3]]];
+  testcase["Even-charge projector", matrixrepresentationvc[projector02[f[1]], states], pmats[[1]]+pmats[[4]]];
+  Do[
+    h = projectorEphi[f[1], phase]; ref = projectorOphi[f[1], phase];
+    zerotest["Phase projector idempotence", nc[h, h]-h];
+    zerotest["Phase projectors orthogonal", nc[h, ref]];
+    zerotest["Phase projectors complete", h+ref-projector02[f[1]]],
+    {phase, {0, Pi/2, Pi}}];
+  testcase["Real coherent projectors", {projectorE[f[1]], projectorO[f[1]]},
+    {projectorEphi[f[1], 0], projectorOphi[f[1], 0]}];
+  testcase["Pair transfer matrices", matrixrepresentationvc[#, states] & /@ {outofdiag02[f[1]], outofdiag20[f[1]]},
+    {Transpose[pair], pair}];
+  testcase["Single-particle equation of motion",
+    extracteps[f[AN, 1, UP], f[AN, 1, UP], 3 number[f[1]]], 3];
+  testcase["Noncommutative cross product", mcross[{f[CR, 1, UP], 0, 0}, {0, f[CR, 2, UP], 0}],
+    {0, 0, nc[f[CR, 1, UP], f[CR, 2, UP]]}];
+ ]];
+
+testgroup["Spin and Majorana algebras",
+ Module[{s, m, matrices, j, k, a, b, i1, i2, dirac, gellmann},
+  snegspinoperators[s];
+  matrices = {
+    {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}}/Sqrt[2],
+    {{0, -I, 0}, {I, 0, -I}, {0, I, 0}}/Sqrt[2],
+    DiagonalMatrix[{1, 0, -1}],
+    Sqrt[2] {{0, 1, 0}, {0, 0, 1}, {0, 0, 0}},
+    Sqrt[2] {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}}};
+  Do[
+    zerotest["Spin Lie algebra", (cmt[s[j], s[k]] /. s[t_] :> matrices[[t]]) -
+      (matrices[[j]].matrices[[k]]-matrices[[k]].matrices[[j]])],
+    {j, 5}, {k, 5}];
+  testcase["Disjoint spins commute", commutator[s[1, SPININDEXx], s[2, SPININDEXy]], 0];
+  testcase["Spin negative-component convention", s[-SPININDEXx], -s[SPININDEXx]];
+  testcase["Spin zero component", s[0], 0];
+
+  snegmajoranaoperators[m, a, b]; snegfreeindexes[i1, i2];
+  testcase["Majorana normalization", nc[a, a], 1/2];
+  testcase["Indexed Majorana CAR", anticommutator[m[i1], m[i2]], KroneckerDelta[i1, i2]];
+  testcase["Indexed Majorana adjoint", conj[m[i1]], m[i1]];
+  dirac = (a+I b)/Sqrt[2];
+  testcase["Majorana to Dirac nilpotence", Expand[nc[dirac, dirac]], 0];
+  testcase["Majorana to Dirac CAR", Expand[anticommutator[dirac, conj[dirac]]], 1];
+  testcase["Majorana commutator sign", commutator[a, b], 2 nc[a, b]];
+  gellmann = Table[su3g[j], {j, 8}];
+  testcase["SU3 generators traceless", Tr /@ gellmann, ConstantArray[0, 8]];
+  testcase["SU3 generator normalization", Table[Tr[su3g[j].su3g[k]], {j, 8}, {k, 8}], 2 IdentityMatrix[8]];
+  testcase["SU3 generator adjoints", ConjugateTranspose /@ gellmann, gellmann];
+  testcase["SU3 quadratic Casimir", Total[Table[su3t[j].su3t[j], {j, 8}]], 4 IdentityMatrix[3]/3];
+ ]];
+
+testgroup["Operator exponentials and power series",
+ Module[{f, b, t, u, n, x, k},
+  snegfermionoperators[f]; snegbosonoperators[b]; snegrealconstants[t, u];
+  n = number[f[], UP]; x = f[CR, UP]+f[AN, UP];
+  Do[
+    testcase["Nested commutator", supercommutator[n, f[AN, UP], k], (-1)^k f[AN, UP]];
+    testcase["Nested commutator alias", superkomutator[n, f[AN, UP], k], (-1)^k f[AN, UP]];
+    testcase["Nested anticommutator", superanticommutator[n, f[AN, UP], k], f[AN, UP]];
+    testcase["Nested anticommutator alias", superantikomutator[n, f[AN, UP], k], f[AN, UP]],
+    {k, 0, 4}];
+  testcase["Commuting exponentials", nc[Exp[t n], Exp[u number[f[], DO]]], Exp[t n+u number[f[], DO]]];
+  testcase["Fermion similarity transform", nc[Exp[t n], f[AN, UP], Exp[-t n]], Exp[-t] f[AN, UP]];
+  testcase["Boson displacement", Expand[nc[Exp[t (b[CR]-b[AN])], b[AN], Exp[-t (b[CR]-b[AN])]]], b[AN]-t];
+  zerotest["Central-commutator BCH", nc[Exp[t b[CR]], Exp[u b[AN]]] - Exp[-t u/2] Exp[t b[CR]+u b[AN]]];
+  testcase["Nilpotent exponential", nc[Exp[nc[f[CR, UP], f[CR, DO]]], VACUUM],
+    VACUUM+nc[f[CR, UP], f[CR, DO], VACUUM]];
+  testcase["Involution exponential", nc[Exp[x], VACUUM], Cosh[1] VACUUM+Sinh[1] nc[f[CR, UP], VACUUM]];
+  testcase["Finite exponential series", Expand[snegSeries[Exp, x, 4]], Expand[37/24+7 x/6]];
+  testcase["Finite sine series", Expand[snegSeries[Sin[x], 5]], Expand[101 x/120]];
+  Do[testcase["Fast operator powers", fastpow[x, k], If[EvenQ[k], 1, x]], {k, 0, 8}];
+  testcase["Negative power message", Quiet[pow[x, -1], pow::negativepower], Null];
+  With[{savedPower = DownValues[Power]},
+    definencPower[];
+    testcase["Optional nc power syntax", n^3, n];
+    testcase["Numeric powers retain their meaning", 3^4, 81];
+    Unprotect[Power]; DownValues[Power] = savedPower; Protect[Power]];
+ ]];
+
+testgroup["Scalar declarations and masking",
+ Module[{f, real, complex, integer, positive, rf, cf, argument, rules, inverse},
+  snegfermionoperators[f];
+  snegrealconstants[real]; snegcomplexconstants[complex]; snegintegerconstants[integer];
+  snegrealfunctions[rf]; snegcomplexfunctions[cf];
+  testcase["Real and integer adjoints", conj[{real, integer}], {real, integer}];
+  testcase["Complex adjoint", conj[complex], Conjugate[complex]];
+  testcase["Declared scalar functions", isnumericQ /@ {rf[argument], cf[argument], Conjugate[cf[argument]]}, {True, True, True}];
+  testcase["Real function adjoint", conj[rf[argument]], rf[argument]];
+  testcase["Complex function adjoint", conj[cf[argument]], Conjugate[cf[argument]]];
+  testcase["Scalar function extraction", nc[rf[argument], f[CR, UP], cf[argument]], rf[argument] cf[argument] f[CR, UP]];
+  testcase["Undeclared scalar is not inferred", isnumericQ[argument], False];
+  testcase["Explicit scalar wrapper", vev[nc[scalar[argument], f[AN, UP], f[CR, UP]]], argument];
+  testcase["Constants are registered", And @@ (MemberQ[getallconstants[], #] & /@ {real, complex, integer}), True];
+  testcase["Masking suppresses real upvalue", maskOp[SameQ[Conjugate[real], real]], False];
+  testcase["Masking function interface", maskOp[Function[v, SameQ[Conjugate[v], v]], real], False];
+  testcase["Masking restores parameters", maskOp[Function[v, v^2+2 v], real], real^2+2 real];
+  testcase["Masking preserves declarations", Conjugate[real], real];
+  {rules, inverse} = maskconstants[];
+  testcase["Mask rules invert", {real, complex, integer} /. rules /. inverse, {real, complex, integer}];
+  With[{savedPower = DownValues[Power]},
+    snegpositiveconstants[positive];
+    testcase["Positive square root", Sqrt[positive^2], positive];
+    testcase["Positive fourth power root", Sqrt[positive^4], positive^2];
+    testcase["Negative square root", Sqrt[-positive^2], I positive];
+    Unprotect[Power]; DownValues[Power] = savedPower; Protect[Power]];
+ ]];
+
+testgroup["Symbolic sums and simplification",
+ Module[{i, j, k, f, g, h, op, marker, expr, result, warned},
+  snegfreeindexes[i, j, k]; snegfermionoperators[op];
+  testcase["Thread symbolic sums", sumThread[sum[{f[i], g[i]}, {i}]],
+    {sum[f[i], {i}], sum[g[i], {i}]}];
+  testcase["Expand under symbolic sums", sumExpand[sum[(f[i]+g[i]) h[i], {i}]],
+    sum[f[i] h[i], {i}]+sum[g[i] h[i], {i}]];
+  expr = sum[KroneckerDelta[i, j] f[i], {i}];
+  testcase["Sum simplifier applies delta rules", sumSimplify[expr], f[j]];
+  testcase["Full sum simplifier applies delta rules", sumFullSimplify[expr], f[j]];
+  testcase["Collect then contract deltas",
+    sumCollectSimplifyKD[sum[(f[i]+g[i]) h[i] KroneckerDelta[i, j], {i}]],
+    (f[j]+g[j]) h[j]];
+  testcase["Positive delta powers", FullSimplifyKD[KroneckerDelta[i, j]^4], KroneckerDelta[i, j]];
+  testcase["Complementary sea occupations", FullSimplifyKD[UnitStep[k]+UnitStep[-k]], 1];
+  testcase["Delta-linked opposite occupations", SimplifyKD[KroneckerDelta[i, j] UnitStep[i] UnitStep[-j]], 0];
+
+  testcase["Separable sum with unused index",
+    FactorSeparableSumCustom[sum[f[i] g[j], {i, j, k}]],
+    sum[f[i], {i}] sum[g[j], {j}] sum[1, {k}]];
+  expr = sum[f[i] g[j] h[i, j], {i, j}];
+  testcase["Connected factors stay together", FactorSeparableSumCustom[expr], expr];
+  testcase["Factorization rule retains constants",
+    sum[3 f[i] g[j], {i, j}] /. rulesumFactor, 3 sum[f[i], {i}] sum[g[j], {j}]];
+  testcase["Empty factors retain cardinalities", FactorSeparableSumCustom[sum[1, {i, j}]],
+    sum[1, {i}] sum[1, {j}]];
+
+  expr = sum[f[i, j], {i, j}];
+  result = sumAbstractIndex[expr, marker];
+  testcase["Abstract index positions", result, sum[f[marker[1], marker[2]], {marker[1], marker[2]}]];
+  testcase["Abstract index round trip", sumNameIndex[result, marker, {i, j}], expr];
+  testcase["Explicit index naming",
+    sumNameIndex[sum[f[marker[1], marker[2]], {marker[1], marker[2]}], marker, {i, j}], expr];
+  Block[{sumAutoRename = False},
+    testcase["Nested sums without automatic renaming",
+      sum[sum[f[i, j], {i}] + g[j], {j}], sum[f[i, j], {i, j}] + sum[g[j], {j}]];
+    testcase["Overlapping indexes are reported",
+      Quiet[Check[nc[sum[op[CR, i], {i}], sum[op[AN, i], {i}]], warned, snegsumJoin::overlap],
+        snegsumJoin::overlap], warned]];
+
+  expr = Expand[number[op[]] + 2 hubbard[op[]] + 3 spinz[op[]]];
+  result = SnegFullSimplify[expr];
+  zerotest["High-level simplification preserves algebra", (result /. HoldForm[a_] :> a) - expr];
+  testcase["High-level simplification actually rewrites", !FreeQ[result, _HoldForm], True];
+  testcase["Hubbard recognition",
+    MatchQ[SnegSimplifyHubbard[-hubbard[op[]]], HoldPattern[-HoldForm[hubbard[op[]]]]], True];
+  testcase["Vacuum projection under symbolic sums",
+    Zeroonvac[sum[op[AN, i], {i}] + op[CR, 2]], op[CR, 2]];
+ ]];
+
+testgroup["Scoped assumptions and orbital transformations",
+ Module[{p, q, savedUp, savedDown, value, f, g, old, new, rotation, rules},
+  p[0] = 7; savedUp = UpValues[p]; savedDown = DownValues[p];
+  testcase["Temporary sign assumption", snegAssuming[p /: p > 0 = True, {p > 0, p[0]}], {True, 7}];
+  testcase["Assumption restores upvalues", UpValues[p], savedUp];
+  testcase["Assumption restores downvalues", DownValues[p], savedDown];
+  testcase["Multiple assumptions",
+    snegAssuming[{p /: p > 0 = True, q /: q < 0 = True}, {p > 0, q < 0}], {True, True}];
+  testcase["Nested assumption restoration",
+    snegAssuming[p /: p > 0 = True,
+      {snegAssuming[p /: p > 0 = False, p > 0], p > 0}], {False, True}];
+  testcase["Held assumption result",
+    MatchQ[snegAssumingHoldForm[p /: p > 0 = True, p > 0], HoldPattern[HoldForm[True]]], True];
+  value = snegAssuming[p /: p > 0 = True, (p[1] = 9; p > 0)];
+  testcase["Assumption body ran", value, True];
+  testcase["Body definitions restored", DownValues[p], savedDown];
+  testcase["Nested upvalues restored", UpValues[p], savedUp];
+
+  snegfermionoperators[f, g];
+  old = {f[CR, 1], f[CR, 2]}; new = {g[CR, 1], g[CR, 2]};
+  rotation = {{1, I}, {I, 1}}/Sqrt[2];
+  rules = snegold2newrules[old, new, rotation.old];
+  zerotest["Inverse complex orbital transformation", (old /. rules) - ConjugateTranspose[rotation].new];
+  testcase["Transformed orbital CAR", Expand[Outer[anticommutator, conj[old /. rules], old /. rules]], IdentityMatrix[2]];
+  testcase["Nonunitary orbital transformation rejected",
+    Block[{Print = Function[Null]}, snegold2newrules[old, new, 2 rotation.old]], Null];
+  testcase["Orbital dimension mismatch rejected",
+    Block[{Print = Function[Null]}, snegold2newrules[old, {First[new]}, rotation.old]], Null];
+ ]];
+
+testgroup["ASCII operator and bra-ket conversion",
+ Module[{f, b, expressions, expr, text},
+  snegfermionoperators[f]; snegbosonoperators[b];
+  expressions = {f[CR], f[AN], f[CR, 3, UP], f[AN, -2, DO], b[CR, 2],
+    ket[], bra[], ket[1, Null, 3], bra[2, Null],
+    nc[f[CR, 1, UP], f[AN, 2, DO]], nc[b[CR, 2], f[CR, 1, UP], ket[1, 2]],
+    2 f[CR, UP] + I f[AN, DO]};
+  Do[
+    text = snegtoascii[expr];
+    testcase["ASCII round trip", asciitosneg[text], expr],
+    {expr, expressions}];
+  testcase["ASCII creator syntax", snegtoascii[f[CR, 3, UP]], ToString[f] <> "+(3,1)"];
+  testcase["ASCII annihilator syntax", snegtoascii[f[AN]], ToString[f] <> "()"];
+  testcase["ASCII scalar product", asciitosneg["<1|" <> "|1>"], 1];
+  testcase["ASCII orthogonal states", asciitosneg["<1|" <> "|2>"], 0];
+  testcase["ASCII reordering sign",
+    asciitosneg[ToString[f] <> "(1)" <> ToString[f] <> "+(2)"], -nc[f[CR, 2], f[AN, 1]]];
+  testcase["Center-dot input", CenterDot[f[AN, UP], f[CR, UP]], 1-number[f[], UP]];
+ ]];
+
+testgroup["Higher-spin and spinless occupation bases",
+ Module[{f, spin, modes, states, cr, an, nmat, sz, jp, localp, j, k, bz},
+  Do[
+    snegfermionoperators[{f, spin}];
+    modes = 2 spin+1; states = fockstates[modes];
+    cr = Table[fockcreate[modes, j], {j, modes}]; an = Transpose /@ cr;
+    nmat = Total[MapThread[Dot, {cr, an}]];
+    sz = Total[MapThread[Times, {Range[spin, -spin, -1], MapThread[Dot, {cr, an}]}]];
+    localp = Table[If[m == n+1, Sqrt[(spin-n) (spin+n+1)], 0], {m, spin, -spin, -1}, {n, spin, -spin, -1}];
+    jp = Sum[localp[[j, k]] cr[[j]].an[[k]], {j, modes}, {k, modes}];
+    bz = qszbasisvc[{f[]}];
+    checkbasis["Generic QSZ", bz, states, {nmat - modes IdentityMatrix[2^modes]/2, sz}, # &];
+    testcase["Generic basis dimension", Total[Length[#[[2]]] & /@ bz], 2^modes];
+    testcase["Generic number operator", matrixrepresentationvc[number[f[]], states], nmat];
+    testcase["Generic Hubbard pairs", matrixrepresentationvc[hubbard[f[]], states], nmat.(nmat-IdentityMatrix[2^modes])/2];
+    testcase["Generic spin raising", matrixrepresentationvc[spinplus[f[]], states], jp];
+    testcase["Generic spin Z", matrixrepresentationvc[spinz[f[]], states], sz];
+    testcase["Single-site operator basis dimension", Length[basis[f[]]], 2^modes],
+    {spin, {0, 1, 3/2}}];
+  testcase["Subset generator boundary", {KSubsets[{1, 2, 3}, 0], KSubsets[{1, 2, 3}, 4]}, {{{}}, {}}];
+  testcase["General subset generator", KSubsets[{1, 2, 3, 4, 5}, 3],
+    {{1, 2, 3}, {1, 2, 4}, {1, 2, 5}, {1, 3, 4}, {1, 3, 5},
+     {1, 4, 5}, {2, 3, 4}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}}];
+ ]];
+
+testgroup["State and basis utilities",
+ Module[{f, b, m, z, states, v, w, bz, projected, coords, target,
+     savedBrakets, aux, gram, cr, numberMatrix, sz, allStates},
+  snegfermionoperators[f]; snegbosonoperators[b];
+  snegmajoranaoperators[m]; sneggrassmanconstants[z];
+  testcase["Boson predicates", {bosonQ[b], bosonQ[b[CR, 2]]}, {True, True}];
+  testcase["Majorana predicates", {majoranaQ[m], majoranaQ[m[2]]}, {True, True}];
+  testcase["Grassmann predicates", {grassmanQ[z], grassmanQ[conj[z]]}, {True, True}];
+  testcase["Operator families stay distinct", TrueQ /@ {fermionQ[b], bosonQ[f], majoranaQ[f]}, {False, False, False}];
+  makebasis[{f[]}]; states = {vc[1, 0], vc[0, 1]};
+  v = (1+I) states[[1]] - 2 I states[[2]];
+  w = (1-I) states[[1]] + 2 states[[2]];
+  testcase["Occupation decomposition", decomposevc[v, states], {1+I, -2 I}];
+  testcase["Operator decomposition", decomposeop[(1+I) f[CR, UP]-2 I f[CR, DO], {f[CR, UP], f[CR, DO]}], {1+I, -2 I}];
+  testcase["Complex scalar product", scalarproductvc[v, w], 2 I];
+  testcase["Complex expectation value", braketvc[v, spinz[f[]], v], -1];
+  testcase["Unnormalized expectation value", expvvc[number[f[]], v], 6];
+  testcase["Complex state norm", normvc[v], Sqrt[6]];
+  bz = {{{0, 1/2}, {states[[1]]}}, {{0, -1/2}, {states[[2]]}}};
+  testcase["Map over basis states", applybasis[bz, I # &],
+    {{{0, 1/2}, {I vc[1, 0]}}, {{0, -1/2}, {I vc[0, 1]}}}];
+  testcase["Drop empty sectors", dropemptysubspaces[{{{1}, {}}, {{2}, {v}}, {{3}, {}}}], {{{2}, {v}}}];
+  target = (states[[1]]+I states[[2]])/Sqrt[2];
+  projected = remove1state[states, target];
+  coords = coordinates[#, states] & /@ projected;
+  testcase["Complex orthogonal complement dimension", Length[projected], 1];
+  zerotest["Complex orthogonal complement norm", Conjugate[coords].Transpose[coords]-IdentityMatrix[1]];
+  zerotest["Complex orthogonal complement overlap", Conjugate[coordinates[target, states]].Transpose[coords]];
+  testcase["Remove a spanning set", removestates[states, {target, (states[[1]]-I states[[2]])/Sqrt[2]}], {}];
+
+  savedBrakets = DownValues[braketrule];
+  Block[{braketrule},
+    DownValues[braketrule] = savedBrakets;
+    braketrule[bra[1], ket[2]] = I/2;
+    braketrule[bra[2], ket[1]] = -I/2;
+    aux = {vc[ket[1]], vc[ket[2]]}; gram = {{1, I/2}, {-I/2, 1}};
+    testcase["Custom ket overlap", scalarproductvc[aux[[1]], aux[[2]]], I/2];
+    testcase["Fast matrix honors ket overlaps", matrixrepresentationvcfast[1, aux], gram];
+    testcase["Sparse matrix honors ket overlaps", Normal[matrixrepresentationvcsparse[1, aux]], gram]];
+  testcase["Ket-overlap definitions restored", DownValues[braketrule], savedBrakets];
+  testcase["Default ket overlap", braketrule[bra[1], ket[2]], 0];
+  testcase["Spin-threaded number operator", snegSpinThread[nc[f[CR], f[AN]], {UP, DO}], number[f[]]];
+
+  cr = {fockcreate[2, 1], fockcreate[2, 2]};
+  numberMatrix = cr[[1]].Transpose[cr[[1]]] + cr[[2]].Transpose[cr[[2]]];
+  sz = (cr[[1]].Transpose[cr[[1]]] - cr[[2]].Transpose[cr[[2]]])/2;
+  bz = QSZaddspinket[qszbasisvc[{f[]}], 1];
+  allStates = Flatten[Table[vc @@ Join[bits, {ket[k]}], {bits, Tuples[{0, 1}, 2]}, {k, 1, -1, -1}], 1];
+  checkbasis["Abelian spin-ket product", bz, allStates,
+    {KroneckerProduct[numberMatrix-IdentityMatrix[4], IdentityMatrix[3]],
+     KroneckerProduct[sz, IdentityMatrix[3]] + KroneckerProduct[IdentityMatrix[4], DiagonalMatrix[{1, 0, -1}]]}, # &];
+  testcase["Abelian spin-ket dimension", Total[Length[#[[2]]] & /@ bz], 12];
+ ]];
+
+]; (* isolated package state *)
+testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
+
+End[];
 
 Print["*** DONE. ***"];
 Print["Passed: ", testpassed, " Failed: ", testfailed];
