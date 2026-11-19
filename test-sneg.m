@@ -3274,6 +3274,35 @@ Module[{y1, y2, y3},
 Print["* misc *"];
 test[ indexvalue2list[{{2, xa}, {4, xb}}, 6], {0, xa, 0, xb, 0, 0} ];
 
+testgroup["Numeric zero matrix records", Block[{BASIS}, Module[
+  {states, interaction, qd, left, right},
+  Do[
+    testcase["Mixed numeric zero records",
+      indexvalue2list[{zero, {2, xa}, zero, {4, 1.*^-100}}, 5],
+      {0, xa, 0, 1.*^-100, 0}];
+    testcase["Only numeric zeros", indexvalue2list[{zero, zero}, 3], {0, 0, 0}],
+    {zero, {0, 0., 0. + 0. I, SetPrecision[0., 50]}}];
+  testcase["Complex nonzero coefficient",
+    indexvalue2list[{0., {1, 0.3 + 0.2 I}}, 2], {0.3 + 0.2 I, 0}];
+  snegfermionoperators[matrixZeroC, matrixZeroD];
+  makebasis[{matrixZeroC[], matrixZeroD[]}];
+  states = vc @@@ Tuples[{0, 1}, 4];
+  interaction = Expand[0.7 hubbard[matrixZeroC[]] + 0.43 hubbard[matrixZeroD[]] +
+    0.21 nc[number[matrixZeroC[]], number[matrixZeroD[]]] -
+    0.3 spinspin[matrixZeroC[], matrixZeroD[]]];
+  qd = Expand[komutator[interaction, matrixZeroC[CR, UP]]];
+  Do[
+    testcase["Fast/general numerical matrix",
+      Max[Abs[Flatten[N[matrixrepresentationvcfast[op, states] -
+        matrixrepresentationvc[op, states]]]]] < 10^-13, True],
+    {op, {interaction, qd, Expand[antikomutator[qd, matrixZeroC[AN, UP]]],
+      Expand[antikomutator[conj[qd], qd]], (0.3 + 0.2 I) hop[matrixZeroC[], matrixZeroD[]]}}];
+  left = I Take[states, 8]; right = -Take[states, -8];
+  testcase["Rectangular complex numerical matrix",
+    Max[Abs[Flatten[N[matrixrepresentationvcfast[qd, left, right] -
+      matrixrepresentationvc[qd, left, right]]]]] < 10^-13, True]
+]]];
+
 test[ disjointQ[{{1, 2}}], True ];
 test[ disjointQ[{{1, 2}, {3, 4}}], True ];
 test[ disjointQ[{{1, 2}, {1, 3}}], False ];

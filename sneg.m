@@ -4692,16 +4692,11 @@ matrixrepresentationvcfast[a_, l1_List, l2_List] := Module[
   l2] // Transpose
 ];
 
-(* Transform a list of {index, value} pairs into a vector with given
-values at indexed positions. *)
+(* Transform {index, value} pairs to a vector. Operator application can also
+   produce scalar zeros, including inexact and complex zeros, between records. *)
 indexvalue2list[iv_List, n_Integer] :=
   Fold[ReplacePart[#1, Last[#2], First[#2]] &, Table[0, {n}],
-  Select[iv, (# =!= 0)&] ];
-
-(* Added 25.3.2011 *)
-indexvalue2list[{0}, n_Integer]:= Table[0, {n}];
-indexvalue2list[{0.}, n_Integer]:= Table[0, {n}];
-indexvalue2list[{0.+0. I}, n_Integer]:= Table[0, {n}];
+  Select[iv, !(NumberQ[#] && TrueQ[# == 0])&] ];
 
 (* Symmetrized spin-spin correlation for a list of operators. *)
 spinspinsymmetric[ops_List] := Module[{l},
