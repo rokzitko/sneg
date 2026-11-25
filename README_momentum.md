@@ -102,7 +102,9 @@ blochphaseexp[h, {k -> {4 Pi/3, 0}, a1 -> {1, 0}, a2 -> {1/2, Sqrt[3]/2}}] // Si
 `blochhamiltonian` computes $h_{\alpha\beta}(k) = \{c_{k\alpha},
 [H, c^\dagger_{k\beta}]\}$ (commutators for bosons). It reports Hamiltonians
 that are not translation invariant for the chosen unit cell (for example a
-staggered potential without a doubled cell) and non-Hermitian results. The
+staggered potential without a doubled cell) and non-Hermitian results, and
+it stops with a message for anomalous or linear terms, which are treated by
+`bdghamiltonian` (see [`README_quadratic.md`](README_quadratic.md)). The
 option `"OrbitalPositions" -> {tau_A, tau_B}` returns the Bloch matrix in the
 convention $c_{R\alpha} = N_s^{-1/2}\sum_k e^{ik\cdot(R+\tau_\alpha)}
 c_{k\alpha}$, $h^{II}_{\alpha\beta} = e^{-ik\cdot\tau_\alpha}

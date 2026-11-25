@@ -150,8 +150,10 @@ blochhamiltonian[hk, {bk}, k]    (* {{2 J s (1 - Cos[k])}} after blochphaseexp *
 For the antiferromagnet, rotate one sublattice by $\pi$ about $x$ first,
 `rotatespin[H, M, If[Last[{##}] === "B", RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &]`;
 the quadratic Hamiltonian then contains anomalous terms
-$b^\dagger b^\dagger$, whose Bogoliubov transformation gives
-$\omega = 2Js|\sin(k/2)|$ for the two-site unit cell.
+$b^\dagger b^\dagger$. `bdghamiltonian` and
+`bogoliubov[..., "Boson", "Momentum" -> True]` give
+$\omega = 2Js|\sin(k/2)|$ for the two-site unit cell (see
+[`README_quadratic.md`](README_quadratic.md)).
 
 ## Spherical tensors, Stevens operators, and rotations
 

@@ -790,6 +790,69 @@ xtofermions::usage =
 "xtofermions[expr, X -> c] replaces the X-operators of the Hubbard atom by
 fermion operators, X[j, a, b] -> xoperator[c[j], a, b].";
 
+(* Quadratic forms, Bogoliubov transformations, and mean-field theory; see
+README_quadratic.md. *)
+quadraticform::usage =
+"quadraticform[H, {a1, a2, ...}] returns {M, E0} with
+H = 1/2 Psi^dagger M Psi + E0 for a quadratic Hamiltonian H of the modes
+Psi = (a_1, ..., a_n, a_1^dagger, ..., a_n^dagger). Modes are templates c or
+c[j...] (fermions get the spin index as the last index, varying fastest) or
+functions t -> operator of t = CR, AN. M = {{h, Delta}, {Delta^dagger, -h^T}}
+for fermions and {{A, B}, {B^*, A^*}} for bosons. Options: \"BdG\" -> False
+returns {h, E0'} with H = a^dagger h a + E0' for number-conserving H;
+\"Linear\" -> True returns {M, f, E0} with the linear boson terms
+Sum_i (f_i b_i^dagger + f_i^* b_i).";
+quadraticoperator::usage =
+"quadraticoperator[M, {a1, ...}, E0] returns 1/2 Psi^dagger M Psi + E0
+for a 2n by 2n BdG matrix M, or a^dagger M a + E0 for an n by n matrix.";
+bdghamiltonian::usage =
+"bdghamiltonian[H, {ck[a], ...}, k] returns {H(k), E0} with
+H = 1/2 Sum_k Psi_k^dagger H(k) Psi_k + E0 for a translation-invariant
+quadratic Hamiltonian with anomalous terms, Psi_k = (c_k,a, ...,
+c_-k,a^dagger, ...). The orbital templates and the option \"IndexPosition\"
+are as in blochhamiltonian.";
+bogoliubov::usage =
+"bogoliubov[M, \"Fermion\"] and bogoliubov[M, \"Boson\"] diagonalize a BdG
+matrix: they return {eps, T} with Psi = T Phi,
+Phi = (gamma_1, ..., gamma_n, gamma_1^dagger, ...), the quasiparticle
+energies eps_m and T^dagger M T = diag(eps, -eps) (fermions; T unitary) or
+diag(eps, eps) (bosons; T^dagger eta T = eta, positive-definite M). For
+symbolic matrices, blocks of at most two modes are supported.
+bogoliubov[H, {a1, ...}] returns {eps, T, Egs} with the ground-state energy
+Egs. With \"Momentum\" -> True, M is a Bloch BdG matrix H(k) from
+bdghamiltonian; eps then lists all 2n diagonal elements of T^dagger H(k) T.";
+bogoliubovrules::usage =
+"bogoliubovrules[T, {a1, ...}, g] returns the rules
+a_i -> Sum_m (T_im g_m + T_i,n+m g_m^dagger) and their conjugates for the
+quasiparticle operators g (a spinless fermion or boson operator symbol, with
+g_m = g[m], or a list of mode templates).";
+gaussianaverage::usage =
+"gaussianaverage[expr, M, {a1, ...}, T] returns the expectation value of
+expr in the thermal state at temperature T (T = 0: ground state) of the
+quadratic Hamiltonian with the BdG matrix M (or the Hamiltonian itself),
+using Wick's theorem. expr may be a list. With \"Momentum\" -> k, M is a
+Bloch BdG matrix H(k) of the orbitals and expr contains operators with
+momenta k and -k.";
+avg::usage =
+"avg[x] denotes the expectation value of the operator expression x, as
+created by meanfield. It is linear, avg[x]^* = avg[conj[x]], and it is
+treated as a number in operator products.";
+meanfield::usage =
+"meanfield[H, channels] decouples products of four or more fermion or boson
+operators into the mean-field Hamiltonian with the averages avg[...] of
+pairs of operators. channels is \"All\" (default; Hartree-Fock-Bogoliubov),
+\"Hartree\" (<a^dagger a> of the same mode), \"Fock\" (<a^dagger b> of
+different modes), \"Pairing\" (<a b>, <a^dagger b^dagger>), \"Normal\"
+(Hartree and Fock), a list of these, or a function f[o1, o2] that selects the
+allowed contractions <o1 o2>.";
+meanfieldsolve::usage =
+"meanfieldsolve[Hmf, {a1, ...}, {avg[...] -> x0, ...}] solves the
+mean-field equations for the averages in Hmf self-consistently and returns
+an Association with the averages, the energy <Hmf>, the quasiparticle
+energies, the chemical potential, and convergence information. Options:
+\"Temperature\", \"ParticleNumber\" (fermions), \"Mixing\", \"Tolerance\",
+\"MaxIterations\".";
+
 (** Load required packages **)
 
 (* We need KSubsets from Combinatorica by Sriram V. Pemmaraju
@@ -1209,12 +1272,14 @@ operatorQ[op_?bosonQ] := True;
 operatorQ[op_?majoranaQ] := True;
 operatorQ[op_?spinQ] := True;
 
-(* isnumericQ[] return True if the expression does not involve operators. *)
+(* isnumericQ[] return True if the expression does not involve operators.
+Expectation values avg[...] are numbers even though their arguments are
+operator expressions. *)
 
 isnumericQ[z_] := And @@ (If[NumericQ@#, True,
   If[MemberQ[Quiet[Attributes@Evaluate@Head@#], NumericFunction] ||
      snegnonopQ[#] === True, True, False]] & /@
-  Level[z, {0, Infinity}]);
+  Level[If[FreeQ[z, avg], z, z /. _avg -> 1], {0, Infinity}]);
 
 (* Make "op" be a linear operator in all of its arguments. *)
 (* Such operators are, for example, nc[], dd[], ap[], invertspin[]... *)
@@ -5382,6 +5447,16 @@ blochhamiltonian::rest = "The matrix element `1` still contains operators or une
 blochhamiltonian::transl = "The Hamiltonian is not translation invariant for the given orbitals; the residual off-diagonal part is `1`.";
 blochhamiltonian::herm = "The Bloch Hamiltonian is not Hermitian.";
 blochhamiltonian::orb = "Invalid orbital template `1`.";
+blochhamiltonian::anom = "The Hamiltonian contains terms that do not conserve the particle number (anomalous or linear terms), which are not described by h(k); use bdghamiltonian.";
+
+(* True if every operator product contains equal numbers of creation and
+annihilation operators with the given heads. *)
+snegnumberconservingQ[H_, heads_List] := Module[{cnt},
+  cnt[l_List] := Count[l, (h_Symbol)[CR, ___] /; MemberQ[heads, h]] -
+    Count[l, (h_Symbol)[AN, ___] /; MemberQ[heads, h]];
+  FreeQ[Last[Reap[H /. {HoldPattern[nc[x__]] :> (Sow[cnt[{x}]]; 1),
+      o:(h_Symbol)[CR | AN, ___] /; MemberQ[heads, h] :> (Sow[cnt[{o}]]; 1)}]],
+    n_Integer /; n != 0]];
 
 snegblochmodes[op_Symbol, q_, p_] := snegblochmodes[op[], q, p];
 snegblochmodes[op_Symbol[e___], q_, p_] /; TrueQ[fermionQ[op]] || TrueQ[bosonQ[op]] :=
@@ -5413,6 +5488,8 @@ blochhamiltonian[H_, orbs_List, k_Symbol, opts:OptionsPattern[]] := Module[
   If[MemberQ[modesk, $Failed], Return[$Failed]];
   modesk = Flatten[modesk];
   boson = TrueQ[bosonQ[Head[modesk[[1]][CR]]]];
+  If[!snegnumberconservingQ[H, Union[Map[Head[#[CR]] &, modesk]]],
+    Message[blochhamiltonian::anom]; Return[$Failed]];
   h = Table[snegblochelement[H, m1, m2, boson], {m1, modesk}, {m2, modesk}];
   If[!FreeQ[h, sum] || !FreeQ[h, _?operatorQ[___]],
     Message[blochhamiltonian::rest,
@@ -6056,6 +6133,672 @@ xtofermions[expr_, x_Symbol?xoperatorQ -> c_Symbol?fermionQ] := (
      Map[xparities[x], First[snegxhubbardatom]] =!= Last[snegxhubbardatom],
     Message[xtofermions::states, x]; Return[$Failed]];
   Expand[expr /. x[j___, a_, b_] :> xoperator[c[j], a, b]]);
+
+(**** Quadratic forms, Bogoliubov transformations, and mean-field theory ****)
+
+(* A quadratic Hamiltonian of n modes a_i is written in the BdG form
+H = 1/2 Psi^dagger M Psi + E0 with Psi = (a_1, ..., a_n, a_1^dagger, ...,
+a_n^dagger). For fermions M = {{h, Delta}, {Delta^dagger, -h^T}} with
+Delta^T = -Delta, for bosons M = {{A, B}, {B^*, A^*}} with B^T = B. The
+matrix elements follow from M_pq = eta_p eta_q [Psi_p, [H, Psi^dagger_q]]_-+
+with eta = (1, ..., 1, -1, ..., -1) for bosons and eta = 1 for fermions, so
+that M is always in this symmetrized form. A Bogoliubov transformation
+Psi = T Phi, Phi = (gamma_1, ..., gamma_n, gamma_1^dagger, ...), with
+T = {{U, V^*}, {V, U^*}} gives H = Sum_m eps_m gamma_m^dagger gamma_m + Egs,
+Egs = E0 - 1/2 Sum eps (fermions) or E0 + 1/2 Sum eps (bosons). *)
+
+(* Expectation values. avg[] is linear, applied to the canonically ordered
+operator expression, and treated as a number by nc[] (see isnumericQ). *)
+sneglinearoperatorFirst[avg];
+avg[sum[a_, it_List]] := sum[avg[a], it];
+avg[_?fermionQ[___]] := 0;
+avg /: Conjugate[avg[x_]] := avg[conj[x]];
+If[PrettyOutput,
+  Format[avg[x_], StandardForm] := DisplayForm @
+    RowBox[{"\[LeftAngleBracket]", x, "\[RightAngleBracket]"}];
+];
+
+(* Modes: templates op or op[j...] (fermions get the spin labels as the last
+index, varying fastest) or functions t -> operator expression of t = CR, AN. *)
+quadraticform::mode = "Invalid mode `1`.";
+quadraticform::stat = "The modes must be all fermionic or all bosonic.";
+snegquadmodes[specs_List] := Module[{m},
+  m = Flatten[Map[snegquadmode, specs]];
+  If[MemberQ[m, $Failed] || m === {}, $Failed, m]];
+snegquadmode[op_Symbol] := snegquadmode[op[]];
+snegquadmode[op_Symbol[e___]] /; TrueQ[fermionQ[op]] :=
+  Map[With[{s = #}, Function[t, op[t, e, s]]] &, snegspinlabels[op]];
+snegquadmode[op_Symbol[e___]] /; TrueQ[bosonQ[op]] := {Function[t, op[t, e]]};
+snegquadmode[f_Function] := {f};
+snegquadmode[x_] := (Message[quadraticform::mode, x]; $Failed);
+
+(* "Fermion" or "Boson" *)
+snegquadstat[modes_List] := Module[{heads},
+  heads = Union[Cases[Map[#[AN] &, modes], (h_Symbol)[___] /; TrueQ[operatorQ[h]] :> h,
+    {0, Infinity}]];
+  Which[
+    heads === {}, $Failed,
+    And @@ Map[TrueQ[fermionQ[#]] &, heads], "Fermion",
+    And @@ Map[TrueQ[bosonQ[#]] &, heads], "Boson",
+    True, $Failed]];
+
+(* All elements vanish: exactly, or within rounding errors for inexact
+numbers. *)
+snegzeroQ[l_List, scale_:1] := And @@ Map[
+  If[NumericQ[#] && Precision[#] < Infinity, Abs[#] < 10^-10 scale, TrueQ[Simplify[#] === 0]] &,
+  l];
+
+snegquadeta[stat_, n_] := If[stat === "Boson",
+  Join[ConstantArray[1, n], ConstantArray[-1, n]], ConstantArray[1, 2 n]];
+snegquadbracket[stat_] := If[stat === "Boson", komutator, antikomutator];
+
+snegquadsetup[specs_List] := Module[{modes, stat},
+  modes = snegquadmodes[specs];
+  If[modes === $Failed, Return[$Failed]];
+  stat = snegquadstat[modes];
+  If[stat === $Failed, Message[quadraticform::stat]; Return[$Failed]];
+  {modes, stat}];
+
+quadraticoperator::dim = "The matrix dimension `1` does not match `2` modes.";
+quadraticoperator[M_?MatrixQ, specs_List, E0_:0] := Module[{s, modes, n, psi, psid},
+  s = snegquadsetup[specs];
+  If[s === $Failed, Return[$Failed]];
+  modes = First[s];
+  n = Length[modes];
+  Which[
+    Length[M] == 2 n && Length[First[M]] == 2 n,
+      psi = Join[Map[#[AN] &, modes], Map[#[CR] &, modes]];
+      psid = Join[Map[#[CR] &, modes], Map[#[AN] &, modes]];
+      Expand[1/2 Sum[If[M[[i, j]] === 0, 0, M[[i, j]] nc[psid[[i]], psi[[j]]]],
+        {i, 2 n}, {j, 2 n}] + E0],
+    Length[M] == n && Length[First[M]] == n,
+      Expand[Sum[If[M[[i, j]] === 0, 0, M[[i, j]] nc[modes[[i]][CR], modes[[j]][AN]]],
+        {i, n}, {j, n}] + E0],
+    True,
+      Message[quadraticoperator::dim, Dimensions[M], n]; $Failed]
+];
+
+quadraticform::sum = "Symbolic sums are not supported; use bdghamiltonian for momentum-space Hamiltonians or sumCluster for finite clusters.";
+quadraticform::order = "The Hamiltonian contains terms that are not quadratic in the modes (higher-order terms or products with other operators): `1`.";
+quadraticform::rest = "The Hamiltonian contains terms that are not quadratic forms of the given modes: `1`.";
+quadraticform::odd = "The Hamiltonian contains terms linear in the fermion operators.";
+quadraticform::linear = "The Hamiltonian contains terms linear in the boson operators; use \"Linear\" -> True.";
+quadraticform::herm = "The quadratic form is not Hermitian.";
+quadraticform::anom = "The Hamiltonian contains anomalous terms; use \"BdG\" -> True.";
+Options[quadraticform] = {"BdG" -> True, "Linear" -> False, "Check" -> True};
+quadraticform[H_, specs_List, opts:OptionsPattern[]] := Module[
+  {s, modes, stat, n, psi, psid, eta, br, hx, cols, M, bad, R, f, g, E0, h},
+  s = snegquadsetup[specs];
+  If[s === $Failed, Return[$Failed]];
+  {modes, stat} = s;
+  n = Length[modes];
+  If[!FreeQ[H, sum], Message[quadraticform::sum]; Return[$Failed]];
+  psi = Join[Map[#[AN] &, modes], Map[#[CR] &, modes]];
+  psid = Join[Map[#[CR] &, modes], Map[#[AN] &, modes]];
+  eta = snegquadeta[stat, n];
+  br = snegquadbracket[stat];
+  hx = Expand[H];
+  cols = Map[Expand[komutator[hx, #]] &, psid];
+  M = Table[Expand[eta[[i]] eta[[j]] br[psi[[i]], cols[[j]]]], {i, 2 n}, {j, 2 n}];
+  bad = Select[Flatten[M], !isnumericQ[#] &];
+  If[bad =!= {}, Message[quadraticform::order, First[bad]]; Return[$Failed]];
+  (* Rounding errors of inexact coefficients are removed from the remainder. *)
+  R = Chop[Expand[hx - quadraticoperator[M, specs]]];
+  If[stat === "Fermion",
+    If[!isnumericQ[R],
+      If[MemberQ[Map[snegtermops, sum2list[R]], {_, {_}}],
+        Message[quadraticform::odd], Message[quadraticform::rest, R]];
+      Return[$Failed]];
+    f = g = ConstantArray[0, n],
+    (* bosons: linear terms f_i b_i^dagger + g_i b_i *)
+    f = Chop[Map[Expand[komutator[#[AN], R]] &, modes]];
+    g = Chop[Map[Expand[komutator[R, #[CR]]] &, modes]];
+    bad = Select[Join[f, g], !isnumericQ[#] &];
+    If[bad =!= {}, Message[quadraticform::rest, First[bad]]; Return[$Failed]];
+    R = Chop[Expand[R - Sum[f[[i]] modes[[i]][CR] + g[[i]] modes[[i]][AN], {i, n}]]];
+    If[!isnumericQ[R], Message[quadraticform::rest, R]; Return[$Failed]];
+    If[!MatchQ[Flatten[{f, g}], {0 ...}] && !TrueQ[OptionValue["Linear"]],
+      Message[quadraticform::linear]; Return[$Failed]]];
+  E0 = R;
+  If[TrueQ[OptionValue["Check"]] &&
+     !snegzeroQ[Join[Flatten[M - ConjugateTranspose[M]], g - Conjugate[f]]],
+    Message[quadraticform::herm]];
+  If[!TrueQ[OptionValue["BdG"]],
+    If[!MatchQ[Flatten[M[[1 ;; n, n + 1 ;; 2 n]]], {0 ...}],
+      Message[quadraticform::anom]; Return[$Failed]];
+    h = M[[1 ;; n, 1 ;; n]];
+    E0 = Expand[E0 + If[stat === "Boson", 1, -1] Tr[h]/2];
+    M = h];
+  If[TrueQ[OptionValue["Linear"]], {M, f, E0}, {M, E0}]
+];
+
+(* BdG Hamiltonian in momentum space, Psi_k = (c_k, c_-k^dagger). *)
+Options[bdghamiltonian] = {"IndexPosition" -> 1, "Check" -> True};
+bdghamiltonian::index = "`1` must be a declared momentum index.";
+bdghamiltonian::rest = blochhamiltonian::rest;
+bdghamiltonian::transl = blochhamiltonian::transl;
+bdghamiltonian::herm = "The BdG Hamiltonian is not Hermitian.";
+bdghamiltonian::linear = "The Hamiltonian contains terms with an odd number of operators.";
+bdghamiltonian::ordering = "The constant E0 requires creation operators to the left of annihilation operators (ordering EMPTY) for `1`.";
+bdghamiltonian::stat = quadraticform::stat;
+
+snegbdgmodes[orbs_, q_, p_] := Module[{up},
+  up = Map[snegblochmodes[#, q, p] &, orbs];
+  If[MemberQ[up, $Failed], Return[$Failed]];
+  up = Flatten[up];
+  Join[up, Map[With[{m = #}, Function[t, m[CR + AN - t] /. q -> -q]] &, up]]];
+
+snegbdgelement[H_, m1_, m2_, eta1_, eta2_, boson_] := snegsumreduce[
+  eta1 eta2 If[boson, komutator, antikomutator][m1[AN], komutator[H, m2[CR]]]];
+
+bdghamiltonian[H_, orbs_List, k_Symbol, opts:OptionsPattern[]] := Module[
+  {p = OptionValue["IndexPosition"], kx, px, modes, modesp, heads, stat, boson,
+   n, eta, h, hp, off, hc, E0, i, j},
+  If[!momentumindexQ[k], Message[bdghamiltonian::index, k]; Return[$Failed]];
+  kx = ssJWRnewname[k, Join[listfreeindexes, {k}], {H, orbs}];
+  modes = snegbdgmodes[orbs, kx, p];
+  If[modes === $Failed, Return[$Failed]];
+  n = Length[modes]/2;
+  heads = Union[Map[Head[#[CR]] &, modes]];
+  stat = snegquadstat[modes[[1 ;; n]]];
+  If[stat === $Failed, Message[bdghamiltonian::stat]; Return[$Failed]];
+  boson = stat === "Boson";
+  If[!snegevenQ[H, heads], Message[bdghamiltonian::linear]; Return[$Failed]];
+  If[!boson && !And @@ Map[ordering[#] === EMPTY &, heads],
+    Message[bdghamiltonian::ordering, heads]; Return[$Failed]];
+  eta = snegquadeta[stat, n];
+  h = Table[snegbdgelement[H, modes[[i]], modes[[j]], eta[[i]], eta[[j]], boson],
+    {i, 2 n}, {j, 2 n}];
+  If[!FreeQ[h, sum] || !FreeQ[h, _?operatorQ[___]],
+    Message[bdghamiltonian::rest,
+      First[Select[Flatten[h], !FreeQ[#, sum] || !FreeQ[#, _?operatorQ[___]] &]]];
+    Return[$Failed]];
+  If[TrueQ[OptionValue["Check"]],
+    px = ssJWRnewname[k, Join[listfreeindexes, {k, kx}], {H, orbs}];
+    modesp = snegbdgmodes[orbs, px, p];
+    hp = Table[snegbdgelement[H, modes[[i]], modesp[[j]], eta[[i]], eta[[j]], boson],
+      {i, 2 n}, {j, 2 n}];
+    off = Simplify[hp /. KroneckerDelta[a_, b_] /;
+      MemberQ[{kx - px, px - kx}, Expand[a - b]] -> 0];
+    If[!MatchQ[Flatten[{off}], {0 ..}],
+      Message[bdghamiltonian::transl, off /. {kx -> k}]; Return[$Failed]];
+    If[!snegzeroQ[Flatten[h - ConjugateTranspose[h]]],
+      Message[bdghamiltonian::herm]];
+  ];
+  (* The c-number part of the normal-ordered H plus the constant from
+     writing the normal part as 1/2 Psi^dagger H(k) Psi. *)
+  hc = Total[Select[sum2list[Expand[sumExpand[H]]], FreeQ[#, _?operatorQ[___]] &]];
+  E0 = snegsumreduce[hc + If[boson, -1, 1]/2 sum[Tr[h[[1 ;; n, 1 ;; n]]], {kx}]];
+  {h, E0} /. kx -> k
+];
+
+(* True if every operator product contains an even number of operators with
+the given heads. *)
+snegevenQ[H_, heads_List] := Module[{cnt},
+  cnt[l_List] := Count[l, (h_Symbol)[CR | AN, ___] /; MemberQ[heads, h]];
+  FreeQ[Last[Reap[H /. {HoldPattern[nc[x__]] :> (Sow[cnt[{x}]]; 1),
+      o:(h_Symbol)[CR | AN, ___] /; MemberQ[heads, h] :> (Sow[cnt[{o}]]; 1)}]],
+    n_Integer /; OddQ[n]]];
+
+(* Bogoliubov transformation. In the default mode, M is the BdG matrix of
+the modes Psi = (a, a^dagger) and must be particle-hole symmetric,
+tau_x M^* tau_x = -M (fermions) or M (bosons); the quasiparticle columns x_m
+are then complemented by C x_m = tau_x x_m^*. With "Momentum" -> True, M is
+a Bloch BdG matrix H(k) for Psi_k = (c_k, c_-k^dagger), whose particle-hole
+symmetry relates k and -k; all 2n columns are then eigenvectors of H(k)
+(fermions) or of eta H(k) (bosons), and T^dagger H(k) T is diagonal with
+the energies of gamma_k followed by -eps(-k) (fermions) or eps(-k)
+(bosons). Internally the conjugate matrix T^* is returned as well; for
+symbolic matrices it is formed assuming real diagonal elements and real
+energies, which avoids unevaluated Conjugate[] of square roots. *)
+bogoliubov::dim = "The BdG matrix must be a square matrix of even dimension.";
+bogoliubov::posdef = "The bosonic BdG matrix is not positive definite (dynamical instability or zero modes).";
+bogoliubov::phs = "The matrix does not have the particle-hole symmetry of the BdG matrix of the modes (a, a^dagger); for Bloch BdG matrices H(k) use \"Momentum\" -> True.";
+bogoliubov::count = "The matrix does not have `1` eigenvalues of each sign.";
+bogoliubov::symbolic = "Symbolic BdG matrices are supported only if they decompose into blocks of at most two modes; the block `1` is larger.";
+Options[bogoliubov] = {"Tolerance" -> 10^-10, "Momentum" -> False};
+
+bogoliubov[M_?MatrixQ, type:("Fermion" | "Boson"), opts:OptionsPattern[]] :=
+  With[{r = snegbogoliubov[M, type, TrueQ[OptionValue["Momentum"]], OptionValue["Tolerance"]]},
+    If[r === $Failed, $Failed, Most[r]]];
+
+bogoliubov[H_, specs_List, opts:OptionsPattern[]] := Module[{s, q, r},
+  s = snegquadsetup[specs];
+  If[s === $Failed, Return[$Failed]];
+  q = quadraticform[H, specs];
+  If[q === $Failed, Return[$Failed]];
+  r = bogoliubov[First[q], Last[s], "Tolerance" -> OptionValue["Tolerance"]];
+  If[r === $Failed, Return[$Failed]];
+  Append[r, Last[q] + If[Last[s] === "Boson", 1, -1] Total[First[r]]/2]
+];
+
+snegNumericMatrix[M_] := If[Precision[M] === Infinity, N[M], M];
+snegtaux[A_, n_] := RotateLeft[A, {n, n}];
+
+snegphsymmetricQ[M_, n_, boson_] := snegzeroQ[
+  Flatten[snegtaux[Conjugate[M], n] + If[boson, -1, 1] M],
+  If[MatrixQ[M, NumericQ], Max[1, Max[Abs[N[M]]]], 1]];
+
+snegbogoliubov[M_, type_, mom_, tol_] := Module[{n, boson = type === "Boson", r},
+  If[Length[M] != Length[First[M]] || OddQ[Length[M]],
+    Message[bogoliubov::dim]; Return[$Failed]];
+  n = Length[M]/2;
+  If[!mom && !snegphsymmetricQ[M, n, boson], Message[bogoliubov::phs]; Return[$Failed]];
+  If[MatrixQ[M, NumericQ],
+    r = If[boson, snegbogoliubovboson[M, n, tol, mom], snegbogoliubovfermion[M, n, tol, mom]];
+    If[r === $Failed, $Failed, Append[r, Conjugate[r[[2]]]]],
+    snegbogoliubovsymbolic[M, n, boson, mom]]
+];
+
+(* Columns {X, C X} with C x = tau_x x^*. *)
+snegphconj[x_, n_] := Join[Conjugate[x[[n + 1 ;; 2 n]]], Conjugate[x[[1 ;; n]]]];
+snegbogoliubovT[cols_List, n_] := Transpose[Join[cols, Map[snegphconj[#, n] &, cols]]];
+
+snegbogoliubovfermion[M0_, n_, tol0_, mom_] := Module[
+  {M = snegNumericMatrix[M0], vals, vecs, tol, pos, neg, zero, z, w, cols, eps, ord, part, hole},
+  M = (M + ConjugateTranspose[M])/2;
+  {vals, vecs} = Eigensystem[M];
+  vals = Re[vals];
+  tol = tol0 Max[1, Max[Abs[vals]]];
+  pos = Flatten[Position[vals, v_ /; v > tol]];
+  neg = Flatten[Position[vals, v_ /; v < -tol]];
+  zero = Flatten[Position[vals, v_ /; Abs[v] <= tol]];
+  If[Length[pos] > n || Length[neg] > n, Message[bogoliubov::count, n]; Return[$Failed]];
+  If[mom,
+    (* zero modes are assigned to the particle columns first *)
+    part = Join[pos, Take[zero, n - Length[pos]]];
+    hole = Join[neg, Drop[zero, n - Length[pos]]];
+    part = part[[Ordering[vals[[part]]]]];
+    hole = hole[[Ordering[-vals[[hole]]]]];
+    Return[{vals[[Join[part, hole]]], Transpose[vecs[[Join[part, hole]]]]}]];
+  cols = vecs[[pos]];
+  eps = vals[[pos]];
+  If[zero =!= {},
+    (* Zero modes: a basis invariant under C, combined into pairs. *)
+    z = vecs[[zero]];
+    w = Flatten[Map[{# + snegphconj[#, n], I (# - snegphconj[#, n])} &, z], 1];
+    w = Select[Orthogonalize[w], Norm[#] > 1/2 &];
+    If[Length[w] != Length[zero], Message[bogoliubov::phs]; Return[$Failed]];
+    cols = Join[cols, Table[(w[[2 j - 1]] + I w[[2 j]])/Sqrt[2], {j, Length[zero]/2}]];
+    eps = Join[eps, ConstantArray[0., Length[zero]/2]]];
+  ord = Ordering[eps];
+  {eps[[ord]], snegbogoliubovT[cols[[ord]], n]}
+];
+
+(* Colpa, Physica A 93, 327 (1978): M = K^dagger K, W = K eta K^dagger,
+T = K^-1 U |L|^(1/2) with the eigenvectors U and eigenvalues L of W. *)
+snegbogoliubovboson[M0_, n_, tol0_, mom_] := Module[
+  {M = snegNumericMatrix[M0], eta, K, Ki, W, vals, vecs, pos, neg, eps, cols, ord},
+  M = (M + ConjugateTranspose[M])/2;
+  If[Min[Re[Eigenvalues[M]]] <= tol0 Max[1, Max[Abs[M]]],
+    Message[bogoliubov::posdef]; Return[$Failed]];
+  eta = DiagonalMatrix[snegquadeta["Boson", n]];
+  K = CholeskyDecomposition[M];
+  Ki = Inverse[K];
+  W = K . eta . ConjugateTranspose[K];
+  {vals, vecs} = Eigensystem[(W + ConjugateTranspose[W])/2];
+  vals = Re[vals];
+  pos = Flatten[Position[vals, v_ /; v > 0]];
+  neg = Flatten[Position[vals, v_ /; v < 0]];
+  If[Length[pos] != n || Length[neg] != n, Message[bogoliubov::posdef]; Return[$Failed]];
+  pos = pos[[Ordering[vals[[pos]]]]];
+  neg = neg[[Ordering[-vals[[neg]]]]];
+  If[mom,
+    ord = Join[pos, neg];
+    Return[{Abs[vals[[ord]]], Ki . Transpose[vecs[[ord]]] . DiagonalMatrix[Sqrt[Abs[vals[[ord]]]]]}]];
+  eps = vals[[pos]];
+  cols = Transpose[Ki . Transpose[vecs[[pos]]] . DiagonalMatrix[Sqrt[eps]]];
+  {eps, snegbogoliubovT[cols, n]}
+];
+
+(* Symbolic matrices: blocks of the graph of nonzero matrix elements, each
+with at most two indexes. Every block gives its eigenvectors as columns
+{kind, label, diagonal element of T^dagger M T, x, x^*}; particle-hole
+blocks give a particle column ("+" eigenvector, positive norm for bosons)
+and a hole column. *)
+snegbogoliubovsymbolic[M_, n_, boson_, mom_] := Module[
+  {edges, comps, cols = {}, c, a, b, d, s, dl, e, u, v, i, j, unit, big, part, hole, kind},
+  edges = Select[Subsets[Range[2 n], {2}], !PossibleZeroQ[M[[#[[1]], #[[2]]]]] &];
+  comps = ConnectedComponents[Graph[Range[2 n], UndirectedEdge @@@ edges]];
+  comps = SortBy[Map[Sort, comps], First];
+  unit[k_] := UnitVector[2 n, k];
+  kind[k_] := If[k <= n, "p", "h"];
+  big = Select[comps, Length[#] > 2 &];
+  If[big =!= {}, Message[bogoliubov::symbolic, First[big]]; Return[$Failed]];
+  Do[
+    Which[
+      Length[c] == 1,
+        AppendTo[cols, {kind[c[[1]]], c[[1]], M[[c[[1]], c[[1]]]], unit[c[[1]]], unit[c[[1]]]}],
+      kind[c[[1]]] === kind[c[[2]]],
+        (* normal block: Hermitian 2 by 2 matrix *)
+        {i, j} = c;
+        {a, b, d} = {M[[i, i]], M[[j, j]], M[[i, j]]};
+        s = (a + b)/2; dl = (a - b)/2; e = Sqrt[dl^2 + d Conjugate[d]];
+        u = Sqrt[(e + dl)/(2 e)]; v = 1/Sqrt[2 e (e + dl)];
+        AppendTo[cols, {kind[i], i, s + e, u unit[i] + v Conjugate[d] unit[j], u unit[i] + v d unit[j]}];
+        AppendTo[cols, {kind[j], j, s - e, -v d unit[i] + u unit[j], -v Conjugate[d] unit[i] + u unit[j]}],
+      True,
+        (* particle-hole block *)
+        {i, j} = c;
+        {a, b, d} = {M[[i, i]], M[[j, j]], M[[i, j]]};
+        If[boson,
+          s = (a - b)/2; dl = (a + b)/2; e = Sqrt[dl^2 - d Conjugate[d]];
+          u = Sqrt[(dl + e)/(2 e)]; v = -1/Sqrt[2 e (dl + e)];
+          AppendTo[cols, {"p", i, s + e, u unit[i] + v Conjugate[d] unit[j], u unit[i] + v d unit[j]}];
+          AppendTo[cols, {"h", j, e - s, v d unit[i] + u unit[j], v Conjugate[d] unit[i] + u unit[j]}],
+          s = (a + b)/2; dl = (a - b)/2; e = Sqrt[dl^2 + d Conjugate[d]];
+          u = Sqrt[(e + dl)/(2 e)]; v = 1/Sqrt[2 e (e + dl)];
+          AppendTo[cols, {"p", i, s + e, u unit[i] + v Conjugate[d] unit[j], u unit[i] + v d unit[j]}];
+          AppendTo[cols, {"h", j, s - e, -v d unit[i] + u unit[j], -v Conjugate[d] unit[i] + u unit[j]}]]
+    ],
+    {c, comps}];
+  part = SortBy[Select[cols, First[#] === "p" &], #[[2]] &];
+  hole = SortBy[Select[cols, First[#] === "h" &], #[[2]] &];
+  If[mom,
+    {Join[part[[All, 3]], hole[[All, 3]]],
+     Transpose[Join[part[[All, 4]], hole[[All, 4]]]],
+     Transpose[Join[part[[All, 5]], hole[[All, 5]]]]},
+    {part[[All, 3]],
+     Transpose[Join[part[[All, 4]], Map[RotateLeft[#, n] &, part[[All, 5]]]]],
+     Transpose[Join[part[[All, 5]], Map[RotateLeft[#, n] &, part[[All, 4]]]]]}]
+];
+
+bogoliubovrules::qp = "The quasiparticle operators `1` do not give `2` modes.";
+bogoliubovrules::mode = "The modes must be single operators to define replacement rules.";
+bogoliubovrules[T_?MatrixQ, specs_List, qp_] := Module[{s, modes, stat, n, gm},
+  s = snegquadsetup[specs];
+  If[s === $Failed, Return[$Failed]];
+  {modes, stat} = s;
+  n = Length[modes];
+  If[Dimensions[T] =!= {2 n, 2 n}, Message[quadraticoperator::dim, Dimensions[T], n];
+    Return[$Failed]];
+  gm = Which[
+    ListQ[qp], snegquadmodes[qp],
+    TrueQ[bosonQ[qp]], Table[With[{m = m}, Function[t, qp[t, m]]], {m, n}],
+    TrueQ[fermionQ[qp]] && spinof[qp] == 0, Table[With[{m = m}, Function[t, qp[t, m, 0]]], {m, n}],
+    True, $Failed];
+  If[gm === $Failed || Length[gm] != n, Message[bogoliubovrules::qp, qp, n]; Return[$Failed]];
+  If[!And @@ Map[MatchQ[#[AN], (h_Symbol)[AN, ___] /; TrueQ[operatorQ[h]]] &, modes],
+    Message[bogoliubovrules::mode]; Return[$Failed]];
+  Join[
+    Table[modes[[i]][AN] -> Sum[T[[i, m]] gm[[m]][AN] + T[[i, n + m]] gm[[m]][CR], {m, n}], {i, n}],
+    Table[modes[[i]][CR] -> Sum[T[[n + i, m]] gm[[m]][AN] + T[[n + i, n + m]] gm[[m]][CR], {m, n}], {i, n}]]
+];
+
+(* Correlation matrix G_pq = <Psi_p Psi^dagger_q> at temperature temp. For
+fermions with numeric M, G = (1 + exp(-M/T))^-1 directly (zero modes are
+half occupied at T = 0). Otherwise G = T D T^dagger with the occupations of
+the columns of T; at T = 0 symbolic quasiparticle energies of particle
+columns are assumed positive. *)
+snegoccupation[stat_, eps_, temp_] := Which[
+  TrueQ[temp == 0], 0,
+  stat === "Boson", 1/(Exp[eps/temp] - 1),
+  True, 1/(Exp[eps/temp] + 1)];
+
+snegcorrelation[M_, stat_, temp_, mom_:False, tol_:10^-10] := Module[
+  {n = Length[M]/2, vals, vecs, Mn, g, b, occ, d},
+  If[stat === "Fermion" && MatrixQ[M, NumericQ],
+    Mn = snegNumericMatrix[M];
+    {vals, vecs} = Eigensystem[(Mn + ConjugateTranspose[Mn])/2];
+    vals = Re[vals];
+    g = Map[Which[
+        TrueQ[temp == 0], Which[# > tol, 1, # < -tol, 0, True, 1/2],
+        True, 1/(1 + Exp[-#/temp])] &, vals];
+    Return[Transpose[vecs] . DiagonalMatrix[g] . Conjugate[vecs]]];
+  b = snegbogoliubov[M, stat, mom, tol];
+  If[b === $Failed, Return[$Failed]];
+  occ = Map[snegoccupation[stat, #, temp] &, First[b]];
+  d = Which[
+    !mom, Join[If[stat === "Boson", 1 + occ, 1 - occ], occ],
+    stat === "Boson", Join[1 + occ[[1 ;; n]], occ[[n + 1 ;; 2 n]]],
+    TrueQ[temp == 0], Join[ConstantArray[1, n], ConstantArray[0, n]],
+    True, 1 - occ];
+  b[[2]] . DiagonalMatrix[d] . Transpose[b[[3]]]
+];
+
+(* Index map {p, q}: the operator is Psi_p and Psi^dagger_q (None if it is
+not a component). For the modes (a, a^dagger) both exist; for
+Psi_k = (c_k, c_-k^dagger) each operator is either a component of Psi_k or
+of Psi_k^dagger. *)
+snegquadindex[psi_List, psid_List] := Module[{idx = Association[]},
+  Do[idx[psi[[p]]] = {p, Lookup[idx, Key[psi[[p]]], {None, None}][[2]]}, {p, Length[psi]}];
+  Do[idx[psid[[q]]] = {Lookup[idx, Key[psid[[q]]], {None, None}][[1]], q}, {q, Length[psid]}];
+  idx];
+snegquadindex[modes_List] := snegquadindex[
+  Join[Map[#[AN] &, modes], Map[#[CR] &, modes]],
+  Join[Map[#[CR] &, modes], Map[#[AN] &, modes]]];
+
+(* Contraction <o1 o2> from G: <Psi_p Psi^dagger_q> = G_pq and
+<Psi^dagger_q Psi_p> = delta_pq - G_pq (fermions) or G_pq - eta_p delta_pq
+(bosons); other pairs vanish. *)
+snegcontraction[G_, idx_, eta_, boson_][o1_, o2_] := Module[
+  {i1 = idx[o1], i2 = idx[o2]},
+  Which[
+    i1[[1]] =!= None && i2[[2]] =!= None, G[[i1[[1]], i2[[2]]]],
+    i1[[2]] =!= None && i2[[1]] =!= None,
+      If[boson, G[[i2[[1]], i1[[2]]]] - If[i1[[2]] == i2[[1]], eta[[i2[[1]]]], 0],
+        If[i1[[2]] == i2[[1]], 1, 0] - G[[i2[[1]], i1[[2]]]]],
+    True, 0]];
+
+(* Coefficient and operator list of a single term. *)
+snegtermops[t_] := Replace[t, {
+  c_. HoldPattern[nc[x__]] /; isnumericQ[c] :> {c, {x}},
+  c_. o:(h_Symbol[___]) /; TrueQ[operatorQ[h]] && isnumericQ[c] :> {c, {o}},
+  c_ /; isnumericQ[c] :> {c, {}},
+  _ :> $Failed}];
+
+snegparity[o_] := If[TrueQ[fermionQ[o]] || TrueQ[majoranaQ[o]], 1, 0];
+
+(* Wick's theorem with the contraction function con[o1, o2]. *)
+snegwick[{}, con_] := 1;
+snegwick[l_List, con_] /; OddQ[Length[l]] := 0;
+snegwick[l_List, con_] := Sum[
+  With[{c = con[l[[1]], l[[j]]]},
+    If[c === 0, 0,
+      (-1)^(snegparity[l[[j]]] Total[Map[snegparity, l[[2 ;; j - 1]]]]) c *
+        snegwick[Delete[l, {{1}, {j}}], con]]],
+  {j, 2, Length[l]}];
+
+(* Average of an expression from the parsed terms. *)
+snegwickeval[e_, idx_, con_] := Module[{terms = Map[snegtermops, sum2list[Expand[e]]], miss},
+  If[MemberQ[terms, $Failed], Message[gaussianaverage::op, e]; Return[$Failed]];
+  miss = Select[Union[Flatten[terms[[All, 2]]]], !KeyExistsQ[idx, #] &];
+  If[miss =!= {}, Message[gaussianaverage::op, First[miss]]; Return[$Failed]];
+  Total[Map[#[[1]] snegwick[#[[2]], con] &, terms]]];
+
+gaussianaverage::op = "The operator `1` is not one of the modes.";
+gaussianaverage::sum = "Symbolic sums are not supported.";
+gaussianaverage::index = "`1` must be a declared momentum index.";
+Options[gaussianaverage] = {"Momentum" -> None, "IndexPosition" -> 1, "Tolerance" -> 10^-10};
+gaussianaverage[expr_, Mx_, specs_List, temp_, opts:OptionsPattern[]] := Module[
+  {k = OptionValue["Momentum"], s, modes, stat, n, M, G, idx},
+  If[k === None,
+    s = snegquadsetup[specs];
+    If[s === $Failed, Return[$Failed]];
+    {modes, stat} = s;
+    n = Length[modes];
+    M = If[MatrixQ[Mx], Mx,
+      With[{q = quadraticform[Mx, specs]}, If[q === $Failed, Return[$Failed], First[q]]]];
+    idx = snegquadindex[modes],
+    (* Bloch BdG matrix H(k) *)
+    If[!momentumindexQ[k], Message[gaussianaverage::index, k]; Return[$Failed]];
+    modes = snegbdgmodes[specs, k, OptionValue["IndexPosition"]];
+    If[modes === $Failed, Return[$Failed]];
+    n = Length[modes]/2;
+    stat = snegquadstat[modes[[1 ;; n]]];
+    If[stat === $Failed, Message[quadraticform::stat]; Return[$Failed]];
+    M = If[MatrixQ[Mx], Mx,
+      With[{q = bdghamiltonian[Mx, specs, k, "IndexPosition" -> OptionValue["IndexPosition"]]},
+        If[q === $Failed, Return[$Failed], First[q]]]];
+    idx = snegquadindex[Map[#[AN] &, modes], Map[#[CR] &, modes]]];
+  If[!FreeQ[expr, sum], Message[gaussianaverage::sum]; Return[$Failed]];
+  If[Length[M] != 2 n, Message[quadraticoperator::dim, Dimensions[M], n]; Return[$Failed]];
+  G = snegcorrelation[M, stat, temp, k =!= None, OptionValue["Tolerance"]];
+  If[G === $Failed, Return[$Failed]];
+  With[{con = snegcontraction[G, idx, snegquadeta[stat, n], stat === "Boson"]},
+    If[ListQ[expr], Map[snegwickeval[#, idx, con] &, expr], snegwickeval[expr, idx, con]]]
+];
+
+(* Mean-field decoupling: a product of 2m operators is replaced by
+Sum_(i<j) s_ij W(rest) o_i o_j - (m - 1) W(all), where W is the Wick
+expansion with the allowed contractions <o_a o_b> = avg[nc[o_a, o_b]] and
+s_ij the fermionic sign of moving o_i o_j to the front. The average of the
+result in a Gaussian state equals the Wick average of the product. *)
+meanfield::channel = "Unknown channel `1`; use \"Hartree\", \"Fock\", \"Pairing\", \"Normal\", \"All\", a list of these, or a function.";
+meanfield::odd = "Terms with an odd number of operators are not decoupled: `1`.";
+meanfield::op = "Terms with operators other than fermions and bosons are not decoupled: `1`.";
+meanfield::term = "The term `1` is not a product of operators and is not decoupled.";
+
+snegmfladder[o_] := MatchQ[o, (h_Symbol)[CR | AN, ___] /;
+  TrueQ[fermionQ[h]] || TrueQ[bosonQ[h]]];
+
+snegmfchannel["Hartree"] := Function[{o1, o2}, o1[[1]] =!= o2[[1]] && Head[o1] === Head[o2] &&
+  Rest[o1] === Rest[o2]];
+snegmfchannel["Fock"] := Function[{o1, o2}, o1[[1]] =!= o2[[1]] &&
+  !(Head[o1] === Head[o2] && Rest[o1] === Rest[o2])];
+snegmfchannel["Pairing"] := Function[{o1, o2}, o1[[1]] === o2[[1]]];
+snegmfchannel["Normal"] := Function[{o1, o2}, o1[[1]] =!= o2[[1]]];
+snegmfchannel["All"] := Function[{o1, o2}, True];
+snegmfchannel[l_List] := With[{fs = Map[snegmfchannel, l]},
+  If[MemberQ[fs, $Failed], $Failed, Function[{o1, o2}, Or @@ Map[#[o1, o2] &, fs]]]];
+snegmfchannel[f_Function | f_Symbol] /; !StringQ[f] := f;
+snegmfchannel[x_] := (Message[meanfield::channel, x]; $Failed);
+
+meanfield[H_, ch_:"All"] := Module[{allowed, con, term},
+  allowed = snegmfchannel[ch];
+  If[allowed === $Failed, Return[$Failed]];
+  con[o1_, o2_] := If[snegparity[o1] == snegparity[o2] &&
+      (TrueQ[fermionQ[o1]] === TrueQ[fermionQ[o2]]) && TrueQ[allowed[o1, o2]],
+    avg[nc[o1, o2]], 0];
+  term[t_] := Module[{c, ops, m, l},
+    l = snegtermops[t];
+    If[l === $Failed, Message[meanfield::term, t]; Return[t, Module]];
+    {c, ops} = l;
+    Which[
+      Length[ops] <= 2, t,
+      !And @@ Map[snegmfladder, ops], Message[meanfield::op, t]; t,
+      OddQ[Length[ops]], Message[meanfield::odd, t]; t,
+      True,
+        m = Length[ops]/2;
+        c (Sum[
+          (-1)^(snegparity[ops[[i]]] Total[Map[snegparity, ops[[1 ;; i - 1]]]] +
+                snegparity[ops[[j]]] Total[Map[snegparity, Delete[ops[[1 ;; j - 1]], i]]]) *
+            snegwick[Delete[ops, {{i}, {j}}], con] nc[ops[[i]], ops[[j]]],
+          {i, Length[ops]}, {j, i + 1, Length[ops]}] -
+          (m - 1) snegwick[ops, con])]];
+  Expand[snegmfmap[Expand[H], term]]
+];
+snegmfmap[sum[a_, it_List], f_] := sum[snegmfmap[Expand[a], f], it];
+snegmfmap[c_ s_sum, f_] /; isnumericQ[c] := c snegmfmap[s, f];
+snegmfmap[a_Plus, f_] := Map[snegmfmap[#, f] &, a];
+snegmfmap[a_, f_] := f[a];
+
+(* Self-consistent solution on a finite set of modes. *)
+meanfieldsolve::numeric = "The mean-field Hamiltonian contains symbols other than the averages: `1`.";
+meanfieldsolve::conv = "No convergence after `1` iterations; the last change was `2`.";
+meanfieldsolve::number = "The particle number `1` must lie between 0 and the number of fermion modes `2`.";
+meanfieldsolve::boson = "A fixed particle number is supported only for fermions.";
+meanfieldsolve::open = "The level at the Fermi energy is degenerate and partially filled; its states are occupied equally (ensemble average).";
+meanfieldsolve::init = "The initial values `1` do not refer to averages in the Hamiltonian.";
+Options[meanfieldsolve] = {"Temperature" -> 0, "Mixing" -> 1/2, "Tolerance" -> 10^-10,
+  "MaxIterations" -> 1000, "ParticleNumber" -> None};
+
+(* Initial values: rules c avg[x] -> v become avg[x] -> v/c, and the
+conjugate average gets the conjugate value unless it is given. *)
+snegmfinit[init_List] := Module[{r, c},
+  r = Map[Replace[#, {(c0_. a_avg -> v_) /; NumericQ[c0] :> (a -> v/c0), x_ :> x}] &, init];
+  c = Map[Function[rule, Replace[Conjugate[First[rule]],
+      {(c0_. a_avg) /; NumericQ[c0] :> (a -> Conjugate[Last[rule]]/c0), _ :> Nothing}]],
+    Select[r, MatchQ[First[#], _avg] &]];
+  Join[r, Select[c, !MemberQ[Map[First, r], First[#]] &]]];
+
+meanfieldsolve[Hmf_, specs_List, init_List:{}, opts:OptionsPattern[]] := Module[
+  {s, modes, stat, n, avgs, q, M, E0, rest, idx, parsed, vals, newvals, temp,
+   alpha, tol, maxit, nn, nmat, it = 0, diff = Infinity, G, mu = None, Mn, eval,
+   corr, energy, eps, extra, init0},
+  s = snegquadsetup[specs];
+  If[s === $Failed, Return[$Failed]];
+  {modes, stat} = s;
+  n = Length[modes];
+  {temp, alpha, tol, maxit, nn} = OptionValue[{"Temperature", "Mixing", "Tolerance",
+    "MaxIterations", "ParticleNumber"}];
+  If[nn =!= None && stat === "Boson", Message[meanfieldsolve::boson]; Return[$Failed]];
+  If[nn =!= None && !(0 <= nn <= n), Message[meanfieldsolve::number, nn, n]; Return[$Failed]];
+  q = quadraticform[Hmf, specs];
+  If[q === $Failed, Return[$Failed]];
+  {M, E0} = q;
+  avgs = Union[Cases[{M, E0}, _avg, Infinity]];
+  rest = Select[snegsymbolsof[{M, E0} /. _avg -> 1], !NumericQ[#] &];
+  If[rest =!= {}, Message[meanfieldsolve::numeric, rest]; Return[$Failed]];
+  init0 = snegmfinit[init];
+  extra = Complement[Map[First, init0], avgs];
+  If[extra =!= {}, Message[meanfieldsolve::init, extra]];
+  idx = snegquadindex[modes];
+  parsed = Map[Map[snegtermops, sum2list[Expand[First[#]]]] &, avgs];
+  If[MemberQ[parsed, $Failed, {2}] ||
+     !SubsetQ[Keys[idx], Union[Flatten[Map[#[[2]] &, parsed, {2}]]]],
+    Message[gaussianaverage::op, First[avgs]]; Return[$Failed]];
+  eval[g_] := With[{cf = snegcontraction[g, idx, snegquadeta[stat, n], stat === "Boson"]},
+    Map[Total[Map[Function[t, t[[1]] snegwick[t[[2]], cf]], #]] &, parsed]];
+  vals = N[avgs /. Join[Select[init0, MemberQ[avgs, First[#]] &], Thread[avgs -> 0]]];
+  nmat = DiagonalMatrix[Join[ConstantArray[1, n], ConstantArray[-1, n]]];
+  corr[m_] := If[nn === None, {snegcorrelation[m, stat, temp], None},
+    snegfixednumber[m, n, nn, temp, nmat]];
+  While[diff > tol && it < maxit,
+    Mn = N[M /. Thread[avgs -> vals]];
+    {G, mu} = corr[Mn];
+    If[G === $Failed, Return[$Failed, Module]];
+    newvals = If[avgs === {}, {}, eval[G]];
+    diff = If[avgs === {}, 0, Max[Abs[newvals - vals]]];
+    vals = vals + alpha (newvals - vals);
+    it++];
+  If[diff > tol, Message[meanfieldsolve::conv, it, diff]];
+  Mn = N[M /. Thread[avgs -> vals]];
+  {G, mu} = corr[Mn];
+  energy = N[E0 /. Thread[avgs -> vals]] + If[stat === "Boson",
+    (Tr[Mn . G] - Tr[Mn . nmat])/2, (Tr[Mn] - Tr[Mn . G])/2];
+  eps = If[diff <= tol, bogoliubov[If[mu === None, Mn, Mn - mu nmat], stat], $Failed];
+  Association[
+    "Averages" -> Thread[avgs -> vals],
+    "Energy" -> Chop[energy],
+    "QuasiparticleEnergies" -> If[eps === $Failed, $Failed, First[eps]],
+    "ChemicalPotential" -> mu,
+    "Iterations" -> it,
+    "Converged" -> diff <= tol]
+];
+
+(* Correlation matrix at fixed fermion number: chemical potential by
+bisection, or by filling the lowest levels for number-conserving
+Hamiltonians at T = 0. *)
+snegfixednumber[M_, n_, nn_, temp_, nmat_] := Module[
+  {h, vals, vecs, ord, occ, shell, ef, nb, lo, hi, mid, num, gmat, k, homo, lumo},
+  If[TrueQ[temp == 0] && Max[Abs[M[[1 ;; n, n + 1 ;; 2 n]]]] == 0,
+    h = M[[1 ;; n, 1 ;; n]];
+    {vals, vecs} = Eigensystem[(h + ConjugateTranspose[h])/2];
+    vals = Re[vals];
+    ord = Ordering[vals]; vals = vals[[ord]]; vecs = vecs[[ord]];
+    occ = ConstantArray[0, n];
+    If[nn > 0,
+      ef = vals[[nn]];
+      shell = Flatten[Position[vals, v_ /; Abs[v - ef] <= 10^-10 Max[1, Abs[ef]]]];
+      nb = Count[vals, v_ /; v < ef - 10^-10 Max[1, Abs[ef]]];
+      occ[[1 ;; nb]] = 1;
+      occ[[shell]] = (nn - nb)/Length[shell];
+      If[nn - nb != Length[shell], Message[meanfieldsolve::open]]];
+    homo = If[nn > 0, vals[[nn]], vals[[1]] - 1];
+    lumo = If[nn < n, vals[[nn + 1]], vals[[n]] + 1];
+    (* <a_i^dagger a_j> = Sum_nu occ_nu conj(V_i nu) V_j nu *)
+    num = Transpose[Conjugate[vecs]] . DiagonalMatrix[occ] . vecs;
+    gmat = ArrayFlatten[{{IdentityMatrix[n] - Transpose[num], ConstantArray[0, {n, n}]},
+      {ConstantArray[0, {n, n}], num}}];
+    Return[{gmat, (homo + lumo)/2}]];
+  k[mu_] := Re[Tr[snegcorrelation[M - mu nmat, "Fermion", temp][[n + 1 ;; 2 n, n + 1 ;; 2 n]]]];
+  hi = Max[Abs[Eigenvalues[M]]] + 1 + 50 If[TrueQ[temp == 0], 0, temp];
+  lo = -hi;
+  Do[mid = (lo + hi)/2; If[k[mid] < nn, lo = mid, hi = mid], {100}];
+  mid = (lo + hi)/2;
+  {snegcorrelation[M - mid nmat, "Fermion", temp], mid}
+];
 
 EndPackage[];
 

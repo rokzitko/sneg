@@ -4857,6 +4857,594 @@ testgroup["Spin documentation examples",
     {spX[1, "0", "2"], spX[1, "UP", "UP"] - spX[1, "DO", "DO"]}];
  ]];
 
+(* Quadratic forms, Bogoliubov transformations, and mean-field theory. The
+   finite-space references use the Jordan-Wigner matrices fockcreate and
+   truncated boson ladder matrices, independent of nc and Wick's theorem. *)
+snegspinlessfermionoperators[qff, qffk, qfg];
+snegfermionoperators[qfc, qfck, qfd];
+snegbosonoperators[qfb, qfbk, qfgb];
+snegspinoperators[{qfS, qfs}];
+snegrealconstants[qft, qfD, qfmu, qfw, qfl, qfU, qfA, qfB, qfDl, qfxi, qfJ, qfg0];
+snegrealfunctions[qfxk];
+sneglatticeindexes[{qfR}, qfN];
+snegmomentumindexes[{qfk, qfp}, qfN];
+
+(* Matrix of an expression in the spinless fermions qff[1..n] *)
+qfmat[e_, n_] := Total[Map[Function[t, Module[{ops = Cases[{t}, qff[_, _, 0], Infinity]},
+  (t /. {HoldPattern[nc[__]] -> 1, qff[_, _, 0] -> 1}) If[ops === {}, IdentityMatrix[2^n],
+    Dot @@ Replace[ops, {qff[CR, j_, 0] :> fockcreate[n, j], qff[AN, j_, 0] :> Transpose[fockcreate[n, j]]}, {1}]]]],
+  sum2list[Expand[e]]]];
+(* Matrix of an expression in the single boson qfb[] with nmax states *)
+qfbm[nmax_] := Normal[SparseArray[Table[{i, i + 1} -> Sqrt[i], {i, nmax - 1}], {nmax, nmax}]];
+qfbmat[e_, nmax_] := Total[Map[Function[t, Module[{ops = Cases[{t}, qfb[_], Infinity]},
+  (t /. {HoldPattern[nc[__]] -> 1, qfb[_] -> 1}) If[ops === {}, IdentityMatrix[nmax],
+    Dot @@ Replace[ops, {qfb[CR] -> Transpose[qfbm[nmax]], qfb[AN] -> qfbm[nmax]}, {1}]]]],
+  sum2list[Expand[e]]]];
+qfnear[a_, b_, tol_:10^-8] := Max[Abs[N[Flatten[{a - b}]]]] < tol;
+(* Random quadratic Hamiltonian with pairing of n spinless fermions *)
+qfrandom[n_, seed_] := Module[{h, d},
+  SeedRandom[seed];
+  h = RandomReal[{-1, 1}, {n, n}] + I RandomReal[{-1, 1}, {n, n}]; h = (h + ConjugateTranspose[h])/2;
+  d = RandomReal[{-1, 1}, {n, n}] + I RandomReal[{-1, 1}, {n, n}]; d = (d - Transpose[d])/2;
+  Sum[h[[i, j]] nc[qff[CR, i, 0], qff[AN, j, 0]] +
+    (d[[i, j]] nc[qff[CR, i, 0], qff[CR, j, 0]] + Conjugate[d[[i, j]]] nc[qff[AN, j, 0], qff[AN, i, 0]])/2,
+    {i, n}, {j, n}]];
+qfkitaev = Sum[-qft hop[qff[j], qff[j + 1]] +
+  qfD (nc[qff[CR, j, 0], qff[CR, j + 1, 0]] + nc[qff[AN, j + 1, 0], qff[AN, j, 0]]), {j, 2}] -
+  qfmu Sum[number[qff[j]], {j, 3}];
+
+testgroup["Quadratic forms",
+ Module[{q, modes = {qff[1], qff[2], qff[3]}},
+  q = quadraticform[qfkitaev, modes];
+  testcase["Kitaev chain BdG matrix", q,
+    {{{-qfmu, -qft, 0, 0, qfD, 0}, {-qft, -qfmu, -qft, -qfD, 0, qfD}, {0, -qft, -qfmu, 0, -qfD, 0},
+      {0, -qfD, 0, qfmu, qft, 0}, {qfD, 0, -qfD, qft, qfmu, qft}, {0, qfD, 0, 0, qft, qfmu}}, -3 qfmu/2}];
+  testcase["Quadratic form round trip", Expand[quadraticoperator[q[[1]], modes, q[[2]]] - qfkitaev], 0];
+  testcase["Hopping form of number-conserving Hamiltonians",
+    quadraticform[-qft (hop[qff[1], qff[2]] + hop[qff[2], qff[3]]) - qfmu Sum[number[qff[i]], {i, 3}] + 5, modes, "BdG" -> False],
+    {{{-qfmu, -qft, 0}, {-qft, -qfmu, -qft}, {0, -qft, -qfmu}}, 5}];
+  testcase["Hopping matrix round trip",
+    Expand[quadraticoperator[{{-qfmu, -qft}, {-qft, 0}}, {qff[1], qff[2]}, 5] -
+      (-qft hop[qff[1], qff[2]] - qfmu number[qff[1]] + 5)], 0];
+  testcase["Spin index varies fastest", quadraticform[-qft hop[qfc[1], qfc[2]], {qfc[1], qfc[2]}, "BdG" -> False],
+    {{{0, 0, -qft, 0}, {0, 0, 0, -qft}, {-qft, 0, 0, 0}, {0, -qft, 0, 0}}, 0}];
+  testcase["On-site singlet pairing",
+    quadraticform[qfxi (number[qfc[1], UP] + number[qfc[1], DO]) +
+      qfDl (nc[qfc[CR, 1, UP], qfc[CR, 1, DO]] + nc[qfc[AN, 1, DO], qfc[AN, 1, UP]]), {qfc[1]}],
+    {{{qfxi, 0, 0, qfDl}, {0, qfxi, -qfDl, 0}, {0, -qfDl, -qfxi, 0}, {qfDl, 0, 0, -qfxi}}, qfxi}];
+  testcase["Mode functions",
+    quadraticform[-qft hop[qff[1], qff[2]], {Function[x, (qff[x, 1, 0] + qff[x, 2, 0])/Sqrt[2]],
+      Function[x, (qff[x, 1, 0] - qff[x, 2, 0])/Sqrt[2]]}, "BdG" -> False], {{{-qft, 0}, {0, qft}}, 0}];
+  testcase["Bosonic squeezing",
+    quadraticform[qfA number[qfb[]] + qfB/2 (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]), {qfb}],
+    {{{qfA, qfB}, {qfB, qfA}}, -qfA/2}];
+  testcase["Bosonic hopping form", quadraticform[qfw number[qfb[]], {qfb}, "BdG" -> False], {{{qfw}}, 0}];
+  testcase["Linear boson terms",
+    quadraticform[qfw number[qfb[]] + qfl (qfb[CR] + qfb[AN]) + 1, {qfb}, "Linear" -> True],
+    {{{qfw, 0}, {0, qfw}}, {qfl}, 1 - qfw/2}];
+  testcase["Linear boson terms need the option",
+    Quiet[quadraticform[qfw number[qfb[]] + qfl qfb[CR], {qfb}], quadraticform::linear], $Failed];
+  testcase["Linear fermion terms", Quiet[quadraticform[qff[CR, 1, 0] + qff[AN, 1, 0], {qff[1]}], quadraticform::odd], $Failed];
+  testcase["Higher-order terms",
+    Quiet[quadraticform[qfU nc[number[qfc[1], UP], number[qfc[1], DO]], {qfc[1]}], quadraticform::order], $Failed];
+  testcase["Products with other operators",
+    Quiet[quadraticform[nc[qfS[1, 3], number[qff[1]]], {qff[1]}], quadraticform::order], $Failed];
+  testcase["Operators outside the modes",
+    Quiet[quadraticform[-qft hop[qff[1], qff[2]], {qff[1]}], quadraticform::rest], $Failed];
+  testcase["Bosonic operators outside the modes",
+    Quiet[quadraticform[qfw number[qfb[1]] + nc[qfb[CR, 1], qfb[AN, 2]] + nc[qfb[CR, 2], qfb[AN, 1]], {qfb[1]}],
+      quadraticform::rest], $Failed];
+  testcase["Mixed statistics", Quiet[quadraticform[number[qff[1]], {qff[1], qfb}], quadraticform::stat], $Failed];
+  testcase["Invalid modes", Quiet[quadraticform[number[qff[1]], {qfS[1]}], quadraticform::mode], $Failed];
+  testcase["Sums are rejected", Quiet[quadraticform[sum[number[qff[qfR]], {qfR}], {qff[1]}], quadraticform::sum], $Failed];
+  testcase["Anomalous terms in the hopping form",
+    Quiet[quadraticform[qfkitaev, modes, "BdG" -> False], quadraticform::anom], $Failed];
+  testcase["Non-Hermitian forms are reported",
+    Quiet[Check[quadraticform[nc[qff[CR, 1, 0], qff[AN, 2, 0]], {qff[1], qff[2]}], "msg", quadraticform::herm],
+      quadraticform::herm], "msg"];
+  testcase["Hermiticity check can be disabled",
+    Check[quadraticform[nc[qff[CR, 1, 0], qff[AN, 2, 0]], {qff[1], qff[2]}, "Check" -> False][[2]], "msg"], 0];
+  testcase["Matrix dimension check",
+    Quiet[quadraticoperator[IdentityMatrix[3], {qff[1], qff[2]}], quadraticoperator::dim], $Failed];
+  testcase["Linear option for fermions", quadraticform[number[qff[1]], {qff[1]}, "Linear" -> True], {{{1, 0}, {0, -1}}, {0}, 1/2}];
+  testcase["Linear option with the hopping form",
+    quadraticform[qfw number[qfb[]] + qfb[CR] + qfb[AN], {qfb}, "Linear" -> True, "BdG" -> False], {{{qfw}}, {1}, 0}];
+  testcase["Commuting operators outside the modes",
+    Quiet[quadraticform[qfw number[qfb[1]] + number[qfb[2]], {qfb[1]}], quadraticform::rest], $Failed];
+  testcase["Modes without operators", Quiet[quadraticform[0, {Function[x, 0]}], quadraticform::stat], $Failed];
+  testcase["Inexact coefficients",
+    qfnear[Flatten[quadraticform[0.5 number[qfb[]] + 0.25 (qfb[CR] + qfb[AN]), {qfb}, "Linear" -> True]], {0.5, 0, 0, 0.5, 0.25, -0.25}], True];
+ ]];
+
+testgroup["Bogoliubov transformations",
+ Module[{h, n = 3, modes = {qff[1], qff[2], qff[3]}, q, b, t, m, ev, rules, eta, hb, mb, x, e},
+  h = qfrandom[n, 7];
+  q = quadraticform[h, modes];
+  b = bogoliubov[h, modes];
+  t = b[[2]];
+  testcase["Fermion transformation is unitary", qfnear[ConjugateTranspose[t] . t, IdentityMatrix[2 n]], True];
+  testcase["Fermion transformation diagonalizes",
+    qfnear[ConjugateTranspose[t] . q[[1]] . t, DiagonalMatrix[Join[b[[1]], -b[[1]]]]], True];
+  testcase["Fermion transformation has the BdG structure",
+    qfnear[t[[n + 1 ;; 2 n, n + 1 ;; 2 n]], Conjugate[t[[1 ;; n, 1 ;; n]]]] &&
+      qfnear[t[[1 ;; n, n + 1 ;; 2 n]], Conjugate[t[[n + 1 ;; 2 n, 1 ;; n]]]], True];
+  testcase["Quasiparticle energies are sorted and positive", OrderedQ[b[[1]]] && Min[b[[1]]] > 0, True];
+  ev = Sort[Eigenvalues[qfmat[h, n]]];
+  testcase["Many-body spectrum from quasiparticles",
+    qfnear[ev, Sort[Table[b[[3]] + bits . b[[1]], {bits, Tuples[{0, 1}, n]}]]], True];
+  rules = bogoliubovrules[t, modes, qfg];
+  testcase["Hamiltonian in quasiparticle operators",
+    Chop[Expand[(h /. rules) - Sum[b[[1, m]] number[qfg[m]], {m, n}] - b[[3]]], 10^-10], 0];
+  testcase["Quasiparticle rules with templates",
+    Length[bogoliubovrules[t, modes, {qfg[1], qfg[2], qfg[3]}]], 2 n];
+
+  m = quadraticform[qfkitaev /. {qft -> 1, qfD -> 1, qfmu -> 0}, modes][[1]];
+  b = bogoliubov[m, "Fermion"];
+  testcase["Kitaev chain zero mode", qfnear[b[[1]], {0, 2, 2}], True];
+  testcase["Zero modes keep the transformation unitary and diagonal",
+    qfnear[ConjugateTranspose[b[[2]]] . b[[2]], IdentityMatrix[6]] &&
+      qfnear[ConjugateTranspose[b[[2]]] . m . b[[2]], DiagonalMatrix[Join[b[[1]], -b[[1]]]]], True];
+  b = bogoliubov[ConstantArray[0, {4, 4}], "Fermion"];
+  testcase["Degenerate zero modes",
+    {b[[1]], qfnear[ConjugateTranspose[b[[2]]] . b[[2]], IdentityMatrix[4]],
+      qfnear[b[[2, 3 ;; 4, 3 ;; 4]], Conjugate[b[[2, 1 ;; 2, 1 ;; 2]]]]}, {{0., 0.}, True, True}];
+
+  SeedRandom[3];
+  x = RandomReal[{-1, 1}, {2, 2}] + I RandomReal[{-1, 1}, {2, 2}];
+  hb = 3 (number[qfb[1]] + number[qfb[2]]) + (x[[1, 2]] nc[qfb[CR, 1], qfb[AN, 2]] + Conjugate[x[[1, 2]]] nc[qfb[CR, 2], qfb[AN, 1]]) +
+    Sum[(x[[i, j]] + x[[j, i]])/2 nc[qfb[CR, i], qfb[CR, j]] + Conjugate[(x[[i, j]] + x[[j, i]])/2] nc[qfb[AN, j], qfb[AN, i]], {i, 2}, {j, 2}]/2;
+  mb = quadraticform[hb, {qfb[1], qfb[2]}];
+  b = bogoliubov[hb, {qfb[1], qfb[2]}];
+  eta = DiagonalMatrix[{1, 1, -1, -1}];
+  testcase["Boson transformation is paraunitary", qfnear[ConjugateTranspose[b[[2]]] . eta . b[[2]], eta], True];
+  testcase["Boson transformation diagonalizes",
+    qfnear[ConjugateTranspose[b[[2]]] . mb[[1]] . b[[2]], DiagonalMatrix[Join[b[[1]], b[[1]]]]], True];
+  testcase["Boson transformation has the BdG structure",
+    qfnear[b[[2, 3 ;; 4, 3 ;; 4]], Conjugate[b[[2, 1 ;; 2, 1 ;; 2]]]], True];
+  rules = bogoliubovrules[b[[2]], {qfb[1], qfb[2]}, qfgb];
+  testcase["Boson Hamiltonian in quasiparticle operators",
+    Chop[Expand[(hb /. rules) - Sum[b[[1, m]] number[qfgb[m]], {m, 2}] - b[[3]]], 10^-10], 0];
+  testcase["Boson ground-state energy against a truncated Fock space",
+    qfnear[Min[Eigenvalues[N[qfbmat[qfA number[qfb[]] + qfB/2 (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]), 60] /. {qfA -> 2, qfB -> 1}]]],
+      bogoliubov[2 number[qfb[]] + 1/2 (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]), {qfb}][[3]], 10^-10], True];
+  testcase["Unstable bosons", Quiet[bogoliubov[{{1, 2}, {2, 1}}, "Boson"], bogoliubov::posdef], $Failed];
+  testcase["Boson zero modes", Quiet[bogoliubov[{{1, 1}, {1, 1}}, "Boson"], bogoliubov::posdef], $Failed];
+
+  b = bogoliubov[{{qfA, qfB}, {qfB, qfA}}, "Boson"];
+  e = Sqrt[qfA^2 - qfB^2];
+  testcase["Symbolic boson energy", b[[1]], {e}];
+  (* The symbolic transformations are checked at exact parameter values,
+     where the nested radicals can be reduced. *)
+  testcase["Symbolic boson transformation",
+    qfnear[{ConjugateTranspose[b[[2]]] . {{1, 0}, {0, -1}} . b[[2]], ConjugateTranspose[b[[2]]] . {{qfA, qfB}, {qfB, qfA}} . b[[2]]} /.
+      {qfA -> 5/3, qfB -> -3/4}, {{{1, 0}, {0, -1}}, {{e, 0}, {0, e}}} /. {qfA -> 5/3, qfB -> -3/4}, 10^-12], True];
+  m = quadraticform[qfxi (number[qfc[1], UP] + number[qfc[1], DO]) +
+    qfDl (nc[qfc[CR, 1, UP], qfc[CR, 1, DO]] + nc[qfc[AN, 1, DO], qfc[AN, 1, UP]]), {qfc[1]}][[1]];
+  b = bogoliubov[m, "Fermion"];
+  e = Sqrt[qfxi^2 + qfDl^2];
+  testcase["Symbolic BCS energies", b[[1]], {e, e}];
+  testcase["Symbolic BCS transformation",
+    And @@ Map[qfnear[{ConjugateTranspose[b[[2]]] . b[[2]], ConjugateTranspose[b[[2]]] . m . b[[2]]} /. #,
+      {IdentityMatrix[4], DiagonalMatrix[{e, e, -e, -e}]} /. #, 10^-12] &,
+      {{qfxi -> 2/7, qfDl -> 3/5}, {qfxi -> -2, qfDl -> -1/3}}], True];
+  testcase["Symbolic BCS coherence factors", Simplify[{b[[2, 1, 1]]^2, b[[2, 4, 1]]^2} - {(1 + qfxi/e)/2, (1 - qfxi/e)/2}], {0, 0}];
+  m = {{qfA, qft, 0, 0}, {qft, qfB, 0, 0}, {0, 0, -qfA, -qft}, {0, 0, -qft, -qfB}};
+  b = bogoliubov[m, "Fermion"];
+  e = Sqrt[(qfA - qfB)^2/4 + qft^2];
+  testcase["Symbolic hybridized levels", Simplify[b[[1]] - {(qfA + qfB)/2 + e, (qfA + qfB)/2 - e}], {0, 0}];
+  testcase["Symbolic hybridized transformation",
+    qfnear[{ConjugateTranspose[b[[2]]] . b[[2]], ConjugateTranspose[b[[2]]] . m . b[[2]] - DiagonalMatrix[Join[b[[1]], -b[[1]]]]} /.
+      {qfA -> 1/2, qfB -> -2, qft -> 3/4}, {IdentityMatrix[4], ConstantArray[0, {4, 4}]}, 10^-12], True];
+  testcase["Symbolic single levels", bogoliubov[{{qfA, 0}, {0, -qfA}}, "Fermion"], {{qfA}, {{1, 0}, {0, 1}}}];
+  testcase["Symbolic blocks are limited",
+    Quiet[bogoliubov[quadraticform[qfkitaev, modes][[1]], "Fermion"], bogoliubov::symbolic], $Failed];
+  testcase["Particle-hole symmetry is required",
+    Quiet[bogoliubov[{{1, 1}, {1, 1}}, "Fermion"], bogoliubov::phs], $Failed];
+  testcase["Symbolic particle-hole symmetry is required",
+    Quiet[bogoliubov[{{qfA, qfB}, {qfB, qfA}}, "Fermion"], bogoliubov::phs], $Failed];
+  testcase["Eigenvalue count", Quiet[bogoliubov[{{1, 0}, {0, 1}}, "Fermion", "Momentum" -> True], bogoliubov::count], $Failed];
+  testcase["Dimension check", Quiet[bogoliubov[IdentityMatrix[3], "Fermion"], bogoliubov::dim], $Failed];
+  testcase["Quasiparticle operators must match",
+    Quiet[bogoliubovrules[IdentityMatrix[2], {qff[1]}, {qfg[1], qfg[2]}], bogoliubovrules::qp], $Failed];
+  testcase["Quasiparticle rules need single-operator modes",
+    Quiet[bogoliubovrules[IdentityMatrix[2], {Function[x, (qff[x, 1, 0] + qff[x, 2, 0])/Sqrt[2]]}, qfg],
+      bogoliubovrules::mode], $Failed];
+  testcase["Quasiparticle operators need spinless fermions or bosons",
+    Quiet[bogoliubovrules[IdentityMatrix[2], {qff[1]}, qfc], bogoliubovrules::qp], $Failed];
+  testcase["Quasiparticle rules check the dimension",
+    Quiet[bogoliubovrules[IdentityMatrix[4], {qff[1]}, qfg], quadraticoperator::dim], $Failed];
+  testcase["Operator form passes failures on",
+    {Quiet[bogoliubov[number[qff[1]], {qfS[1]}], quadraticform::mode],
+     Quiet[bogoliubov[nc[number[qfc[1], UP], number[qfc[1], DO]], {qfc[1]}], quadraticform::order],
+     Quiet[bogoliubov[qfA number[qfb[]] + qfB (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]) /. {qfA -> 1, qfB -> 1}, {qfb}],
+       bogoliubov::posdef]}, {$Failed, $Failed, $Failed}];
+  b = bogoliubov[{{0, 0}, {0, 0}}, "Fermion", "Momentum" -> True];
+  testcase["Bloch zero modes", {b[[1]], qfnear[ConjugateTranspose[b[[2]]] . b[[2]], IdentityMatrix[2]]}, {{0., 0.}, True}];
+  testcase["Unstable Bloch bosons", Quiet[bogoliubov[{{1, 2}, {2, 1}}, "Boson", "Momentum" -> True], bogoliubov::posdef], $Failed];
+  m = {{qfA, qft, 0, 0}, {qft, qfB, 0, 0}, {0, 0, -qfA, qfw}, {0, 0, qfw, qfmu}};
+  b = bogoliubov[m, "Fermion", "Momentum" -> True];
+  testcase["Symbolic Bloch blocks of particles and holes",
+    {Simplify[b[[1]] - {(qfA + qfB)/2 + Sqrt[(qfA - qfB)^2/4 + qft^2], (qfA + qfB)/2 - Sqrt[(qfA - qfB)^2/4 + qft^2],
+       (qfmu - qfA)/2 + Sqrt[(qfA + qfmu)^2/4 + qfw^2], (qfmu - qfA)/2 - Sqrt[(qfA + qfmu)^2/4 + qfw^2]}],
+     qfnear[(ConjugateTranspose[b[[2]]] . m . b[[2]] - DiagonalMatrix[b[[1]]]) /. {qfA -> 1/2, qfB -> -2, qft -> 3/4, qfw -> 1/3, qfmu -> 1},
+       ConstantArray[0, {4, 4}], 10^-12]}, {{0, 0, 0, 0}, True}];
+  testcase["Tolerance option",
+    Length[First[bogoliubov[{{10^-6, 0}, {0, -10^-6}}, "Fermion", "Tolerance" -> 10^-3]]], 1];
+ ]];
+
+testgroup["Momentum-space BdG Hamiltonians",
+ Module[{hk, bd, e, b, num, eta, h},
+  hk = fourier[sum[-qft hop[qff[qfR], qff[qfR + 1]] - qfmu number[qff[qfR]] +
+    qfD (nc[qff[CR, qfR, 0], qff[CR, qfR + 1, 0]] + nc[qff[AN, qfR + 1, 0], qff[AN, qfR, 0]]), {qfR}], qff -> qffk, qfR -> qfk];
+  bd = bdghamiltonian[hk, {qffk}, qfk];
+  testcase["Kitaev chain Bloch BdG matrix", bd,
+    {{{-qfmu - qft blochphase[-qfk, 1] - qft blochphase[qfk, 1], -qfD blochphase[-qfk, 1] + qfD blochphase[qfk, 1]},
+      {qfD blochphase[-qfk, 1] - qfD blochphase[qfk, 1], qfmu + qft blochphase[-qfk, 1] + qft blochphase[qfk, 1]}},
+     -qfmu qfN/2}];
+  zerotest["Kitaev chain spectrum",
+    ExpToTrig[blochphaseexp[Eigenvalues[bd[[1]]]^2, {qfk -> x}]] -
+      ConstantArray[(2 qft Cos[x] + qfmu)^2 + 4 qfD^2 Sin[x]^2, 2]];
+  testcase["Bloch Hamiltonians reject anomalous terms",
+    Quiet[blochhamiltonian[hk, {qffk}, qfk], blochhamiltonian::anom], $Failed];
+  testcase["Bloch Hamiltonians reject linear boson terms",
+    Quiet[blochhamiltonian[sum[qfw number[qfbk[qfk]] + qfl qfbk[CR, qfk], {qfk}], {qfbk}, qfk], blochhamiltonian::anom], $Failed];
+  num = blochphaseexp[bd[[1]] /. {qft -> 1, qfD -> 3/5, qfmu -> 3/10}, {qfk -> 9/10}];
+  testcase["Bloch BdG matrices are not particle-hole symmetric at fixed k",
+    Quiet[bogoliubov[num, "Fermion"], bogoliubov::phs], $Failed];
+  b = bogoliubov[num, "Fermion", "Momentum" -> True];
+  testcase["Numerical Bloch BdG diagonalization",
+    qfnear[ConjugateTranspose[b[[2]]] . num . b[[2]], DiagonalMatrix[b[[1]]]] && qfnear[ConjugateTranspose[b[[2]]] . b[[2]], IdentityMatrix[2]] &&
+      b[[1, 1]] > 0 > b[[1, 2]], True];
+  bd = bdghamiltonian[sum[qfxk[qfk] (number[qfck[qfk], UP] + number[qfck[qfk], DO]) -
+    qfDl (nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]] + nc[qfck[AN, -qfk, DO], qfck[AN, qfk, UP]]), {qfk}], {qfck}, qfk];
+  testcase["BCS Bloch BdG matrix", bd,
+    {{{qfxk[qfk], 0, 0, -qfDl}, {0, qfxk[qfk], qfDl, 0}, {0, qfDl, -qfxk[-qfk], 0}, {-qfDl, 0, 0, -qfxk[-qfk]}},
+     sum[qfxk[qfk], {qfk}]}];
+  e = Sqrt[qfDl^2 + qfxk[qfk]^2];
+  b = bogoliubov[bd[[1]] /. qfxk[-qfk] -> qfxk[qfk], "Fermion", "Momentum" -> True];
+  testcase["Symbolic BCS Bloch energies", b[[1]], {e, e, -e, -e}];
+  testcase["Symbolic BCS Bloch transformation",
+    qfnear[(ConjugateTranspose[b[[2]]] . (bd[[1]] /. qfxk[-qfk] -> qfxk[qfk]) . b[[2]] - DiagonalMatrix[b[[1]]]) /.
+      {qfxk[qfk] -> -1/3, qfDl -> 2/3}, ConstantArray[0, {4, 4}], 10^-12], True];
+
+  (* Linear spin waves of the antiferromagnetic chain with a two-site cell *)
+  h = qfJ sum[spinspin[qfS[qfR, "A"], qfS[qfR, "B"]] + spinspin[qfS[qfR, "B"], qfS[qfR + 1, "A"]], {qfR}];
+  h = rotatespin[h, qfS, If[Last[{##}] === "B", RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &];
+  hk = fourier[holsteinprimakoff[h, qfS -> qfb, 2], qfb -> qfbk, qfR -> qfk];
+  bd = bdghamiltonian[hk, {qfbk["A"], qfbk["B"]}, qfk];
+  testcase["Antiferromagnetic Bloch BdG matrix", bd,
+    {{{2 qfJ qfs, 0, 0, qfJ qfs (1 + blochphase[-qfk, 1])}, {0, 2 qfJ qfs, qfJ qfs (1 + blochphase[qfk, 1]), 0},
+      {0, qfJ qfs (1 + blochphase[-qfk, 1]), 2 qfJ qfs, 0}, {qfJ qfs (1 + blochphase[qfk, 1]), 0, 0, 2 qfJ qfs}} // Expand,
+     Expand[-2 qfJ qfN qfs (1 + qfs)]}];
+  b = bogoliubov[bd[[1]], "Boson", "Momentum" -> True];
+  testcase["Antiferromagnetic magnon dispersion",
+    Simplify[ExpToTrig[blochphaseexp[b[[1]]^2, {qfk -> x}]] - ConstantArray[(2 qfJ qfs Sin[x/2])^2, 4]], {0, 0, 0, 0}];
+  num = blochphaseexp[bd[[1]] /. {qfJ -> 1, qfs -> 1/2}, {qfk -> 7/10}];
+  b = bogoliubov[num, "Boson", "Momentum" -> True];
+  eta = DiagonalMatrix[{1, 1, -1, -1}];
+  testcase["Numerical paraunitary Bloch diagonalization",
+    qfnear[ConjugateTranspose[b[[2]]] . num . b[[2]], DiagonalMatrix[b[[1]]]] &&
+      qfnear[ConjugateTranspose[b[[2]]] . eta . b[[2]], eta] && qfnear[b[[1]], ConstantArray[Sin[0.35], 4]], True];
+
+  testcase["BdG needs a momentum index", Quiet[bdghamiltonian[hk, {qfbk}, qfR], bdghamiltonian::index], $Failed];
+  testcase["BdG translation check",
+    Quiet[bdghamiltonian[sum[nc[qffk[CR, qfk, 0], qffk[AN, -qfk, 0]], {qfk}], {qffk}, qfk], bdghamiltonian::transl], $Failed];
+  testcase["BdG rejects odd terms", Quiet[bdghamiltonian[sum[qffk[AN, qfk, 0], {qfk}], {qffk}, qfk], bdghamiltonian::linear], $Failed];
+  testcase["BdG rejects higher-order terms",
+    Quiet[bdghamiltonian[sum[nc[number[qfck[qfk], UP], number[qfck[qfk], DO]], {qfk}], {qfck}, qfk], bdghamiltonian::rest], $Failed];
+  testcase["BdG needs empty-band ordering",
+    Block[{ordering}, ordering[qffk] = SEA;
+      Quiet[bdghamiltonian[sum[number[qffk[qfk]], {qfk}], {qffk}, qfk], bdghamiltonian::ordering]], $Failed];
+  testcase["BdG mixed statistics", Quiet[bdghamiltonian[sum[number[qffk[qfk]], {qfk}], {qffk, qfbk}, qfk], bdghamiltonian::stat], $Failed];
+  testcase["BdG non-Hermitian matrices are reported",
+    Quiet[Check[bdghamiltonian[sum[I number[qffk[qfk]], {qfk}], {qffk}, qfk], "msg", bdghamiltonian::herm], bdghamiltonian::herm], "msg"];
+  testcase["BdG translation check can be disabled",
+    bdghamiltonian[sum[number[qffk[qfk]], {qfk}], {qffk}, qfk, "Check" -> False], {{{1, 0}, {0, -1}}, qfN/2}];
+  testcase["BdG index position",
+    bdghamiltonian[sum[-qft (blochphase[qfk, 1] + blochphase[-qfk, 1]) nc[qffk[CR, "x", qfk, 0], qffk[AN, "x", qfk, 0]], {qfk}],
+      {qffk["x"]}, qfk, "IndexPosition" -> 2],
+    {{{-qft blochphase[-qfk, 1] - qft blochphase[qfk, 1], 0}, {0, qft blochphase[-qfk, 1] + qft blochphase[qfk, 1]}}, 0}];
+  testcase["BdG rejects linear boson terms",
+    Quiet[bdghamiltonian[sum[qfw number[qfbk[qfk]] + qfbk[CR, qfk], {qfk}], {qfbk}, qfk], bdghamiltonian::linear], $Failed];
+  testcase["BdG invalid orbitals", Quiet[bdghamiltonian[sum[number[qffk[qfk]], {qfk}], {qfS}, qfk], blochhamiltonian::orb], $Failed];
+ ]];
+
+testgroup["Gaussian averages",
+ Module[{h, n = 3, modes = {qff[1], qff[2], qff[3]}, ob, om, vals, vecs, g0, rho, hb, hm, m, e, tt = 7/10, bd, x},
+  h = qfrandom[n, 7];
+  ob = {nc[qff[CR, 1, 0], qff[AN, 2, 0], qff[CR, 3, 0], qff[AN, 1, 0]] + nc[qff[CR, 2, 0], qff[CR, 3, 0]],
+    2 nc[qff[AN, 3, 0], qff[CR, 1, 0], qff[AN, 2, 0], qff[CR, 3, 0]], number[qff[2]] + 1,
+    nc[qff[CR, 1, 0], qff[CR, 2, 0], qff[CR, 3, 0], qff[AN, 3, 0], qff[AN, 2, 0], qff[AN, 1, 0]], qff[CR, 1, 0]};
+  om = Map[qfmat[#, n] &, ob];
+  {vals, vecs} = Eigensystem[qfmat[h, n]];
+  g0 = vecs[[Ordering[vals, 1][[1]]]];
+  testcase["Ground-state averages against exact diagonalization",
+    qfnear[gaussianaverage[ob, h, modes, 0], Map[Conjugate[g0] . # . g0 &, om]], True];
+  rho = MatrixExp[-qfmat[h, n]/tt]; rho = rho/Tr[rho];
+  testcase["Thermal averages against exact diagonalization",
+    qfnear[gaussianaverage[ob, quadraticform[h, modes][[1]], modes, tt], Map[Tr[rho . #] &, om]], True];
+  testcase["Zero modes are half occupied", qfnear[gaussianaverage[number[qff[1]], ConstantArray[0, {2, 2}], {qff[1]}, 0], 1/2], True];
+
+  hb = 2 number[qfb[]] + 1/2 (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]);
+  hm = N[qfbmat[hb, 60]];
+  {vals, vecs} = Eigensystem[hm];
+  g0 = vecs[[Ordering[vals, 1][[1]]]];
+  ob = {nc[qfb[CR], qfb[AN], qfb[CR], qfb[AN]], nc[qfb[AN], qfb[AN]], nc[qfb[AN], qfb[CR], qfb[CR], qfb[AN]]};
+  om = Map[qfbmat[#, 60] &, ob];
+  testcase["Boson ground-state averages against a truncated Fock space",
+    qfnear[gaussianaverage[ob, hb, {qfb}, 0], Map[g0 . # . g0 &, om]], True];
+  rho = MatrixExp[-hm/tt]; rho = rho/Tr[rho];
+  testcase["Boson thermal averages against a truncated Fock space",
+    qfnear[gaussianaverage[ob, hb, {qfb}, tt], Map[Tr[rho . #] &, om]], True];
+  m = {{qfA, qfB}, {qfB, qfA}};
+  e = Sqrt[qfA^2 - qfB^2];
+  testcase["Symbolic boson depletion",
+    Simplify[gaussianaverage[number[qfb[]], m, {qfb}, 0] - (qfA/e - 1)/2, qfA > qfB > 0], 0];
+  testcase["Symbolic thermal boson occupation",
+    Simplify[gaussianaverage[number[qfb[]], {{qfw, 0}, {0, qfw}}, {qfb}, qft] - 1/(Exp[qfw/qft] - 1)], 0];
+
+  bd = bdghamiltonian[sum[qfxk[qfk] (number[qfck[qfk], UP] + number[qfck[qfk], DO]) -
+    qfDl (nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]] + nc[qfck[AN, -qfk, DO], qfck[AN, qfk, UP]]), {qfk}], {qfck}, qfk][[1]] /.
+    qfxk[-qfk] -> qfxk[qfk];
+  e = Sqrt[qfDl^2 + qfxk[qfk]^2];
+  ob = {nc[qfck[AN, -qfk, DO], qfck[AN, qfk, UP]], number[qfck[qfk], UP], nc[qfck[CR, -qfk, DO], qfck[AN, -qfk, DO]],
+    nc[qfck[AN, qfk, UP], qfck[CR, -qfk, DO]], nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO], qfck[AN, -qfk, DO], qfck[AN, qfk, UP]]};
+  x = gaussianaverage[ob, bd, {qfck}, 0, "Momentum" -> qfk];
+  testcase["BCS ground-state averages",
+    And @@ Map[qfnear[x /. #, {qfDl/(2 e), (1 - qfxk[qfk]/e)/2, (1 - qfxk[qfk]/e)/2, 0, (1 - qfxk[qfk]/e)/2} /. #, 10^-12] &,
+      {{qfxk[qfk] -> 2/5, qfDl -> 3/10}, {qfxk[qfk] -> -1, qfDl -> 1/7}}], True];
+  testcase["BCS ground-state occupations", Simplify[x[[2 ;; 5]] - {(1 - qfxk[qfk]/e)/2, (1 - qfxk[qfk]/e)/2, 0, (1 - qfxk[qfk]/e)/2}],
+    {0, 0, 0, 0}];
+  testcase["BCS thermal averages",
+    qfnear[gaussianaverage[ob[[1 ;; 2]], bd /. {qfxk[qfk] -> 2/5, qfDl -> 3/10}, {qfck}, 1/5, "Momentum" -> qfk],
+      With[{ee = 1/2}, {3/10/(2 ee) Tanh[ee/(2/5)], (1 - 2/5/ee Tanh[ee/(2/5)])/2}]], True];
+  testcase["Symbolic BCS thermal averages",
+    qfnear[gaussianaverage[ob[[1 ;; 2]], bd, {qfck}, qft, "Momentum" -> qfk] /. {qfxk[qfk] -> 2/5, qfDl -> 3/10, qft -> 1/5},
+      With[{ee = 1/2}, {3/10/(2 ee) Tanh[ee/(2/5)], (1 - 2/5/ee Tanh[ee/(2/5)])/2}]], True];
+  bd = bdghamiltonian[fourier[holsteinprimakoff[qfJ sum[spinspin[qfS[qfR, "A"], qfS[qfR, "B"]] +
+      spinspin[qfS[qfR, "B"], qfS[qfR + 1, "A"]], {qfR}] //
+      rotatespin[#, qfS, If[Last[{##}] === "B", RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &] &, qfS -> qfb, 2],
+    qfb -> qfbk, qfR -> qfk], {qfbk["A"], qfbk["B"]}, qfk][[1]];
+  m = blochphaseexp[bd /. {qfJ -> 1, qfs -> 1/2}, {qfk -> 7/10}];
+  testcase["Bloch boson averages",
+    qfnear[gaussianaverage[{number[qfbk[qfk, "A"]], nc[qfbk[AN, -qfk, "B"], qfbk[AN, qfk, "A"]]}, m, {qfbk["A"], qfbk["B"]}, 0, "Momentum" -> qfk],
+      With[{a = 1, bb = (1 + Exp[-0.7 I])/2, w = Sin[0.35]}, {(a/w - 1)/2, -bb/(2 w)}]], True];
+  testcase["Bloch averages need a momentum index",
+    Quiet[gaussianaverage[1, m, {qfbk}, 0, "Momentum" -> qfR], gaussianaverage::index], $Failed];
+  testcase["Averages of operators outside the modes",
+    Quiet[gaussianaverage[number[qff[4]], h, modes, 0], gaussianaverage::op], $Failed];
+  testcase["Averages of non-products", Quiet[gaussianaverage[qfS[1, 3], h, modes, 0], gaussianaverage::op], $Failed];
+  testcase["Averages of sums", Quiet[gaussianaverage[sum[number[qff[qfR]], {qfR}], h, modes, 0], gaussianaverage::sum], $Failed];
+  testcase["Bloch averages of a Hamiltonian",
+    gaussianaverage[{number[qffk[qfk]], number[qffk[-qfk]]}, sum[-number[qffk[qfk]], {qfk}], {qffk}, 0, "Momentum" -> qfk], {1., 1.}];
+  testcase["Symbolic Bloch boson averages",
+    qfnear[gaussianaverage[number[qfbk[qfk, "A"]], bd, {qfbk["A"], qfbk["B"]}, 0, "Momentum" -> qfk] /. {qfJ -> 1, qfs -> 1/2} //
+      blochphaseexp[#, {qfk -> 7/10}] &, (1/Sin[0.35] - 1)/2, 10^-12], True];
+  testcase["Symbolic fermion averages",
+    Simplify[gaussianaverage[number[qfc[1], UP], {{qfA, 0, 0, qfB}, {0, qfA, -qfB, 0}, {0, -qfB, -qfA, 0}, {qfB, 0, 0, -qfA}}, {qfc[1]}, 0] -
+      (1 - qfA/Sqrt[qfA^2 + qfB^2])/2], 0];
+  testcase["Zero-mode tolerance of averages",
+    qfnear[{gaussianaverage[number[qff[1]], {{10^-6, 0}, {0, -10^-6}}, {qff[1]}, 0],
+      gaussianaverage[number[qff[1]], {{10^-6, 0}, {0, -10^-6}}, {qff[1]}, 0, "Tolerance" -> 10^-3]}, {0, 1/2}], True];
+  testcase["Average formatting",
+    MatchQ[ToBoxes[avg[number[qfc[1], UP]], StandardForm], TagBox[RowBox[{"\[LeftAngleBracket]", _, "\[RightAngleBracket]"}], ___]],
+    True];
+  testcase["Averages check the matrix dimension",
+    Quiet[gaussianaverage[number[qff[1]], IdentityMatrix[3], {qff[1]}, 0], quadraticoperator::dim], $Failed];
+  testcase["Averages pass failures on",
+    {Quiet[gaussianaverage[1, number[qff[1]], {qfS[1]}, 0], quadraticform::mode],
+     Quiet[gaussianaverage[1, nc[number[qfc[1], UP], number[qfc[1], DO]], {qfc[1]}, 0], quadraticform::order],
+     Quiet[gaussianaverage[1, {{1, 2}, {2, 1}}, {qfb}, 0], bogoliubov::posdef],
+     Quiet[gaussianaverage[1, sum[number[qffk[qfk]], {qfk}], {qfS}, 0, "Momentum" -> qfk], blochhamiltonian::orb],
+     Quiet[gaussianaverage[1, sum[number[qffk[qfk]], {qfk}], {qffk, qfbk}, 0, "Momentum" -> qfk], quadraticform::stat],
+     Quiet[gaussianaverage[1, sum[nc[qffk[CR, qfk, 0], qffk[AN, -qfk, 0]], {qfk}], {qffk}, 0, "Momentum" -> qfk], bdghamiltonian::transl]},
+    ConstantArray[$Failed, 6]];
+ ]];
+
+testgroup["Mean-field decoupling",
+ Module[{hu, nu, nd, h, modes = {qff[1], qff[2], qff[3]}, h0, q, rules, r, hb, x},
+  nu = avg[number[qfc[1], UP]]; nd = avg[number[qfc[1], DO]];
+  hu = qfU nc[number[qfc[1], UP], number[qfc[1], DO]];
+  testcase["Hartree decoupling", meanfield[hu, "Hartree"],
+    Expand[qfU (nd number[qfc[1], UP] + nu number[qfc[1], DO] - nu nd)]];
+  x = avg[nc[qfc[CR, 1, UP], qfc[AN, 1, DO]]];
+  testcase["Fock decoupling", meanfield[hu, "Fock"],
+    Expand[-qfU (x nc[qfc[CR, 1, DO], qfc[AN, 1, UP]] + conj[x] nc[qfc[CR, 1, UP], qfc[AN, 1, DO]] - x conj[x])]];
+  x = avg[nc[qfc[AN, 1, DO], qfc[AN, 1, UP]]];
+  testcase["Pairing decoupling", meanfield[hu, "Pairing"],
+    Expand[qfU (x nc[qfc[CR, 1, UP], qfc[CR, 1, DO]] + conj[x] nc[qfc[AN, 1, DO], qfc[AN, 1, UP]] - x conj[x])]];
+  testcase["Channels add up", Expand[meanfield[hu] - meanfield[hu, "Hartree"] - meanfield[hu, "Fock"] - meanfield[hu, "Pairing"]], 0];
+  testcase["Normal channel", Expand[meanfield[hu, "Normal"] - meanfield[hu, {"Hartree", "Fock"}]], 0];
+  testcase["Contraction selection function",
+    Expand[meanfield[hu, Function[{o1, o2}, o1[[1]] =!= o2[[1]] && Last[o1] === Last[o2]]] - meanfield[hu, "Hartree"]], 0];
+  testcase["Quadratic terms are unchanged", meanfield[-qft hop[qfc[1], qfc[2]] + 3], Expand[-qft hop[qfc[1], qfc[2]] + 3]];
+  r = meanfield[-qfg0/qfN sum[nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO], qfck[AN, -qfp, DO], qfck[AN, qfp, UP]], {qfk, qfp}], "Pairing"];
+  testcase["BCS reduction in momentum space",
+    {Cases[r, HoldPattern[sum[_, it_]] :> it, {0, Infinity}],
+     Expand[(r /. HoldPattern[sum[a_, _]] :> a) + qfg0/qfN (avg[nc[qfck[AN, -qfp, DO], qfck[AN, qfp, UP]]] nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]] +
+      avg[nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]]] nc[qfck[AN, -qfp, DO], qfck[AN, qfp, UP]] -
+      avg[nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]]] avg[nc[qfck[AN, -qfp, DO], qfck[AN, qfp, UP]]])]}, {{{qfk, qfp}}, 0}];
+
+  (* <H_MF> = <H> in every Gaussian state, here for random quartic and
+     sextic fermion terms and a random quadratic reference state *)
+  SeedRandom[11];
+  h = Total[Map[RandomReal[{-1, 1}] nc @@ # &, {
+    {qff[CR, 1, 0], qff[CR, 2, 0], qff[AN, 3, 0], qff[AN, 1, 0]}, {qff[CR, 1, 0], qff[AN, 2, 0], qff[CR, 3, 0], qff[AN, 3, 0]},
+    {qff[CR, 1, 0], qff[CR, 2, 0], qff[CR, 3, 0], qff[AN, 2, 0]}, {qff[AN, 3, 0], qff[CR, 1, 0], qff[AN, 1, 0], qff[CR, 2, 0]},
+    {qff[CR, 1, 0], qff[CR, 2, 0], qff[CR, 3, 0], qff[AN, 3, 0], qff[AN, 2, 0], qff[AN, 1, 0]}}]];
+  h0 = qfrandom[3, 5];
+  q = quadraticform[h0, modes][[1]];
+  r = meanfield[h];
+  rules = Map[# -> gaussianaverage[First[#], q, modes, 1/2] &, Union[Cases[r, _avg, Infinity]]];
+  testcase["Mean-field energy equals the Wick average",
+    qfnear[gaussianaverage[r /. rules, q, modes, 1/2], gaussianaverage[h, q, modes, 1/2]], True];
+  testcase["Mean-field Hamiltonian is quadratic", Max[Map[Length[snegtermops[#][[2]]] &, sum2list[r]]], 2];
+  hb = qfU nc[qfb[CR, 1], qfb[CR, 2], qfb[AN, 2], qfb[AN, 1]] + qfU nc[qfb[CR, 1], qfb[CR, 1], qfb[AN, 1], qfb[AN, 1]];
+  r = meanfield[hb /. qfU -> 1];
+  q = quadraticform[3 number[qfb[1]] + 2 number[qfb[2]] + (nc[qfb[CR, 1], qfb[CR, 2]] + nc[qfb[AN, 2], qfb[AN, 1]])/2 +
+    (nc[qfb[CR, 1], qfb[AN, 2]] + nc[qfb[CR, 2], qfb[AN, 1]])/3, {qfb[1], qfb[2]}][[1]];
+  rules = Map[# -> gaussianaverage[First[#], q, {qfb[1], qfb[2]}, 1/2] &, Union[Cases[r, _avg, Infinity]]];
+  testcase["Boson mean-field energy equals the Wick average",
+    qfnear[gaussianaverage[r /. rules, q, {qfb[1], qfb[2]}, 1/2], gaussianaverage[hb /. qfU -> 1, q, {qfb[1], qfb[2]}, 1/2]], True];
+
+  testcase["Averages are linear and ordered",
+    {avg[nc[qfc[AN, 1, UP], qfc[CR, 1, UP]]], avg[3 number[qfc[1], UP] + 2], avg[qfc[CR, 1, UP]], avg[sum[number[qff[qfR]], {qfR}]]},
+    {1 - avg[number[qfc[1], UP]], 3 avg[number[qfc[1], UP]] + 2, 0, sum[avg[number[qff[qfR]]], {qfR}]}];
+  testcase["Conjugate averages", Conjugate[avg[nc[qfc[CR, 1, UP], qfc[AN, 2, UP]]]], avg[nc[qfc[CR, 2, UP], qfc[AN, 1, UP]]]];
+  testcase["Averages are numbers in products", nc[qfc[CR, 1, UP], 2 nu qfc[AN, 1, UP]], 2 nu number[qfc[1], UP]];
+  testcase["Unknown channels", Quiet[meanfield[hu, "Exchange"], meanfield::channel], $Failed];
+  testcase["Unknown channels in lists", Quiet[meanfield[hu, {"Hartree", "Exchange"}], meanfield::channel], $Failed];
+  qfnormal[o1_, o2_] := o1[[1]] =!= o2[[1]];
+  testcase["Contraction selection symbol", Expand[meanfield[hu, qfnormal] - meanfield[hu, "Normal"]], 0];
+  testcase["Odd terms are kept",
+    Quiet[Check[meanfield[nc[qfb[CR], qfb[AN], qfb[AN]]], "msg", meanfield::odd], meanfield::odd], "msg"];
+  testcase["Terms with spins are kept",
+    Quiet[meanfield[nc[qfS[1, 3], number[qfc[1], UP], number[qfc[1], DO]]], meanfield::op],
+    nc[qfS[1, 3], number[qfc[1], UP], number[qfc[1], DO]]];
+  testcase["Non-product terms are kept",
+    Quiet[Check[meanfield[Exp[nc[qfb[CR], qfb[AN]]]], "msg", meanfield::term], meanfield::term], "msg"];
+ ]];
+
+testgroup["Self-consistent mean-field solutions",
+ Module[{hd, hring, h, mf, mf0, sol, up1, dn1, up2, dn2, m, x, xr, dl, mu = -1/2, g = 3, tt = 1/10, n, hb},
+  hd[u_] := -hop[qfc[1], qfc[2]] + u Sum[nc[number[qfc[i], UP], number[qfc[i], DO]], {i, 2}];
+  h = hd[4];
+  mf = meanfield[h];
+  {up1, dn1, up2, dn2} = {avg[number[qfc[1], UP]], avg[number[qfc[1], DO]], avg[number[qfc[2], UP]], avg[number[qfc[2], DO]]};
+  sol = meanfieldsolve[mf, {qfc[1], qfc[2]}, {up1 -> 0.9, dn2 -> 0.9}, "ParticleNumber" -> 2];
+  m = Sqrt[3.]/2;
+  testcase["Hubbard dimer antiferromagnetic solution",
+    {sol["Converged"], qfnear[{up1, dn1, up2, dn2} /. sol["Averages"], {1 + m, 1 - m, 1 - m, 1 + m}/2], qfnear[sol["Energy"], -1/2]},
+    {True, True, True}];
+  testcase["Hartree-Fock energy is the average of H",
+    qfnear[sol["Energy"], gaussianaverage[h, quadraticform[mf /. sol["Averages"], {qfc[1], qfc[2]}][[1]] -
+      sol["ChemicalPotential"] DiagonalMatrix[{1, 1, 1, 1, -1, -1, -1, -1}], {qfc[1], qfc[2]}, 0]], True];
+  testcase["Hartree-Fock energy is variational", sol["Energy"] > (4 - Sqrt[4^2 + 16])/2, True];
+  testcase["Quasiparticle energies at fixed particle number", qfnear[sol["QuasiparticleEnergies"], {2, 2, 2, 2}], True];
+  sol = meanfieldsolve[meanfield[hd[1]], {qfc[1], qfc[2]}, {up1 -> 0.9, dn2 -> 0.9}, "ParticleNumber" -> 2];
+  testcase["Hubbard dimer paramagnetic solution",
+    {qfnear[{up1, dn1, up2, dn2} /. sol["Averages"], {1, 1, 1, 1}/2], qfnear[sol["Energy"], -3/2]}, {True, True}];
+
+  (* Attractive Hubbard ring with four sites at fixed mu: the uniform gap
+     from meanfieldsolve against the BCS gap equation *)
+  hring[m0_] := -Sum[hop[qfc[i], qfc[Mod[i, 4] + 1]], {i, 4}] - m0 Sum[number[qfc[i]], {i, 4}] -
+    g Sum[nc[number[qfc[i], UP], number[qfc[i], DO]], {i, 4}];
+  mf = meanfield[hring[mu], "Pairing"];
+  mf0 = meanfield[hring[0], "Pairing"];
+  xr = Table[avg[nc[qfc[AN, i, DO], qfc[AN, i, UP]]], {i, 4}];
+  sol = meanfieldsolve[mf, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, Join[xr, Map[conj, xr]]], "Temperature" -> tt];
+  dl = g Abs[First[xr /. sol["Averages"]]];
+  testcase["BCS gap equation on a ring",
+    {sol["Converged"], qfnear[xr /. sol["Averages"], ConstantArray[First[xr /. sol["Averages"]], 4]],
+      qfnear[dl, Abs[FindRoot[1 == g/4 Sum[Tanh[Sqrt[(-2 Cos[k] - mu)^2 + d^2]/(2 tt)]/(2 Sqrt[(-2 Cos[k] - mu)^2 + d^2]),
+        {k, {0, Pi/2, Pi, 3 Pi/2}}], {d, 1}][[1, 2]]], 10^-6]}, {True, True, True}];
+  testcase["Initial values in canonical form and conjugates",
+    snegmfinit[{xr[[1]] -> 3/10, 2 avg[number[qfc[1], UP]] -> 1}],
+    {xr[[1]] -> 3/10, avg[number[qfc[1], UP]] -> 1/2, -Conjugate[xr[[1]]] -> -3/10}];
+  testcase["Conjugate initial values are optional",
+    qfnear[xr /. meanfieldsolve[mf, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, xr], "Temperature" -> tt]["Averages"],
+      xr /. sol["Averages"]], True];
+  sol = meanfieldsolve[mf0, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, Join[xr, Map[conj, xr]]],
+    "Temperature" -> tt, "ParticleNumber" -> 3];
+  n = Sum[gaussianaverage[number[qfc[i], UP] + number[qfc[i], DO],
+    quadraticform[mf0 /. sol["Averages"], Table[qfc[i], {i, 4}]][[1]] -
+      sol["ChemicalPotential"] DiagonalMatrix[Join[ConstantArray[1, 8], ConstantArray[-1, 8]]], Table[qfc[i], {i, 4}], tt], {i, 4}];
+  testcase["Fixed particle number with pairing", {sol["Converged"], qfnear[n, 3, 10^-6]}, {True, True}];
+  testcase["Open shells are reported",
+    Quiet[Check[meanfieldsolve[-Sum[hop[qfc[i], qfc[Mod[i, 4] + 1]], {i, 4}], Table[qfc[i], {i, 4}], {}, "ParticleNumber" -> 3],
+      "msg", meanfieldsolve::open], meanfieldsolve::open], "msg"];
+  sol = Quiet[meanfieldsolve[-Sum[hop[qfc[i], qfc[Mod[i, 4] + 1]], {i, 4}], Table[qfc[i], {i, 4}], {}, "ParticleNumber" -> 3],
+    meanfieldsolve::open];
+  testcase["Open shells are occupied equally", {qfnear[sol["Energy"], -4], sol["Iterations"]}, {True, 1}];
+
+  (* Thermal Hartree-Fock for an anharmonic boson: <n> = n_B(w + 4 U <n>) *)
+  hb = number[qfb[]] + 1/4 nc[qfb[CR], qfb[CR], qfb[AN], qfb[AN]];
+  sol = meanfieldsolve[meanfield[hb], {qfb}, {}, "Temperature" -> 1];
+  x = avg[number[qfb[]]] /. sol["Averages"];
+  testcase["Bosonic thermal Hartree-Fock", {sol["Converged"], qfnear[x, 1/(Exp[1 + x] - 1)]}, {True, True}];
+  testcase["Bosonic thermal Hartree-Fock energy", qfnear[sol["Energy"], x + x^2/2], True];
+  testcase["Empty and full fermion shells",
+    qfnear[Map[{#["Energy"], #["ChemicalPotential"]} &,
+      {meanfieldsolve[-hop[qfc[1], qfc[2]], {qfc[1], qfc[2]}, {}, "ParticleNumber" -> 0],
+       meanfieldsolve[-hop[qfc[1], qfc[2]], {qfc[1], qfc[2]}, {}, "ParticleNumber" -> 4]}], {{0, -3/2}, {0, 3/2}}], True];
+  testcase["Fixed particle number with pairing at T = 0",
+    Module[{s0 = meanfieldsolve[mf0, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, xr], "ParticleNumber" -> 3]},
+      {s0["Converged"], qfnear[Sum[gaussianaverage[number[qfc[i], UP] + number[qfc[i], DO],
+        quadraticform[mf0 /. s0["Averages"], Table[qfc[i], {i, 4}]][[1]] -
+          s0["ChemicalPotential"] DiagonalMatrix[Join[ConstantArray[1, 8], ConstantArray[-1, 8]]], Table[qfc[i], {i, 4}], 0], {i, 4}],
+        3, 10^-6]}], {True, True}];
+  testcase["Invalid modes in the solver", Quiet[meanfieldsolve[number[qff[1]], {qfS[1]}], quadraticform::mode], $Failed];
+  testcase["Non-quadratic mean-field Hamiltonians",
+    Quiet[meanfieldsolve[nc[number[qfc[1], UP], number[qfc[1], DO]], {qfc[1]}], quadraticform::order], $Failed];
+  testcase["Averages of operators outside the solver modes",
+    Quiet[meanfieldsolve[avg[number[qff[2]]] number[qff[1]], {qff[1]}], gaussianaverage::op], $Failed];
+  testcase["Solver passes failures of the correlation matrix on",
+    Quiet[meanfieldsolve[number[qfb[]] + 2 (nc[qfb[CR], qfb[CR]] + nc[qfb[AN], qfb[AN]]), {qfb}], bogoliubov::posdef], $Failed];
+
+  testcase["Remaining symbols are reported",
+    Quiet[meanfieldsolve[meanfield[qfU nc[number[qfc[1], UP], number[qfc[1], DO]]], {qfc[1]}], meanfieldsolve::numeric], $Failed];
+  testcase["Non-convergence is reported",
+    Quiet[Check[meanfieldsolve[mf, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, Join[xr, Map[conj, xr]]], "MaxIterations" -> 1],
+      "msg", meanfieldsolve::conv], meanfieldsolve::conv], "msg"];
+  testcase["Unknown initial values are reported",
+    Quiet[Check[meanfieldsolve[number[qfc[1], UP], {qfc[1]}, {avg[number[qfc[2], UP]] -> 1}], "msg", meanfieldsolve::init],
+      meanfieldsolve::init], "msg"];
+  testcase["Particle number range", Quiet[meanfieldsolve[number[qfc[1], UP], {qfc[1]}, {}, "ParticleNumber" -> 3], meanfieldsolve::number], $Failed];
+  testcase["Fixed particle number needs fermions",
+    Quiet[meanfieldsolve[number[qfb[]], {qfb}, {}, "ParticleNumber" -> 1], meanfieldsolve::boson], $Failed];
+ ]];
+
+(* The examples of README_quadratic.md *)
+testgroup["Quadratic documentation examples",
+ Module[{h, m, e0, eps, t, egs, e, hs, hk, hkm, e0k, hb, hbk, e0b, mk, sol},
+  h = Sum[-qft hop[qff[j], qff[j + 1]] + qfD (nc[qff[CR, j, 0], qff[CR, j + 1, 0]] +
+      nc[qff[AN, j + 1, 0], qff[AN, j, 0]]), {j, 2}] - qfmu Sum[number[qff[j]], {j, 3}];
+  {m, e0} = quadraticform[h, {qff[1], qff[2], qff[3]}];
+  testcase["README Kitaev constant and round trip", {e0, Expand[quadraticoperator[m, {qff[1], qff[2], qff[3]}, e0] - h]},
+    {-3 qfmu/2, 0}];
+  testcase["README Kitaev zero mode", qfnear[bogoliubov[m /. {qft -> 1, qfD -> 1, qfmu -> 0}, "Fermion"][[1]], {0, 2, 2}], True];
+  testcase["README Kitaev ground state",
+    qfnear[Flatten[bogoliubov[h /. {qft -> 1, qfD -> 1, qfmu -> 0}, {qff[1], qff[2], qff[3]}][[{1, 3}]]], {0, 2, 2, -2}], True];
+  hs = qfxi (number[qfc[1], UP] + number[qfc[1], DO]) - qfDl (nc[qfc[CR, 1, UP], qfc[CR, 1, DO]] + nc[qfc[AN, 1, DO], qfc[AN, 1, UP]]);
+  {eps, t, egs} = bogoliubov[hs, {qfc[1]}];
+  e = Sqrt[qfDl^2 + qfxi^2];
+  testcase["README on-site pairing",
+    Simplify[{eps - {e, e}, egs - (qfxi - e), t[[1, 1]]^2 - (1 + qfxi/e)/2, t[[4, 1]]^2 - (1 - qfxi/e)/2}], {{0, 0}, 0, 0, 0}];
+  testcase["README quasiparticle rules", Simplify[Expand[hs /. bogoliubovrules[t, {qfc[1]}, qfg]] /. {qfDl -> 3/5, qfxi -> 4/5}],
+    -1/5 + number[qfg[1]] + number[qfg[2]]];
+  hk = fourier[sum[-qft hop[qff[qfR], qff[qfR + 1]] - qfmu number[qff[qfR]] +
+    qfD (nc[qff[CR, qfR, 0], qff[CR, qfR + 1, 0]] + nc[qff[AN, qfR + 1, 0], qff[AN, qfR, 0]]), {qfR}], qff -> qffk, qfR -> qfk];
+  {hkm, e0k} = bdghamiltonian[hk, {qffk}, qfk];
+  testcase["README Kitaev Bloch matrix",
+    {Simplify[ExpToTrig[blochphaseexp[hkm, {qfk -> x}]]], e0k},
+    {{{-qfmu - 2 qft Cos[x], 2 I qfD Sin[x]}, {-2 I qfD Sin[x], qfmu + 2 qft Cos[x]}}, -qfmu qfN/2}];
+  hb = sum[qfxk[qfk] (number[qfck[qfk], UP] + number[qfck[qfk], DO]) -
+    qfDl (nc[qfck[CR, qfk, UP], qfck[CR, -qfk, DO]] + nc[qfck[AN, -qfk, DO], qfck[AN, qfk, UP]]), {qfk}];
+  {hbk, e0b} = bdghamiltonian[hb, {qfck}, qfk];
+  hbk = hbk /. qfxk[-qfk] -> qfxk[qfk];
+  e = Sqrt[qfDl^2 + qfxk[qfk]^2];
+  testcase["README BCS Bloch energies", {e0b, bogoliubov[hbk, "Fermion", "Momentum" -> True][[1]]},
+    {sum[qfxk[qfk], {qfk}], {e, e, -e, -e}}];
+  testcase["README BCS averages",
+    Simplify[gaussianaverage[{nc[qfck[AN, -qfk, DO], qfck[AN, qfk, UP]], number[qfck[qfk], UP]}, hbk, {qfck}, 0,
+      "Momentum" -> qfk] /. {qfxk[qfk] -> 2/5, qfDl -> 3/10}], {3/10, 1/10}];
+  h = qfJ sum[spinspin[qfS[qfR, "A"], qfS[qfR, "B"]] + spinspin[qfS[qfR, "B"], qfS[qfR + 1, "A"]], {qfR}];
+  h = rotatespin[h, qfS, If[Last[{##}] === "B", RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &];
+  {mk, e0} = bdghamiltonian[fourier[holsteinprimakoff[h, qfS -> qfb, 2], qfb -> qfbk, qfR -> qfk], {qfbk["A"], qfbk["B"]}, qfk];
+  testcase["README antiferromagnetic magnons",
+    {e0, Simplify[ExpToTrig[blochphaseexp[bogoliubov[mk, "Boson", "Momentum" -> True][[1]]^2, {qfk -> x}]] - qfJ^2 qfs^2 (2 - 2 Cos[x])]},
+    {Expand[-2 qfJ qfN qfs (qfs + 1)], {0, 0, 0, 0}}];
+  testcase["README Hartree decoupling", meanfield[qfU nc[number[qfc[1], UP], number[qfc[1], DO]], "Hartree"],
+    Expand[qfU (avg[number[qfc[1], DO]] number[qfc[1], UP] + avg[number[qfc[1], UP]] number[qfc[1], DO] -
+      avg[number[qfc[1], UP]] avg[number[qfc[1], DO]])]];
+  h = -hop[qfc[1], qfc[2]] + 4 Sum[nc[number[qfc[i], UP], number[qfc[i], DO]], {i, 2}];
+  sol = meanfieldsolve[meanfield[h], {qfc[1], qfc[2]},
+    {avg[number[qfc[1], UP]] -> 0.9, avg[number[qfc[2], DO]] -> 0.9}, "ParticleNumber" -> 2];
+  testcase["README Hubbard dimer",
+    {qfnear[sol["Energy"], -1/2], qfnear[(avg[number[qfc[1], UP]] - avg[number[qfc[1], DO]]) /. sol["Averages"], Sqrt[3]/2]},
+    {True, True}];
+ ]];
+
 ]; (* isolated package state *)
 testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
 

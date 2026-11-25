@@ -57,6 +57,10 @@ and error-prone.
   representations, spin-cluster matrices, Stevens operators, and Hubbard
   X-operators.
 
+* Quadratic Hamiltonians: BdG matrices in real and momentum space,
+  fermionic and bosonic Bogoliubov transformations, thermal averages with
+  Wick's theorem, mean-field decoupling, and self-consistent solutions.
+
 * Dirac bra-ket notation that can be combined with second-quantization
   operator expressions.
 
@@ -138,7 +142,8 @@ Additional material includes:
 
 * Example notebooks and scripts in [`examples`](examples/).
 * [Momentum space and lattices](README_momentum.md),
-  [spin algebras](README_spin.md), and
+  [spin algebras](README_spin.md),
+  [quadratic forms and mean-field theory](README_quadratic.md), and
   [matrix-valued hopping](README_matrixhop.md).
 * The early minimalist [SNEG manual](docs/manual/manual.pdf).
 * The bundled preprint of the
