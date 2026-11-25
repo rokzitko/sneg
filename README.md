@@ -48,6 +48,10 @@ and error-prone.
 * Symbolic sums over free and dummy indexes, including automatic index
   renaming and simplification of Kronecker deltas.
 
+* Momentum space and periodic lattices: Fourier transformations,
+  momentum conservation, lattice sums, Bloch Hamiltonians, and finite
+  periodic or twisted clusters with total-momentum bases.
+
 * Dirac bra-ket notation that can be combined with second-quantization
   operator expressions.
 
@@ -128,6 +132,8 @@ modern Mathematica versions.
 Additional material includes:
 
 * Example notebooks and scripts in [`examples`](examples/).
+* [Momentum space and lattices](README_momentum.md) and
+  [matrix-valued hopping](README_matrixhop.md).
 * The early minimalist [SNEG manual](docs/manual/manual.pdf).
 * The bundled preprint of the
   [Computer Physics Communications article](docs/CPC_paper/paper.pdf).

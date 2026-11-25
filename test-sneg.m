@@ -129,7 +129,7 @@ If[harnessProbes =!= ConstantArray[False, 5],
 ];
 
 Print["** Package contexts **"];
-test[$SnegVersion, "2.1.1"];
+test[$SnegVersion, "2.2.0"];
 test[MemberQ[$Packages, "sneg`"], True];
 test[MemberQ[$ContextPath, "Sneg`"], True];
 test[Context[number], "Sneg`"];
@@ -4076,6 +4076,236 @@ testgroup["State and basis utilities",
     {KroneckerProduct[numberMatrix-IdentityMatrix[4], IdentityMatrix[3]],
      KroneckerProduct[sz, IdentityMatrix[3]] + KroneckerProduct[IdentityMatrix[4], DiagonalMatrix[{1, 0, -1}]]}, # &];
   testcase["Abelian spin-ket dimension", Total[Length[#[[2]]] & /@ bz], 12];
+ ]];
+
+(* Momentum space and lattices. Global symbols are used for the indexes so
+   that automatically renamed dummy indexes (momk1, ...) have a root name. *)
+sneglatticeindexes[{momi, momj}, momN];
+snegmomentumindexes[{momk, momp, momq}, momN];
+sneglatticevectors[moma1, moma2];
+snegfermionoperators[momc, momck, momd];
+snegspinlessfermionoperators[momf, momfk];
+snegbosonoperators[momb, mombk];
+snegrealconstants[momt, momU, momv, momw, momalpha, momV, momtheta, momz];
+snegcomplexfunctions[momg];
+snegfreeindexes[momgi, momgj];
+
+testgroup["Momentum-space deltas and lattice sums",
+ Module[{expr, renamed, prod},
+  testcase["Index declarations",
+    {latticeindexQ[momi], momentumindexQ[momk], latticeindexQ[momk],
+     latticesize[momk], Conjugate[momk], TrueQ[latticevectorQ[moma1]]},
+    {True, True, False, momN, momk, True}];
+  testcase["Shifted momentum delta",
+    sumSimplifyKD[sum[KroneckerDelta[momp, momk + momq] momg[momk], {momk}]],
+    momg[momp - momq]];
+  testcase["Reflected momentum delta",
+    sumSimplifyKD[sum[KroneckerDelta[momp, momq - momk] momg[momk], {momk}]],
+    momg[momq - momp]];
+  expr = sum[KroneckerDelta[2 momk, momq] momg[momk], {momk}];
+  testcase["Non-unit coefficients are not solved", sumSimplifyKD[expr], expr];
+  expr = sum[KroneckerDelta[momgj, momgi + 1] momg[momgi], {momgi}];
+  testcase["Generic indexes keep bare-delta behavior", sumSimplifyKD[expr], expr];
+  expr = sum[KroneckerDelta[momk + momq, momi + 1] momg[momk], {momk}];
+  testcase["Mixed lattice and momentum deltas are not solved", sumSimplifyKD[expr], expr];
+  testcase["Delta of a pure momentum transfer",
+    sumSimplifyKD[KroneckerDelta[momk, momk + momq]], KroneckerDelta[momq, 0]];
+  testcase["Delta inside scalar blocks",
+    sumSimplifyKD[sum[scalar[KroneckerDelta[momp, momk + momq] momz + momt] momc[CR, momk, UP], {momk}]],
+    scalar[momz] momc[CR, momp - momq, UP] + sum[scalar[momt] momc[CR, momk, UP], {momk}]];
+  testcase["Two summed momenta: the last is eliminated",
+    sumSimplifyKD[sum[KroneckerDelta[momq, momk - momp] momg[momk, momp], {momk, momp}]],
+    sum[momg[momk, momk - momq], {momk}]];
+  testcase["Number of unit cells", sum[momg[momq], {momk}], momN momg[momq]];
+  testcase["Number of unit cells for two indexes", sum[1, {momk, momi}], momN^2];
+  testcase["Density commutator",
+    snegsumreduce[komutator[momc[AN, momp, UP],
+      sum[nc[momc[CR, momk + momq, UP], momc[AN, momk, UP]], {momk}]]],
+    momc[AN, momp - momq, UP]];
+  prod = nc[sum[momc[CR, momk, UP], {momk}], sum[momc[AN, momk, UP], {momk}]];
+  renamed = First[Complement[Cases[prod, sum[_, l_] :> l, {0, Infinity}][[1]], {momk}]];
+  testcase["Renamed indexes inherit index properties",
+    {momentumindexQ[renamed], latticesize[renamed], Conjugate[renamed]},
+    {True, momN, renamed}];
+
+  testcase["Bloch phase splitting", blochphase[momk, momi + 2],
+    blochphase[momk, momi] blochphase[2 momk, 1]];
+  testcase["Bloch phase products", blochphase[momk, momi] blochphase[momq, momi],
+    blochphase[momk + momq, momi]];
+  testcase["Bloch phase conjugation", Conjugate[blochphase[momk, momi]],
+    blochphase[-momk, momi]];
+  testcase["Bloch phase conjugation by conj", conj[momt blochphase[momk, moma1]],
+    momt blochphase[-momk, moma1]];
+  testcase["Bloch phase trivial arguments", {blochphase[0, momi], blochphase[momk, 0]}, {1, 1}];
+  testcase["Explicit Bloch phases", blochphase[{1, 2}, {3, 4}], Exp[11 I]];
+  testcase["Bloch phase evaluation", blochphaseexp[blochphase[momk, moma1] + blochphase[momk, moma2],
+      {momk -> {1, 2}, moma1 -> {1/2, 1}, moma2 -> {0, 1}}], Exp[2 I] + Exp[5 I/2]];
+  testcase["One-dimensional Bloch phase evaluation", blochphaseexp[blochphase[momk, 1]],
+    Exp[I momk]];
+  testcase["Lattice sum over sites",
+    sumSimplifyKD[sum[blochphase[momk - momp, momi], {momi}]], momN KroneckerDelta[momk, momp]];
+  testcase["Lattice sum over momenta",
+    sumSimplifyKD[sum[blochphase[momk, momi - momj], {momk}]], momN KroneckerDelta[momi, momj]];
+  testcase["Lattice sum with displacement",
+    sumSimplifyKD[sum[blochphase[momk, momi + moma1] blochphase[-momp, momi] momg[momk], {momi}]],
+    momN KroneckerDelta[momk, momp] blochphase[momk, moma1] momg[momk]];
+  expr = sum[Sin[blochphase[momk, momi]], {momi}];
+  testcase["Non-multiplicative phases are not summed", sumSimplifyKD[expr], expr];
+ ]];
+
+testgroup["Fourier transformation and Bloch Hamiltonians",
+ Module[{H, Hk, h, hR, cr, an, hssh, hssh2, hg, expected},
+  H = -momt sum[hop[momc[momi], momc[momi + 1]], {momi}];
+  Hk = fourier[H, momc -> momck, momi -> momk];
+  testcase["Chain dispersion",
+    Hk, sum[Expand[-momt (blochphase[-momk, 1] + blochphase[momk, 1]) number[momck[momk]]], {momk}]];
+  expected = Expand[-momt (blochphase[-momk, 1] + blochphase[momk, 1]) IdentityMatrix[2]];
+  testcase["Chain Bloch Hamiltonian", blochhamiltonian[Hk, {momck}, momk], expected];
+  testcase["Bloch Hamiltonian with a different summation index",
+    blochhamiltonian[fourier[H, momc -> momck, momi -> momq], {momck}, momk], expected];
+  (* Independent route: h(k) = Sum_R e^(-i k R) {c_0, [H, c_R^dag]}. *)
+  hR = snegsumreduce[sum[blochphase[-momk, momj] antikomutator[momc[AN, 0, UP],
+     komutator[H, momc[CR, momj, UP]]], {momj}]];
+  testcase["Real-space matrix-element route", hR, expected[[1, 1]]];
+  testcase["Parseval identity",
+    fourier[sum[number[momc[momi]], {momi}], momc -> momck, momi -> momk],
+    sum[number[momck[momk]], {momk}]];
+  testcase["Inverse transformation",
+    fourier[sum[number[momck[momk]], {momk}], momc -> momck, momi -> momk, "Inverse" -> True],
+    sum[number[momc[momi]], {momi}]];
+  testcase["Transformed operators keep canonical anticommutators",
+    snegsumreduce[antikomutator[
+      fourier[momc[AN, momi, UP], momc -> momck, momi -> momk],
+      fourier[momc[CR, momj, UP], momc -> momck, momi -> momp]]],
+    KroneckerDelta[momi, momj]];
+  Hk = fourier[momU sum[hubbard[momc[momi]], {momi}], momc -> momck, momi -> momk];
+  cr = Cases[Hk, momck[CR, q_, _] :> q, Infinity];
+  an = Cases[Hk, momck[AN, q_, _] :> q, Infinity];
+  testcase["Hubbard interaction conserves momentum",
+    {Length[cr], Simplify[Total[cr] - Total[an]], FreeQ[Hk, blochphase], !FreeQ[Hk, momU/momN]},
+    {2, 0, True, True}];
+  testcase["Impurity hybridization",
+    fourier[momV hop[momd[], momc[0]], momc -> momck, momi -> momk],
+    sum[Expand[momV/Sqrt[momN] hop[momd[], momck[momk]]], {momk}]];
+  testcase["Bosonic chain",
+    blochhamiltonian[fourier[-momt sum[nc[momb[CR, momi], momb[AN, momi + 1]] +
+      nc[momb[CR, momi + 1], momb[AN, momi]], {momi}], momb -> mombk, momi -> momk], {mombk}, momk],
+    {{expected[[1, 1]]}}];
+  testcase["Fourier capture check",
+    Quiet[fourier[number[momck[momk]], momc -> momck, momi -> momk], fourier::capture], $Failed];
+  testcase["Fourier rejects undeclared indexes",
+    Quiet[fourier[number[momc[1]], momc -> momck, momgi -> momk], fourier::index], $Failed];
+
+  H = sum[momv hop[momf[momi, "A"], momf[momi, "B"]] + momw hop[momf[momi + 1, "A"], momf[momi, "B"]], {momi}];
+  Hk = fourier[H, momf -> momfk, momi -> momk];
+  hssh = blochhamiltonian[Hk, {momfk["A"], momfk["B"]}, momk];
+  testcase["SSH Bloch Hamiltonian", hssh,
+    {{0, momv + momw blochphase[-momk, 1]}, {momv + momw blochphase[momk, 1], 0}}];
+  hssh2 = blochhamiltonian[Hk, {momfk["A"], momfk["B"]}, momk, "OrbitalPositions" -> {0, 1/2}];
+  testcase["Orbital-position convention", hssh2,
+    {{0, (momv + momw blochphase[-momk, 1]) blochphase[momk, 1/2]},
+     {(momv + momw blochphase[momk, 1]) blochphase[-momk, 1/2], 0}}];
+  zerotest["Both conventions have the same spectrum",
+    blochphaseexp[Det[hssh] - Det[hssh2]]];
+
+  H = -momt sum[hop[momf[momi, "A"], momf[momi, "B"]] + hop[momf[momi, "A"], momf[momi - moma1, "B"]] +
+      hop[momf[momi, "A"], momf[momi - moma2, "B"]], {momi}];
+  hg = blochhamiltonian[fourier[H, momf -> momfk, momi -> momk], {momfk["A"], momfk["B"]}, momk];
+  testcase["Graphene Bloch Hamiltonian", hg,
+    Expand[{{0, -momt (1 + blochphase[-momk, moma1] + blochphase[-momk, moma2])},
+     {-momt (1 + blochphase[momk, moma1] + blochphase[momk, moma2]), 0}}]];
+  zerotest["Graphene Dirac point",
+    blochphaseexp[hg, {momk -> {4 Pi/3, 0}, moma1 -> {1, 0}, moma2 -> {1/2, Sqrt[3]/2}}]];
+
+  h = blochhamiltonian[fourier[sum[matrixhop[-momt IdentityMatrix[2] + I momalpha PauliY,
+      momc[momi], momc[momi + 1]], {momi}], momc -> momck, momi -> momk], {momck}, momk];
+  zerotest["Rashba chain",
+    ExpToTrig[blochphaseexp[h]] - (-2 momt Cos[momk] IdentityMatrix[2] - 2 momalpha Sin[momk] PauliY)];
+  testcase["Translation-invariance check",
+    Quiet[blochhamiltonian[fourier[sum[blochphase[Pi, momi] number[momf[momi]], {momi}],
+      momf -> momfk, momi -> momk], {momfk}, momk], blochhamiltonian::transl], $Failed];
+  testcase["Hermiticity check",
+    Quiet[Check[blochhamiltonian[sum[I nc[momfk[CR, momk, "A", 0], momfk[AN, momk, "B", 0]], {momk}],
+      {momfk["A"], momfk["B"]}, momk], "msg", blochhamiltonian::herm], blochhamiltonian::herm], "msg"];
+ ]];
+
+testgroup["Momentum shifts",
+ Module[{rho, cm, x, savedOrdering},
+  rho[qq_] := sum[nc[momck[CR, momp + qq, UP], momck[AN, momp, UP]], {momp}];
+  cm = snegsumreduce[komutator[rho[momq], rho[-momq]]];
+  testcase["Lattice density operators commute",
+    sumCollect[sumMomentumCanonical[sumExpand[cm]]], 0];
+  x = sum[number[momck[momk + momq]], {momk}] - sum[number[momck[momk]], {momk}];
+  testcase["Shift invariance of lattice sums", sumFullSimplify[x], 0];
+  testcase["Explicit shift",
+    sumShift[sum[number[momfk[momk]], {momk}], momk -> momk + momq],
+    sum[number[momfk[momk + momq]], {momk}]];
+  testcase["Invalid shifts are rejected",
+    Quiet[sumShift[sum[number[momfk[momk]], {momk}], momk -> 2 momk], sumShift::shift],
+    sum[number[momfk[momk]], {momk}]];
+  testcase["Shifts require lattice or momentum indexes",
+    Quiet[sumShift[sum[momg[momgi], {momgi}], momgi -> momgi + 1], sumShift::index],
+    sum[momg[momgi], {momgi}]];
+  snegfermionoperators[momsea];
+  ordering[momsea] = SEA;
+  x = sum[number[momsea[momk + momq]], {momk}];
+  testcase["SEA-ordered sums are not canonicalized", sumMomentumCanonical[x], x];
+  testcase["SEA-ordered sums are not shifted",
+    Quiet[sumShift[x, momk -> momk - momq], sumShift::sea], x];
+ ]];
+
+testgroup["Finite periodic clusters",
+ Module[{L = 4, HR, Hsym, HK, HF, ops, opsR, bz, bzR, bzK, sector, eigK, eigR, xx,
+   H1, b1, H2, H2k, offdiag},
+  HR = clusterhop[-momt, momc, momc, 1, {L}] + momU Sum[hubbard[momc[n]], {n, 0, L - 1}];
+  Hsym = fourier[-momt sum[hop[momc[momi], momc[momi + 1]], {momi}] +
+    momU sum[hubbard[momc[momi]], {momi}], momc -> momck, momi -> momk];
+  HK = sumCluster[Hsym, {L}];
+  HF = Expand[HR /. fourierrules[momc -> momck, {L}]];
+  zerotest["Explicit Fourier rules agree with the specialized symbolic result", Expand[HF - HK]];
+  testcase["Real-space cluster from a symbolic lattice sum",
+    sumCluster[-momt sum[hop[momc[momi], momc[momi + 1]], {momi}], {L}],
+    Expand[clusterhop[-momt, momc, momc, 1, {L}]]];
+  ops = Table[momck[m], {m, 0, L - 1}];
+  makebasis[ops];
+  bzK = momentumbasis[qszbasis[ops], {L}];
+  sector = Select[bzK, Take[#[[1]], 2] == {-2, 0} &];
+  testcase["Total-momentum sectors", sector[[All, 1]],
+    {{-2, 0, 0}, {-2, 0, 1}, {-2, 0, 2}, {-2, 0, 3}}];
+  testcase["Sector dimensions", Total[Length /@ sector[[All, 2]]], 16];
+  offdiag = Flatten[Outer[braketop[#1, HK, #2] &, sector[[1, 2]], sector[[2, 2]]]];
+  testcase["Hamiltonian is block diagonal in K", Union[Expand[offdiag]], {0}];
+  eigK = Flatten[Map[Eigenvalues[matrixrepresentationop[HK /. {momt -> 1, momU -> 3}, #]] &,
+    sector[[All, 2]]]];
+  opsR = Table[momc[n], {n, 0, L - 1}];
+  makebasis[opsR];
+  bzR = Select[qszbasis[opsR], #[[1]] == {-2, 0} &];
+  eigR = Eigenvalues[matrixrepresentationop[HR /. {momt -> 1, momU -> 3}, bzR[[1, 2]]]];
+  zerotest["Hubbard ring spectra in real and momentum space",
+    Expand[Times @@ (xx - eigK) - Times @@ (xx - eigR)]];
+  testcase["Two-site ring doubles the hopping", clusterhop[1, momc, momc, 1, {2}],
+    Expand[2 hop[momc[0], momc[1]]]];
+  H1 = clusterhop[-1, momc, momc, 1, {3}, "Twist" -> momtheta];
+  makebasis[Table[momc[n], {n, 0, 2}]];
+  b1 = Select[qszbasis[Table[momc[n], {n, 0, 2}]], #[[1]] == {-2, 1/2} &][[1, 2]];
+  testcase["Twisted single-particle levels",
+    Chop[Sort[N[Eigenvalues[matrixrepresentationop[H1, b1] /. momtheta -> 7/10]]] -
+      Sort[N[Table[-2 Cos[(2 Pi m + 7/10)/3], {m, 0, 2}]]]], {0, 0, 0}];
+  zerotest["Twisted Fourier rules diagonalize the ring",
+    Expand[H1 /. fourierrules[momc -> momck, {3}, "Twist" -> momtheta]] -
+      Sum[-2 Cos[(2 Pi m + momtheta)/3] number[momck[m]], {m, 0, 2}] // ExpToTrig];
+  H2 = -momt sum[hop[momc[momi], momc[momi + moma1]] + hop[momc[momi], momc[momi + moma2]], {momi}];
+  H2k = sumCluster[fourier[H2, momc -> momck, momi -> momk], {2, 3},
+    {moma1 -> {1, 0}, moma2 -> {0, 1}}];
+  zerotest["Two-dimensional cluster",
+    Expand[H2k - Expand[(clusterhop[-momt, momc, momc, {1, 0}, {2, 3}] +
+      clusterhop[-momt, momc, momc, {0, 1}, {2, 3}]) /. fourierrules[momc -> momck, {2, 3}]]]];
+  testcase["Two-dimensional momentum labels",
+    momentumbasis[{{{-1, 1/2}, {momck[CR, {1, 2}, UP], momck[CR, {0, 1}, UP]}}}, {2, 3}],
+    {{{-1, 1/2, {0, 1}}, {momck[CR, {0, 1}, UP]}}, {{-1, 1/2, {1, 2}}, {momck[CR, {1, 2}, UP]}}}];
+  testcase["Mixed-momentum states are rejected",
+    Quiet[momentumbasis[{{{0}, {momck[CR, 1, UP] + momck[CR, 2, UP]}}}, {4}], momentumbasis::mixed],
+    $Failed];
  ]];
 
 ]; (* isolated package state *)

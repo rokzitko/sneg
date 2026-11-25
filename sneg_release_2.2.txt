@@ -1,0 +1,63 @@
+SNEG 2.2.0 (draft): changes since SNEG 2.1.
+
+SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters.
+
+## New functionality
+
+### Momentum space and lattices
+
+See [`README_momentum.md`](README_momentum.md) for worked examples.
+
+- `sneglatticeindexes[{R, ...}, Ns]` and `snegmomentumindexes[{k, ...}, Ns]` declare real summation indexes that label the unit cells and the crystal momenta of a periodic lattice with `Ns` cells. `sneglatticevectors[a1, ...]` declares lattice vectors used as displacements, e.g. `c[R + a1]`.
+- `sumSimplifyKD` eliminates Kronecker deltas of linear combinations of declared lattice or momentum indexes, e.g. `Sum_k delta(p, k + q) f(k) = f(p - q)`, and reduces `delta(k, k + q)` to `delta(q, 0)`. Only coefficients of +-1 are solved; mixed lattice-momentum deltas and generic indexes keep the previous behavior.
+- Sums over declared indexes that do not appear in the summand evaluate to `Ns`.
+- `blochphase[k, R]` represents `exp(i k.R)`. `sumSimplifyKD` performs the lattice sums `Sum_R exp(i K.R) = Ns delta(K, 0)` and `Sum_k exp(i k.X) = Ns delta(X, 0)`. `blochphaseexp` converts the phases to exponentials for explicit vectors.
+- `fourier[expr, c -> ck, R -> k]` transforms fermionic and bosonic site operators to momentum operators with the convention `c_R = Ns^(-1/2) Sum_k exp(i k.R) c_k`, and back with `"Inverse" -> True`. Momentum conservation is applied automatically.
+- `sumShift` shifts summation variables, and `sumMomentumCanonical` canonicalizes momentum labels and dummy-index names so that equivalent sums can be collected. `sumFullSimplify` uses this canonicalization. Sums containing `SEA`-ordered operators are never shifted, because for linearized bands the shift is not a symmetry of the Fermi sea.
+- `blochhamiltonian[H, {ck[a], ...}, k]` returns the Bloch Hamiltonian matrix `h(k)` of a bilinear fermionic or bosonic Hamiltonian, checks translation invariance and hermiticity, and supports the orbital-position convention through `"OrbitalPositions"`.
+
+### Finite periodic clusters
+
+- `fourierrules[c -> ck, {L1, ...}]` gives the explicit Fourier transformation on a finite cluster, with optional twisted boundary conditions (`"Twist"`).
+- `clusterhop[T, c[a], d[b], delta, {L1, ...}]` constructs scalar or spin-matrix hopping on periodic or twisted clusters.
+- `sumCluster[expr, {L1, ...}, rules]` specializes symbolic lattice and momentum sums to an explicit periodic cluster, folding site and momentum labels and evaluating Kronecker deltas modulo the cluster size.
+- `momentumbasis[bz, {L1, ...}]` splits basis subspaces according to the total crystal momentum, which is appended to the quantum numbers.
+
+### Matrix-valued hopping (released in 2.1.1)
+
+- `matrixhop[T, a[i], b[j]]` constructs the spin-dependent hopping `a^dagger T b + h.c.` for a dense or sparse 2 by 2 matrix `T`, with Pauli decomposition of symbolic matrices (including `MatrixExp` results). See [`README_matrixhop.md`](README_matrixhop.md).
+
+## Behavior changes
+
+- Summation indexes created by automatic renaming (for example `k1` when two sums over `k` are multiplied) now inherit the realness (`Conjugate[k] = k`) and the lattice or momentum declaration of the original index.
+
+## Fixes
+
+- Contractions check the ordering convention of both operators.
+- Contractions between independent operator families with `NONE` ordering vanish, respecting a custom fermionic anticommutator.
+- Fixed iterator capture in `sumAbstractIndex`, `sumNameIndex`, and `snegold2newrules`.
+- `vevwick2` handles single operators.
+- Matrix blocks that vanish only in floating-point arithmetic are filtered out in `makeallmatricesbzop` and `makeallmatricesbzvc`.
+- `SU2combine` applies the spin-projection selection rule, avoiding messages for nonphysical Clebsch-Gordan arguments.
+
+## Testing
+
+- The regression scripts return a nonzero exit status on failure. Missing expected values, evaluation messages, aborts, and timeouts count as failures.
+- Expanded regression coverage with independent finite-space checks of bases, matrices, symmetry transformations, and Wick contractions.
+- New regression groups for momentum-space deltas and lattice sums, Fourier transformations and Bloch Hamiltonians (chain, SSH, graphene, Rashba chain, bosons), momentum shifts, and finite clusters. The finite-cluster tests compare real-space and momentum-space spectra of the four-site Hubbard ring.
+
+## Distribution
+
+The release contains versioned `SNEG-2.2.0.paclet` and stable `SNEG.paclet` assets.
+
+```wl
+PacletInstall[
+  "https://github.com/rokzitko/sneg/releases/latest/download/SNEG.paclet"
+]
+```
+
+## Links
+
+- [Repository and documentation](https://github.com/rokzitko/sneg)
+- [Full changes since SNEG 2.1](https://github.com/rokzitko/sneg/compare/v2.1...v2.2.0)
+- [SNEG paper](https://doi.org/10.1016/j.cpc.2011.05.013)

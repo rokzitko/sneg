@@ -31,7 +31,7 @@
 
 BeginPackage["Sneg`"];
 
-snegidstring = "sneg.m 2.1.1 Sep 2026";
+snegidstring = "sneg.m 2.2.0 Nov 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
 $SnegVersion = Module[{pos, p1, p2},
@@ -638,6 +638,83 @@ nc[], operators, bras and kets into an ASCII string representation. If the
 full conversion is not possible, the function will return a SNEG expression
 featuring String objects for those parts of the expression where the conversion
 was possible. The inverse transformation can be performed using asciitosneg[]."];
+
+(* Momentum space and lattices; see README_momentum.md. *)
+sneglatticeindexes::usage =
+"sneglatticeindexes[{R1, R2, ...}, Ns] declares R1, R2, ... as real
+summation indexes that label the unit cells of a periodic lattice with Ns
+cells. Ns is a positive integer or a symbol, which is declared a real
+constant.";
+snegmomentumindexes::usage =
+"snegmomentumindexes[{k1, k2, ...}, Ns] declares k1, k2, ... as real
+summation indexes that label the crystal momenta of a periodic lattice with
+Ns cells. Momentum labels are defined modulo reciprocal-lattice vectors.";
+sneglatticevectors::usage =
+"sneglatticevectors[a1, a2, ...] declares a1, a2, ... as real lattice
+vectors that can be used as displacements, e.g. c[R + a1].";
+latticeindexQ::usage =
+"latticeindexQ[R] returns True if R is a declared lattice index.";
+momentumindexQ::usage =
+"momentumindexQ[k] returns True if k is a declared momentum index.";
+latticesize::usage =
+"latticesize[k] returns the number of unit cells Ns associated with
+a declared lattice or momentum index k.";
+blochphase::usage =
+"blochphase[k, R] represents the Bloch phase exp(i k.R). Phases with equal
+lattice arguments are combined, sums in the lattice argument are split, and
+blochphase[k, R]^* = blochphase[-k, R]. sumSimplifyKD[] performs the
+lattice sums Sum_R exp(i K.R) = Ns delta(K, 0) and
+Sum_k exp(i k.X) = Ns delta(X, 0).";
+blochphaseexp::usage =
+"blochphaseexp[expr, rules] applies the substitution rules (e.g.
+{k -> {kx, ky}, a1 -> {1, 0}}) and converts Bloch phases to exponentials.";
+fourier::usage =
+"fourier[expr, c -> ck, R -> k] transforms the site operators c to the
+momentum operators ck using c_R = Ns^(-1/2) Sum_k exp(i k.R) c_k. The site
+or momentum index is the first index after CR/AN (option IndexPosition).
+With \"Inverse\" -> True, the momentum operators ck are transformed back to
+site operators c. Lattice sums and momentum conservation are applied unless
+\"Simplify\" -> False.";
+sumShift::usage =
+"sumShift[expr, k -> +-k + q] shifts the summation variable k in all sums
+over k. This is exact for declared lattice and momentum indexes. Sums with
+SEA-ordered operators are not shifted.";
+sumMomentumCanonical::usage =
+"sumMomentumCanonical[expr] shifts the summed lattice and momentum indexes so
+that the first operator argument depending on each index becomes the bare
+index, and renames automatically renamed dummy indexes back to their root
+names. This allows sumCollect[] to combine equivalent sums.";
+blochhamiltonian::usage =
+"blochhamiltonian[H, {ck[a], ck[b], ...}, k] returns the Bloch Hamiltonian
+matrix h(k) of a translation-invariant bilinear Hamiltonian H, with
+H = Sum_k Sum_ab ck^dagger_a h_ab(k) ck_b. The orbitals are given as
+templates; the momentum is inserted as the first index after CR/AN and the
+spin index (UP, DO for spin-1/2, 0 for spinless fermions) varies fastest.
+The option \"OrbitalPositions\" -> {tau_a, ...} returns h in the convention
+c_Ra = Ns^(-1/2) Sum_k exp(i k.(R + tau_a)) c_ka.";
+fourierrules::usage =
+"fourierrules[c -> ck, {L1, L2, ...}] returns replacement rules for the
+Fourier transformation on a finite periodic cluster with sites given in
+lattice coordinates n_a = 0, ..., L_a - 1 (integers in 1D) and momentum
+labels m with k_a = (2 Pi m_a + theta_a)/L_a. The option
+\"Twist\" -> theta sets twisted boundary conditions
+c_(n + L_a e_a) = exp(i theta_a) c_n.";
+clusterhop::usage =
+"clusterhop[T, c[a], d[b], delta, {L1, ...}] returns
+Sum_n c^dagger_(n,a) T d_(n+delta,b) + h.c. on a finite periodic cluster.
+T is a number or a 2 by 2 spin matrix. The option \"Twist\" -> theta sets
+twisted boundary conditions.";
+sumCluster::usage =
+"sumCluster[expr, {L1, ...}, rules] converts a symbolic expression with sums
+over lattice and momentum indexes into the explicit expression on a finite
+periodic cluster with integer site and momentum labels. Labels are folded
+modulo L, Kronecker deltas are evaluated modulo L, and rules (e.g.
+{a1 -> {1, 0}}) give the lattice vectors in lattice coordinates.
+Twisted boundary conditions are not supported.";
+momentumbasis::usage =
+"momentumbasis[bz, {L1, ...}] splits the subspaces of a basis of momentum
+operators (e.g. from qszbasis) according to the total crystal momentum
+K = Sum m (mod L), which is appended to the quantum numbers.";
 
 (** Load required packages **)
 
@@ -1717,6 +1794,7 @@ ssJWRnewname[n_, allnames_List, expr_:1] := Module[{ns, i, nn},
   ];
   (* Automatically declare the new index quantity *)
   snegfreeindexes[nn];
+  snegcopyindexproperties[n, nn];
   nn
 ];
 
@@ -1926,10 +2004,17 @@ rulesumSimplifyKD = {
       sum[a c, x] + sum[a, {i, j}] sum[b, {n1}]
 };
 
-sumSimplifyKD[expr_] := expr //. rulesumSimplifyKD;
+(* The lattice step (see "Momentum space and lattices") eliminates
+Kronecker deltas of linear combinations of lattice or momentum indexes and
+performs lattice sums over Bloch phases. *)
+snegsumKDstep[expr_] :=
+  snegsumlatticestep[(expr //. rulesumSimplifyKD) /. rulelatticeKDreduce];
+
+sumSimplifyKD[expr_] := FixedPoint[snegsumKDstep, expr, 50];
 
 (* Optimization *)
-sumSimplifyKD[expr_] /; FreeQ[expr, KroneckerDelta[__]] := expr;
+sumSimplifyKD[expr_] /; FreeQ[expr, KroneckerDelta[__]] &&
+  FreeQ[expr, blochphase] := expr;
 
 (* Collect KroneckerDelta[] in sums, prior to simplification. *)
 rulesumCollectKD = {
@@ -2044,7 +2129,8 @@ sumSimplify[expr_] := Simplify[expr,
   rules to furher simplify the resulting expression. *)
 
 sumFullSimplify[expr_] := FullSimplify[expr,
-  TransformationFunctions -> Prepend[sumsimplfuncs, sumFullSimplifyOLD] ];
+  TransformationFunctions -> Append[Prepend[sumsimplfuncs, sumFullSimplifyOLD],
+    sumCollect[sumMomentumCanonical[sumExpand[#]]] &] ];
 
 
 (* Annihilation vs. creation operators! *)
@@ -4867,6 +4953,539 @@ Zeroonvac[a_] /; isnumericQ[a] := a;
 ruleFullSimplifyUnderSum = {
   sum[a_, {q__}] :> sum[FullSimplify[a], {q}]
 };
+
+
+(**** Momentum space and lattices ****)
+
+(* Lattice indexes R label the unit cells of a periodic lattice with Ns
+cells, momentum indexes k label its crystal momenta. The Fourier convention
+is c_R = Ns^(-1/2) Sum_k e^(i k.R) c_k. Momentum labels are defined modulo
+reciprocal-lattice vectors and site labels modulo the lattice period
+(periodic boundary conditions). On these index sets a shift k -> +-k + q is
+a bijection; this makes the elimination of Kronecker deltas of linear
+combinations and the shifts of summation variables exact. Neither property
+holds for open chains, for SEA-ordered (linearized, unbounded) bands, or
+for generic indexes, which therefore keep the old behavior. *)
+
+If[!ValueQ[listlatticeindexes],  listlatticeindexes = {} ];
+If[!ValueQ[listmomentumindexes], listmomentumindexes = {} ];
+If[!ValueQ[listlatticevectors],  listlatticevectors = {} ];
+
+latticeindextype[_] := None;
+latticevectorQ[_] := False;
+latticeindexQ[x_Symbol] := latticeindextype[x] === "Lattice";
+latticeindexQ[_] := False;
+momentumindexQ[x_Symbol] := latticeindextype[x] === "Momentum";
+momentumindexQ[_] := False;
+latticetypedQ[x_] := latticeindexQ[x] || momentumindexQ[x];
+latticelikeQ[x_] := latticetypedQ[x] || TrueQ[latticevectorQ[x]];
+
+snegsymbolsof[e_] := Union[Cases[{e}, _Symbol, Infinity]];
+snegHasLatticeQ[e_] := Or @@ Map[latticelikeQ, snegsymbolsof[e]];
+
+(* Index types ("Lattice", "Momentum") appearing in an expression. Lattice
+vectors count as lattice-type quantities. *)
+snegindextypes[e_] := Union[
+  Map[latticeindextype, Select[snegsymbolsof[e], latticetypedQ]],
+  If[Or @@ Map[TrueQ[latticevectorQ[#]] &, snegsymbolsof[e]], {"Lattice"}, {}]];
+
+sneglatticeindexes::size = "The lattice size `1` must be a positive integer or an expression built from symbols.";
+snegdeclarelatticesize[n_Integer?Positive] := True;
+snegdeclarelatticesize[n_] /; !NumericQ[n] && snegsymbolsof[n] =!= {} := (
+  Scan[If[snegnonopQ[#] =!= True, snegrealconstants[#]] &, snegsymbolsof[n]];
+  True);
+snegdeclarelatticesize[n_] := (Message[sneglatticeindexes::size, n]; False);
+
+snegaddlatticeindex[x_Symbol, n_, type_] := (
+  snegfreeindexes[x];
+  Conjugate[x] ^= x;
+  latticeindextype[x] ^= type;
+  latticesize[x] ^= n;
+  If[type === "Lattice",
+    addto[listlatticeindexes, x],
+    addto[listmomentumindexes, x]];
+);
+
+sneglatticeindexes[l_List, n_] /; snegdeclarelatticesize[n] :=
+  Scan[snegaddlatticeindex[#, n, "Lattice"] &, l];
+snegmomentumindexes[l_List, n_] /; snegdeclarelatticesize[n] :=
+  Scan[snegaddlatticeindex[#, n, "Momentum"] &, l];
+
+sneglatticevectors[l__] := Scan[
+  (snegrealconstants[#];
+   latticevectorQ[#] ^= True;
+   addto[listlatticevectors, #]) &, {l}];
+
+(* Indexes created by automatic renaming inherit the properties of the
+original index. *)
+snegcopyindexproperties[old_Symbol, new_Symbol] := (
+  If[Conjugate[old] === old, Conjugate[new] ^= new];
+  If[latticetypedQ[old],
+    snegaddlatticeindex[new, latticesize[old], latticeindextype[old]]];
+);
+snegcopyindexproperties[___] := Null;
+
+(* Sums over lattice or momentum indexes that do not appear in the summand
+evaluate to the number of unit cells. *)
+snegfreelatticeindex[z_, it_List] := Module[
+  {s = Select[it, latticetypedQ[#] && FreeQ[z, #] &]},
+  If[s === {}, None, First[s]]];
+
+sum[z_, it_List] /; snegfreelatticeindex[z, it] =!= None :=
+  With[{x = snegfreelatticeindex[z, it]},
+    latticesize[x] sum[z, DeleteCases[it, x]]];
+
+(* Bloch phase e^(i k.R). The first argument is a momentum, the second a
+lattice vector (in 1D, integer displacements are allowed). Integer factors
+are moved into the first argument, sums in the second argument are split. *)
+SetAttributes[blochphase, NumericFunction];
+blochphase[0, _] := 1;
+blochphase[_, 0] := 1;
+blochphase[k_List, x_List] /; Length[k] == Length[x] := Exp[I k . x];
+blochphase[k_, x_Plus] := Times @@ Map[blochphase[k, #] &, List @@ x];
+blochphase[k_, n_Integer x_] := blochphase[n k, x];
+blochphase[k_, n_Integer] /; n =!= 1 := blochphase[n k, 1];
+blochphase[k_, x_] /; Expand[x] =!= x := blochphase[k, Expand[x]];
+blochphase[k_, x_] /; Expand[k] =!= k := blochphase[Expand[k], x];
+blochphase /: blochphase[k1_, x_] blochphase[k2_, x_] := blochphase[k1 + k2, x];
+blochphase /: Power[blochphase[k_, x_], n_Integer] := blochphase[n k, x];
+blochphase /: Conjugate[blochphase[k_, x_]] := blochphase[-k, x];
+
+If[PrettyOutput,
+  Format[blochphase[k_, x_], StandardForm] := DisplayForm @
+    SuperscriptBox["e", RowBox[{"\[ImaginaryI]", k, "\[CenterDot]", x}]];
+];
+
+blochphaseexp[expr_, rules_List:{}] := (expr /. rules) /.
+  blochphase[k_, x_] :> Exp[I If[ListQ[k] && ListQ[x], k . x, k x]];
+
+(* Canonical Kronecker delta for a linear combination d of lattice or
+momentum labels: d = 0 is solved for the first variable with a unit
+coefficient. *)
+snegindexdelta[d0_] := Module[{d = Expand[d0], vars, c},
+  vars = Select[snegsymbolsof[d], (latticetypedQ[#] &&
+    MemberQ[{1, -1}, Coefficient[d, #]] &&
+    FreeQ[Expand[d - Coefficient[d, #] #], #]) &];
+  If[vars === {},
+    KroneckerDelta[d, 0],
+    c = Coefficient[d, First[vars]];
+    KroneckerDelta[First[vars], Expand[First[vars] - d/c]]]
+];
+
+(* delta(k, k + q) -> delta(q, 0) for lattice or momentum labels. *)
+snegKDreducibleQ[a_, b_] := Module[{d = Expand[a - b], common},
+  common = Intersection[Select[snegsymbolsof[a], latticetypedQ],
+                        Select[snegsymbolsof[b], latticetypedQ]];
+  Or @@ Map[FreeQ[d, #] &, common]];
+
+rulelatticeKDreduce = {
+  KroneckerDelta[a_, b_] /; snegKDreducibleQ[a, b] :> snegindexdelta[a - b]
+};
+
+(* Return {m, solution} if the delta of d can be solved for a summation
+index m with coefficient +-1 that has the same type as all other lattice
+quantities in d. Coefficients other than +-1 have several solutions on the
+torus and are left alone. The last eligible index is eliminated. *)
+snegKDsolve[d0_, it_List] := Module[{d = Expand[d0], cands},
+  cands = Select[Reverse[it], (latticetypedQ[#] &&
+    MemberQ[{1, -1}, Coefficient[d, #]] &&
+    FreeQ[Expand[d - Coefficient[d, #] #], #] &&
+    snegindextypes[d] === {latticeindextype[#]}) &];
+  If[cands === {}, {},
+    With[{m = First[cands]}, {m, Expand[m - d/Coefficient[d, m]]}]]
+];
+
+(* Eliminate one summation index from a single term using a Kronecker
+delta. Since delta is 0 or 1, f(delta) = delta f(1) whenever f(0) = 0. *)
+snegKDsumterm[term_, it_List] := Module[{kds, s, kd, res = $Failed},
+  kds = Union[Cases[{term}, k_KroneckerDelta /; Length[k] == 2, Infinity]];
+  Do[
+    s = snegKDsolve[kd[[1]] - kd[[2]], it];
+    If[s =!= {} && (term /. kd -> 0) === 0,
+      res = sum[(term /. kd -> 1) /. s[[1]] -> s[[2]],
+                DeleteCases[it, s[[1]]]];
+      Break[]
+    ],
+    {kd, kds}];
+  res
+];
+
+(* Lattice sums Sum_R e^(i K.R) = Ns delta(K, 0) and
+Sum_k e^(i k.X) = Ns delta(X, 0). The summation index may appear only in
+Bloch phases that enter the term multiplicatively. *)
+snegpart[e_, {}] := e;
+snegpart[e_, p_List] := Extract[e, p];
+
+snegphasesum1[term_, x_] := Module[{pos, phases, tot = 0, ok = True, c, K, X, ii},
+  pos = Select[Position[term, HoldPattern[blochphase[_, _]]],
+    !FreeQ[snegpart[term, #], x] &];
+  If[pos === {}, Return[$Failed]];
+  If[!FreeQ[term /. (ph_blochphase /; !FreeQ[ph, x]) :> 1, x],
+    Return[$Failed]];
+  If[!And @@ Map[Function[p, And @@ Table[
+       MemberQ[{Times, scalar}, Head[snegpart[term, Take[p, ii]]]],
+       {ii, 0, Length[p] - 1}]], pos],
+    Return[$Failed]];
+  phases = Map[snegpart[term, #] &, pos];
+  Scan[Function[ph,
+    {K, X} = {ph[[1]], Expand[ph[[2]]]};
+    If[latticeindexQ[x],
+      c = Coefficient[X, x];
+      If[!IntegerQ[c] || !FreeQ[X - c x, x] || !FreeQ[K, x], ok = False];
+      tot += c K,
+      (* else: momentum index *)
+      K = Expand[K];
+      c = Coefficient[K, x];
+      If[!IntegerQ[c] || !FreeQ[K - c x, x] || !FreeQ[X, x], ok = False];
+      tot += c X
+    ]], phases];
+  If[!ok, Return[$Failed]];
+  latticesize[x] snegindexdelta[tot] (term /. x -> 0)
+];
+
+snegphasesumterm[term_, it_List] := Module[{r, xx, res = $Failed},
+  Do[
+    If[latticetypedQ[xx] && !FreeQ[term, xx],
+      r = snegphasesum1[term, xx];
+      If[r =!= $Failed, res = sum[r, DeleteCases[it, xx]]; Break[]]
+    ],
+    {xx, Reverse[it]}];
+  res
+];
+
+(* scalar[a + b] c -> scalar[a] c + scalar[b] c, so that Kronecker deltas
+and phases inside scalar[] blocks can be handled term by term. *)
+snegdistributescalar[t_] := Module[{pos},
+  pos = Position[t, scalar[_Plus], {0, 1}, 1];
+  If[pos === {} || (FreeQ[t, KroneckerDelta] && FreeQ[t, blochphase]),
+    {t},
+    With[{s = Extract[t, First[pos]]},
+      Map[(ReplacePart[t, First[pos] -> scalar[#]]) &, List @@ Expand[s[[1]]]]]]
+];
+
+snegsumlattice1[s:sum[a_, it_List]] := Module[{terms, changed = False, out},
+  If[Select[it, latticetypedQ] === {}, Return[s]];
+  terms = Flatten[Map[snegdistributescalar,
+    If[Head[a] === Plus, List @@ a, {a}]]];
+  out = Map[Function[t, Module[{r},
+    r = snegKDsumterm[t, it];
+    If[r === $Failed, r = snegphasesumterm[t, it]];
+    If[r === $Failed, sum[t, it], changed = True; r]]], terms];
+  If[changed, Total[out], s]
+];
+
+snegsumlatticestep[expr_] := expr /. s:sum[_, _List] :> snegsumlattice1[s];
+
+(* Sums containing SEA-ordered operators must not be shifted: for
+linearized bands the shift of the summation variable is not a symmetry
+of the Fermi sea. *)
+snegseaQ[a_] := !FreeQ[a,
+  (op_Symbol)[___] /; (TrueQ[fermionQ[op]] && ordering[op] === SEA)];
+
+sumShift::index = "`1` is not a declared lattice or momentum index.";
+sumShift::shift = "The substitution `1` -> `2` is not a shift of the form +-`1` + const.";
+sumShift::sea = "Sums containing SEA-ordered operators are not shifted.";
+sumShift[expr_, Rule[k_, new_]] := Module[{c, r},
+  If[!latticetypedQ[k], Message[sumShift::index, k]; Return[expr]];
+  c = Coefficient[Expand[new], k];
+  r = Expand[new - c k];
+  If[!MemberQ[{1, -1}, c] || !FreeQ[r, k] ||
+     Complement[snegindextypes[r], {latticeindextype[k]}] =!= {},
+    Message[sumShift::shift, k, new]; Return[expr]];
+  expr /. sum[a_, it_List] /; MemberQ[it, k] :>
+    If[snegseaQ[a],
+      Message[sumShift::sea]; sum[a, it],
+      sum[a /. k -> new, it]]
+];
+
+(* Shift each summed lattice/momentum index so that the first operator
+argument depending on it becomes the bare index. *)
+snegsumcanonical1[s:sum[a_, it_List]] := Module[{res = a, args, e, c, r},
+  If[snegseaQ[a], Return[s]];
+  Scan[Function[m,
+    args = Cases[{res}, (op_Symbol)[_, j__] /; TrueQ[operatorQ[op]] :> {j},
+      Infinity];
+    args = Select[Flatten[args, 1], !FreeQ[#, m] &];
+    If[args =!= {},
+      e = Expand[First[args]];
+      c = Coefficient[e, m];
+      r = Expand[e - c m];
+      If[e =!= m && MemberQ[{1, -1}, c] && FreeQ[r, m],
+        res = res /. m -> c (m - r)]
+    ]],
+    Select[it, latticetypedQ]];
+  sum[res, it]
+];
+
+(* Root index of an automatically renamed index, e.g. k for k12. *)
+snegdummyroot[m_Symbol] := Module[{name = SymbolName[m], root},
+  root = StringReplace[name,
+    ShortestMatch[x : (_ ~~ ___)] ~~ DigitCharacter .. ~~ EndOfString :> x];
+  If[root =!= name && NameQ[Context[m] <> root],
+    With[{r = Symbol[Context[m] <> root]},
+      If[MemberQ[listfreeindexes, r] && latticeindextype[r] === latticeindextype[m],
+        r, None]],
+    None]];
+snegdummyroot[_] := None;
+
+(* Rename bound lattice/momentum indexes to their root names where the root
+does not occur in the summand, so that equivalent sums can be collected. *)
+snegcanonicaldummies1[s:sum[a_, it_List]] := Module[{res = a, idx = it, r},
+  Scan[Function[m,
+    r = snegdummyroot[m];
+    If[r =!= None && latticetypedQ[m] && !MemberQ[idx, r] && FreeQ[res, r],
+      res = res /. m -> r; idx = idx /. m -> r]],
+    it];
+  sum[res, idx]];
+
+sumMomentumCanonical[expr_] := (expr /. s:sum[_, _List] :> snegsumcanonical1[s]) /.
+  s:sum[_, _List] :> snegcanonicaldummies1[s];
+
+(* Fourier transformation between site and momentum operators. *)
+Options[fourier] = {"IndexPosition" -> 1, "Inverse" -> False, "Simplify" -> True};
+fourier::index = "`1` must be a declared `2` index.";
+fourier::op = "Only fermionic and bosonic operators can be transformed: `1`.";
+fourier::capture = "The expression already contains the summation index `1`.";
+
+snegfouriersimplify[e_] := FixedPoint[
+  sumCollect[sumSimplifyKD[Expand[sumExpand[#]]]] &, e, 10];
+
+fourier[expr_, Rule[c_Symbol, ck_Symbol], Rule[x_Symbol, k_Symbol],
+  opts:OptionsPattern[]] := Module[
+  {p = OptionValue["IndexPosition"], inv = TrueQ[OptionValue["Inverse"]],
+   from, to, idx, ns, phase, rule, res},
+  If[!latticeindexQ[x], Message[fourier::index, x, "lattice"]; Return[$Failed]];
+  If[!momentumindexQ[k], Message[fourier::index, k, "momentum"]; Return[$Failed]];
+  {from, to, idx} = If[inv, {ck, c, x}, {c, ck, k}];
+  If[!(TrueQ[fermionQ[from]] || TrueQ[bosonQ[from]]),
+    Message[fourier::op, from]; Return[$Failed]];
+  If[!FreeQ[expr, idx], Message[fourier::capture, idx]; Return[$Failed]];
+  ns = latticesize[idx];
+  (* forward: c_R = Ns^(-1/2) Sum_k e^(+i k.R) c_k
+     inverse: c_k = Ns^(-1/2) Sum_R e^(-i k.R) c_R *)
+  phase[t_, s_] := If[inv,
+    If[t === AN, blochphase[-s, idx], blochphase[s, idx]],
+    If[t === AN, blochphase[idx, s], blochphase[-idx, s]]];
+  rule = from[t_, a___] /; (t === CR || t === AN) && Length[{a}] >= p :>
+    With[{s = {a}[[p]], pre = Take[{a}, p - 1], post = Drop[{a}, p]},
+      ns^(-1/2) sum[phase[t, s] to[t, Sequence @@ pre, idx, Sequence @@ post],
+        {idx}]];
+  res = expr /. rule;
+  If[TrueQ[OptionValue["Simplify"]],
+    res = snegrenamedummy[snegfouriersimplify[res], idx]];
+  res
+];
+
+(* Cosmetic: rename an automatically renamed dummy index (k1, k2, ...)
+back to its root name k where this causes no collision. *)
+snegrenamedummy[e_, idx_Symbol] := e /. sum[a_, it_List] /;
+  !MemberQ[it, idx] && FreeQ[a, idx] &&
+  Select[it, StringMatchQ[ToString[#], ToString[idx] ~~ DigitCharacter ..] &] =!= {} :>
+    With[{m = First[Select[it,
+        StringMatchQ[ToString[#], ToString[idx] ~~ DigitCharacter ..] &]]},
+      sum[a /. m -> idx, it /. m -> idx]];
+
+(* Bloch Hamiltonian h_ab(k) = {c_ka, [H, c_kb^dag]} (fermions) or
+[b_ka, [H, b_kb^dag]] (bosons). Orbitals are templates op[extra...]; the
+momentum is inserted at "IndexPosition". Fermions get the spin index as the
+last index ({UP, DO} for spin 1/2, 0 for spinless operators), varying
+fastest. *)
+Options[blochhamiltonian] = {"IndexPosition" -> 1, "Check" -> True,
+  "OrbitalPositions" -> None};
+blochhamiltonian::index = "`1` must be a declared momentum index.";
+blochhamiltonian::rest = "The matrix element `1` still contains operators or unevaluated sums.";
+blochhamiltonian::transl = "The Hamiltonian is not translation invariant for the given orbitals; the residual off-diagonal part is `1`.";
+blochhamiltonian::herm = "The Bloch Hamiltonian is not Hermitian.";
+blochhamiltonian::orb = "Invalid orbital template `1`.";
+
+snegblochmodes[op_Symbol, q_, p_] := snegblochmodes[op[], q, p];
+snegblochmodes[op_Symbol[e___], q_, p_] /; TrueQ[fermionQ[op]] || TrueQ[bosonQ[op]] :=
+  With[{pre = Take[{e}, Min[p - 1, Length[{e}]]],
+        post = Drop[{e}, Min[p - 1, Length[{e}]]]},
+    If[TrueQ[fermionQ[op]],
+      Map[With[{sg = #}, Function[t, op[t, Sequence @@ pre, q, Sequence @@ post, sg]]] &,
+        snegspinlabels[op]],
+      {Function[t, op[t, Sequence @@ pre, q, Sequence @@ post]]}]];
+
+(* Spin labels of a fermionic operator, as used by number[] and hop[]:
+{UP, DO} for spin 1/2, S, S-1, ..., -S otherwise (0 for spinless). *)
+snegspinlabels[op_] := If[spinof[op] == 1/2, {UP, DO},
+  Range[spinof[op], -spinof[op], -1]];
+snegblochmodes[o_, ___] := (Message[blochhamiltonian::orb, o]; $Failed);
+
+snegsumreduce[x_] := FixedPoint[
+  sumSimplifyKD[sumCollect[Expand[sumExpand[#]]]] &, Expand[x], 10];
+
+snegblochelement[H_, m1_, m2_, boson_] := snegsumreduce[
+  If[boson, komutator, antikomutator][m1[AN], komutator[H, m2[CR]]]];
+
+blochhamiltonian[H_, orbs_List, k_Symbol, opts:OptionsPattern[]] := Module[
+  {p = OptionValue["IndexPosition"], kx, px, modesk, modesp, boson, h, hp,
+   off, tau, i, j, m1, m2},
+  If[!momentumindexQ[k], Message[blochhamiltonian::index, k]; Return[$Failed]];
+  kx = ssJWRnewname[k, Join[listfreeindexes, {k}], {H, orbs}];
+  modesk = Map[snegblochmodes[#, kx, p] &, orbs];
+  If[MemberQ[modesk, $Failed], Return[$Failed]];
+  modesk = Flatten[modesk];
+  boson = TrueQ[bosonQ[Head[modesk[[1]][CR]]]];
+  h = Table[snegblochelement[H, m1, m2, boson], {m1, modesk}, {m2, modesk}];
+  If[!FreeQ[h, sum] || !FreeQ[h, _?operatorQ[___]],
+    Message[blochhamiltonian::rest,
+      First[Select[Flatten[h], !FreeQ[#, sum] || !FreeQ[#, _?operatorQ[___]] &]]];
+    Return[$Failed]];
+  If[TrueQ[OptionValue["Check"]],
+    px = ssJWRnewname[k, Join[listfreeindexes, {k, kx}], {H, orbs}];
+    modesp = Flatten[Map[snegblochmodes[#, px, p] &, orbs]];
+    hp = Table[snegblochelement[H, modesk[[i]], modesp[[j]], boson],
+      {i, Length[modesk]}, {j, Length[modesp]}];
+    off = Simplify[hp /. KroneckerDelta[kx, px] -> 0];
+    If[!MatchQ[Flatten[{off}], {0 ..}],
+      Message[blochhamiltonian::transl, off /. {kx -> k}]; Return[$Failed]];
+    If[!MatchQ[Flatten[Simplify[h - ConjugateTranspose[h]]], {0 ..}],
+      Message[blochhamiltonian::herm]];
+  ];
+  tau = OptionValue["OrbitalPositions"];
+  If[ListQ[tau] && Length[tau] == Length[orbs],
+    tau = Flatten[MapThread[ConstantArray[{#1}, #2] &,
+      {tau, Map[Length[snegblochmodes[#, kx, p]] &, orbs]}], 1][[All, 1]];
+    h = Table[blochphase[-kx, tau[[i]]] h[[i, j]] blochphase[kx, tau[[j]]],
+      {i, Length[h]}, {j, Length[h]}]];
+  h /. kx -> k
+];
+
+
+(* Finite periodic clusters. Sites are integer vectors n in lattice
+coordinates, n_a = 0, ..., L_a - 1 (plain integers in 1D); momentum labels
+are integer vectors m with k_a = (2 Pi m_a + theta_a)/L_a. Twisted boundary
+conditions are c_(n + L_a e_a) = e^(i theta_a) c_n. *)
+
+snegclustersites[dims_List] := If[Length[dims] == 1,
+  Range[0, First[dims] - 1],
+  Tuples[Map[Range[0, # - 1] &, dims]]];
+
+snegclustertwist[tw_, d_] := Which[
+  tw === Automatic, ConstantArray[0, d],
+  ListQ[tw], tw,
+  True, ConstantArray[tw, d]];
+
+fourierrules::unitary = "The Fourier transformation is not unitary.";
+Options[fourierrules] = {"IndexPosition" -> 1, "Twist" -> Automatic};
+fourierrules[Rule[c_Symbol, ck_Symbol], dims_List, opts:OptionsPattern[]] :=
+Module[{p = OptionValue["IndexPosition"], d = Length[dims], twist, sites,
+  ntot, ph, u},
+  twist = snegclustertwist[OptionValue["Twist"], d];
+  sites = snegclustersites[dims];
+  ntot = Times @@ dims;
+  ph[m_, n_] := Exp[I Total[(2 Pi Flatten[{m}] + twist) Flatten[{n}]/dims]];
+  u = Outer[ph, sites, sites, 1]/Sqrt[ntot];
+  If[VectorQ[Flatten[N[u]], NumericQ] &&
+     Max[Abs[N[u . ConjugateTranspose[u] - IdentityMatrix[ntot]]]] > 10^-10,
+    Message[fourierrules::unitary]];
+  {c[t_, a___] /; (t === CR || t === AN) && Length[{a}] >= p &&
+      MemberQ[sites, {a}[[p]]] :>
+    With[{n = {a}[[p]], pre = Take[{a}, p - 1], post = Drop[{a}, p]},
+      ntot^(-1/2) Total[Map[
+        If[t === AN, ph[#, n], Exp[-I Total[(2 Pi Flatten[{#}] + twist) Flatten[{n}]/dims]]] *
+          ck[t, Sequence @@ pre, #, Sequence @@ post] &, sites]]]}
+];
+
+clusterhop::dims = "The displacement `1` does not match the cluster dimensions `2`.";
+Options[clusterhop] = {"Twist" -> Automatic};
+snegclustermodes[op_Symbol[e___], n_] :=
+  If[TrueQ[fermionQ[op]],
+    Map[op[CR, n, e, #] &, snegspinlabels[op]],
+    {op[CR, n, e]}];
+
+clusterhop[T_, o1:(_Symbol[___]), o2:(_Symbol[___]), delta_, dims_List,
+  opts:OptionsPattern[]] := Module[{d = Length[dims], twist, sites, del, mat,
+  site, total = 0},
+  del = Flatten[{delta}];
+  If[Length[del] =!= d, Message[clusterhop::dims, delta, dims]; Return[$Failed]];
+  twist = snegclustertwist[OptionValue["Twist"], d];
+  sites = snegclustersites[dims];
+  Do[
+    Module[{nv = Flatten[{site}], target, w, fold, cr1, cr2, tm, terms},
+      target = nv + del;
+      w = Floor[target/dims];
+      fold = Mod[target, dims];
+      If[d == 1, fold = First[fold]];
+      cr1 = snegclustermodes[o1, site];
+      cr2 = snegclustermodes[o2, fold];
+      tm = If[MatrixQ[T], T, T IdentityMatrix[Length[cr1]]] Exp[I twist . w];
+      terms = Outer[nc, cr1, conj[cr2]];
+      total += Total[Flatten[tm terms + Conjugate[tm] conj[terms]]]
+    ],
+    {site, sites}];
+  total
+];
+clusterhop[T_, o1_Symbol, o2_, rest__] := clusterhop[T, o1[], o2, rest];
+clusterhop[T_, o1_, o2_Symbol, rest__] := clusterhop[T, o1, o2[], rest];
+
+(* Explicit finite-cluster version of a symbolic lattice expression with
+periodic (untwisted) boundary conditions. Kronecker deltas, Bloch phases,
+operators, and nc products are kept inert while labels are substituted, so
+that labels are folded modulo L before any evaluation. *)
+sumCluster::size = "The lattice size `1` does not match the cluster `2`.";
+Options[sumCluster] = {"IndexPosition" -> 1, "Operators" -> Automatic};
+sumCluster[expr_, dims_List, vrules_List:{}, opts:OptionsPattern[]] := Module[
+  {p = OptionValue["IndexPosition"], d = Length[dims], sites, heads, sizes,
+   ntot = Times @@ dims, e, fold, foldlabel},
+  sites = snegclustersites[dims];
+  heads = OptionValue["Operators"];
+  If[heads === Automatic,
+    heads = Union[Cases[{expr}, (op_Symbol)[t_, a___] /; TrueQ[operatorQ[op]] &&
+      Length[{a}] >= p && snegHasLatticeQ[{a}[[p]]] :> op, Infinity]]];
+  sizes = Union[Map[latticesize, Select[snegsymbolsof[expr], latticetypedQ]]];
+  Scan[If[NumericQ[#] && # =!= ntot, Message[sumCluster::size, #, dims]] &, sizes];
+  foldlabel[v_] := If[VectorQ[v, IntegerQ] && Length[v] == d, Mod[v, dims],
+    If[IntegerQ[v] && d == 1, Mod[v, First[dims]], v]];
+  e = expr /. {KroneckerDelta[a_, b_] /; snegHasLatticeQ[{a, b}] :>
+                 snegKDinert[a, b],
+               blochphase[a_, b_] :> snegBPinert[a, b]};
+  e = e /. nc -> snegNCinert;
+  e = e /. (op_Symbol)[t_, a___] /; MemberQ[heads, op] :> snegOPinert[op, t, a];
+  e = e //. sum[a_, it_List] /; Select[it, latticetypedQ] =!= {} :>
+    With[{li = Select[it, latticetypedQ], rest = Select[it, !latticetypedQ[#] &]},
+      sum[Total[Map[(a /. Thread[li -> #]) &, Tuples[sites, Length[li]]]], rest]];
+  e = e /. vrules /. Thread[Select[sizes, !NumericQ[#] &] -> ntot];
+  e = e /. {snegKDinert[a_, b_] :> With[{dd = a - b},
+              If[VectorQ[Flatten[{dd}], NumericQ],
+                If[And @@ Thread[Mod[Flatten[{dd}], dims] == 0], 1, 0],
+                KroneckerDelta[a, b]]],
+            snegBPinert[k_, x_] :> If[VectorQ[Flatten[{k, x}], NumericQ],
+              Exp[2 Pi I Total[Flatten[{k}] Flatten[{x}]/dims]],
+              blochphase[k, x]]};
+  e = e /. snegOPinert[op_, t_, a___] :> With[{l = {a}},
+    op[t, Sequence @@ ReplacePart[l, p -> foldlabel[l[[p]]]]]];
+  Expand[e /. snegNCinert -> nc]
+];
+
+(* Split the subspaces of a basis of momentum-space operators by the total
+crystal momentum K = Sum m (mod L), which is appended to the quantum
+numbers. *)
+momentumbasis::mixed = "The basis state `1` does not have a definite total crystal momentum.";
+Options[momentumbasis] = {"IndexPosition" -> 1};
+momentumbasis[bz_List, dims_List, opts:OptionsPattern[]] := Module[
+  {p = OptionValue["IndexPosition"], d = Length[dims], kof, out},
+  kof[state_] := Module[{st, mons, ks},
+    st = If[FreeQ[state, vc], state, vc2ops[state]];
+    mons = sum2list[Expand[st]];
+    ks = Union[Map[Function[mon, Module[{labels},
+      labels = Cases[{mon}, (op_Symbol)[CR, a___] /; TrueQ[operatorQ[op]] &&
+        Length[{a}] >= p :> {a}[[p]], Infinity];
+      Which[
+        d == 1, Mod[Total[labels], First[dims]],
+        labels === {}, ConstantArray[0, d],
+        True, Mod[Total[labels], dims]]]], mons]];
+    If[Length[ks] != 1, Message[momentumbasis::mixed, state]; Throw[$Failed, snegmomentumbasis]];
+    First[ks]];
+  Catch[
+    out = Flatten[Map[Function[sub,
+      Map[{Append[First[sub], kof[First[#]]], #} &, GatherBy[Last[sub], kof]]],
+      bz], 1];
+    SortBy[out, First],
+    snegmomentumbasis]
+];
 
 EndPackage[];
 
