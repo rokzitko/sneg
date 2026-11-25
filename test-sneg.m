@@ -4432,6 +4432,431 @@ testgroup["Momentum-space options and diagnostics",
       nc[momfk[CR, "x", 1, 0], momfk[AN, "x", 0, 0]] - nc[momfk[CR, "x", 1, 0], momfk[AN, "x", 1, 0]])/2]];
  ]];
 
+(* Spin algebras and Hubbard X-operators. Global symbols are used for the
+   component indexes so that renamed dummy indexes have a root name. *)
+snegspinoperators[spG, spH, {spS, 1/2}, {spT, 1}, {spQ, sps}];
+snegspinoperators[{spR1, 1/2}, {spR2, 1}, {spR3, 3/2}, {spR4, 2}, {spR5, 5/2}];
+snegspincomponentindexes[spa, spb];
+snegfermionoperators[spc, spd, {spc1, 1}];
+snegspinlessfermionoperators[spf];
+snegbosonoperators[spbo, spbk, spsa, spsb];
+snegmajoranaoperators[spm];
+sneggrassmanconstants[spz];
+snegrealconstants[spJ, spJz, spt, spphi];
+snegfreeindexes[spi, spj];
+sneglatticeindexes[{spRR}, spN];
+snegmomentumindexes[{spk}, spN];
+snegxoperators[spX, "HubbardAtom"];
+snegxoperators[spY, {1, 2, 3}, {0, 0, 0}];
+
+spmat[s_, t_] := {spinmatrixX, spinmatrixY, spinmatrixZ, spinmatrixP, spinmatrixM}[[t]][s];
+spkondo[op_] := spJ (nc[op[3], spinz[spc[]]] + (nc[op[4], spinminus[spc[]]] + nc[op[5], spinplus[spc[]]])/2);
+spcommutes[ops_, rep_] := Expand[komutator[rep[#[[1]]], rep[#[[2]]]] - rep[#[[3]]]] & /@ ops;
+
+testgroup["Spin conjugation, ordering, and declarations",
+ Module[{h},
+  testcase["Conjugate spin components",
+    conj /@ {spG[1, 1], spG[1, 2], spG[1, 3], spG[1, 4], spG[1, 5], spG[1, spa]},
+    {spG[1, 1], spG[1, 2], spG[1, 3], spG[1, 5], spG[1, 4], spG[1, spa]}];
+  testcase["Exchange coupling is Hermitian",
+    Expand[conj[spinspin[spG[1], spG[2]]] - spinspin[spG[1], spG[2]]], 0];
+  testcase["Spins move left of fermions", nc[spc[CR, 1, UP], spG[1, 3]], nc[spG[1, 3], spc[CR, 1, UP]]];
+  testcase["Spins move left of bosons", nc[spbo[AN], spG[1, 4]], nc[spG[1, 4], spbo[AN]]];
+  testcase["Spins move left of Majoranas", nc[spm[1], spG[1, 4]], nc[spG[1, 4], spm[1]]];
+  testcase["Grassmann numbers move left of spins", nc[spG[1, 4], spz], nc[spz, spG[1, 4]]];
+  testcase["Different spin symbols are sorted", nc[spH[1, 3], spG[2, 5]], nc[spG[2, 5], spH[1, 3]]];
+  testcase["Sizes", {spinof[spS], spinof[spT], spinof[spQ], snegspinsizeQ[spG], Conjugate[sps]},
+    {1/2, 1, sps, False, sps}];
+  testcase["Invalid spin size",
+    Quiet[Check[snegspinoperators[{spBad, -1}], "msg", snegspinoperators::size], snegspinoperators::size], "msg"];
+  testcase["Invalid spin size declares nothing", TrueQ[spinQ[spBad]], False];
+  h = spkondo[spS];
+  testcase["Kondo model conserves charge", Expand[komutator[h, number[spc[]]]], 0];
+  testcase["Kondo model conserves S^z", Expand[komutator[h, spS[3] + spinz[spc[]]]], 0];
+  testcase["Kondo model conserves S^+", Expand[komutator[h, spS[4] + spinplus[spc[]]]], 0];
+  h = spkondo[spG];
+  testcase["Kondo model with spin of unspecified size",
+    spincomponents[Expand[komutator[h, #]]] & /@ {number[spc[]], spG[3] + spinz[spc[]], spG[4] + spinplus[spc[]]},
+    {0, 0, 0}];
+  testcase["Zero recognized after rewriting the components",
+    spincomponents[Expand[komutator[spinspin[spG[1], spG[2]], spG[1, 4] + spG[2, 4]]]], 0];
+  testcase["Cartesian rewriting", spincomponents[spG[1, 4] - spG[1, 5], "XYZ"], 2 I spG[1, 2]];
+  testcase["Invalid component set",
+    Quiet[spincomponents[spG[1, 1], "ABC"], spincomponents::basis], $Failed];
+ ]];
+
+testgroup["Spin size reductions against spin matrices",
+ Module[{heads = {spR1, spR2, spR3, spR4, spR5}, words, s, h, e, monos, hh},
+  SeedRandom[20261125];
+  words = Table[RandomInteger[{1, 5}, RandomInteger[{2, 5}]], {30}];
+  Do[
+    s = spinof[h];
+    e = Map[nc @@ Map[Function[t, h[1, t]], #] &, words];
+    zerotest["Products for spin " <> ToString[s, InputForm],
+      MapThread[spinclustermatrices[#1, {h[1]}, "Blocks" -> False] - Dot @@ Map[spmat[s, #] &, #2] &,
+        {e, words}]];
+    testcase["Normal form for spin " <> ToString[s, InputForm],
+      And @@ Map[snegspinnormalQ[s, List @@ #[[All, -1]]] &,
+        Cases[e, HoldPattern[nc[a__]] :> {a}, Infinity]], True];
+    monos = Flatten[Table[Join[ConstantArray[3, b], ConstantArray[t, a]],
+      {t, {4, 5}}, {a, If[t == 4, 0, 1], 2 s}, {b, 0, 2 s - a}], 2];
+    testcase["Number of normal monomials for spin " <> ToString[s, InputForm], Length[monos], (2 s + 1)^2];
+    testcase["Normal monomials are independent for spin " <> ToString[s, InputForm],
+      MatrixRank[Map[Flatten[Dot @@ Append[Map[spmat[s, #] &, #], IdentityMatrix[2 s + 1]]] &, monos]],
+      (2 s + 1)^2];
+    testcase["Normal monomials are stable for spin " <> ToString[s, InputForm],
+      Map[nc @@ Map[Function[t, h[1, t]], #] &, monos] /. h[1, t_] :> hh[t],
+      Map[nc @@ Map[hh, #] &, monos]];
+    testcase["Casimir for spin " <> ToString[s, InputForm], Expand[spinspin[h[1], h[1]]], s (s + 1)],
+    {h, heads}];
+  testcase["Pauli products stay Cartesian",
+    {nc[spS[1, 1], spS[1, 2]], nc[spS[1, 2], spS[1, 3], spS[1, 1]], nc[spS[1, 1], spS[1, 1]]},
+    {I spS[1, 3]/2, I/8, 1/4}];
+  testcase["Mixed spin-1/2 products use S^+-",
+    {nc[spS[1, 4], spS[1, 5]], nc[spS[1, 1], spS[1, 4]], nc[spS[1, 4], spS[1, 4]]},
+    {1/2 + spS[1, 3], 1/4 - spS[1, 3]/2, 0}];
+  testcase["Different sites are not reduced", nc[spS[1, 3], spS[2, 3]], nc[spS[1, 3], spS[2, 3]]];
+  testcase["Casimir for symbolic size", Expand[spinspin[spQ[1], spQ[1]]], Expand[sps (sps + 1)]];
+  testcase["Symbolic size eliminates S^+ S^-", nc[spQ[1, 5], spQ[1, 4]],
+    sps (sps + 1) - nc[spQ[1, 3], spQ[1, 3]] - spQ[1, 3]];
+  testcase["Symbolic size keeps powers", nc[spQ[1, 4], spQ[1, 4], spQ[1, 4]],
+    nc[spQ[1, 4], spQ[1, 4], spQ[1, 4]]];
+ ]];
+
+testgroup["Spin component indexes",
+ Module[{c, x},
+  x = komutator[spG[1, spa], spG[1, spb]];
+  c = First[Cases[x, HoldPattern[sum[_, {i_}]] :> i, Infinity]];
+  testcase["Symbolic component commutator", x, I sum[levicivita[spa, spb, c] spG[1, c], {c}]];
+  testcase["Renamed component index keeps its type", spincomponentindexQ[c], True];
+  testcase["Symbolic commutator for explicit components",
+    Table[spincomponents[x /. {spa -> j, spb -> k}] - spincomponents[cmt[spG[1, j], spG[1, k]]], {j, 3}, {k, 3}],
+    ConstantArray[0, {3, 3}]];
+  testcase["Symbolic commutator with S^+",
+    spincomponents[komutator[spG[1, spa], spG[1, 4]] /. spa -> 3], spG[1, 4]];
+  testcase["Different sites give a delta", komutator[spG[spi, spa], spG[spj, spb]],
+    KroneckerDelta[spi, spj] komutator[spG[spi, spa], spG[spi, spb]]];
+  testcase["Component sums", spincomponents[sum[nc[spG[1, spa], spG[2, spa]], {spa}]],
+    spincomponents[spinspin[spG[1], spG[2]]]];
+  testcase["Unused component index", sum[spJ, {spa}], 3 spJ];
+  testcase["Levi-Civita symbol",
+    {levicivita[1, 2, 3], levicivita[2, 1, 3], levicivita[1, 1, 2], levicivita[spa, spb, spa],
+     levicivita[spb, spa, 3], levicivita[1, 2, 4], Conjugate[levicivita[spa, spb, 3]]},
+    {1, -1, 0, 0, -levicivita[3, spa, spb], 0, levicivita[3, spa, spb]}];
+ ]];
+
+testgroup["Spin exact diagonalization",
+ Module[{h, mats, r, bz, kb, ev1, ev2},
+  h = spJ Sum[spinspin[spS[i], spS[Mod[i, 4] + 1]], {i, 4}];
+  mats = spinclustermatrices[h, {spS -> Range[4]}];
+  testcase["Heisenberg ring sectors", {First[#], Length[Last[#]]} & /@ mats,
+    {{{-2}, 1}, {{-1}, 4}, {{0}, 6}, {{1}, 4}, {{2}, 1}}];
+  testcase["Heisenberg ring ground state", Min[Flatten[Eigenvalues /@ (mats[[All, 2]] /. spJ -> 1)]], -2];
+  testcase["Heisenberg ring full matrix",
+    Sort[Eigenvalues[spinclustermatrices[h, {spS -> Range[4]}, "Blocks" -> False] /. spJ -> 1]],
+    Sort[Flatten[Eigenvalues /@ (mats[[All, 2]] /. spJ -> 1)]]];
+  testcase["Sparse output", Head[spinclustermatrices[spS[1, 3], {spS[1]}, "Sparse" -> True][[1, 2]]], SparseArray];
+  testcase["Sites from zero", spinclustermatrices[spS[0, 3], {spS -> {0}}], {{{-1/2}, {{-1/2}}}, {{1/2}, {{1/2}}}}];
+  h = spJ spinspin[spS[1], spT[1]] + spt spT[1, 3];
+  r = spinketbrarules[{spS[1], spT[1]}];
+  kb = Expand[h /. r];
+  bz = spinbasis[{1/2, 1}];
+  ev1 = Sort /@ Map[Eigenvalues[matrixrepresentationop[kb, #[[2]]]] &, bz];
+  ev2 = Sort /@ Map[Eigenvalues[#[[2]]] &, spinclustermatrices[h, {spS[1], spT[1]}]];
+  zerotest["Bra-ket and direct matrices agree", (ev1 - ev2) /. {spJ -> 1, spt -> 3/10}];
+  bz = QSZaddspinket[qszbasisvc[{spc[]}], {1/2}];
+  mats = makematricesbzvc[Expand[spkondo[spS] /. spinketbrarules[{spS[]}]], bz];
+  testcase["Kondo singlet and triplet", Sort[Flatten[Eigenvalues /@ (mats[[All, 2]] /. spJ -> 1)]],
+    Sort[{-3/4, 1/4, 1/4, 1/4, 0, 0, 0, 0}]];
+  testcase["Several spin kets", Total[Length[#[[2]]] & /@ QSZaddspinket[qszbasisvc[{spc[]}], {1/2, 1}]], 24];
+  bz = QSZaddspinket[qszbasisvc[{spc[]}], {1/2, 1/2}];
+  mats = makematricesbzvc[Expand[(spinspin[spS[1], spS[2]] + spt spS[1, 3]) /. spinketbrarules[{spS[1], spS[2]}]], bz];
+  testcase["Two impurity spins with a fermion level",
+    Sort[Flatten[Eigenvalues /@ (mats[[All, 2]] /. spt -> 0)]],
+    Sort[Flatten[ConstantArray[{-3/4, 1/4, 1/4, 1/4}, 4]]]];
+  testcase["Single-spin terms with two spin kets",
+    Sort[Flatten[Eigenvalues /@ (makematricesbzvc[spS[2, 3] /. spinketbrarules[{spS[1], spS[2]}], bz][[All, 2]])]],
+    Sort[Flatten[ConstantArray[{-1/2, -1/2, 1/2, 1/2}, 4]]]];
+  testcase["Undeclared spin size",
+    Quiet[spinclustermatrices[spG[1, 3], {spG[1]}], snegspinsites::size], $Failed];
+  testcase["S^z must be conserved",
+    Quiet[spinclustermatrices[spS[1, 1], {spS[1]}], spinclustermatrices::sz], $Failed];
+  testcase["Operators of other sites",
+    Quiet[spinclustermatrices[spS[2, 3], {spS[1]}], spinclustermatrices::op], $Failed];
+  testcase["Invalid site specification",
+    Quiet[spinketbrarules[{spc[1]}], snegspinsites::spec], $Failed];
+ ]];
+
+testgroup["Spin representations",
+ Module[{h, hf, ev1, ev2, bz, hk, hb, x, ops, aterm, bterm, w},
+  h = Sum[spJ/2 (nc[spS[i, 4], spS[i + 1, 5]] + nc[spS[i, 5], spS[i + 1, 4]]) + spJz nc[spS[i, 3], spS[i + 1, 3]], {i, 3}];
+  hf = jordanwigner[h, spS -> spf, Range[4]];
+  bz = qszbasis[Table[spf[i], {i, 4}]];
+  ev1 = Sort[Flatten[Eigenvalues /@ (makematricesbzop[hf /. {spJ -> 1, spJz -> 7/10}, bz][[All, 2]])]];
+  ev2 = Sort[Flatten[Eigenvalues /@ (spinclustermatrices[h /. {spJ -> 1, spJz -> 7/10}, {spS -> Range[4]}][[All, 2]])]];
+  testcase["Jordan-Wigner XXZ chain", Max[Abs[N[ev1 - ev2]]] < 10^-10, True];
+  testcase["Jordan-Wigner XX chain is free",
+    FreeQ[jordanwigner[h /. spJz -> 0, spS -> spf, Range[4]], HoldPattern[nc[_, _, _, _]]], True];
+  ops = {{spS[1, 4], spS[2, 5], 0}, {spS[2, 4], spS[2, 5], 2 spS[2, 3]},
+         {spS[3, 4], spS[3, 3], -spS[3, 4]}, {spS[1, 1], spS[1, 2], I spS[1, 3]}};
+  testcase["Jordan-Wigner preserves the algebra",
+    spcommutes[ops, jordanwigner[#, spS -> spf, Range[3]] &], {0, 0, 0, 0}];
+  testcase["Jordan-Wigner needs spin 1/2", Quiet[jordanwigner[spT[1, 3], spT -> spf, {1}], jordanwigner::spin], $Failed];
+  testcase["Jordan-Wigner needs spinless fermions", Quiet[jordanwigner[spS[1, 3], spS -> spc, {1}], jordanwigner::op], $Failed];
+
+  testcase["Holstein-Primakoff S^z", holsteinprimakoff[spQ[1, 3], spQ -> spbo, 4], sps - nc[spbo[CR, 1], spbo[AN, 1]]];
+  testcase["Holstein-Primakoff S^+",
+    holsteinprimakoff[spQ[1, 4], spQ -> spbo, 3],
+    Expand[Sqrt[2 sps] spbo[AN, 1] + (Sqrt[2 sps - 1] - Sqrt[2 sps]) nc[spbo[CR, 1], spbo[AN, 1], spbo[AN, 1]]]];
+  testcase["Holstein-Primakoff exchange",
+    holsteinprimakoff[spinspin[spQ[1], spQ[2]], spQ -> spbo, 2],
+    Expand[sps^2 + sps (-number[spbo[1]] - number[spbo[2]] + nc[spbo[CR, 1], spbo[AN, 2]] + nc[spbo[CR, 2], spbo[AN, 1]])]];
+  testcase["Holstein-Primakoff products are exact",
+    Expand[holsteinprimakoff[nc[spT[1, 4], spT[1, 5]] - (2 + spT[1, 3] - nc[spT[1, 3], spT[1, 3]]), spT -> spbo, 8]], 0];
+  (* The commutator of images truncated at n boson operators is exact up to
+     n - 2 boson operators. *)
+  testcase["Holstein-Primakoff preserves the algebra",
+    Map[Total[Select[sum2list[#], Count[{#}, spbo[__], Infinity] <= 4 &]] &,
+      spcommutes[{{spT[1, 4], spT[1, 5], 2 spT[1, 3]}, {spT[1, 3], spT[1, 4], spT[1, 4]}},
+        holsteinprimakoff[#, spT -> spbo, 6] &]], {0, 0}];
+  hk = fourier[holsteinprimakoff[-spJ sum[spinspin[spQ[spRR], spQ[spRR + 1]], {spRR}], spQ -> spbo, 2],
+    spbo -> spbk, spRR -> spk];
+  testcase["Ferromagnetic chain ground-state energy", hk /. sum[__] -> 0, -spJ spN sps^2];
+  zerotest["Ferromagnetic magnon dispersion",
+    ExpToTrig[blochphaseexp[blochhamiltonian[hk, {spbk}, spk], {spk -> x}]] - {{2 spJ sps (1 - Cos[x])}}];
+  h = spJ sum[spinspin[spQ[spRR, "A"], spQ[spRR, "B"]] + spinspin[spQ[spRR, "B"], spQ[spRR + 1, "A"]], {spRR}];
+  h = rotatespin[h, spQ, If[Last[{##}] === "B", RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &];
+  hk = fourier[holsteinprimakoff[h, spQ -> spbo, 2], spbo -> spbk, spRR -> spk];
+  hb = First[Cases[hk, HoldPattern[sum[z_, {spk}]] :> z, Infinity]];
+  aterm = Coefficient[hb, nc[spbk[CR, spk, "A"], spbk[AN, spk, "A"]]];
+  bterm = Coefficient[hb, nc[spbk[CR, -spk, "A"], spbk[CR, spk, "B"]]] +
+    (Coefficient[hb, nc[spbk[CR, -spk, "B"], spbk[CR, spk, "A"]]] /. spk -> -spk);
+  w = Simplify[ExpToTrig[blochphaseexp[aterm^2 - bterm conj[bterm], {spk -> x}]]];
+  testcase["Antiferromagnetic chain magnon dispersion", Simplify[w - (2 spJ sps Sin[x/2])^2], 0];
+  testcase["Holstein-Primakoff needs a size", Quiet[holsteinprimakoff[spG[1, 3], spG -> spbo, 2], holsteinprimakoff::size], $Failed];
+
+  ops = {{spQ[1, 4], spQ[1, 5], 2 spQ[1, 3]}, {spQ[1, 3], spQ[1, 4], spQ[1, 4]}, {spQ[1, 1], spQ[1, 2], I spQ[1, 3]}};
+  testcase["Schwinger bosons preserve the algebra", spcommutes[ops, schwingerbosons[#, spQ -> {spsa, spsb}] &], {0, 0, 0}];
+  testcase["Schwinger-boson S^z", schwingerbosons[spQ[1, 3], spQ -> {spsa, spsb}],
+    Expand[(number[spsa[1]] - number[spsb[1]])/2]];
+  ops = {{spT[1, 4], spT[1, 5], 2 spT[1, 3]}, {spT[1, 1], spT[1, 2], I spT[1, 3]}};
+  testcase["Abrikosov fermions preserve the algebra", spcommutes[ops, abrikosov[#, spT -> spc1] &], {0, 0}];
+  testcase["Abrikosov spin 1/2", abrikosov[spS[1, 3], spS -> spc], Expand[spinz[spc[1]]]];
+  testcase["Abrikosov needs equal spins", Quiet[abrikosov[spS[1, 3], spS -> spc1], abrikosov::spin], $Failed];
+ ]];
+
+testgroup["Spin tensors, Stevens operators, and rotations",
+ Module[{x, z, p, m, o, mats, r, rot},
+  testcase["Rank-one tensor", {spintensor[1, 1, spG[1]], spintensor[1, 0, spG[1]], spintensor[1, -1, spG[1]]},
+    {-spG[1, 4]/Sqrt[2], spG[1, 3], spG[1, 5]/Sqrt[2]}];
+  testcase["Rank-two tensor", spintensor[2, 0, spQ[1]],
+    Expand[(3 nc[spQ[1, 3], spQ[1, 3]] - sps (sps + 1))/Sqrt[6]]];
+  testcase["Tensor operator commutators",
+    Expand[Flatten[Table[{komutator[spQ[1, 3], spintensor[3, q, spQ[1]]] - q spintensor[3, q, spQ[1]],
+      If[q < 3, komutator[spQ[1, 4], spintensor[3, q, spQ[1]]] -
+        Sqrt[12 - q (q + 1)] spintensor[3, q + 1, spQ[1]], 0]}, {q, -3, 3}]]],
+    ConstantArray[0, 14]];
+  testcase["Site given as a rule", spintensor[1, 0, spG -> 0], spG[0, 3]];
+  testcase["Tensor rank check", Quiet[spintensor[1, 2, spG[1]], spintensor::range], $Failed];
+  x = sps (sps + 1); z = spQ[1, 3]; p = spQ[1, 4]; m = spQ[1, 5];
+  o[k_, q_] := stevens[k, q, spQ[1]];
+  testcase["Stevens O20", o[2, 0], Expand[3 pow[z, 2] - x]];
+  testcase["Stevens O2+-1", {o[2, 1], o[2, -1]},
+    Expand[{nc[z, p + m] + nc[p + m, z], (nc[z, p - m] + nc[p - m, z])/I}/4]];
+  testcase["Stevens O2+-2", {o[2, 2], o[2, -2]},
+    Expand[{(pow[p, 2] + pow[m, 2])/2, (pow[p, 2] - pow[m, 2])/(2 I)}]];
+  testcase["Stevens O22 is Sx^2 - Sy^2", Expand[o[2, 2] - spincomponents[pow[spQ[1, 1], 2] - pow[spQ[1, 2], 2]]], 0];
+  testcase["Stevens O40", o[4, 0], Expand[35 pow[z, 4] - 30 x pow[z, 2] + 25 pow[z, 2] - 6 x + 3 x^2]];
+  testcase["Stevens O42", o[4, 2],
+    Expand[(nc[7 pow[z, 2] - x - 5, pow[p, 2] + pow[m, 2]] + nc[pow[p, 2] + pow[m, 2], 7 pow[z, 2] - x - 5])/4]];
+  testcase["Stevens O44", o[4, 4], Expand[(pow[p, 4] + pow[m, 4])/2]];
+  testcase["Stevens O60", o[6, 0],
+    Expand[231 pow[z, 6] - (315 x - 735) pow[z, 4] + (105 x^2 - 525 x + 294) pow[z, 2] - 5 x^3 + 40 x^2 - 60 x]];
+  testcase["Stevens O63", o[6, 3],
+    Expand[(nc[11 pow[z, 3] - (3 x + 59) z, pow[p, 3] + pow[m, 3]] + nc[pow[p, 3] + pow[m, 3], 11 pow[z, 3] - (3 x + 59) z])/4]];
+  testcase["Stevens operators are Hermitian", Expand[conj[o[4, #]] - o[4, #]] & /@ Range[-4, 4], ConstantArray[0, 9]];
+  testcase["Stevens operators vanish for k > 2s", {stevens[4, 0, spS[1]], stevens[6, 3, spR5[1]], stevens[2, 1, spS[1]]}, {0, 0, 0}];
+  mats = Table[spinclustermatrices[stevens[4, q, spR5[1]], {spR5[1]}, "Blocks" -> False], {q, -4, 4}];
+  testcase["Stevens operators are traceless", Tr /@ mats, ConstantArray[0, 9]];
+  testcase["Stevens operators are orthogonal",
+    Table[If[q1 == q2, 0, Simplify[Tr[ConjugateTranspose[mats[[q1]]] . mats[[q2]]]]], {q1, 9}, {q2, 9}],
+    ConstantArray[0, {9, 9}]];
+  testcase["Stevens operators need a size", Quiet[stevens[2, 0, spG[1]], stevens::size], $Failed];
+
+  testcase["Rotation by Pi about x", rotatespin[{spG[1, 3], spG[1, 4]}, spG, RotationMatrix[Pi, {1, 0, 0}]],
+    {-spG[1, 3], spG[1, 1] - I spG[1, 2]}];
+  testcase["Rotation about z", Simplify[spincomponents[rotatespin[spG[1, 4], spG, RotationMatrix[spphi, {0, 0, 1}]]]],
+    ExpToTrig[Exp[I spphi]] spG[1, 4]];
+  rot = RotationMatrix[2 Pi/7, {1, 2, 2}/3];
+  testcase["Rotations preserve the exchange coupling",
+    Simplify[spincomponents[rotatespin[spinspin[spG[1], spG[2]], spG, rot] - spinspin[spG[1], spG[2]]]], 0];
+  r = rotatespin[{spG[1, 1], spG[1, 2], spG[1, 3]}, spG, rot];
+  testcase["Rotations preserve the commutators",
+    Simplify[spincomponents[komutator[r[[1]], r[[2]]] - I r[[3]]]], 0];
+  testcase["Site-dependent rotations",
+    rotatespin[spG[1, 3] + spG[2, 3], spG, If[# == 2, RotationMatrix[Pi, {1, 0, 0}], IdentityMatrix[3]] &],
+    spG[1, 3] - spG[2, 3]];
+  testcase["Rotations must be 3 by 3", Quiet[rotatespin[spG[1, 3], spG, IdentityMatrix[2]], rotatespin::matrix], $Failed];
+ ]];
+
+testgroup["Hubbard X-operators",
+ Module[{st = {"0", "UP", "DO", "2"}, hop, sdot, nn, h, bz},
+  testcase["Same-site products",
+    Union[Flatten[Table[Expand[xtofermions[nc[spX[1, a, b], spX[1, c, d]], spX -> spc] -
+      nc[xoperator[spc[1], a, b], xoperator[spc[1], c, d]]], {a, st}, {b, st}, {c, st}, {d, st}]]], {0}];
+  testcase["Products on different sites",
+    Union[Flatten[Table[Expand[xtofermions[nc[spX[2, a, b], spX[1, c, d]], spX -> spc] -
+      nc[xoperator[spc[2], a, b], xoperator[spc[1], c, d]]], {a, st}, {b, st}, {c, st}, {d, st}]]], {0}];
+  testcase["Products with fermions",
+    Union[Flatten[Table[Expand[xtofermions[nc[spd[CR, UP], spX[1, a, b], spd[AN, DO]], spX -> spc] -
+      nc[spd[CR, UP], xoperator[spc[1], a, b], spd[AN, DO]]], {a, st}, {b, st}]]], {0}];
+  testcase["Completeness", Expand[Total[xoperator[spc[1], #, #] & /@ st]], 1];
+  testcase["Hubbard operators in fermions", xoperator[spc[1], "0", "UP"],
+    Expand[nc[spc[AN, 1, UP], 1 - number[spc[1], DO]]]];
+  testcase["Conjugation", conj[spX[1, "0", "UP"]], spX[1, "UP", "0"]];
+  testcase["Spin from X-operators", komutator[spX[1, "UP", "DO"], spX[1, "DO", "UP"]],
+    spX[1, "UP", "UP"] - spX[1, "DO", "DO"]];
+  testcase["Graded anticommutator for symbolic sites",
+    Expand[antikomutator[spX[spi, "0", "UP"], spX[spj, "UP", "0"]]],
+    Expand[KroneckerDelta[spi, spj] (spX[spj, "0", "0"] + spX[spj, "UP", "UP"])]];
+  testcase["Bosonic X-operators commute", nc[spY[2, 1, 2], spY[1, 3, 3]], nc[spY[1, 3, 3], spY[2, 1, 2]]];
+  testcase["SU(3) algebra", komutator[spY[1, 1, 2], spY[1, 2, 3]], spY[1, 1, 3]];
+  testcase["Ordering with other operators",
+    {nc[spbo[CR], spX[1, "0", "UP"]], nc[spc[CR, 1, UP], spX[1, "0", "UP"]], nc[spc[CR, 1, UP], spX[1, "0", "2"]],
+     nc[spX[1, "0", "UP"], spG[3]], nc[spX[1, "0", "UP"], spz]},
+    {nc[spX[1, "0", "UP"], spbo[CR]], -nc[spX[1, "0", "UP"], spc[CR, 1, UP]], nc[spX[1, "0", "2"], spc[CR, 1, UP]],
+     nc[spG[3], spX[1, "0", "UP"]], -nc[spz, spX[1, "0", "UP"]]}];
+  hop = -spt Sum[nc[spX[1, s, "0"], spX[2, "0", s]] + nc[spX[2, s, "0"], spX[1, "0", s]], {s, {"UP", "DO"}}];
+  sdot[k_, l_] := (nc[spX[k, "UP", "DO"], spX[l, "DO", "UP"]] + nc[spX[k, "DO", "UP"], spX[l, "UP", "DO"]])/2 +
+    nc[(spX[k, "UP", "UP"] - spX[k, "DO", "DO"])/2, (spX[l, "UP", "UP"] - spX[l, "DO", "DO"])/2];
+  nn[k_] := spX[k, "UP", "UP"] + spX[k, "DO", "DO"];
+  h = xtofermions[hop + spJ (sdot[1, 2] - nc[nn[1], nn[2]]/4), spX -> spc];
+  bz = qszbasis[{spc[1], spc[2]}];
+  testcase["t-J dimer", Map[{#[[1]], Sort[Eigenvalues[#[[2]] /. {spt -> 1, spJ -> 1/10}]]} &, makematricesbzop[h, bz]],
+    {{{-2, 0}, {0}}, {{-1, -1/2}, {-1, 1}}, {{-1, 1/2}, {-1, 1}}, {{0, -1}, {0}}, {{0, 0}, {-1/10, 0, 0, 0}},
+     {{0, 1}, {0}}, {{1, -1/2}, {0, 0}}, {{1, 1/2}, {0, 0}}, {{2, 0}, {0}}}];
+  testcase["Invalid X-operator declaration",
+    Quiet[snegxoperators[spZ, {1, 1}, {0, 1}], snegxoperators::spec], $Failed];
+  testcase["Invalid Hubbard-atom state", Quiet[xoperator[spc[1], "UP", "x"], xoperator::state], $Failed];
+  testcase["Hubbard-atom states required", Quiet[xtofermions[spY[1, 1, 2], spY -> spc], xtofermions::states], $Failed];
+ ]];
+
+snegspinoperators[spHA, spHB];
+snegxoperators[spX2, "HubbardAtom"];
+spHB /: cmt[spHB[sphook], spHA[sphook]] = spcustom;
+
+(* Matrix of a normal-ordered expression in the boson operator spbo[1] on
+   the lowest d Fock states, using ladder matrices with a cutoff of 12 bosons;
+   normal ordering makes the low-lying matrix elements exact. *)
+spbm = Normal[SparseArray[Table[{n, n + 1} -> Sqrt[n], {n, 12}], {13, 13}]];
+spbterm[t_] := Module[{ops = Cases[{t}, spbo[_, 1], Infinity]},
+  (t /. {HoldPattern[nc[__]] -> 1, spbo[_, 1] -> 1}) If[ops === {}, IdentityMatrix[13],
+    Dot @@ Replace[ops, {spbo[CR, 1] -> Transpose[spbm], spbo[AN, 1] -> spbm}, {1}]]];
+spbmat[e_, d_] := (Total[spbterm /@ sum2list[Expand[e]]])[[1 ;; d, 1 ;; d]];
+
+testgroup["Spin and X-operator branches and diagnostics",
+ Module[{words, s, x, st = {"0", "UP", "DO", "2"}},
+  words = {{3, 5}, {3, 3, 5}, {3, 5, 5}, {5}, {5, 5}, {3, 4}, {3, 3, 4, 4}, {3}, {4, 4, 4}};
+  Do[
+    s = spinof[h];
+    zerotest["Holstein-Primakoff reproduces the spin matrices for spin " <> ToString[s, InputForm],
+      Map[spbmat[holsteinprimakoff[nc @@ Map[Function[t, h[1, t]], #], h -> spbo, 12], 2 s + 1] -
+        Dot @@ Map[spmat[s, #] &, #] &, words]],
+    {h, {spR2, spR3}}];
+  testcase["Holstein-Primakoff S^z S^-",
+    holsteinprimakoff[nc[spQ[1, 3], spQ[1, 5]], spQ -> spbo, 3],
+    Expand[(sps - 1) Sqrt[2 sps] spbo[CR, 1] +
+      ((sps - 2) Sqrt[2 sps - 1] - (sps - 1) Sqrt[2 sps]) nc[spbo[CR, 1], spbo[CR, 1], spbo[AN, 1]]]];
+
+  testcase["Different fermionic X-operator symbols anticommute",
+    nc[spX2[1, "0", "UP"], spX[1, "0", "UP"]], -nc[spX[1, "0", "UP"], spX2[1, "0", "UP"]]];
+  testcase["Different bosonic and fermionic X-operator symbols commute",
+    nc[spX2[1, "0", "2"], spX[1, "0", "UP"]], nc[spX[1, "0", "UP"], spX2[1, "0", "2"]]];
+  testcase["Different X-operator symbols against fermions",
+    Union[Flatten[Table[Expand[xtofermions[xtofermions[nc[spX2[1, a, b], spX[1, c, d]], spX -> spc], spX2 -> spd] -
+      nc[xoperator[spd[1], a, b], xoperator[spc[1], c, d]]], {a, st}, {b, st}, {c, st}, {d, st}]]], {0}];
+  testcase["Unknown X-operator labels are not reordered",
+    nc[spX[2, "0", "q"], spX[1, "0", "UP"]], nc[spX[2, "0", "q"], spX[1, "0", "UP"]]];
+  testcase["Unknown X-operator labels have no parity", snegxparity[spX[1, "0", "q"]], None];
+  testcase["Site lists of different length", nc[spX[2, 1, "0", "UP"], spX[1, "UP", "0"]],
+    -nc[spX[1, "UP", "0"], spX[2, 1, "0", "UP"]]];
+  testcase["X-operators and Majoranas",
+    {nc[spm[1], spX[1, "0", "UP"]], nc[spm[1], spX[1, "0", "2"]]},
+    {-nc[spX[1, "0", "UP"], spm[1]], nc[spX[1, "0", "2"], spm[1]]}];
+  testcase["Hubbard atom without site indexes", Expand[xoperator[spc, "0", "UP"] - xoperator[spc[], "0", "UP"]], 0];
+  Block[{PrettyOutput = True}, snegxoperators[spXP, "HubbardAtom"]];
+  testcase["X-operator formatting",
+    MatchQ[ToBoxes[#, StandardForm], TagBox[StyleBox[_, ___], DisplayForm]] & /@ {spXP[1, "0", "UP"], spXP["0", "UP"]},
+    {True, True}];
+
+  testcase["Sums over two component indexes",
+    spincomponents[sum[levicivita[spa, spb, 3] nc[spG[1, spa], spG[2, spb]], {spa, spb}]],
+    spincomponents[nc[spG[1, 1], spG[2, 2]] - nc[spG[1, 2], spG[2, 1]]]];
+  testcase["Sums over component and site indexes",
+    spincomponents[sum[nc[spG[spi, spa], spG[spi + 1, spa]], {spa, spi}]],
+    spincomponents[sum[spinspin[spG[spi], spG[spi + 1]], {spi}]]];
+  testcase["Commutator for explicit components", snegspincmt[spG, {1}, 1, 2], I spG[1, 3]];
+
+  testcase["Multi-index sites",
+    Sort[Eigenvalues[spinclustermatrices[spinspin[spS[1, "a"], spS[1, "b"]], {spS -> {{1, "a"}, {1, "b"}}}, "Blocks" -> False]]],
+    {-3/4, 1/4, 1/4, 1/4}];
+  x = spinketbrarules[{spS -> {{1, "a"}, {1, "b"}}}];
+  testcase["Multi-index bra-ket rules", {Length[x], First /@ x[[{1, 6}]]}, {10, {spS[1, "a", 1], spS[1, "b", 1]}}];
+  testcase["Multi-index Jordan-Wigner sites",
+    jordanwigner[nc[spS[1, "a", 4], spS[1, "b", 5]], spS -> spf, {{1, "a"}, {1, "b"}}],
+    nc[spf[CR, 1, "a", 0], spf[AN, 1, "b", 0]]];
+  testcase["Delayed site rules", Length[spinketbrarules[{spS :> {1, 2}}]], 10];
+
+  testcase["Spin symbols swap with their commutator", nc[spHB[sphook], spHA[sphook]],
+    nc[spHA[sphook], spHB[sphook]] + spcustom];
+
+  testcase["Cluster matrices reject other operators",
+    Quiet[spinclustermatrices[spc[CR, 1, UP], {spS[1]}], spinclustermatrices::op], $Failed];
+  testcase["Cluster matrices check the sites",
+    Quiet[spinclustermatrices[spS[1, 3], {spc[1]}], snegspinsites::spec], $Failed];
+  testcase["Holstein-Primakoff needs bosons",
+    Quiet[holsteinprimakoff[spQ[1, 3], spQ -> spc, 2], holsteinprimakoff::op], $Failed];
+  testcase["Schwinger bosons need bosons",
+    Quiet[schwingerbosons[spQ[1, 3], spQ -> {spc, spbo}], schwingerbosons::op], $Failed];
+  testcase["Bra-ket rules need a size",
+    Quiet[spinketbrarules[{spG[1]}], snegspinsites::size], $Failed];
+  testcase["Rank-zero Stevens operator", stevens[0, 0, spS[1]], 1];
+  testcase["Stevens rank check", Quiet[stevens[1, 2, spS[1]], spintensor::range], $Failed];
+  testcase["Spherical tensors check the site", Quiet[spintensor[1, 0, spc[1]], snegspinsites::spec], $Failed];
+  testcase["Non-half-integer size",
+    Quiet[Check[snegspinoperators[{spBad1, 1/3}], "msg", snegspinoperators::size], snegspinoperators::size], "msg"];
+  testcase["Size without symbols",
+    Quiet[Check[snegspinoperators[{spBad2, "x"}], "msg", snegspinoperators::size], snegspinoperators::size], "msg"];
+  testcase["Invalid sizes declare nothing", TrueQ[spinQ[#]] & /@ {spBad1, spBad2}, {False, False}];
+ ]];
+
+(* The examples of README_spin.md *)
+snegspinoperators[{spF, 5/2}];
+testgroup["Spin documentation examples",
+ Module[{h, hk, bz},
+  testcase["README Pauli products", {nc[spS[1, 1], spS[1, 2]], nc[spS[1, 4], spS[1, 5]], spinspin[spS[1], spS[1]]},
+    {I/2 spS[1, 3], 1/2 + spS[1, 3], 3/4}];
+  testcase["README spin 1", {nc[spT[1, 4], spT[1, 4], spT[1, 4]], nc[spT[1, 3], spT[1, 3], spT[1, 3]]}, {0, spT[1, 3]}];
+  testcase["README symbolic size", nc[spQ[1, 5], spQ[1, 4]], sps (1 + sps) - spQ[1, 3] - nc[spQ[1, 3], spQ[1, 3]]];
+  h = spJ Sum[spinspin[spS[i], spS[Mod[i, 4] + 1]], {i, 4}];
+  testcase["README Heisenberg ring", {First[#], Min[Eigenvalues[Last[#] /. spJ -> 1]]} & /@ spinclustermatrices[h, {spS -> Range[4]}],
+    {{{-2}, 1}, {{-1}, -1}, {{0}, -2}, {{1}, -1}, {{2}, 1}}];
+  bz = QSZaddspinket[qszbasisvc[{spc[]}], {1/2}];
+  testcase["README Kondo spectrum",
+    {First[#], Eigenvalues[Last[#]]} & /@ makematricesbzvc[Expand[spkondo[spS] /. spinketbrarules[{spS[]}]], bz],
+    {{{-1, -1/2}, {0}}, {{-1, 1/2}, {0}}, {{0, -1}, {spJ/4}}, {{0, 0}, {-3 spJ/4, spJ/4}}, {{0, 1}, {spJ/4}},
+     {{1, -1/2}, {0}}, {{1, 1/2}, {0}}}];
+  hk = fourier[holsteinprimakoff[-spJ sum[spinspin[spQ[spRR], spQ[spRR + 1]], {spRR}], spQ -> spbo, 2], spbo -> spbk, spRR -> spk];
+  testcase["README magnons",
+    hk, -spJ spN sps^2 + sum[Expand[(2 spJ sps - spJ sps blochphase[-spk, 1] - spJ sps blochphase[spk, 1]) number[spbk[spk]]], {spk}]];
+  testcase["README Stevens operators", {stevens[2, 0, spT[1]], stevens[4, 4, spQ[1]]},
+    {-2 + 3 nc[spT[1, 3], spT[1, 3]], Expand[(pow[spQ[1, 4], 4] + pow[spQ[1, 5], 4])/2]}];
+  testcase["README axial anisotropy",
+    Sort[Eigenvalues[spinclustermatrices[stevens[2, 0, spF[1]], {spF[1]}, "Blocks" -> False]]], {-8, -8, -2, -2, 10, 10}];
+  testcase["README X-operators", {nc[spX[1, "0", "UP"], spX[1, "UP", "2"]], komutator[spX[1, "UP", "DO"], spX[1, "DO", "UP"]]},
+    {spX[1, "0", "2"], spX[1, "UP", "UP"] - spX[1, "DO", "DO"]}];
+ ]];
+
 ]; (* isolated package state *)
 testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
 

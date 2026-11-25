@@ -52,6 +52,11 @@ and error-prone.
   momentum conservation, lattice sums, Bloch Hamiltonians, and finite
   periodic or twisted clusters with total-momentum bases.
 
+* Spin algebras: spin operators of given size with automatic reduction,
+  Jordan-Wigner, Holstein-Primakoff, Schwinger-boson and Abrikosov
+  representations, spin-cluster matrices, Stevens operators, and Hubbard
+  X-operators.
+
 * Dirac bra-ket notation that can be combined with second-quantization
   operator expressions.
 
@@ -132,7 +137,8 @@ modern Mathematica versions.
 Additional material includes:
 
 * Example notebooks and scripts in [`examples`](examples/).
-* [Momentum space and lattices](README_momentum.md) and
+* [Momentum space and lattices](README_momentum.md),
+  [spin algebras](README_spin.md), and
   [matrix-valued hopping](README_matrixhop.md).
 * The early minimalist [SNEG manual](docs/manual/manual.pdf).
 * The bundled preprint of the

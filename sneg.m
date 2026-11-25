@@ -716,6 +716,80 @@ momentumbasis::usage =
 operators (e.g. from qszbasis) according to the total crystal momentum
 K = Sum m (mod L), which is appended to the quantum numbers.";
 
+(* Spin algebras and Hubbard X-operators; see README_spin.md. *)
+snegspinoperators::usage =
+"snegspinoperators[S, ...] declares S as spin operators S[j..., t] with the
+component t = 1, 2, 3, 4, 5 (x, y, z, +, -) as the last index; they obey the
+su(2) algebra in an unspecified representation. snegspinoperators[{S, s}]
+declares the spin size s (a positive half-integer or a symbol); products of
+operators on the same site are then reduced automatically to the unique
+normal form Sum p(S^z) (S^+-)^a (Pauli algebra in x, y, z for s = 1/2).
+Spin operators commute with all other operators and are moved to the left.";
+spincomponents::usage =
+"spincomponents[expr] rewrites all spin operators in terms of S^z and
+S^+-; spincomponents[expr, \"XYZ\"] uses S^x, S^y, S^z. Sums over spin
+component indexes are expanded.";
+snegspincomponentindexes::usage =
+"snegspincomponentindexes[a, b, ...] declares a, b, ... as summation
+indexes for Cartesian spin components (values 1, 2, 3), so that
+[S[j, a], S[j, b]] = I Sum_c levicivita[a, b, c] S[j, c].";
+levicivita::usage =
+"levicivita[a, b, c] is the totally antisymmetric Levi-Civita symbol with
+indexes 1, 2, 3.";
+spinketbrarules::usage =
+"spinketbrarules[{S[1], S[2], ...}] or spinketbrarules[{S -> {0, 1, ...}}]
+returns rules that replace the spin operators of the listed sites by their
+bra-ket representation; site k corresponds to the k-th slot of the kets of
+spinbasis[{s1, s2, ...}] and QSZaddspinket[bvc, {s1, s2, ...}].";
+spinclustermatrices::usage =
+"spinclustermatrices[H, {S[1], ...}] returns the matrices {{Sz}, h} of the
+spin Hamiltonian H in the subspaces of total S^z, in the product basis
+|m1, ..., mN> (each m from +s to -s, first site varying slowest). Options:
+\"Blocks\" -> False returns the full matrix, \"Sparse\" -> True returns
+SparseArray objects.";
+jordanwigner::usage =
+"jordanwigner[expr, S -> f, {j1, j2, ...}] applies the Jordan-Wigner
+transformation S^+_k = f^dagger_k Prod_(l<k) (1 - 2 n_l), S^z_k = n_k - 1/2
+to spin-1/2 operators of the sites j1, j2, ... (in this order); f is a
+spinless fermion operator.";
+holsteinprimakoff::usage =
+"holsteinprimakoff[expr, S -> b, n] applies the Holstein-Primakoff
+transformation S^z = s - b^dagger b, S^+ = Sqrt[2s - b^dagger b] b and keeps
+the terms with at most n boson operators. Same-site products are expanded
+exactly in normal-ordered boson operators.";
+schwingerbosons::usage =
+"schwingerbosons[expr, S -> {a, b}] applies the Schwinger-boson
+representation S^+ = a^dagger b, S^- = b^dagger a,
+S^z = (a^dagger a - b^dagger b)/2 (constraint a^dagger a + b^dagger b = 2s).";
+abrikosov::usage =
+"abrikosov[expr, S -> f] applies the Abrikosov pseudofermion representation
+S = f^dagger S f, with fermions f of the same spin as S (faithful for one
+fermion per site).";
+spintensor::usage =
+"spintensor[k, q, S[j]] returns the spherical tensor operator T_k^q built
+from the spin S[j], with T_k^k = (-S^+/Sqrt[2])^k and lowering by S^-, so
+that T_1^0 = S^z and T_2^0 = (3 (S^z)^2 - S.S)/Sqrt[6]. S -> j can be used
+instead of S[j].";
+stevens::usage =
+"stevens[k, q, S[j]] returns the Stevens operator O_k^q (e.g.
+O_2^0 = 3 (S^z)^2 - s(s+1), O_2^2 = (S^x)^2 - (S^y)^2) for a spin with a
+declared size.";
+rotatespin::usage =
+"rotatespin[expr, S, R] rotates the spin vectors, S_j -> R.S_j, with R a
+3 by 3 matrix or a function returning the matrix for the site indexes j.";
+snegxoperators::usage =
+"snegxoperators[X, {a1, a2, ...}, {p1, p2, ...}] declares Hubbard
+X-operators X[j..., a, b] = |a><b| for the local states a1, a2, ... with
+fermion parities p1, p2, ... (0 or 1). snegxoperators[X, \"HubbardAtom\"]
+uses the states \"0\", \"UP\", \"DO\", \"2\" of a spin-1/2 orbital.";
+xoperator::usage =
+"xoperator[c[j], a, b] returns the X-operator |a><b| of the Hubbard atom
+(states \"0\", \"UP\", \"DO\", \"2\" = c^dagger_UP c^dagger_DO |0>) in terms
+of the fermion operators c[j].";
+xtofermions::usage =
+"xtofermions[expr, X -> c] replaces the X-operators of the Hubbard atom by
+fermion operators, X[j, a, b] -> xoperator[c[j], a, b].";
+
 (** Load required packages **)
 
 (* We need KSubsets from Combinatorica by Sriram V. Pemmaraju
@@ -1033,22 +1107,31 @@ SnegPPspinoperator[x_] := Block[{},
       ];
    ];
 
-snegspinoperators[l__] := Scan[
-{
-  operatorQ[#] ^= True;
-  spinQ[#] ^= True;
-  SetAttributes[#, NHoldAll];
+snegaddspinop[x_Symbol] := (
+  operatorQ[x] ^= True;
+  spinQ[x] ^= True;
+  SetAttributes[x, NHoldAll];
 
   (* This allows for some tricks later on... *)
-  #[i___, -SPININDEXx] = -#[i, SPININDEXx];
-  #[i___, -SPININDEXy] = -#[i, SPININDEXy];
-  #[i___, -SPININDEXz] = -#[i, SPININDEXz];
-  #[i___, 0] = 0;
+  x[i___, -SPININDEXx] = -x[i, SPININDEXx];
+  x[i___, -SPININDEXy] = -x[i, SPININDEXy];
+  x[i___, -SPININDEXz] = -x[i, SPININDEXz];
+  x[i___, 0] = 0;
 
-  If[PrettyOutput, SnegPPspinoperator[#] ];
+  If[PrettyOutput, SnegPPspinoperator[x] ];
 
-  addto[listspinoperators, #];
-}&, {l}];
+  addto[listspinoperators, x];
+);
+
+(* {x, s} declares a spin operator with spin size s, which enables the
+reduction of products of operators on the same site (see "Spin algebras"). *)
+snegaddspinop[{x_Symbol, s_}] /; snegdeclarespinsize[s] := (
+  snegaddspinop[x];
+  spinof[x] ^= s;
+  snegspinsizeQ[x] ^= True;
+);
+
+snegspinoperators[l__] := Scan[snegaddspinop, {l}];
 
 
 snegintegerconstants[l__] := Scan[
@@ -1607,7 +1690,7 @@ cmt[op_[i___, SPININDEXy], op_[i___, SPININDEXp]] /; spinQ[op] = -I op[i, SPININ
 cmt[op_[i___, SPININDEXx], op_[i___, SPININDEXm]] /; spinQ[op] =  1 op[i, SPININDEXz];
 cmt[op_[i___, SPININDEXy], op_[i___, SPININDEXm]] /; spinQ[op] = -I op[i, SPININDEXz];
 
-cmt[op_[i1__, j1_], op_[i2__, j2_]] /; spinQ[op] :=
+cmt[op_[i1__, j1_], op_[i2__, j2_]] /; spinQ[op] && {i1} =!= {i2} :=
   If[Length[{i1}] == Length[{i2}],
     +Inner[KroneckerDelta, {i1}, {i2}, Times], 0] cmt[op[i1, j1], op[i1, j2]];
 
@@ -3984,6 +4067,7 @@ directproductsubspace[{qn1_List, states1_List}, {qn2_List, states2_List},
 
 
 (* Add a spin-ket for spin 'SP' to a (Q,Sz) basis. *)
+QSZaddspinket[bvc_List, {SP_}] := QSZaddspinket[bvc, SP];
 QSZaddspinket[bvc_List, SP_] := Module[{spinbz},
   spinbz = spinbasis[SP];
   basistensorproduct[spinbz, bvc, Function[{qn1, qn2},
@@ -5022,6 +5106,7 @@ snegcopyindexproperties[old_Symbol, new_Symbol] := (
   If[Conjugate[old] === old, Conjugate[new] ^= new];
   If[latticetypedQ[old],
     snegaddlatticeindex[new, latticesize[old], latticeindextype[old]]];
+  If[spincomponentindexQ[old], snegspincomponentindexes[new]];
 );
 snegcopyindexproperties[___] := Null;
 
@@ -5491,6 +5576,486 @@ momentumbasis[bz_List, dims_List, opts:OptionsPattern[]] := Module[
     SortBy[out, First],
     snegmomentumbasis]
 ];
+
+(**** Spin algebras ****)
+
+(* Spin operators S[j..., t] carry the component t (1..5 = x, y, z, +, -) as
+their last index. Without a declared size they obey only the su(2) Lie
+algebra, which holds in every representation. snegspinoperators[{S, s}]
+declares the size s of all spins S[j...]. Products of operators on the
+same site are then reduced to the normal form Sum p(S^z) (S^+-)^a:
+
+  - for every size, S^+ S^- = s(s+1) - (S^z)^2 + S^z, and Cartesian
+    components in such products are written in terms of S^+-;
+  - for numeric s, (S^z)^b (S^+-)^a with b + a > 2s is reduced as well. The
+    remaining (2s+1)^2 monomials with b + a <= 2s are linearly independent,
+    so the normal form is unique;
+  - for s = 1/2, products of Cartesian components follow the Pauli rule
+    S^a S^b = delta_ab/4 + (i/2) eps_abc S^c and stay Cartesian.
+
+Spin operators commute with all other operators. They are moved to the left
+of bosons, Majorana and Dirac fermions; different spin symbols are sorted
+alphabetically. See README_spin.md. *)
+
+If[!ValueQ[listspincomponentindexes], listspincomponentindexes = {} ];
+
+snegspinsizeQ[_] := False;
+
+snegspinoperators::size = "The spin size `1` must be a positive half-integer or an expression built from symbols.";
+snegdeclarespinsize[s_?NumericQ] /; IntegerQ[2 s] && s > 0 := True;
+snegdeclarespinsize[s_] /; !NumericQ[s] && snegsymbolsof[s] =!= {} := (
+  Scan[If[snegnonopQ[#] =!= True, snegrealconstants[#]] &, snegsymbolsof[s]];
+  True);
+snegdeclarespinsize[s_] := (Message[snegspinoperators::size, s]; False);
+
+snegnumspinQ[op_Symbol] := TrueQ[snegspinsizeQ[op]] && NumericQ[spinof[op]];
+snegnumspinQ[_] := False;
+snegsymspinQ[op_Symbol] := TrueQ[snegspinsizeQ[op]] && !NumericQ[spinof[op]];
+snegsymspinQ[_] := False;
+
+(* Conjugation *)
+conj[op_?spinQ[j___, t_Integer]] /; 1 <= t <= 3 := op[j, t];
+conj[op_?spinQ[j___, SPININDEXp]] := op[j, SPININDEXm];
+conj[op_?spinQ[j___, SPININDEXm]] := op[j, SPININDEXp];
+conj[op_?spinQ[j___, t_?spincomponentindexQ]] := op[j, t];
+
+(* Spin operators commute with other operators and are moved to the left. *)
+nc[a___, x1_, x2:op_?spinQ[___], b___] /;
+  (TrueQ[fermionQ[x1]] || TrueQ[bosonQ[x1]] || TrueQ[majoranaQ[x1]]) :=
+    nc[a, x2, x1, b];
+nc[a___, x1:op_?spinQ[___], z_?grassmanQ, b___] := nc[a, z, x1, b];
+nc[a___, x1:op1_?spinQ[___], x2:op2_?spinQ[___], b___] /;
+  (op1 =!= op2 && !OrderedQ[{op1, op2}]) :=
+    nc[a, x2, x1, b] + nc[a, cmt[x1, x2], b];
+
+(* Reduction of products of spin operators with a declared numeric size. *)
+snegspinmatrix[s_, 1] := spinmatrixX[s];
+snegspinmatrix[s_, 2] := spinmatrixY[s];
+snegspinmatrix[s_, 3] := spinmatrixZ[s];
+snegspinmatrix[s_, 4] := spinmatrixP[s];
+snegspinmatrix[s_, 5] := spinmatrixM[s];
+
+snegspinnormalQ[s_, comps_List] := If[s == 1/2, Length[comps] <= 1,
+  SubsetQ[{3, 4, 5}, comps] && !(MemberQ[comps, 4] && MemberQ[comps, 5]) &&
+  OrderedQ[comps] && Length[comps] <= 2 s];
+
+(* The normal form of the product of components comps as a list of
+{coefficient, components} pairs. The matrix element <m + q|M|m> of the
+product M determines the polynomial p in p(S^z) (S^+)^q, q >= 0, at the
+2s + 1 - q points m + q (similarly for S^-), so that p follows by
+interpolation. *)
+snegspinreduction[s_, comps_List] := snegspinreduction[s, comps] =
+ Module[{m, mm, terms = {}, pts, cl, z, a},
+  m = Dot @@ Map[snegspinmatrix[s, #] &, comps];
+  If[s == 1/2 && SubsetQ[{1, 2, 3}, comps],
+    Return[DeleteCases[
+      Prepend[Table[{2 Tr[m . snegspinmatrix[s, t]], {t}}, {t, 3}], {Tr[m]/2, {}}],
+      {0, _}]]];
+  mm[mf_, mi_] := m[[s - mf + 1, s - mi + 1]];
+  Do[
+    a = Abs[q];
+    pts = If[q >= 0,
+      Table[{mi + q, mm[mi + q, mi]/
+        Product[Sqrt[s (s + 1) - (mi + k) (mi + k + 1)], {k, 0, a - 1}]}, {mi, -s, s - a}],
+      Table[{mi - a, mm[mi - a, mi]/
+        Product[Sqrt[s (s + 1) - (mi - k) (mi - k - 1)], {k, 0, a - 1}]}, {mi, -s + a, s}]];
+    pts[[All, 2]] = Simplify[pts[[All, 2]]];
+    If[AnyTrue[pts[[All, 2]], # =!= 0 &],
+      cl = CoefficientList[Expand[InterpolatingPolynomial[pts, z]], z];
+      Do[If[cl[[b + 1]] =!= 0,
+        AppendTo[terms, {cl[[b + 1]],
+          Join[ConstantArray[3, b], ConstantArray[If[q >= 0, 4, 5], a]]}]],
+        {b, 0, Length[cl] - 1}]],
+    {q, -2 s, 2 s}];
+  terms];
+
+snegspinrun[op_, {j___}, comps_List] := Total[Map[
+  #[[1]] (nc @@ Map[op[j, #] &, #[[2]]]) &, snegspinreduction[spinof[op], comps]]];
+
+nc[a___, r:Longest[(op_?snegnumspinQ[j___, _Integer]) ..], b___] /;
+  Length[{r}] >= 2 && VectorQ[{r}[[All, -1]], 1 <= # <= 5 &] &&
+  !snegspinnormalQ[spinof[op], {r}[[All, -1]]] :=
+    nc[a, snegspinrun[op, {j}, {r}[[All, -1]]], b];
+
+(* Symbolic size: Cartesian components in same-site products are written in
+terms of S^+-, and S^+ S^- is eliminated using the Casimir operator. *)
+snegcart2pm[op_[j___, 1]] := (op[j, 4] + op[j, 5])/2;
+snegcart2pm[op_[j___, 2]] := (op[j, 4] - op[j, 5])/(2 I);
+snegcart2pm[x_] := x;
+
+nc[a___, x1:op_?snegsymspinQ[j___, t1_Integer], x2:op_[j___, t2_Integer], b___] /;
+  (1 <= t1 <= 5 && 1 <= t2 <= 5 && (t1 <= 2 || t2 <= 2)) :=
+    nc[a, snegcart2pm[x1], snegcart2pm[x2], b];
+nc[a___, op_?snegsymspinQ[j___, 4], op_[j___, 5], b___] :=
+  With[{s = spinof[op]},
+    s (s + 1) nc[a, b] - nc[a, op[j, 3], op[j, 3], b] + nc[a, op[j, 3], b]];
+
+(* Symbolic Cartesian components *)
+spincomponentindexQ[_] := False;
+snegspincomponentindexes[l__] := Scan[
+  (snegfreeindexes[#];
+   Conjugate[#] ^= #;
+   spincomponentindexQ[#] ^= True;
+   addto[listspincomponentindexes, #]) &, {l}];
+
+sum[z_, it_List] /; AnyTrue[it, spincomponentindexQ[#] && FreeQ[z, #] &] :=
+  With[{x = SelectFirst[it, spincomponentindexQ[#] && FreeQ[z, #] &]},
+    3 sum[z, DeleteCases[it, x]]];
+
+SetAttributes[levicivita, NumericFunction];
+levicivita[a_Integer, b_Integer, c_Integer] :=
+  If[SubsetQ[{1, 2, 3}, {a, b, c}], Signature[{a, b, c}], 0];
+levicivita[a_, b_, c_] /; !DuplicateFreeQ[{a, b, c}] := 0;
+levicivita[a_, b_, c_] /; !OrderedQ[{a, b, c}] :=
+  Signature[{a, b, c}] levicivita @@ Sort[{a, b, c}];
+levicivita /: Conjugate[levicivita[a___]] := levicivita[a];
+
+snegspincompQ[t_] := spincomponentindexQ[t] || MemberQ[{1, 2, 3, 4, 5}, t];
+
+cmt[op_[i___, t1_], op_[i___, t2_]] /; spinQ[op] &&
+  (spincomponentindexQ[t1] || spincomponentindexQ[t2]) &&
+  snegspincompQ[t1] && snegspincompQ[t2] := snegspincmt[op, {i}, t1, t2];
+
+snegspincmt[op_, {i___}, t1_Integer, t2_Integer] := cmt[op[i, t1], op[i, t2]];
+snegspincmt[op_, {i___}, 4, t2_] := snegspincmt[op, {i}, 1, t2] + I snegspincmt[op, {i}, 2, t2];
+snegspincmt[op_, {i___}, 5, t2_] := snegspincmt[op, {i}, 1, t2] - I snegspincmt[op, {i}, 2, t2];
+snegspincmt[op_, {i___}, t1_, 4] := snegspincmt[op, {i}, t1, 1] + I snegspincmt[op, {i}, t1, 2];
+snegspincmt[op_, {i___}, t1_, 5] := snegspincmt[op, {i}, t1, 1] - I snegspincmt[op, {i}, t1, 2];
+snegspincmt[op_, {i___}, t1_, t2_] :=
+  With[{c = ssJWRnewname[SelectFirst[{t1, t2}, spincomponentindexQ], {t1, t2}, {i, t1, t2}]},
+    I sum[levicivita[t1, t2, c] op[i, c], {c}]];
+
+komutator[x1:op_?spinQ[___, t1_], x2:op_?spinQ[___, t2_]] /;
+  (spincomponentindexQ[t1] || spincomponentindexQ[t2]) := cmt[x1, x2];
+
+(* Rewriting in a single set of components *)
+spincomponents::basis = "The component set `1` must be \"ZPM\" or \"XYZ\".";
+spincomponents[expr_, basis_String:"ZPM"] := Module[{e},
+  If[!MemberQ[{"ZPM", "XYZ"}, basis],
+    Message[spincomponents::basis, basis]; Return[$Failed]];
+  e = expr //. sum[z_, it_List] /; AnyTrue[it, spincomponentindexQ] :>
+    With[{ci = Select[it, spincomponentindexQ], rest = Select[it, !spincomponentindexQ[#] &]},
+      sum[Total[Map[z /. Thread[ci -> #] &, Tuples[{1, 2, 3}, Length[ci]]]], rest]];
+  e = If[basis === "ZPM",
+    e /. {op_?spinQ[j___, 1] :> (op[j, 4] + op[j, 5])/2,
+          op_?spinQ[j___, 2] :> (op[j, 4] - op[j, 5])/(2 I)},
+    e /. {op_?spinQ[j___, 4] :> op[j, 1] + I op[j, 2],
+          op_?spinQ[j___, 5] :> op[j, 1] - I op[j, 2]}];
+  Expand[e]];
+
+(* Lists of spin sites are given as {S[1], S[2], ...} or, since S[0]
+evaluates to zero, as {S -> {0, 1, ...}}; multi-index sites are written as
+S -> {{1, "a"}, ...}. The result is a list of {op, {site indexes}}. *)
+snegspinsites::spec = "`1` is not a spin site specification.";
+snegspinsites::size = "The spin `1` needs a declared numeric size, e.g. snegspinoperators[{`1`, 1/2}].";
+snegspinsites[spec_List] := Catch[Flatten[Map[snegspinsite1, spec], 1], snegspinsites];
+snegspinsite1[(Rule | RuleDelayed)[op_Symbol?spinQ, l_List]] := Map[{op, Flatten[{#}]} &, l];
+snegspinsite1[op_Symbol?spinQ[j___]] := {{op, {j}}};
+snegspinsite1[x_] := (Message[snegspinsites::spec, x]; Throw[$Failed, snegspinsites]);
+snegspinsitesizes[sites_List] := If[AllTrue[sites[[All, 1]], snegnumspinQ],
+  spinof /@ sites[[All, 1]],
+  Message[snegspinsites::size, First[Select[sites[[All, 1]], !snegnumspinQ[#] &]]]; $Failed];
+
+(* Replacement rules to the bra-ket representation; site k corresponds to
+the k-th slot of the kets, as in spinbasis[{s1, s2, ...}]. Each operator
+includes the identity of the other slots, so that its matrix elements
+between full kets are defined. *)
+spinketbrarules[spec_List] := Module[{sites, sizes, n, pos, id},
+  sites = snegspinsites[spec];
+  If[sites === $Failed, Return[$Failed]];
+  sizes = snegspinsitesizes[sites];
+  If[sizes === $Failed, Return[$Failed]];
+  n = Length[sites];
+  pos[k_] := If[n == 1, {1}, UnitVector[n, k]];
+  id[k_] := nc @@ Table[spinketbraI[sizes[[l]], pos[l]], {l, Complement[Range[n], {k}]}];
+  Flatten[Table[
+    With[{op = sites[[k, 1]], j = sites[[k, 2]], s = sizes[[k]], p = pos[k], ik = id[k]},
+      MapThread[(op @@ Append[j, #1]) -> Expand[nc[#2[s, p], ik]] &,
+        {Range[5], {spinketbraX, spinketbraY, spinketbraZ, spinketbraP, spinketbraM}}]],
+    {k, n}]]
+];
+
+(* Matrices of a spin Hamiltonian in the product basis |m1, ..., mN>, with
+each m running from +s to -s and the first site varying slowest. With
+"Blocks" -> True the matrix is split into the S^z_tot subspaces. *)
+spinclustermatrices::op = "`1` is not an operator of the listed spin sites.";
+spinclustermatrices::sz = "The operator does not conserve the total S^z; use \"Blocks\" -> False.";
+Options[spinclustermatrices] = {"Blocks" -> True, "Sparse" -> False};
+spinclustermatrices[h_, spec_List, opts:OptionsPattern[]] := Catch[Module[
+  {sites, sizes, n, dims, dim, idx, embed, mat, m, sz, szs, out, form},
+  sites = snegspinsites[spec];
+  If[sites === $Failed, Throw[$Failed, spinclustermatrices]];
+  sizes = snegspinsitesizes[sites];
+  If[sizes === $Failed, Throw[$Failed, spinclustermatrices]];
+  n = Length[sites];
+  dims = 2 sizes + 1;
+  dim = Times @@ dims;
+  Do[idx[sites[[k, 1]], sites[[k, 2]]] = k, {k, n}];
+  embed[k_, t_] := embed[k, t] = If[n == 1, SparseArray[snegspinmatrix[sizes[[1]], t]],
+    KroneckerProduct @@ Table[
+      If[l == k, SparseArray[snegspinmatrix[sizes[[k]], t]], IdentityMatrix[dims[[l]], SparseArray]],
+      {l, n}]];
+  mat[x_Plus] := Total[mat /@ List @@ x];
+  mat[HoldPattern[nc[a__]]] := Dot @@ (mat /@ {a});
+  mat[x_Times] := With[{num = Select[x, isnumericQ], rest = Select[x, !isnumericQ[#] &]},
+    num mat[rest]];
+  mat[x:op_?spinQ[j___, t_Integer]] /; 1 <= t <= 5 := If[IntegerQ[idx[op, {j}]],
+    embed[idx[op, {j}], t],
+    Message[spinclustermatrices::op, x]; Throw[$Failed, spinclustermatrices]];
+  mat[z_?isnumericQ] := z IdentityMatrix[dim, SparseArray];
+  mat[x_] := (Message[spinclustermatrices::op, x]; Throw[$Failed, spinclustermatrices]);
+  m = SparseArray[mat[Expand[h]], {dim, dim}];
+  form = If[TrueQ[OptionValue["Sparse"]], Identity, Normal];
+  If[!TrueQ[OptionValue["Blocks"]], Throw[form[m], spinclustermatrices]];
+  sz = Flatten[Outer[Plus, Sequence @@ Map[Range[#, -#, -1] &, sizes]]];
+  If[AnyTrue[m["NonzeroPositions"], sz[[#[[1]]]] != sz[[#[[2]]]] &],
+    Message[spinclustermatrices::sz]; Throw[$Failed, spinclustermatrices]];
+  szs = Union[sz];
+  Map[With[{p = Flatten[Position[sz, #]]}, {{#}, form[m[[p, p]]]}] &, szs]
+], spinclustermatrices];
+
+(* Representations of spin operators in terms of fermions and bosons. The
+substitution rules act on S[j..., t] with t = 1..5. *)
+snegspinmaprules[op_, f_] := {
+  op[j___, 1] :> Expand[(f[{j}, 4] + f[{j}, 5])/2],
+  op[j___, 2] :> Expand[(f[{j}, 4] - f[{j}, 5])/(2 I)],
+  op[j___, 3] :> f[{j}, 3],
+  op[j___, 4] :> f[{j}, 4],
+  op[j___, 5] :> f[{j}, 5]};
+
+(* Jordan-Wigner: S^+_k = f^dagger_k Prod_(l<k) (1 - 2 n_l), S^z_k = n_k - 1/2
+for the sites in the given order; f is a spinless fermion. *)
+jordanwigner::spin = "The Jordan-Wigner transformation requires spin-1/2 operators.";
+jordanwigner::op = "`1` must be a spinless fermion operator.";
+jordanwigner[expr_, op_Symbol?spinQ -> f_Symbol, labels_List] := Module[
+  {sites, string, rules},
+  If[spinof[op] =!= 1/2, Message[jordanwigner::spin]; Return[$Failed]];
+  If[!TrueQ[fermionQ[f]] || spinof[f] =!= 0, Message[jordanwigner::op, f]; Return[$Failed]];
+  sites = Map[Flatten[{#}] &, labels];
+  string[k_] := nc @@ Table[1 - 2 number[f @@ sites[[l]]], {l, k - 1}];
+  rules = Flatten[Table[
+    With[{j = sites[[k]], sp = Expand[nc[f[CR, Sequence @@ sites[[k]], 0], string[k]]],
+          sm = Expand[nc[string[k], f[AN, Sequence @@ sites[[k]], 0]]]},
+      {op[Sequence @@ j, 1] -> Expand[(sp + sm)/2],
+       op[Sequence @@ j, 2] -> Expand[(sp - sm)/(2 I)],
+       op[Sequence @@ j, 3] -> number[f @@ j] - 1/2,
+       op[Sequence @@ j, 4] -> sp,
+       op[Sequence @@ j, 5] -> sm}],
+    {k, Length[sites]}]];
+  Expand[expr /. rules]
+];
+
+(* Holstein-Primakoff: S^z = s - b^dagger b, S^+ = Sqrt[2s - b^dagger b] b.
+Each normal-ordered same-site product (S^z)^n (S^+-)^a is expanded exactly
+in normal-ordered boson monomials, using the Newton series
+h(b^dagger b) = Sum_m Delta^m h(0)/m! (b^dagger)^m b^m; terms with more than
+nmax boson operators are dropped. *)
+holsteinprimakoff::size = "The spin `1` needs a declared size, e.g. snegspinoperators[{`1`, s}].";
+holsteinprimakoff::op = "`1` must be a bosonic operator.";
+holsteinprimakoff[expr_, op_Symbol?spinQ -> bb_Symbol, nmax_Integer?NonNegative] := Module[
+  {s, e, run, hpnc, newton, deg, trunc},
+  If[!TrueQ[snegspinsizeQ[op]], Message[holsteinprimakoff::size, op]; Return[$Failed]];
+  If[!TrueQ[bosonQ[bb]], Message[holsteinprimakoff::op, bb]; Return[$Failed]];
+  s = spinof[op];
+  newton[h_, m_] := Sum[(-1)^(m - l) Binomial[m, l] h[l], {l, 0, m}]/m!;
+  run[{j___}, comps_List] := Module[{nz = Count[comps, 3], a, h, cr, an},
+    a = Count[comps, 4 | 5];
+    cr = bb[CR, j]; an = bb[AN, j];
+    If[MemberQ[comps, 5],
+      h = Function[x, If[nz == 0, 1, (s - a - x)^nz] Product[Sqrt[2 s - x - k], {k, 0, a - 1}]];
+      Sum[newton[h, m] nc[Sequence @@ ConstantArray[cr, m + a], Sequence @@ ConstantArray[an, m]],
+        {m, 0, Floor[(nmax - a)/2]}],
+      h = Function[x, If[nz == 0, 1, (s - x)^nz] Product[Sqrt[2 s - x - k], {k, 0, a - 1}]];
+      Sum[newton[h, m] nc[Sequence @@ ConstantArray[cr, m], Sequence @@ ConstantArray[an, m + a]],
+        {m, 0, Floor[(nmax - a)/2]}]]];
+  hpnc[l_List] := nc @@ Map[
+    If[MatchQ[First[#], op[___, _Integer]],
+      run[Most[List @@ First[#]], Map[Last, #]], nc @@ #] &,
+    Split[l, MatchQ[#1, op[___, _Integer]] && MatchQ[#2, op[___, _Integer]] &&
+      Most[List @@ #1] === Most[List @@ #2] &]];
+  e = spincomponents[expr];
+  e = e /. {HoldPattern[nc[a__]] :> hpnc[{a}], x:op[___, _Integer] :> hpnc[{x}]};
+  deg[t_] := Count[{t}, bb[_, ___], Infinity];
+  trunc[x_] := Total[Map[
+    Which[!FreeQ[#, sum], # /. sum[z_, it_List] :> sum[trunc[z], it],
+          deg[#] <= nmax, #,
+          True, 0] &,
+    sum2list[Expand[x]]]];
+  trunc[e]
+];
+
+(* Schwinger bosons: S^+ = a^dagger b, S^- = b^dagger a,
+S^z = (a^dagger a - b^dagger b)/2, with a^dagger a + b^dagger b = 2s. *)
+schwingerbosons::op = "`1` and `2` must be bosonic operators.";
+schwingerbosons[expr_, op_Symbol?spinQ -> {a_Symbol, b_Symbol}] := (
+  If[!TrueQ[bosonQ[a]] || !TrueQ[bosonQ[b]], Message[schwingerbosons::op, a, b]; Return[$Failed]];
+  Expand[expr /. snegspinmaprules[op, Function[{jj, t}, Which[
+    t == 3, (number[a @@ jj] - number[b @@ jj])/2,
+    t == 4, nc[a[CR, Sequence @@ jj], b[AN, Sequence @@ jj]],
+    t == 5, nc[b[CR, Sequence @@ jj], a[AN, Sequence @@ jj]]]]]]);
+
+(* Abrikosov pseudofermions: S = f^dagger S f with 2s + 1 flavors; the
+representation is faithful in the subspace with one fermion per site. *)
+abrikosov::spin = "The fermion `1` must have the spin `2` of the spin operators.";
+abrikosov[expr_, op_Symbol?spinQ -> f_Symbol?fermionQ] := (
+  If[spinof[f] =!= spinof[op], Message[abrikosov::spin, f, spinof[op]]; Return[$Failed]];
+  Expand[expr /. snegspinmaprules[op, Function[{jj, t}, With[{v = spinxyz[f @@ jj]},
+    Which[t <= 3, v[[t]], t == 4, Expand[v[[1]] + I v[[2]]], t == 5, Expand[v[[1]] - I v[[2]]]]]]]]);
+
+(* A single spin site, given as S[j...] or S -> j. *)
+snegspinsite[(Rule | RuleDelayed)[op_Symbol?spinQ, j_]] := {op, Flatten[{j}]};
+snegspinsite[op_Symbol?spinQ[j___]] := {op, {j}};
+snegspinsite[x_] := (Message[snegspinsites::spec, x]; $Failed);
+
+(* Spherical tensor operators: T_k^k = (-S^+/Sqrt[2])^k and
+T_k^(q-1) = [S^-, T_k^q]/Sqrt[(k+q)(k-q+1)], so that T_1^0 = S^z,
+T_1^(+-1) = -+S^(+-)/Sqrt[2], and T_2^0 = (3 (S^z)^2 - S.S)/Sqrt[6]. *)
+spintensor::range = "The rank must satisfy k >= 0 and -k <= q <= k.";
+spintensor[k_Integer, q_Integer, x_] := Module[{st = snegspinsite[x]},
+  If[st === $Failed, Return[$Failed]];
+  If[k < 0 || Abs[q] > k, Message[spintensor::range]; Return[$Failed]];
+  snegspintensor[st[[1]], st[[2]], k, q]];
+snegspintensor[op_, j_List, k_, k_] := snegspintensor[op, j, k, k] =
+  Expand[(-1/Sqrt[2])^k nc @@ ConstantArray[op @@ Append[j, 4], k]];
+snegspintensor[op_, j_List, k_, q_] /; q < k := snegspintensor[op, j, k, q] =
+  Expand[komutator[op @@ Append[j, 5], snegspintensor[op, j, k, q + 1]]/
+    Sqrt[(k + q + 1) (k - q)]];
+
+(* Stevens operators O_k^q (Abragam and Bleaney normalization), e.g.
+O_2^0 = 3 (S^z)^2 - s(s+1), O_2^2 = ((S^+)^2 + (S^-)^2)/2 = (S^x)^2 - (S^y)^2,
+O_2^-2 = ((S^+)^2 - (S^-)^2)/(2i). For q > 0, O_k^(+-q) is proportional to
+(-1)^q T_k^q +- T_k^-q, normalized such that the coefficient of
+(S^z)^(k-q) (S^+)^q is L/2 (L/(2i) for -q), where L is the leading coefficient
+of the primitive integer polynomial proportional to d^q P_k(z)/dz^q; for
+q = 0 the coefficient of (S^z)^k is L. *)
+snegspinoperators[{snegstevensS, snegstevenss}];
+stevens::size = "The spin `1` needs a declared size, e.g. snegspinoperators[{`1`, 1/2}].";
+stevens[k_Integer, q_Integer, x_] := Module[{st = snegspinsite[x]},
+  If[st === $Failed, Return[$Failed]];
+  If[k < 0 || Abs[q] > k, Message[spintensor::range]; Return[$Failed]];
+  If[!TrueQ[snegspinsizeQ[st[[1]]]], Message[stevens::size, st[[1]]]; Return[$Failed]];
+  Expand[snegstevens[k, q] /. {snegstevensS[t_] :> st[[1]] @@ Append[st[[2]], t],
+    snegstevenss -> spinof[st[[1]]]}]];
+snegstevensL[k_, q_] := Module[{z, cl},
+  cl = CoefficientList[D[LegendreP[k, z], {z, q}], z];
+  cl = cl LCM @@ Denominator[cl];
+  Last[cl]/(GCD @@ cl)];
+snegstevens[0, 0] = 1;
+snegstevens[k_, q_] := snegstevens[k, q] = Module[{p = Abs[q], tp, tm, mono, alpha, L},
+  tp = (-1)^p snegspintensor[snegstevensS, {}, k, p];
+  tm = snegspintensor[snegstevensS, {}, k, -p];
+  mono = nc @@ Join[ConstantArray[snegstevensS[3], k - p], ConstantArray[snegstevensS[4], p]];
+  alpha = Coefficient[tp, mono];
+  L = snegstevensL[k, p];
+  Expand[Which[
+    p == 0, L/alpha tp,
+    q > 0, L/(2 alpha) (tp + tm),
+    True, L/(2 I alpha) (tp - tm)]]];
+
+(* Rotation of spin vectors, S_j -> R(j).S_j, with R a 3 by 3 matrix or a
+function of the site indexes. *)
+rotatespin::matrix = "The rotation `1` must be a 3 by 3 matrix.";
+rotatespin[expr_, op_Symbol?spinQ, r_] := Catch[Expand[expr /.
+  op[j___, t_Integer] /; 1 <= t <= 5 :> Module[{m = If[MatrixQ[r], r, r[j]], v},
+    If[!(MatrixQ[m] && Dimensions[m] == {3, 3}),
+      Message[rotatespin::matrix, m]; Throw[$Failed, rotatespin]];
+    v = m . {op[j, 1], op[j, 2], op[j, 3]};
+    Which[t <= 3, v[[t]], t == 4, v[[1]] + I v[[2]], True, v[[1]] - I v[[2]]]]],
+  rotatespin];
+
+(**** Hubbard X-operators ****)
+
+(* X[j..., a, b] = |a><b| acts on the local states of site j. The states
+carry fermion parities; X^ab is fermionic if the parities of a and b differ.
+On the same site X^ab X^cd = delta_bc X^ad. On different sites (or for
+different symbols) X-operators commute or, if both are fermionic,
+anticommute; for symbolic sites
+X_i^ab X_j^cd = +-X_j^cd X_i^ab + delta_ij (delta_bc X^ad -+ delta_da X^cb).
+X-operators are independent of all other operators: they are moved to the
+right of spin operators and to the left of bosons, Majorana and Dirac
+fermions, anticommuting with fermions when fermionic. *)
+
+If[!ValueQ[listxoperators], listxoperators = {} ];
+
+xoperatorQ[_] := False;
+xoperatorQ[op_?xoperatorQ[___]] := True;
+
+snegxoperators::spec = "The states `1` and the parities `2` (0 or 1) must be lists of equal length with distinct states.";
+snegxhubbardatom = {{"0", "UP", "DO", "2"}, {0, 1, 1, 0}};
+snegxoperators[x_Symbol, "HubbardAtom"] := snegxoperators[x, Sequence @@ snegxhubbardatom];
+snegxoperators[x_Symbol, states_List, parities_List] := If[
+  Length[states] == Length[parities] && DuplicateFreeQ[states] &&
+    SubsetQ[{0, 1}, parities],
+  operatorQ[x] ^= True;
+  xoperatorQ[x] ^= True;
+  xstates[x] ^= states;
+  xparities[x] ^= AssociationThread[states, parities];
+  SetAttributes[x, NHoldAll];
+  If[PrettyOutput,
+    Format[x[j___, a_, b_], StandardForm] := DisplayForm @ StyleBox[
+      If[{j} === {}, Superscript[x, RowBox[{a, b}]],
+        Subsuperscript[x, RowBox[{j}], RowBox[{a, b}]]],
+      ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}]];
+  addto[listxoperators, x];,
+  Message[snegxoperators::spec, states, parities]; $Failed];
+
+(* Fermion parity of X[j..., a, b], or None for labels that are not states. *)
+snegxparity[op_[___, a_, b_]] := With[{p = xparities[op]},
+  If[KeyExistsQ[p, a] && KeyExistsQ[p, b], Mod[p[a] + p[b], 2], None]];
+snegxparity[_] := None;
+
+conj[op_?xoperatorQ[j___, a_, b_]] := op[j, b, a];
+
+nc[x___, op_?xoperatorQ[j___, a_, b_], op_[j___, c_, d_], y___] :=
+  KroneckerDelta[b, c] nc[x, op[j, a, d], y];
+
+nc[x___, x1:op_?xoperatorQ[j1___, a_, b_], x2:op_[j2___, c_, d_], y___] /;
+  ({j1} =!= {j2} && !OrderedQ[{x1, x2}] &&
+   snegxparity[x1] =!= None && snegxparity[x2] =!= None) :=
+  With[{sg = (-1)^(snegxparity[x1] snegxparity[x2])},
+    sg nc[x, x2, x1, y] +
+    If[Length[{j1}] == Length[{j2}],
+      Inner[KroneckerDelta, {j1}, {j2}, Times] (
+        KroneckerDelta[b, c] nc[x, op[j1, a, d], y] -
+        sg KroneckerDelta[d, a] nc[x, op[j1, c, b], y]), 0]];
+
+nc[x___, x1:op1_?xoperatorQ[___, _, _], x2:op2_?xoperatorQ[___, _, _], y___] /;
+  (op1 =!= op2 && !OrderedQ[{op1, op2}] &&
+   snegxparity[x1] =!= None && snegxparity[x2] =!= None) :=
+  (-1)^(snegxparity[x1] snegxparity[x2]) nc[x, x2, x1, y];
+
+nc[x___, x1:op1_?xoperatorQ[___, _, _], x2:op2_?spinQ[___], y___] :=
+  nc[x, x2, x1, y];
+nc[x___, x1_, x2:op_?xoperatorQ[___, _, _], y___] /;
+  (TrueQ[bosonQ[x1]] && snegxparity[x2] =!= None) := nc[x, x2, x1, y];
+nc[x___, x1_, x2:op_?xoperatorQ[___, _, _], y___] /;
+  ((TrueQ[fermionQ[x1]] || TrueQ[majoranaQ[x1]]) && snegxparity[x2] =!= None) :=
+    (-1)^snegxparity[x2] nc[x, x2, x1, y];
+nc[x___, x1:op_?xoperatorQ[___, _, _], z_?grassmanQ, y___] /;
+  snegxparity[x1] =!= None := (-1)^snegxparity[x1] nc[x, z, x1, y];
+
+(* X-operators of the Hubbard atom with the states |0>, |UP> = c^dagger_UP|0>,
+|DO> = c^dagger_DO|0>, |2> = c^dagger_UP c^dagger_DO|0>, in terms of the
+fermion operators of site j. *)
+xoperator::state = "`1` is not one of the states \"0\", \"UP\", \"DO\", \"2\".";
+xoperator[op_?fermionQ[j___], a_, b_] := Module[{cr, p0},
+  If[!SubsetQ[First[snegxhubbardatom], {a, b}],
+    Message[xoperator::state, First[Complement[{a, b}, First[snegxhubbardatom]]]];
+    Return[$Failed]];
+  cr["0"] = 1;
+  cr["UP"] = op[CR, j, UP];
+  cr["DO"] = op[CR, j, DO];
+  cr["2"] = nc[op[CR, j, UP], op[CR, j, DO]];
+  p0 = nc[1 - number[op[j], UP], 1 - number[op[j], DO]];
+  Expand[nc[cr[a], p0, conj[cr[b]]]]];
+xoperator[op_?AtomQ, a_, b_] := xoperator[op[], a, b];
+
+xtofermions::states = "`1` must be declared with the states of the Hubbard atom, snegxoperators[`1`, \"HubbardAtom\"].";
+xtofermions[expr_, x_Symbol?xoperatorQ -> c_Symbol?fermionQ] := (
+  If[Sort[xstates[x]] =!= Sort[First[snegxhubbardatom]] ||
+     Map[xparities[x], First[snegxhubbardatom]] =!= Last[snegxhubbardatom],
+    Message[xtofermions::states, x]; Return[$Failed]];
+  Expand[expr /. x[j___, a_, b_] :> xoperator[c[j], a, b]]);
 
 EndPackage[];
 

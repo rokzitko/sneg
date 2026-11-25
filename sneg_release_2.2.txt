@@ -1,6 +1,6 @@
 SNEG 2.2.0 (draft): changes since SNEG 2.1.
 
-SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters.
+SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters, and extends the spin algebra with spin sizes, representations, exact diagonalization of spin clusters, Stevens operators, and Hubbard X-operators.
 
 ## New functionality
 
@@ -23,6 +23,17 @@ See [`README_momentum.md`](README_momentum.md) for worked examples.
 - `sumCluster[expr, {L1, ...}, rules]` specializes symbolic lattice and momentum sums to an explicit periodic cluster, folding site and momentum labels and evaluating Kronecker deltas modulo the cluster size.
 - `momentumbasis[bz, {L1, ...}]` splits basis subspaces according to the total crystal momentum, which is appended to the quantum numbers.
 
+### Spin algebras and Hubbard X-operators
+
+See [`README_spin.md`](README_spin.md) for conventions and worked examples.
+
+- `snegspinoperators[{S, s}]` declares the spin size `s` (a half-integer or a symbol). Products of operators on the same site are reduced automatically to the unique normal form `Sum p(S^z) (S^+-)^a`, using the Casimir operator and, for numeric sizes, the finite dimension of the representation. Spin-1/2 products of Cartesian components follow the Pauli rule and stay Cartesian. Spins without a declared size keep the size-independent su(2) algebra.
+- `spincomponents` rewrites spin operators in terms of `S^z, S^+-` (default) or `S^x, S^y, S^z`. `snegspincomponentindexes` and `levicivita` support symbolic Cartesian components.
+- `spinclustermatrices` builds sparse matrices of spin Hamiltonians in the subspaces of total `S^z`. `spinketbrarules` maps spin operators to the bra-ket representation, and `QSZaddspinket` accepts several spins, so that spins coupled to fermions can be diagonalized with the existing basis functions.
+- `jordanwigner`, `holsteinprimakoff` (exact normal-ordered expansion truncated by the number of boson operators, symbolic spin size allowed), `schwingerbosons`, and `abrikosov` map spin operators to fermions and bosons. Together with `fourier` and `blochhamiltonian` this gives linear spin-wave theory.
+- `spintensor` (spherical tensor operators), `stevens` (Stevens operators `O_k^q`), and `rotatespin` (site-dependent rotations of spin vectors).
+- `snegxoperators` declares Hubbard X-operators `X^ab = |a><b|` for local states with fermion parities, with the graded algebra; `xoperator` and `xtofermions` give the X-operators of the Hubbard atom in terms of fermions.
+
 ### Matrix-valued hopping (released in 2.1.1)
 
 - `matrixhop[T, a[i], b[j]]` constructs the spin-dependent hopping `a^dagger T b + h.c.` for a dense or sparse 2 by 2 matrix `T`, with Pauli decomposition of symbolic matrices (including `MatrixExp` results). See [`README_matrixhop.md`](README_matrixhop.md).
@@ -30,6 +41,8 @@ See [`README_momentum.md`](README_momentum.md) for worked examples.
 ## Behavior changes
 
 - Summation indexes created by automatic renaming (for example `k1` when two sums over `k` are multiplied) now inherit the realness (`Conjugate[k] = k`) and the lattice or momentum declaration of the original index.
+- Spin operators commute with all other operators and are now moved to the left of bosons, Majorana and Dirac fermions in products; operators of different spin symbols are sorted. Mixed expressions are therefore printed in a different order, and identities such as the conservation laws of the Kondo model with an abstract impurity spin now reduce to zero.
+- `conj` is defined for spin operators (`(S^+)^dagger = S^-`).
 
 ## Fixes
 
@@ -45,6 +58,7 @@ See [`README_momentum.md`](README_momentum.md) for worked examples.
 - The regression scripts return a nonzero exit status on failure. Missing expected values, evaluation messages, aborts, and timeouts count as failures.
 - Expanded regression coverage with independent finite-space checks of bases, matrices, symmetry transformations, and Wick contractions.
 - New regression groups for momentum-space deltas and lattice sums, Fourier transformations and Bloch Hamiltonians (chain, SSH, graphene, Rashba chain, bosons), momentum shifts, and finite clusters. The finite-cluster tests compare real-space and momentum-space spectra of the four-site Hubbard ring.
+- New regression groups for spin algebras: normal forms checked against spin matrices for s = 1/2 to 5/2, Kondo conservation laws, Heisenberg ring, bra-ket and direct matrices, Jordan-Wigner XXZ spectra, magnon dispersions, Stevens-operator tables, rotations, and the X-operator algebra against its fermion representation (t-J dimer).
 
 ## Distribution
 
