@@ -5369,6 +5369,13 @@ snegclustertwist[tw_, d_] := Which[
   True, ConstantArray[tw, d]];
 
 fourierrules::unitary = "The Fourier transformation is not unitary.";
+
+(* Numerical unitarity check of a transformation matrix; matrices with
+symbolic entries (e.g. symbolic twists) are not checked. *)
+snegcheckunitary[u_?MatrixQ] := If[VectorQ[Flatten[N[u]], NumericQ] &&
+    Max[Abs[N[u . ConjugateTranspose[u] - IdentityMatrix[Length[u]]]]] > 10^-10,
+  Message[fourierrules::unitary]; False,
+  True];
 Options[fourierrules] = {"IndexPosition" -> 1, "Twist" -> Automatic};
 fourierrules[Rule[c_Symbol, ck_Symbol], dims_List, opts:OptionsPattern[]] :=
 Module[{p = OptionValue["IndexPosition"], d = Length[dims], twist, sites,
@@ -5378,9 +5385,7 @@ Module[{p = OptionValue["IndexPosition"], d = Length[dims], twist, sites,
   ntot = Times @@ dims;
   ph[m_, n_] := Exp[I Total[(2 Pi Flatten[{m}] + twist) Flatten[{n}]/dims]];
   u = Outer[ph, sites, sites, 1]/Sqrt[ntot];
-  If[VectorQ[Flatten[N[u]], NumericQ] &&
-     Max[Abs[N[u . ConjugateTranspose[u] - IdentityMatrix[ntot]]]] > 10^-10,
-    Message[fourierrules::unitary]];
+  snegcheckunitary[u];
   {c[t_, a___] /; (t === CR || t === AN) && Length[{a}] >= p &&
       MemberQ[sites, {a}[[p]]] :>
     With[{n = {a}[[p]], pre = Take[{a}, p - 1], post = Drop[{a}, p]},

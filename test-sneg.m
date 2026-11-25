@@ -4308,6 +4308,130 @@ testgroup["Finite periodic clusters",
     $Failed];
  ]];
 
+testgroup["Momentum-space options and diagnostics",
+ Module[{pr, renamed, Hk, H, ops, bz, bvc, x},
+  sneglatticeindexes[{momR4}, 4];
+  testcase["Integer lattice size", {latticesize[momR4], sum[1, {momR4}]}, {4, 4}];
+  sneglatticeindexes[{momRL}, momL1 momL2];
+  testcase["Product lattice size", {sum[1, {momRL}], Conjugate[momL1]}, {momL1 momL2, momL1}];
+  testcase["Invalid lattice size",
+    Quiet[Check[sneglatticeindexes[{momRbad}, -3], "msg", sneglatticeindexes::size],
+      sneglatticeindexes::size], "msg"];
+  testcase["Invalid lattice size declares nothing", latticeindexQ[momRbad], False];
+  snegfreeindexes[momgr]; Conjugate[momgr] ^= momgr;
+  pr = nc[sum[momc[CR, momgr, UP], {momgr}], sum[momc[AN, momgr, UP], {momgr}]];
+  renamed = First[Complement[Cases[pr, sum[_, l_] :> l, {0, Infinity}][[1]], {momgr}]];
+  testcase["Renamed generic indexes inherit realness",
+    {Conjugate[renamed], latticetypedQ[renamed]}, {renamed, False}];
+
+  testcase["Bare lattice delta", sumSimplifyKD[sum[KroneckerDelta[momi, momj + moma1] momg[momi], {momi}]],
+    momg[momj + moma1]];
+  testcase["Shifted lattice delta", sumSimplifyKD[sum[KroneckerDelta[momi + moma1, momj] momg[momi], {momi}]],
+    momg[momj - moma1]];
+
+  testcase["Integer factors move to the momentum", blochphase[momk, 2 momi], blochphase[2 momk, momi]];
+  testcase["Powers of Bloch phases", blochphase[momk, momi]^3, blochphase[3 momk, momi]];
+  testcase["Lattice sum inside scalar blocks",
+    sumSimplifyKD[sum[scalar[momt blochphase[momk - momp, momi]] momc[CR, momk, UP], {momi}]],
+    momc[CR, momk, UP] scalar[momN momt KroneckerDelta[momk, momp]]];
+  testcase["Formatted Bloch phase",
+    MatchQ[ToBoxes[blochphase[momk, momi], StandardForm], TagBox[SuperscriptBox["e", _RowBox], DisplayForm]],
+    True];
+
+  testcase["Reflection shift", sumShift[sum[number[momfk[momk]], {momk}], momk -> -momk + momq],
+    sum[number[momfk[-momk + momq]], {momk}]];
+  testcase["Mixed-type shifts are rejected",
+    Quiet[Check[sumShift[sum[number[momfk[momk]], {momk}], momk -> momk + momi], "msg", sumShift::shift],
+      sumShift::shift], "msg"];
+
+  testcase["Fourier index position",
+    fourier[sum[hop[momf["x", momi], momf["x", momi + 1]], {momi}], momf -> momfk, momi -> momk,
+      "IndexPosition" -> 2],
+    sum[Expand[(blochphase[-momk, 1] + blochphase[momk, 1]) number[momfk["x", momk]]], {momk}]];
+  testcase["Fourier without simplification",
+    fourier[momc[AN, momi, UP], momc -> momck, momi -> momk, "Simplify" -> False],
+    sum[blochphase[momk, momi] momck[AN, momk, UP], {momk}]/Sqrt[momN]];
+  snegmajoranaoperators[mommaj];
+  testcase["Fourier rejects Majorana operators",
+    Quiet[fourier[mommaj[momi], mommaj -> momck, momi -> momk], fourier::op], $Failed];
+  testcase["Inverse Fourier rejects undeclared indexes",
+    Quiet[fourier[momck[AN, momk, UP], momc -> momck, momgi -> momk, "Inverse" -> True], fourier::index],
+    $Failed];
+
+  Hk = fourier[-momt sum[hop[momc[momi], momc[momi + 1]], {momi}], momc -> momck, momi -> momk];
+  testcase["Bloch Hamiltonian without checks", blochhamiltonian[Hk, {momck}, momk, "Check" -> False],
+    Expand[-momt (blochphase[-momk, 1] + blochphase[momk, 1]) IdentityMatrix[2]]];
+  testcase["Bloch Hamiltonian index position",
+    blochhamiltonian[fourier[-momt sum[hop[momf["x", momi], momf["x", momi + 1]], {momi}],
+      momf -> momfk, momi -> momk, "IndexPosition" -> 2], {momfk["x"]}, momk, "IndexPosition" -> 2],
+    {{Expand[-momt (blochphase[-momk, 1] + blochphase[momk, 1])]}}];
+  testcase["Bloch Hamiltonian needs a momentum index",
+    Quiet[blochhamiltonian[Hk, {momck}, momi], blochhamiltonian::index], $Failed];
+  testcase["Bloch Hamiltonian rejects invalid orbitals",
+    Quiet[blochhamiltonian[Hk, {mommaj}, momk], blochhamiltonian::orb], $Failed];
+  testcase["Bloch Hamiltonian rejects interacting terms",
+    Quiet[blochhamiltonian[Hk + sum[hubbard[momck[momk]], {momk}], {momck}, momk], blochhamiltonian::rest],
+    $Failed];
+  snegfermionoperators[moms1, moms1k]; spinof[moms1] ^= 1; spinof[moms1k] ^= 1;
+  testcase["Spin-1 fermions",
+    blochhamiltonian[fourier[-momt sum[hop[moms1[momi], moms1[momi + 1]], {momi}], moms1 -> moms1k,
+      momi -> momk], {moms1k}, momk],
+    Expand[-momt (blochphase[-momk, 1] + blochphase[momk, 1]) IdentityMatrix[3]]];
+
+  H = momt IdentityMatrix[2] + I momalpha PauliY;
+  zerotest["Spin-matrix cluster hopping",
+    Expand[clusterhop[H, momc, momc, 1, {3}] - Sum[matrixhop[H, momc[n], momc[Mod[n + 1, 3]]], {n, 0, 2}]]];
+  testcase["Orbital cluster hopping", clusterhop[momt, momf["A"], momf["B"], 0, {2}],
+    Expand[momt (hop[momf[0, "A"], momf[0, "B"]] + hop[momf[1, "A"], momf[1, "B"]])]];
+  testcase["Bosonic cluster hopping", clusterhop[momt, momb, momb, 1, {3}],
+    Expand[momt Sum[nc[momb[CR, n], momb[AN, Mod[n + 1, 3]]] + nc[momb[CR, Mod[n + 1, 3]], momb[AN, n]],
+      {n, 0, 2}]]];
+  testcase["Cluster hopping checks dimensions",
+    Quiet[clusterhop[momt, momc, momc, {1, 0}, {3}], clusterhop::dims], $Failed];
+
+  x = sum[number[momfk[momk + 1]], {momk}];
+  testcase["Cluster labels are folded", sumCluster[x, {2}], Expand[number[momfk[1]] + number[momfk[0]]]];
+  testcase["Folding can be disabled", sumCluster[x, {2}, {}, "Operators" -> {}],
+    Expand[number[momfk[1]] + number[momfk[2]]]];
+  testcase["Cluster index position",
+    sumCluster[sum[nc[momfk[CR, "x", momk], momfk[AN, "x", momk + 3]], {momk}], {2}, {}, "IndexPosition" -> 2],
+    nc[momfk[CR, "x", 0], momfk[AN, "x", 1]] + nc[momfk[CR, "x", 1], momfk[AN, "x", 0]]];
+  testcase["Cluster size mismatch",
+    Quiet[Check[sumCluster[sum[number[momc[momR4]], {momR4}], {3}], "msg", sumCluster::size],
+      sumCluster::size], "msg"];
+  testcase["Free momenta stay symbolic",
+    sumCluster[sum[nc[momfk[CR, momk + momq], momfk[AN, momk]], {momk}], {2}],
+    nc[momfk[CR, momq], momfk[AN, 0]] + nc[momfk[CR, 1 + momq], momfk[AN, 1]]];
+  testcase["Free momenta substituted and folded",
+    sumCluster[sum[nc[momfk[CR, momk + momq], momfk[AN, momk]], {momk}], {2}, {momq -> 3}],
+    nc[momfk[CR, 1], momfk[AN, 0]] + nc[momfk[CR, 0], momfk[AN, 1]]];
+
+  ops = {momck[0], momck[1]};
+  makebasis[ops];
+  bz = qszbasis[ops];
+  bvc = bzop2bzvc[bz, vacuum[]];
+  testcase["Momentum sectors of occupation-number bases",
+    momentumbasis[bvc, {2}][[All, 1]], momentumbasis[bz, {2}][[All, 1]]];
+  testcase["Momentum sectors are complete",
+    Total[Length /@ momentumbasis[bvc, {2}][[All, 2]]], 16];
+  testcase["Momentum basis index position",
+    momentumbasis[{{{0}, {nc[momfk[CR, "x", 1, 0], momfk[CR, "x", 2, 0]]}}}, {4}, "IndexPosition" -> 2],
+    {{{0, 3}, {nc[momfk[CR, "x", 1, 0], momfk[CR, "x", 2, 0]]}}}];
+  testcase["Non-unitary transformations are reported",
+    Quiet[Check[snegcheckunitary[{{1, 0}, {0, 2}}], "msg", fourierrules::unitary],
+      fourierrules::unitary], "msg"];
+  testcase["Unitary transformations pass silently",
+    Check[snegcheckunitary[{{1, 1}, {1, -1}}/Sqrt[2]], "msg"], True];
+  testcase["Fourier rules are unitary for numeric twists",
+    Check[Length[fourierrules[momc -> momck, {3}, "Twist" -> 7/10]], "msg"], 1];
+  testcase["Symbolic twists skip the numerical check",
+    Check[Length[fourierrules[momc -> momck, {3}, "Twist" -> momtheta]], "msg"], 1];
+  testcase["Fourier rules index position",
+    Expand[nc[momf[CR, "x", 0, 0], momf[AN, "x", 1, 0]] /. fourierrules[momf -> momfk, {2}, "IndexPosition" -> 2]],
+    Expand[(nc[momfk[CR, "x", 0, 0], momfk[AN, "x", 0, 0]] - nc[momfk[CR, "x", 0, 0], momfk[AN, "x", 1, 0]] +
+      nc[momfk[CR, "x", 1, 0], momfk[AN, "x", 0, 0]] - nc[momfk[CR, "x", 1, 0], momfk[AN, "x", 1, 0]])/2]];
+ ]];
+
 ]; (* isolated package state *)
 testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
 
