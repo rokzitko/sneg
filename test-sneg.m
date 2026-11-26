@@ -5681,6 +5681,88 @@ testgroup["Schrieffer-Wolff documentation examples",
       schriefferwolff[h0, v, {swc, Function[x, 1 - nc[number[x, UP], number[x, DO]]]}, 2]], {0, 0, 0}];
  ]];
 
+(* Equations of motion and Green's functions. Exact references: thermalaverage
+   and lehmann (exact diagonalization), compared at complex frequencies. *)
+snegfermionoperators[gfc, gfd];
+snegbosonoperators[gfb];
+snegspinoperators[{gfS, 1/2}];
+snegrealconstants[gfe, gfU, gft, gfw, gfB, gfv1, gfv2, gfe1, gfe2];
+snegrealfunctions[gfeps, gfvk];
+snegfreeindexes[gfk];
+gfatom = gfe (number[gfd[], UP] + number[gfd[], DO]) + gfU nc[number[gfd[], UP], number[gfd[], DO]];
+gfdimer = -hop[gfc[1], gfc[2]] + 2 Sum[nc[number[gfc[i], UP], number[gfc[i], DO]], {i, 2}] - 3/10 Sum[number[gfc[i]], {i, 2}];
+gfnear[a_, b_] := Abs[N[a - b]] < 10^-10;
+gflehmannat[l_, z_] := Total[l[[All, 2]]/(z - l[[All, 1]])];
+
+testgroup["Equations of motion and Green's functions",
+ Module[{n = avg[number[gfd[], DO]], cl, av, l, z0 = 3/10 + 7 I/10, h, g},
+  testcase["Liouvillian with momentum sums",
+    liouvillian[gfd[AN, UP], gfe number[gfd[], UP] + sum[gfeps[gfk] number[gfc[gfk], UP] +
+      gfvk[gfk] (nc[gfc[CR, gfk, UP], gfd[AN, UP]] + nc[gfd[CR, UP], gfc[AN, gfk, UP]]), {gfk}], 1],
+    {gfd[AN, UP], gfe gfd[AN, UP] + sum[gfvk[gfk] gfc[AN, gfk, UP], {gfk}]}];
+  testcase["Hubbard atom: closure",
+    eomclosure[gfd[AN, UP], gfatom], {{gfd[AN, UP], nc[gfd[CR, DO], gfd[AN, DO], gfd[AN, UP]]}, {{gfe, gfU}, {0, gfe + gfU}}, {1, 0}}];
+  testcase["Hubbard atom: Green's function",
+    Simplify[greensfunction[gfd[AN, UP], gfd[CR, UP], gfatom, gfz] - ((1 - n)/(gfz - gfe) + n/(gfz - gfe - gfU))], 0];
+  testcase["Hubbard atom: moments",
+    spectralmoments[gfd[AN, UP], gfd[CR, UP], gfatom, 2], Expand[{1, gfe + gfU n, gfe^2 + (2 gfe gfU + gfU^2) n}]];
+  testcase["Hubbard atom: exact averages",
+    gfnear[greensfunction[gfd[AN, UP], gfd[CR, UP], gfatom /. {gfe -> -1/2, gfU -> 1}, gfz,
+      "Average" -> (thermalaverage[#, gfatom /. {gfe -> -1/2, gfU -> 1}, {gfd}, 1/3] &)] /. gfz -> z0, z0/(z0^2 - 1/4)], True];
+  testcase["Hubbard atom: Lehmann representation",
+    lehmann[gfd[AN, UP], gfd[CR, UP], gfatom /. {gfe -> -1/2, gfU -> 1}, {gfd}, 1/3], {{-0.5, 0.5}, {0.5, 0.5}}];
+  testcase["Harmonic oscillator", greensfunction[gfb[AN], gfb[CR], gfw number[gfb[]], gfz], 1/(gfz - gfw)];
+  testcase["Spin in a field", greensfunction[gfS[1, 4], gfS[1, 5], gfB gfS[1, 3], gfz], 2 avg[gfS[1, 3]]/(gfz + gfB)];
+  h = -gft (hop[gfc[1], gfc[2]] + hop[gfc[2], gfc[3]]);
+  testcase["Tight-binding chain",
+    Simplify[greensfunction[gfc[AN, 1, UP], gfc[CR, 3, UP], h, gfz] -
+      Inverse[gfz IdentityMatrix[3] + gft {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}}][[1, 3]]], 0];
+  h = gfe number[gfd[], UP] + gfe1 number[gfc[1], UP] + gfe2 number[gfc[2], UP] + gfv1 hop[gfc[1], gfd[], UP] + gfv2 hop[gfc[2], gfd[], UP];
+  testcase["Resonant level with a hybridization function",
+    Simplify[greensfunction[gfd[AN, UP], gfd[CR, UP], h, gfz] -
+      1/(gfz - gfe - gfv1^2/(gfz - gfe1) - gfv2^2/(gfz - gfe2))], 0];
+
+  (* interacting dimer: closed equations of motion against exact diagonalization *)
+  cl = eomclosure[gfc[AN, 1, UP], gfdimer];
+  testcase["Dimer closure size", Length[cl[[1]]], 22];
+  testcase["Dimer closure is exact",
+    Union[Expand[MapThread[komutator[#1, gfdimer] - #2 . cl[[1]] &, {cl[[1]], cl[[2]]}]]], {0}];
+  Do[
+    av = thermalaverage[#, gfdimer, {gfc[1], gfc[2]}, temp] &;
+    l = lehmann[gfc[AN, 1, UP], gfc[CR, 2, UP], gfdimer, {gfc[1], gfc[2]}, temp];
+    testcase["Dimer fermion Green's function at T = " <> ToString[temp],
+      gfnear[greensfunction[gfc[AN, 1, UP], gfc[CR, 2, UP], gfdimer, gfz, "Average" -> av] /. gfz -> z0, gflehmannat[l, z0]], True];
+    testcase["Dimer moments at T = " <> ToString[temp],
+      Max[Abs[spectralmoments[gfc[AN, 1, UP], gfc[CR, 2, UP], gfdimer, 4, "Average" -> av] -
+        Table[Total[l[[All, 2]] l[[All, 1]]^k], {k, 0, 4}]]] < 10^-10, True];
+    l = lehmann[number[gfc[1]], number[gfc[2]], gfdimer, {gfc[1], gfc[2]}, temp];
+    testcase["Dimer density correlation at T = " <> ToString[temp],
+      gfnear[greensfunction[number[gfc[1]], number[gfc[2]], gfdimer, gfz, "Average" -> av] /. gfz -> z0, gflehmannat[l, z0]], True],
+    {temp, {0, 2/5}}];
+  l = lehmann[gfc[AN, 1, UP], gfc[CR, 1, UP], gfdimer, {gfc[1], gfc[2]}, 2/5];
+  testcase["Sum rule", gfnear[Total[l[[All, 2]]], 1], True];
+  testcase["Inexact Hamiltonians",
+    gfnear[greensfunction[gfc[AN, 1, UP], gfc[CR, 1, UP], N[gfdimer], gfz,
+      "Average" -> (thermalaverage[#, gfdimer, {gfc[1], gfc[2]}, 2/5] &)] /. gfz -> z0, gflehmannat[l, z0]], True];
+  testcase["Thermal averages of quadratic Hamiltonians",
+    gfnear[thermalaverage[nc[gfc[CR, 1, UP], gfc[AN, 2, UP]], -hop[gfc[1], gfc[2]] + 1/3 number[gfc[1]], {gfc[1], gfc[2]}, 1/2],
+      gaussianaverage[nc[gfc[CR, 1, UP], gfc[AN, 2, UP]], -hop[gfc[1], gfc[2]] + 1/3 number[gfc[1]], {gfc[1], gfc[2]}, 1/2]], True];
+
+  testcase["Open equations of motion",
+    Quiet[eomclosure[gfc[AN, 1, UP], gfdimer, "MaxOperators" -> 10], eomclosure::open], $Failed];
+  testcase["Closure needs explicit modes", Quiet[eomclosure[sum[gfc[AN, gfk, UP], {gfk}], 0], eomclosure::sum], $Failed];
+  testcase["Mixed fermion parity",
+    {Quiet[greensfunction[gfd[AN, UP] + number[gfd[], UP], gfd[CR, UP], gfatom, gfz], greensfunction::parity],
+     Quiet[spectralmoments[gfd[AN, UP] + number[gfd[], UP], gfd[CR, UP], gfatom, 1], spectralmoments::parity],
+     Quiet[eomclosure[gfd[AN, UP] + number[gfd[], UP], gfatom], eomclosure::parity],
+     Quiet[lehmann[gfd[AN, UP] + number[gfd[], UP], gfd[CR, UP], gfatom /. {gfe -> 1, gfU -> 1}, {gfd}, 1], lehmann::parity]},
+    ConstantArray[$Failed, 4]];
+  testcase["Exact diagonalization needs fermion modes",
+    {Quiet[lehmann[gfb[AN], gfb[CR], number[gfb[]], {gfb}, 1], lehmann::mode],
+     Quiet[thermalaverage[number[gfc[3]], gfdimer, {gfc[1], gfc[2]}, 1], lehmann::mode]}, {$Failed, $Failed}];
+ ]];
+
+
 ]; (* isolated package state *)
 testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
 

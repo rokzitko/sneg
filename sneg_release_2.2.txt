@@ -1,6 +1,6 @@
 SNEG 2.2.0 (draft): changes since SNEG 2.1.
 
-SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters, extends the spin algebra with spin sizes, representations, exact diagonalization of spin clusters, Stevens operators, and Hubbard X-operators, adds Bogoliubov transformations and mean-field theory for quadratic Hamiltonians, and derives effective Hamiltonians by the Schrieffer-Wolff transformation.
+SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters, extends the spin algebra with spin sizes, representations, exact diagonalization of spin clusters, Stevens operators, and Hubbard X-operators, adds Bogoliubov transformations and mean-field theory for quadratic Hamiltonians, derives effective Hamiltonians by the Schrieffer-Wolff transformation, and computes Green's functions from closed equations of motion.
 
 ## New functionality
 
@@ -53,6 +53,15 @@ See [`README_schriefferwolff.md`](README_schriefferwolff.md) for conventions and
 - `schriefferwolffmatrix` performs the canonical transformation for matrices.
 - `fermionstox` (inverse of `xtofermions`) and `xtospin` convert projected results to X-operators and spin operators.
 
+### Equations of motion, Green's functions, and sum rules
+
+See [`README_greens.md`](README_greens.md) for conventions and worked examples.
+
+- `liouvillian[A, H, n]` returns the iterated commutators `[...[A, H], ..., H]`, also with symbolic sums.
+- `spectralmoments[A, B, H, n]` returns the moments (sum rules) of the spectral function of the retarded Green's function `<<A; B>>`, with the anticommutator for fermion-odd `A` and the commutator otherwise.
+- `eomclosure[A, H]` generates the closed set of operators of the equations of motion and the matrix of `[O_i, H]`; `greensfunction[A, B, H, z]` solves the closed equations with symbolic averages `avg[...]` or a given averaging function.
+- `thermalaverage` and `lehmann` give exact thermal averages and the Lehmann representation of finite fermion systems.
+
 ### Matrix-valued hopping (released in 2.1.1)
 
 - `matrixhop[T, a[i], b[j]]` constructs the spin-dependent hopping `a^dagger T b + h.c.` for a dense or sparse 2 by 2 matrix `T`, with Pauli decomposition of symbolic matrices (including `MatrixExp` results). See [`README_matrixhop.md`](README_matrixhop.md).
@@ -82,6 +91,7 @@ See [`README_schriefferwolff.md`](README_schriefferwolff.md) for conventions and
 - New regression groups for spin algebras: normal forms checked against spin matrices for s = 1/2 to 5/2, Kondo conservation laws, Heisenberg ring, bra-ket and direct matrices, Jordan-Wigner XXZ spectra, magnon dispersions, Stevens-operator tables, rotations, and the X-operator algebra against its fermion representation (t-J dimer).
 - New regression groups for quadratic forms: many-body spectra and thermal and ground-state averages of random BdG Hamiltonians compared with exact diagonalization, bosonic averages compared with truncated Fock spaces, Kitaev-chain zero modes and Bloch spectra, BCS coherence factors, antiferromagnetic magnons, the Wick consistency of mean-field Hamiltonians, the Hartree-Fock solutions of the Hubbard dimer, and the BCS gap equation on a ring.
 - New regression groups for the Schrieffer-Wolff transformation: exchange of the Hubbard dimer to fourth order against the exact solution, operator against matrix transformations, the fifth-order remainder of the block-off-diagonal part, the Kondo coupling of the Anderson model with momentum sums against a discrete bath, the Heisenberg and t-J models on a lattice against explicit clusters, and the convergence of three-site t-J spectra. `examples/schriefferwolff-plaquette.m` checks the fourth-order plaquette against exact diagonalization.
+- New regression group for equations of motion: the Hubbard atom, the resonant level, spins and bosons, and the closed equations of the interacting Hubbard dimer against the Lehmann representation and its moments at zero and finite temperature.
 
 ## Distribution
 

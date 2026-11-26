@@ -64,6 +64,9 @@ and error-prone.
 * Schrieffer-Wolff transformation to arbitrary order for effective
   Hamiltonians (Kondo, Heisenberg, t-J models, higher-order exchange).
 
+* Equations of motion, closed Green's functions, spectral moments (sum
+  rules), and Lehmann representations of finite systems.
+
 * Dirac bra-ket notation that can be combined with second-quantization
   operator expressions.
 
@@ -147,7 +150,8 @@ Additional material includes:
 * [Momentum space and lattices](README_momentum.md),
   [spin algebras](README_spin.md),
   [quadratic forms and mean-field theory](README_quadratic.md),
-  [Schrieffer-Wolff transformation](README_schriefferwolff.md), and
+  [Schrieffer-Wolff transformation](README_schriefferwolff.md),
+  [equations of motion and Green's functions](README_greens.md), and
   [matrix-valued hopping](README_matrixhop.md).
 * The early minimalist [SNEG manual](docs/manual/manual.pdf).
 * The bundled preprint of the

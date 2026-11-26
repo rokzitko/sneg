@@ -886,6 +886,36 @@ xtospin::usage =
 sites by spin-1/2 operators, X^(UP,UP) = 1/2 + S^z, X^(UP,DO) = S^+, ...;
 terms with the states \"0\" or \"2\" are dropped with a message.";
 
+(* Equations of motion, Green's functions, and sum rules; see README_greens.md. *)
+liouvillian::usage =
+"liouvillian[A, H, n] returns {A, [A, H], [[A, H], H], ...} with n
+commutators (the Liouvillian L A = [A, H] applied repeatedly).";
+spectralmoments::usage =
+"spectralmoments[A, B, H, n] returns the moments
+<[L^k A, B]_eta>, k = 0, ..., n, of the spectral function of the retarded
+Green's function <<A; B>>, with the anticommutator (eta = +1) for A odd in
+the fermion operators and the commutator otherwise. The averages are avg[...]
+or given by \"Average\" -> f.";
+eomclosure::usage =
+"eomclosure[A, H] returns {{O_1, ...}, M, a}: the operator monomials
+generated from A = a . O by repeated commutation with H, and the matrix M with
+[O_i, H] = Sum_j M_ij O_j. The option \"MaxOperators\" limits the number of
+operators.";
+greensfunction::usage =
+"greensfunction[A, B, H, z] returns the retarded Green's function
+<<A; B>>_z = a . (z - M)^-1 . N from the closed equations of motion, with
+N_i = <[O_i, B]_eta>. The averages are avg[...] or given by \"Average\" -> f,
+e.g. thermalaverage[#, H, modes, T] &.";
+thermalaverage::usage =
+"thermalaverage[X, H, {c[1], ...}, T] returns the thermal average of X in
+the Fock space of the fermion modes (T = 0: ground state, degenerate ground
+states with equal weights), by exact diagonalization.";
+lehmann::usage =
+"lehmann[A, B, H, {c[1], ...}, T] returns the poles and weights
+{{omega_j, w_j}, ...} of the Lehmann representation
+<<A; B>>_z = Sum_j w_j/(z - omega_j), by exact diagonalization in the Fock
+space of the fermion modes.";
+
 (** Load required packages **)
 
 (* We need KSubsets from Combinatorica by Sriram V. Pemmaraju
@@ -7358,6 +7388,158 @@ schriefferwolffmatrix[H0_?MatrixQ, V_?MatrixQ, pind_List, n_Integer?NonNegative,
   If[TrueQ[OptionValue["Generator"]],
     {heff, Table[If[u === None, S[m], u . S[m] . ConjugateTranspose[u]], {m, n}]}, heff]
 ], snegsw];
+
+(**** Equations of motion, Green's functions, and sum rules ****)
+
+(* Retarded Green's functions in the notation of Zubarev,
+G_AB(z) = <<A; B>>_z = -i Int_0^Infinity dt e^(i z t) <[A(t), B]_eta>,
+with the anticommutator (eta = +1) if A is odd in the fermion operators and
+the commutator (eta = -1) otherwise. The equation of motion is
+z <<A; B>> = <[A, B]_eta> + <<[A, H]; B>>, and the spectral function
+A_AB(omega) = -Im G_AB(omega + i0)/Pi has the moments
+Int omega^n A_AB(omega) d omega = <[L^n A, B]_eta>, L A = [A, H]. *)
+
+eomclosure::open = "The equations of motion do not close within `1` operators.";
+eomclosure::sum = "Symbolic sums are not supported; use explicit modes.";
+eomclosure::term = "The term `1` is not a product of operators.";
+eomclosure::parity = "The operator `1` has no definite fermion parity.";
+greensfunction::parity = eomclosure::parity;
+spectralmoments::parity = eomclosure::parity;
+lehmann::mode = "Only fermion modes are supported; `1` is not one of the modes.";
+lehmann::parity = eomclosure::parity;
+
+(* Fermion parity of an operator expression: 0 (even), 1 (odd), or $Failed. *)
+snegeomparity[e_] := Module[{p},
+  p = Union[Map[Function[u, With[{l = snegtermops[u]},
+      If[l === $Failed, $Failed, Mod[Total[Map[snegeomop, l[[2]]]], 2]]]],
+    sum2list[Expand[e //. HoldPattern[sum[a_, _]] :> a]]]];
+  If[Length[p] == 1 && p =!= {$Failed}, First[p], $Failed]];
+snegeomop[o_] := Which[
+  TrueQ[fermionQ[o]] || TrueQ[majoranaQ[o]], 1,
+  TrueQ[xoperatorQ[Head[o]]], If[snegxparity[o] === None, 0, snegxparity[o]],
+  True, 0];
+
+(* (Anti)commutator according to the parity of A *)
+snegeombracket[a_, b_, p_] := If[p === 1, antikomutator[a, b], komutator[a, b]];
+
+snegeomsimp[x_] := If[FreeQ[x, sum], Expand[x], snegswsimp[x]];
+
+(* {A, [A, H], [[A, H], H], ...} up to n commutators *)
+liouvillian[a_, h_, n_Integer?NonNegative] :=
+  NestList[snegeomsimp[komutator[#, h]] &, snegeomsimp[a], n];
+
+(* Moments <[L^k A, B]_eta>, k = 0, ..., n; the average is avg[] (symbolic)
+or the function given by "Average". *)
+Options[spectralmoments] = {"Average" -> avg};
+spectralmoments[a_, b_, h_, n_Integer?NonNegative, opts:OptionsPattern[]] := Module[
+  {p = snegeomparity[a], av = OptionValue["Average"]},
+  If[p === $Failed, Message[spectralmoments::parity, a]; Return[$Failed]];
+  Map[snegeomsimp[av[snegeomsimp[snegeombracket[#, b, p]]]] &, liouvillian[a, h, n]]];
+
+(* Operator monomials {c, monomial} of an expression without sums. *)
+snegeommonomials[e_] := Map[Function[t, With[{l = snegtermops[t]},
+    If[l === $Failed, Message[eomclosure::term, t]; Throw[$Failed, snegeom]];
+    {l[[1]], nc @@ l[[2]]}]], sum2list[Expand[e]]];
+
+(* Closure of the equations of motion: the operator monomials O_i generated
+from A by repeated commutation with H and the matrix M with
+[O_i, H] = Sum_j M_ij O_j. Returns {{O_1, ...}, M, a} with A = a . O. *)
+Options[eomclosure] = {"MaxOperators" -> 100};
+eomclosure[a_, h_, opts:OptionsPattern[]] := Catch[Module[
+  {max = OptionValue["MaxOperators"], basis = {}, index = <||>, rows = <||>, queue, m, add, coef, i},
+  If[!FreeQ[{a, h}, sum], Message[eomclosure::sum]; Throw[$Failed, snegeom]];
+  If[snegeomparity[a] === $Failed, Message[eomclosure::parity, a]; Throw[$Failed, snegeom]];
+  add[o_] := If[!KeyExistsQ[index, o],
+    If[Length[basis] >= max, Message[eomclosure::open, max]; Throw[$Failed, snegeom]];
+    AppendTo[basis, o]; index[o] = Length[basis]; AppendTo[queue, o]];
+  queue = {};
+  coef = snegeommonomials[a];
+  Scan[add[#[[2]]] &, coef];
+  While[queue =!= {},
+    m = First[queue]; queue = Rest[queue];
+    rows[m] = snegeommonomials[komutator[m, h]];
+    Scan[add[#[[2]]] &, rows[m]]];
+  {basis,
+   Table[Total[Map[If[#[[2]] === basis[[j]], #[[1]], 0] &, rows[basis[[i]]]]], {i, Length[basis]}, {j, Length[basis]}],
+   Table[Total[Map[If[#[[2]] === basis[[j]], #[[1]], 0] &, coef]], {j, Length[basis]}]}
+], snegeom];
+
+(* G_AB(z) = a . (z - M)^-1 . N with N_i = <[O_i, B]_eta>. *)
+Options[greensfunction] = {"Average" -> avg, "MaxOperators" -> 100};
+greensfunction[a_, b_, h_, z_, opts:OptionsPattern[]] := Module[
+  {cl, p = snegeomparity[a], nv, av = OptionValue["Average"]},
+  If[p === $Failed, Message[greensfunction::parity, a]; Return[$Failed]];
+  cl = eomclosure[a, h, "MaxOperators" -> OptionValue["MaxOperators"]];
+  If[cl === $Failed, Return[$Failed]];
+  nv = Map[Expand[av[Expand[snegeombracket[#, b, p]]]] &, cl[[1]]];
+  (* a . (z - M)^-1 is computed exactly when M is exact; inexact averages
+     enter only through the final scalar product. For inexact M the
+     eigendecomposition of M is used. *)
+  If[Precision[cl[[2]]] === Infinity,
+    With[{g = LinearSolve[Transpose[z IdentityMatrix[Length[cl[[1]]]] - cl[[2]]], cl[[3]]] . nv},
+      If[Precision[nv] === Infinity, Together[g], Expand[g]]],
+    Module[{vals, vecs, v},
+      {vals, vecs} = Eigensystem[cl[[2]]];
+      v = Transpose[vecs];
+      Total[(cl[[3]] . v) LinearSolve[v, nv]/(z - vals)]]]];
+
+(* Exact results for finite fermion systems: matrices in the Fock space of
+the modes (Jordan-Wigner order of the modes). *)
+snegeomfock[n_, k_] := snegeomfock[n, k] = SparseArray[KroneckerProduct @@ Table[
+  Which[j < k, {{1, 0}, {0, -1}}, j == k, {{0, 0}, {1, 0}}, True, IdentityMatrix[2]], {j, n}]];
+snegeommatrix[e_, modes_List] := Module[{n = Length[modes], idx},
+  idx = Association[Flatten[Table[{modes[[i]][CR] -> {i, CR}, modes[[i]][AN] -> {i, AN}}, {i, n}]]];
+  Total[Map[Function[t, With[{l = snegtermops[t]},
+    If[l === $Failed || !SubsetQ[Keys[idx], l[[2]]],
+      Message[lehmann::mode, First[Complement[Cases[{t}, _?operatorQ[___], Infinity], Keys[idx]] /. {} -> {t}]];
+      Throw[$Failed, snegeom]];
+    l[[1]] If[l[[2]] === {}, IdentityMatrix[2^n, SparseArray],
+      Dot @@ Map[With[{q = idx[#]}, If[q[[2]] === CR, snegeomfock[n, q[[1]]],
+        Transpose[snegeomfock[n, q[[1]]]]]] &, l[[2]]]]]], sum2list[Expand[e]]]]];
+
+snegeomsetup[h_, specs_List] := Module[{s = snegquadsetup[specs]},
+  If[s === $Failed, Throw[$Failed, snegeom]];
+  If[s[[2]] =!= "Fermion", Message[lehmann::mode, First[specs]]; Throw[$Failed, snegeom]];
+  First[s]];
+
+(* Thermal weights of the eigenstates; at T = 0 the ground states share
+the weight equally. *)
+snegeomweights[e_, temp_, tol_] := If[TrueQ[temp == 0],
+  With[{g = Boole[Map[# < Min[e] + tol &, e]]}, g/Total[g]],
+  With[{w = Exp[-(e - Min[e])/temp]}, w/Total[w]]];
+
+Options[thermalaverage] = {"Tolerance" -> 10^-10};
+(* Eigensystem of H in the Fock space, cached for repeated averages. *)
+snegeomeigen[h_, modes_List] := snegeomeigen[h, modes] = Module[{vals, vecs},
+  {vals, vecs} = Eigensystem[N[Normal[snegeommatrix[h, modes]]]];
+  {Re[vals], vecs}];
+
+thermalaverage[x_, h_, specs_List, temp_, opts:OptionsPattern[]] := Catch[Module[
+  {modes = snegeomsetup[h, specs], vals, vecs, w, xm},
+  {vals, vecs} = snegeomeigen[h, modes];
+  w = snegeomweights[vals, temp, OptionValue["Tolerance"]];
+  xm = Normal[snegeommatrix[x, modes]];
+  Chop[Total[w Map[Conjugate[#] . xm . # &, vecs]]]
+], snegeom];
+
+(* Lehmann representation G_AB(z) = Sum_j w_j/(z - omega_j):
+w = <m|A|n><n|B|m> (rho_m -+ rho_n) at omega = E_n - E_m (upper sign:
+commutator for even A). Poles closer than the tolerance are merged. *)
+Options[lehmann] = {"Tolerance" -> 10^-9};
+lehmann[a_, b_, h_, specs_List, temp_, opts:OptionsPattern[]] := Catch[Module[
+  {modes = snegeomsetup[h, specs], p = snegeomparity[a], tol = OptionValue["Tolerance"],
+   vals, vecs, rho, am, bm, w, om, l},
+  If[p === $Failed, Message[lehmann::parity, a]; Throw[$Failed, snegeom]];
+  {vals, vecs} = snegeomeigen[h, modes];
+  rho = snegeomweights[vals, temp, tol];
+  am = Conjugate[vecs] . Normal[snegeommatrix[a, modes]] . Transpose[vecs];
+  bm = Conjugate[vecs] . Normal[snegeommatrix[b, modes]] . Transpose[vecs];
+  w = am Transpose[bm] (If[p === 1, Plus, Subtract] @@ {Outer[#1 &, rho, rho], Outer[#2 &, rho, rho]});
+  om = Outer[#2 - #1 &, vals, vals];
+  l = Select[Transpose[{Flatten[om], Flatten[w]}], Abs[#[[2]]] > tol &];
+  l = Map[{Mean[#[[All, 1]]], Total[#[[All, 2]]]} &, Gather[SortBy[l, First], Abs[#1[[1]] - #2[[1]]] < tol &]];
+  Chop[Select[l, Abs[#[[2]]] > tol &]]
+], snegeom];
 
 EndPackage[];
 
