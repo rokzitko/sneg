@@ -61,6 +61,9 @@ and error-prone.
   fermionic and bosonic Bogoliubov transformations, thermal averages with
   Wick's theorem, mean-field decoupling, and self-consistent solutions.
 
+* Schrieffer-Wolff transformation to arbitrary order for effective
+  Hamiltonians (Kondo, Heisenberg, t-J models, higher-order exchange).
+
 * Dirac bra-ket notation that can be combined with second-quantization
   operator expressions.
 
@@ -143,7 +146,8 @@ Additional material includes:
 * Example notebooks and scripts in [`examples`](examples/).
 * [Momentum space and lattices](README_momentum.md),
   [spin algebras](README_spin.md),
-  [quadratic forms and mean-field theory](README_quadratic.md), and
+  [quadratic forms and mean-field theory](README_quadratic.md),
+  [Schrieffer-Wolff transformation](README_schriefferwolff.md), and
   [matrix-valued hopping](README_matrixhop.md).
 * The early minimalist [SNEG manual](docs/manual/manual.pdf).
 * The bundled preprint of the

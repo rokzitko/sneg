@@ -1,6 +1,6 @@
 SNEG 2.2.0 (draft): changes since SNEG 2.1.
 
-SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters, extends the spin algebra with spin sizes, representations, exact diagonalization of spin clusters, Stevens operators, and Hubbard X-operators, and adds Bogoliubov transformations and mean-field theory for quadratic Hamiltonians.
+SNEG is a Wolfram Language package for symbolic calculations with noncommuting second-quantization operators. This release adds support for momentum space, periodic lattices, and finite periodic clusters, extends the spin algebra with spin sizes, representations, exact diagonalization of spin clusters, Stevens operators, and Hubbard X-operators, adds Bogoliubov transformations and mean-field theory for quadratic Hamiltonians, and derives effective Hamiltonians by the Schrieffer-Wolff transformation.
 
 ## New functionality
 
@@ -44,6 +44,15 @@ See [`README_quadratic.md`](README_quadratic.md) for conventions and worked exam
 - `gaussianaverage` computes thermal and ground-state averages of arbitrary products of mode operators in the Gaussian state of a quadratic Hamiltonian with Wick's theorem, in real space and in momentum space.
 - `meanfield` decouples products of four or more operators in the Hartree, Fock, and pairing channels (or with a user-defined selection) into mean-field Hamiltonians with the averages `avg[...]`; `meanfieldsolve` solves the mean-field equations self-consistently on finite sets of modes, at finite temperature and at fixed particle number.
 
+### Schrieffer-Wolff transformation
+
+See [`README_schriefferwolff.md`](README_schriefferwolff.md) for conventions and worked examples.
+
+- `schriefferwolff[H0, V, P, n]` returns the contributions of order 0, ..., n to the effective Hamiltonian `P e^S H e^-S P` of the canonical Schrieffer-Wolff transformation (anti-Hermitian, block-off-diagonal generator), to arbitrary order for finite sets of modes. H0 must be diagonal in the occupation numbers of the local modes; band energies, linear bosons, Zeeman terms, and atomic Hamiltonians in X-operators are allowed for the other operators, and momentum sums are supported. For lattice sums, the projector can be given as a local rule (up to second order). Examples: Anderson to Kondo model, Hubbard to Heisenberg and t-J models, fourth-order exchange.
+- `eigenoperators[O, H0]` splits an operator into eigenoperators of H0.
+- `schriefferwolffmatrix` performs the canonical transformation for matrices.
+- `fermionstox` (inverse of `xtofermions`) and `xtospin` convert projected results to X-operators and spin operators.
+
 ### Matrix-valued hopping (released in 2.1.1)
 
 - `matrixhop[T, a[i], b[j]]` constructs the spin-dependent hopping `a^dagger T b + h.c.` for a dense or sparse 2 by 2 matrix `T`, with Pauli decomposition of symbolic matrices (including `MatrixExp` results). See [`README_matrixhop.md`](README_matrixhop.md).
@@ -63,6 +72,7 @@ See [`README_quadratic.md`](README_quadratic.md) for conventions and worked exam
 - `vevwick2` handles single operators.
 - Matrix blocks that vanish only in floating-point arithmetic are filtered out in `makeallmatricesbzop` and `makeallmatricesbzvc`.
 - `SU2combine` applies the spin-projection selection rule, avoiding messages for nonphysical Clebsch-Gordan arguments.
+- Coefficients built from declared real or complex functions, e.g. `1 + eps[k]` or `-eps[k]` after `snegrealfunctions[eps]`, are now recognized as numbers by `isnumericQ`, so that `nc` factors them out of operator products.
 
 ## Testing
 
@@ -71,6 +81,7 @@ See [`README_quadratic.md`](README_quadratic.md) for conventions and worked exam
 - New regression groups for momentum-space deltas and lattice sums, Fourier transformations and Bloch Hamiltonians (chain, SSH, graphene, Rashba chain, bosons), momentum shifts, and finite clusters. The finite-cluster tests compare real-space and momentum-space spectra of the four-site Hubbard ring.
 - New regression groups for spin algebras: normal forms checked against spin matrices for s = 1/2 to 5/2, Kondo conservation laws, Heisenberg ring, bra-ket and direct matrices, Jordan-Wigner XXZ spectra, magnon dispersions, Stevens-operator tables, rotations, and the X-operator algebra against its fermion representation (t-J dimer).
 - New regression groups for quadratic forms: many-body spectra and thermal and ground-state averages of random BdG Hamiltonians compared with exact diagonalization, bosonic averages compared with truncated Fock spaces, Kitaev-chain zero modes and Bloch spectra, BCS coherence factors, antiferromagnetic magnons, the Wick consistency of mean-field Hamiltonians, the Hartree-Fock solutions of the Hubbard dimer, and the BCS gap equation on a ring.
+- New regression groups for the Schrieffer-Wolff transformation: exchange of the Hubbard dimer to fourth order against the exact solution, operator against matrix transformations, the fifth-order remainder of the block-off-diagonal part, the Kondo coupling of the Anderson model with momentum sums against a discrete bath, the Heisenberg and t-J models on a lattice against explicit clusters, and the convergence of three-site t-J spectra. `examples/schriefferwolff-plaquette.m` checks the fourth-order plaquette against exact diagonalization.
 
 ## Distribution
 

@@ -5445,6 +5445,242 @@ testgroup["Quadratic documentation examples",
     {True, True}];
  ]];
 
+(* Schrieffer-Wolff transformation. Matrices of operator expressions are built
+   with Jordan-Wigner matrices (fockcreate) for the listed modes {head, labels}. *)
+snegfermionoperators[swc, swd];
+snegbosonoperators[swb];
+snegspinoperators[{swS, 1/2}];
+snegxoperators[swX, "HubbardAtom"];
+snegrealconstants[swt, swU, swed, sww, swB, swg];
+snegrealfunctions[sweps, swv];
+snegfreeindexes[swk];
+sneglatticeindexes[{swR}, swN];
+sneglatticevectors[swa1];
+snegxoperators[swY, {1, 2}, {0, 0}];
+snegfreeindexes[swk2];
+
+swfock[nm_, k_] := swfock[nm, k] = SparseArray[fockcreate[nm, k]];
+swmat[e_, modes_List] := Module[{nm = Length[modes], om},
+  om[o_] := With[{m = swfock[nm, Position[modes, {Head[o], Rest[List @@ o]}][[1, 1]]]},
+    If[First[o] === CR, m, Transpose[m]]];
+  Normal[Total[Map[Function[tt, Module[{l = snegtermops[tt]},
+    l[[1]] If[l[[2]] === {}, IdentityMatrix[2^nm, SparseArray], Dot @@ Map[om, l[[2]]]]]], sum2list[Expand[e]]]]]];
+swmodes[sites_List] := Flatten[Table[{swc, {i, s}}, {i, sites}, {s, {UP, DO}}], 1];
+swspin[e_] := Expand[xtospin[fermionstox[e, swc -> swX], swX -> swS]];
+swdimerH0 = swU Sum[nc[number[swc[i], UP], number[swc[i], DO]], {i, 2}];
+swdimerP = nc[projector1[swc[1]], projector1[swc[2]]];
+swheis = Expand[(4 nc[swS[1, 3], swS[2, 3]] + 2 nc[swS[1, 4], swS[2, 5]] + 2 nc[swS[1, 5], swS[2, 4]] - 1)/4];
+
+testgroup["Eigenoperators",
+ Module[{e},
+  e = eigenoperators[nc[swc[CR, 1, UP], swc[AN, 2, UP]], swdimerH0];
+  testcase["Hubbard hopping splits by the doublon number",
+    {e[[All, 1]], e[[2, 2]]},
+    {{0, swU, -swU}, Expand[nc[swc[CR, 1, UP], swc[AN, 2, UP], number[swc[1], DO], 1 - number[swc[2], DO]]]}];
+  e = eigenoperators[nc[swc[CR, 1, UP], swc[AN, 2, UP]] + nc[swc[CR, 2, DO], swc[AN, 1, DO]], swdimerH0];
+  testcase["Components add up", Expand[Total[e[[All, 2]]] - nc[swc[CR, 1, UP], swc[AN, 2, UP]] - nc[swc[CR, 2, DO], swc[AN, 1, DO]]], 0];
+  testcase["Components are eigenoperators", Union[Map[Expand[komutator[swdimerH0, #[[2]]] - #[[1]] #[[2]]] &, e]], {0}];
+  testcase["Band, boson and Zeeman energies",
+    eigenoperators[nc[swS[1, 4], swc[CR, 1, DO], swc[AN, 1, UP]] + nc[swb[CR], swd[AN, UP]],
+      swB swS[1, 3] + sww number[swb[]] + swed number[swd[]] + swg number[swc[1]]],
+    {{-swed + sww, nc[swb[CR], swd[AN, UP]]}, {swB, nc[swS[1, 4], swc[CR, 1, DO], swc[AN, 1, UP]]}}];
+  testcase["X-operators of an atomic Hamiltonian",
+    eigenoperators[swX[1, "0", "UP"] + swX[1, "UP", "2"], swU swX[1, "2", "2"] + swed swX[1, "UP", "UP"]],
+    {{-swed, swX[1, "0", "UP"]}, {swed - swU, swX[1, "UP", "2"]}}];
+  testcase["Non-diagonal H0",
+    Quiet[eigenoperators[swc[CR, 1, UP], swdimerH0 + swt hop[swc[1], swc[2]]], eigenoperators::diag], $Failed];
+  testcase["Sums are decomposed through their summands",
+    Quiet[eigenoperators[sum[swc[CR, swk, UP], {swk}], 0], eigenoperators::sum], $Failed];
+  testcase["Non-products", Quiet[eigenoperators[Exp[swc[CR, 1, UP]], 0], eigenoperators::term], $Failed];
+  testcase["Local fermions need the default ordering",
+    Block[{ordering}, ordering[swd] = SEA;
+      Quiet[eigenoperators[swd[CR, UP], swU nc[number[swd[], UP], number[swd[], DO]]], eigenoperators::ordering]], $Failed];
+  testcase["Real functions in coefficients are numbers",
+    {nc[swc[CR, 1, UP], (1 + sweps[swk]) swc[AN, 1, UP]], isnumericQ[sweps[swk]^2 - Conjugate[swv[swk]]]},
+    {(1 + sweps[swk]) number[swc[1], UP], True}];
+ ]];
+
+testgroup["Schrieffer-Wolff transformation of the Hubbard dimer",
+ Module[{r, rs, modes = swmodes[{1, 2}], pind, rm, sm, h0m, vm, q, x, s, h},
+  r = schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], swdimerP, 4];
+  testcase["Exchange through fourth order", Map[swspin, r],
+    {0, 0, Expand[4 swt^2/swU swheis], 0, Expand[-16 swt^4/swU^3 swheis]}];
+  testcase["Singlet-triplet gap of the exact solution",
+    Expand[Simplify[Normal[Series[(Sqrt[swU^2 + 16 swt^2] - swU)/2, {swt, 0, 4}]], swU > 0]], 4 swt^2/swU - 16 swt^4/swU^3];
+  pind = Flatten[Position[Diagonal[swmat[swdimerP, modes]], 1]];
+  rm = schriefferwolffmatrix[swmat[swdimerH0, modes], swmat[-swt hop[swc[1], swc[2]], modes], pind, 4];
+  testcase["Operators and matrices agree",
+    Union[Flatten[Table[Simplify[swmat[r[[m]], modes][[pind, pind]] - rm[[m]]], {m, 5}]]], {0}];
+  (* independent check: the off-diagonal blocks of e^S H e^-S are of order lambda^5 *)
+  h0m = N[swmat[swdimerH0, modes] /. swU -> 1]; vm = N[swmat[-swt hop[swc[1], swc[2]], modes] /. swt -> 1];
+  {h, s} = schriefferwolffmatrix[h0m, vm, pind, 4, "Generator" -> True];
+  q = Complement[Range[16], pind];
+  x = Map[Function[lam, Max[Abs[(MatrixExp[Sum[lam^m s[[m]], {m, 4}]] . (h0m + lam vm) .
+    MatrixExp[-Sum[lam^m s[[m]], {m, 4}]])[[pind, q]]]]], {1/10, 1/20}];
+  testcase["Block-off-diagonal remainder is of fifth order", 25 < x[[1]]/x[[2]] < 40 && x[[1]] < 10^-3, True];
+  testcase["Generators are anti-Hermitian", Max[Abs[Flatten[Map[# + ConjugateTranspose[#] &, s]]]] < 10^-12, True];
+  {rs, sm} = schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], swdimerP, 2, "Generator" -> True];
+  testcase["Operator generators agree with matrices",
+    Union[Flatten[Table[Simplify[swmat[sm[[m]], modes] - schriefferwolffmatrix[swmat[swdimerH0, modes],
+      swmat[-swt hop[swc[1], swc[2]], modes], pind, 2, "Generator" -> True][[2, m]]], {m, 2}]]], {0}];
+  testcase["Generator option gives the same effective Hamiltonian", Expand[rs - r[[1 ;; 3]]], {0, 0, 0}];
+  testcase["Operator generators are anti-Hermitian", Expand[sm + Map[conj, sm]], {0, 0}];
+  testcase["X-operator route",
+    Expand[xtospin[schriefferwolff[swU (swX[1, "2", "2"] + swX[2, "2", "2"]), fermionstox[-swt hop[swc[1], swc[2]], swc -> swX],
+      nc[swX[1, "UP", "UP"] + swX[1, "DO", "DO"], swX[2, "UP", "UP"] + swX[2, "DO", "DO"]], 2][[3]], swX -> swS]],
+    Expand[4 swt^2/swU swheis]];
+ ]];
+
+testgroup["Schrieffer-Wolff transformation of impurity models",
+ Module[{h0, v, r, sp, a, jk, modes, vals, sub, pind, rm, l},
+  h0 = sum[sweps[swk] (number[swc[swk], UP] + number[swc[swk], DO]), {swk}] + swed (number[swd[], UP] + number[swd[], DO]) +
+    swU nc[number[swd[], UP], number[swd[], DO]];
+  v = sum[swv[swk] hop[swc[swk], swd[]], {swk}];
+  r = schriefferwolff[h0, v, projector1[swd[]], 2];
+  testcase["Anderson model: no first-order term", r[[2]], 0];
+  sp = xtospin[fermionstox[r[[3]], swd -> swX], swX -> swS];
+  a = First[Cases[sp, HoldPattern[sum[z_, {swk, _}]] :> z, Infinity]];
+  l = First[Cases[sp, HoldPattern[sum[_, {swk, k_}]] :> k, Infinity]];
+  jk = swv[swk] swv[l] (1/(sweps[swk] - swed) + 1/(swed + swU - sweps[swk]) + 1/(sweps[l] - swed) + 1/(swed + swU - sweps[l]));
+  testcase["Kondo exchange J_kk'",
+    Simplify[{Coefficient[a, nc[swS[4], swc[CR, swk, DO], swc[AN, l, UP]]] - jk/2,
+      Coefficient[a, nc[swS[3], swc[CR, swk, UP], swc[AN, l, UP]]] + Coefficient[a, nc[swS[3], swc[CR, l, UP], swc[AN, swk, UP]]] - jk/2,
+      Coefficient[a, nc[swS[3], swc[CR, swk, DO], swc[AN, l, DO]]] + Coefficient[a, nc[swS[3], swc[CR, l, DO], swc[AN, swk, DO]]] + jk/2}], {0, 0, 0}];
+  (* specialization to a bath with two levels against the matrix transformation *)
+  modes = {{swd, {UP}}, {swd, {DO}}, {swc, {1, UP}}, {swc, {1, DO}}, {swc, {2, UP}}, {swc, {2, DO}}};
+  vals = {swed -> -1/2, swU -> 3/2, sweps[1] -> 1/5, sweps[2] -> -1/3, swv[1] -> 1, swv[2] -> 7/10};
+  sub[e_] := Expand[e //. {HoldPattern[sum[z_, {i1_, i2_}]] :> Sum[z /. {i1 -> j1, i2 -> j2}, {j1, 2}, {j2, 2}],
+    HoldPattern[sum[z_, {i1_}]] :> Sum[z /. i1 -> j1, {j1, 2}]}];
+  pind = Flatten[Position[Diagonal[swmat[projector1[swd[]], modes]], 1]];
+  rm = schriefferwolffmatrix[swmat[sub[h0], modes] /. vals, swmat[sub[v], modes] /. vals, pind, 2];
+  testcase["Momentum sums against a two-level bath",
+    Max[Abs[Table[(swmat[sub[r[[m]]], modes] /. vals)[[pind, pind]] - rm[[m]], {m, 3}]]], 0];
+ ]];
+
+testgroup["Schrieffer-Wolff transformation on lattices and clusters",
+ Module[{h0, v, r, nd, l = 4, h0c, vc, pc, cl, modes, pind, m, tjmodes, h, hm, nsec, ex, err, p3, v3},
+  nd[x_] := 1 - nc[number[x, UP], number[x, DO]];
+  h0 = swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}];
+  v = -swt sum[hop[swc[swR], swc[swR + 1]], {swR}];
+  r = schriefferwolff[h0, v, {swc, projector1}, 2];
+  testcase["Heisenberg chain at half filling",
+    swspin[r[[3]]], Expand[-swN swt^2/swU + sum[Expand[4 swt^2/swU (nc[swS[swR, 3], swS[swR + 1, 3]] +
+      (nc[swS[swR, 4], swS[swR + 1, 5]] + nc[swS[swR, 5], swS[swR + 1, 4]])/2)], {swR}]]];
+  r = schriefferwolff[h0, v, {swc, nd}, 2];
+  h0c = swU Sum[nc[number[swc[i], UP], number[swc[i], DO]], {i, 0, l - 1}];
+  vc = -swt Sum[hop[swc[i], swc[Mod[i + 1, l]]], {i, 0, l - 1}];
+  pc = nc @@ Table[nd[swc[i]], {i, 0, l - 1}];
+  cl = schriefferwolff[h0c, vc, pc, 2];
+  modes = swmodes[Range[0, l - 1]];
+  pind = Flatten[Position[Diagonal[swmat[pc, modes]], 1]];
+  testcase["t-J model on a lattice against a four-site ring",
+    Table[Union[Flatten[Simplify[swmat[sumCluster[r[[m]], {l}] - cl[[m]], modes][[pind, pind]]]]], {m, 2, 3}], {{0}, {0}}];
+  (* degenerate P: H^(2) = -(1/U) P V Q V P *)
+  m = swmat[vc, modes];
+  testcase["t-J model: second order for a degenerate P",
+    Union[Flatten[Simplify[swmat[cl[[3]], modes][[pind, pind]] + (m . m)[[pind, pind]]/swU - (m[[pind, pind]] . m[[pind, pind]])/swU]]], {0}];
+  (* three-site chain with two electrons against exact diagonalization *)
+  tjmodes = swmodes[{1, 2, 3}];
+  v3 = -swt (hop[swc[1], swc[2]] + hop[swc[2], swc[3]]);
+  p3 = nc @@ Table[nd[swc[i]], {i, 3}];
+  h = schriefferwolff[swU Sum[nc[number[swc[i], UP], number[swc[i], DO]], {i, 3}], v3, p3, 3];
+  pind = Flatten[Position[Transpose[{Diagonal[swmat[p3, tjmodes]], Diagonal[swmat[Sum[number[swc[i]], {i, 3}], tjmodes]]}], {1, 2}]];
+  nsec = Flatten[Position[Diagonal[swmat[Sum[number[swc[i]], {i, 3}], tjmodes]], 2]];
+  hm = swmat[swU Sum[nc[number[swc[i], UP], number[swc[i], DO]], {i, 3}] + v3, tjmodes];
+  err[u_, k_] := Module[{ex = Sort[Eigenvalues[N[hm[[nsec, nsec]] /. {swt -> 1, swU -> u}]]][[1 ;; Length[pind]]]},
+    Max[Abs[Sort[Eigenvalues[N[Total[Map[swmat[#, tjmodes][[pind, pind]] &, h[[1 ;; k + 1]]]] /. {swt -> 1, swU -> u}]]] - ex]]];
+  testcase["Three-site t-J spectrum converges with the order",
+    {3 < err[20, 2]/err[40, 2] < 5, 6 < err[20, 3]/err[40, 3] < 10, err[40, 3] < err[40, 2]},
+    {True, True, True}];
+ ]];
+
+testgroup["Schrieffer-Wolff options and diagnostics",
+ Module[{h0m, vm, r1, r2, u, pind = {2, 3}},
+  testcase["Resonances are reported",
+    Quiet[schriefferwolff[0, -swt hop[swc[1], swc[2]], swdimerP, 2], schriefferwolff::res], $Failed];
+  testcase["Projectors must be number-operator polynomials",
+    Quiet[schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], hop[swc[1], swc[2]], 2], schriefferwolff::proj], $Failed];
+  testcase["Projectors must be idempotent",
+    Quiet[schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], 2 number[swc[1], UP], 2], schriefferwolff::proj], $Failed];
+  testcase["Lattice rules up to second order",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt sum[hop[swc[swR], swc[swR + 1]], {swR}],
+      {swc, projector1}, 3], schriefferwolff::rule], $Failed];
+  testcase["Lattice terms must be sums",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt hop[swc[0], swc[1]],
+      {swc, projector1}, 2], schriefferwolff::lattice], $Failed];
+  testcase["Lattice sites must be R + n",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt sum[hop[swc[swR], swc[2 swR]], {swR}],
+      {swc, projector1}, 2], schriefferwolff::lattice], $Failed];
+  testcase["Lattice perturbations must be even",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt sum[swc[CR, swR, UP], {swR}],
+      {swc, projector1}, 2], schriefferwolff::parity], $Failed];
+  testcase["Lattice projector rules are checked",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt sum[hop[swc[swR], swc[swR + 1]], {swR}],
+      {swc, 2 number[#, UP] &}, 2], schriefferwolff::proj], $Failed];
+  testcase["Simplification option", schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], swdimerP, 1, "Simplify" -> Identity], {0, 0}];
+  (* matrices: non-diagonal numerical H0 is diagonalized within the blocks *)
+  u = RotationMatrix[0.3][[{1, 2}, {1, 2}]];
+  h0m = {{0, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1.5, 0}, {0, 0, 0, 3}};
+  vm = {{0, 0.2, 0.1, 0}, {0.2, 0, 0, 0.3}, {0.1, 0, 0, 0.2}, {0, 0.3, 0.2, 0}};
+  r1 = schriefferwolffmatrix[h0m, vm, {1, 4}, 3];
+  r2 = With[{w = ArrayFlatten[{{1, 0, 0}, {0, RotationMatrix[0.4], 0}, {0, 0, 1}}]},
+    schriefferwolffmatrix[w . h0m . Transpose[w], w . vm . Transpose[w], {1, 4}, 3]];
+  testcase["Non-diagonal H0 matrices", Max[Abs[Flatten[r1 - r2]]] < 10^-12, True];
+  testcase["Matrix blocks must not couple P and Q",
+    Quiet[schriefferwolffmatrix[{{0, 1}, {1, 2}}, {{0, 0}, {0, 0}}, {1}, 2], schriefferwolffmatrix::block], $Failed];
+  testcase["Symbolic matrices must be diagonal",
+    Quiet[schriefferwolffmatrix[{{swU, 0, 0}, {0, 0, swt}, {0, swt, 0}}, IdentityMatrix[3], {1}, 2], schriefferwolffmatrix::diag], $Failed];
+  testcase["Matrix dimensions", Quiet[schriefferwolffmatrix[IdentityMatrix[2], IdentityMatrix[3], {1}, 2], schriefferwolffmatrix::dim], $Failed];
+  testcase["Matrix resonances", Quiet[schriefferwolffmatrix[{{0, 0}, {0, 0}}, {{0, 1}, {1, 0}}, {1}, 2], schriefferwolff::res], $Failed];
+  testcase["Rotated matrix generators",
+    Module[{w = ArrayFlatten[{{1, 0, 0}, {0, RotationMatrix[0.4], 0}, {0, 0, 1}}], s1, s2},
+      s1 = schriefferwolffmatrix[h0m, vm, {1, 4}, 2, "Generator" -> True][[2]];
+      s2 = schriefferwolffmatrix[w . h0m . Transpose[w], w . vm . Transpose[w], {1, 4}, 2, "Generator" -> True][[2]];
+      Max[Abs[Flatten[Table[s2[[m]] - w . s1[[m]] . Transpose[w], {m, 2}]]]] < 10^-12], True];
+  testcase["Order zero", schriefferwolff[swdimerH0, -swt hop[swc[1], swc[2]], swdimerP, 0], {0}];
+  testcase["Bath operators must be eigenoperators",
+    Quiet[schriefferwolff[swU nc[number[swd[], UP], number[swd[], DO]] + swt hop[swc[1], swc[2]], hop[swc[1], swd[]],
+      projector1[swd[]], 2], eigenoperators::diag], $Failed];
+  testcase["Lattice H0 with mixed local terms",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swd[swR], DO]], {swR}], -swt sum[hop[swc[swR], swc[swR + 1]], {swR}],
+      {swc, projector1}, 2], schriefferwolff::lattice], $Failed];
+  testcase["Lattice H0 with local terms outside sums",
+    Quiet[schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}] + swU nc[number[swc[0], UP], number[swc[0], DO]],
+      -swt sum[hop[swc[swR], swc[swR + 1]], {swR}], {swc, projector1}, 2], schriefferwolff::lattice], $Failed];
+  testcase["Lattice vectors as offsets",
+    Module[{h0 = swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}]},
+      Expand[(schriefferwolff[h0, -swt sum[hop[swc[swR], swc[swR + swa1]], {swR}], {swc, projector1}, 2] /. swa1 -> 1) -
+        schriefferwolff[h0, -swt sum[hop[swc[swR], swc[swR + 1]], {swR}], {swc, projector1}, 2]]], {0, 0, 0}];
+  testcase["Lattice generators",
+    Module[{g = schriefferwolff[swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}], -swt sum[hop[swc[swR], swc[swR + 1]], {swR}],
+        {swc, projector1}, 2, "Generator" -> True]},
+      {Length[g[[2]]], sumSimplifyKD[Expand[sumExpand[g[[2, 1]] + conj[g[[2, 1]]]]]]}], {2, 0}];
+  testcase["Index names that would collide are kept",
+    snegswdummies[sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]], sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]];
+  testcase["Fermions to X-operators and back",
+    Map[Expand[xtofermions[fermionstox[#, swc -> swX], swX -> swc] - #] &,
+      {swc[CR, 1, UP], swc[AN, 1, DO], nc[swc[CR, 1, UP], swc[CR, 1, DO]], number[swc[1], UP], swc[CR, 1, DO]}], {0, 0, 0, 0, 0}];
+  testcase["X-operators to spins", xtospin[swX[1, "UP", "DO"] + swX[1, "DO", "DO"], swX -> swS], 1/2 - swS[1, 3] + swS[1, 4]];
+  testcase["States outside single occupancy are dropped",
+    Quiet[Check[xtospin[swX[1, "2", "UP"], swX -> swS], "msg", xtospin::out], xtospin::out], "msg"];
+  testcase["fermionstox needs spin-1/2 fermions", Quiet[fermionstox[swb[CR], swb -> swX], fermionstox::spin], $Failed];
+  testcase["fermionstox needs Hubbard-atom states", Quiet[fermionstox[swc[CR, 1, UP], swc -> swS], xtofermions::states], $Failed];
+  testcase["xtospin needs Hubbard-atom states", Quiet[xtospin[swY[1, 1, 2], swY -> swS], xtofermions::states], $Failed];
+  testcase["xtospin needs spin operators", Quiet[xtospin[swX[1, "UP", "UP"], swX -> swc], xtospin::spinop], $Failed];
+ ]];
+
+
+(* The examples of README_schriefferwolff.md *)
+testgroup["Schrieffer-Wolff documentation examples",
+ Module[{h0, v},
+  testcase["README eigenoperators", eigenoperators[nc[swc[CR, 1, UP], swc[AN, 2, UP]], swdimerH0][[All, 1]], {0, swU, -swU}];
+  h0 = swU sum[nc[number[swc[swR], UP], number[swc[swR], DO]], {swR}];
+  v = -swt sum[hop[swc[swR], swc[swR + 1]], {swR}];
+  testcase["README t-J rule as a pure function",
+    Expand[schriefferwolff[h0, v, {swc, 1 - nc[number[#, UP], number[#, DO]] &}, 2] -
+      schriefferwolff[h0, v, {swc, Function[x, 1 - nc[number[x, UP], number[x, DO]]]}, 2]], {0, 0, 0}];
+ ]];
+
 ]; (* isolated package state *)
 testcase["Regression groups restore ordering", DownValues[ordering], savedRegressionOrdering];
 
