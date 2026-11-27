@@ -1,0 +1,92 @@
+\chapter{Electrons in crystals}
+\setwlchapter{crystals}
+\section{From the gas to a lattice}
+For the three-dimensional unpolarized electron gas let
+$4\pi(r_s a_0)^3/3=1/n$, so that $k_F=(3\pi^2 n)^{1/3}$. The Fermi
+sphere gives the kinetic energy per electron $3\hbar^2 k_F^2/(10m)$.
+To see the different density scaling of exchange, integrate
+$4\pi e_*^2/q^2$ over two occupied spheres of equal spin, where
+$e_*^2=e^2/(4\pi\epsilon_0)$. At fixed separation $q$ the overlap
+volume is $\pi(4k_F+q)(2k_F-q)^2/12$ for $q\le2k_F$ and zero otherwise.
+The radial measure cancels the interaction denominator. Dividing by
+the density and including the exchange factor $-1/2$ gives
+$E_x/N=-3e_*^2 k_F/(4\pi)$. The neutralizing background removes the
+Hartree energy. Thus kinetic and exchange terms scale respectively as
+$r_s^{-2}$ and $r_s^{-1}$; their competition alone does not give the
+exact correlation energy.
+
+On a Bravais lattice with hopping $-t$ on each nearest-neighbour bond,
+$\epsilon_k=-2t\sum_{\alpha=1}^{d}\cos k_\alpha$ for the chain,
+square and simple cubic lattices with unit spacing. Bandwidth $4dt$
+does not determine the density of states: at a stationary point its
+shape also depends on the signs of the local curvatures. A 2D saddle
+gives the logarithmic van Hove singularity at zero energy on the square
+lattice; the 1D band edge instead has an inverse-square-root divergence.
+\casestudy{square}{A square-lattice Bloch matrix}
+
+\section{Orbital basis, valleys and topology}
+Take one $A$ and one $B$ orbital per cell. In the SSH chain the
+off-diagonal matrix element in a cell-periodic convention is
+$q(k)=v+w e^{-ik}$. Its path is a circle about $v$. With chiral
+symmetry and a fixed cell and termination, this path encloses the
+origin if $|w|>|v|$; one cannot change that winding without crossing
+$q=0$. The spectrum $\pm|q|$ is insensitive to the orientation of
+the path, but the phase of an eigenvector is not. At $v=w$ the gap
+closes at $k=\pi$ for real positive hoppings.
+\casestudy{ssh}{Where the dimerized-chain gap closes}
+\subsection{Measuring a winding without choosing eigenvector phases}
+An eigensolver may multiply its eigenvector by a different phase at
+every momentum. Direct finite differences of these vectors are then
+meaningless. In a two-band chiral model with no diagonal terms use
+the phase of $q(k)=h_{AB}(k)$ instead. Along a closed mesh add
+$\arg[q(k_{j+1})/q(k_j)]$, taking each step on the principal branch.
+The unit cell and ordered pair of orbitals must stay fixed. For the
+orientation $q=v+w e^{-ik}$ the nontrivial integer is negative.
+The occupied-band Berry phase modulo $2\pi$ is $\pi$ times this
+winding modulo $2\pi$ in the cell-periodic convention.
+\begin{wl}
+winding[v_,w_,n_] := Module[{q = N[v + w Exp[-2 Pi I Range[0,n-1]/n]]},
+  Round[Total[Arg[RotateLeft[q]/q]]/(2 Pi)]];
+TableForm[Table[{v,1,winding[v,1,40],winding[v,1,80]}, {v,{1/2,2}}],
+ TableHeadings -> {None,{"v","w","40 points","80 points"}}]
+\end{wl}
+At $v=w$ the mesh includes $q(\pi)=0$, so the winding is undefined;
+do not repair division by zero by adding a small imaginary shift.
+A phase step can cross the branch cut on a coarse mesh even short of
+a closing. Refining the mesh or following the circle analytically
+distinguishes this sampling error from a transition.
+
+\subsection{A second translation vector}
+In graphene the two independent translation vectors supply a second
+phase. At a valley the three complex hopping amplitudes sum to zero,
+and linearizing their sum gives a Dirac cone. A staggered sublattice
+potential gives equal mass signs in the two valleys for a fixed spin;
+intrinsic Kane--Mele spin-orbit coupling gives opposite signs and
+reverses them for the other spin. Time reversal therefore allows
+opposite spin-resolved Chern numbers with zero total Chern number in
+the spin-conserving limit.
+\casestudy{graphene}{Destructive interference at a Dirac point}
+\casestudy{rashba}{Which spin component splits the band?}
+
+\section{Flux per plaquette}
+In Landau gauge the forward $y$ hop at coordinate $x$ carries
+$e^{2\pi i\alpha x}$ for flux $\alpha$ in units of a flux quantum per
+plaquette. For $\alpha=p/q$ in lowest terms a magnetic cell contains
+$q$ sites. At fixed $k_y$ the diagonal entries of the Harper matrix
+are $-2t\cos(k_y+2\pi p x/q)$; nearest $x$ neighbours are coupled
+by $-t$ with a boundary twist $e^{iqk_x}$. Here energies are in units
+of $t$; at the centre of the magnetic Brillouin zone:
+\begin{wl}
+harper[q_, ky_] := Table[-2 Cos[ky + 2 Pi i/q] KroneckerDelta[i, j] -
+  Boole[Mod[i-j, q] == 1] - Boole[Mod[j-i, q] == 1],
+  {i, 0, q-1}, {j, 0, q-1}];
+harper[3, 0] // MatrixForm
+\end{wl}
+The oriented product of link phases around a plaquette is gauge
+invariant; individual bond phases need not be. The same distinction
+matters for current operators derived by differentiating the hopping
+with respect to vector potential~\cite{vucicevic}.
+\begin{exercise}[A magnetic cell]\label{ex:harper}
+For flux $1/3$ find the three energies at $k_x=k_y=0$. Check their
+sum and the sum of their squares without using the eigenvectors.
+\end{exercise}

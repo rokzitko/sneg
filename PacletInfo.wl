@@ -10,9 +10,11 @@ PacletObject[<|
   "Support" -> "https://github.com/rokzitko/sneg/issues",
   "Extensions" -> {
     {"Kernel", "Root" -> "Kernel", "Context" -> {"Sneg`", "sneg`"}},
+    {"Documentation", "Language" -> "English", "MainPage" -> "Guides/SNEG"},
     {"Asset", "Assets" -> {
       {"Source", "./sneg.m"},
       {"License", "./LICENSE"},
+      {"DocumentationLicense", "./doc/LICENSE.txt"},
       {"ReadMe", "./README.md"}
     }}
   }

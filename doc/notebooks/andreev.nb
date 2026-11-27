@@ -1,0 +1,84 @@
+Notebook[{Cell["Singlet and doublet in a superconducting dot", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 11", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Replace the superconducting continuum by one paired orbital \
+with gap parameter ", Cell[BoxData[FormBox["\[CapitalDelta]", 
+        TraditionalForm]], "InlineFormula"], ". Unlike a static pair field on \
+the impurity, this model retains a bath quasiparticle. Compare the lowest \
+states with integer and half-integer spin as the repulsion increases, at ", 
+     Cell[BoxData[FormBox[RowBox[{"\[CapitalDelta]", "=", "1"}], 
+        TraditionalForm]], "InlineFormula"], " and hopping ", 
+     Cell[BoxData[FormBox[RowBox[{"v", "=", "1", "/", "2"}], 
+        TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", 
+            RowBox[{"d", ",", "f"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", "U", "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"hp", " ", "=", " ", RowBox[{RowBox[{"U", " ", 
+                RowBox[{RowBox[{"isozsq", "[", RowBox[{"d", "[", "]"}], 
+                    "]"}], "/", "2"}]}], " ", "-", " ", RowBox[{"bcs", "[", 
+                RowBox[{"f", "[", "]"}], "]"}], " ", "+", " ", 
+              RowBox[{RowBox[{"hop", "[", RowBox[{RowBox[{"f", "[", "]"}], 
+                    ",", RowBox[{"d", "[", "]"}]}], "]"}], "/", "2"}]}]}], 
+          ";"}], "\n", RowBox[{RowBox[{"mm", " ", "=", " ", 
+            RowBox[{"makematricesbzvc", "[", RowBox[{"hp", ",", 
+                RowBox[{"szbasisvc", "[", RowBox[{"{", RowBox[
+                     {RowBox[{"d", "[", "]"}], ",", RowBox[{"f", "[", 
+                        "]"}]}], "}"}], "]"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{RowBox[{"emin", "[", RowBox[{"sz_", ",", "u_"}], 
+              "]"}], " ", ":=", " ", RowBox[{"Min", "[", RowBox[{
+                "Eigenvalues", "[", RowBox[{"N", "[", RowBox[
+                   {RowBox[{RowBox[{"First", "[", RowBox[{"keyselect", "[", 
+                          RowBox[{"mm", ",", RowBox[{"{", "sz", "}"}]}], 
+                          "]"}], "]"}], "[", RowBox[{"[", "2", "]"}], "]"}], 
+                    " ", "/.", " ", RowBox[{"U", " ", "->", " ", "u"}]}], 
+                  "]"}], "]"}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"rows", " ", "=", " ", RowBox[{"Table", "[", 
+              RowBox[{RowBox[{"{", RowBox[{"u", ",", RowBox[{"emin", "[", 
+                      RowBox[{"0", ",", "u"}], "]"}], ",", RowBox[{"emin", 
+                      "[", RowBox[{RowBox[{"1", "/", "2"}], ",", "u"}], 
+                      "]"}]}], "}"}], ",", " ", RowBox[{"{", RowBox[
+                   {"u", ",", "0", ",", "4"}], "}"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"TableForm", "[", RowBox[{"rows", ",", 
+            RowBox[{"TableHeadings", " ", "->", " ", RowBox[{"{", 
+                RowBox[{"None", ",", RowBox[{"{", RowBox[{"\"U\"", ",", 
+                      "\"Lowest Sz = 0\"", ",", "\"Lowest Sz = 1/2\""}], 
+                    "}"}]}], "}"}]}]}], "]"}]}], "Input", 
+      CellLabel -> "In[1]:="], 
+     Cell[BoxData[TagBox[TagBox[GridBox[{{TagBox["\"U\"", HoldForm], 
+            TagBox["\"Lowest Sz = 0\"", HoldForm], 
+            TagBox["\"Lowest Sz = 1/2\"", HoldForm]}, 
+           {"0", RowBox[{"-", "1.4142135623730954`"}], 
+            RowBox[{"-", "1.2071067811865477`"}]}, 
+           {"1", RowBox[{"-", "1.0706680578276822`"}], 
+            RowBox[{"-", "1.1513878188659974`"}]}, 
+           {"2", RowBox[{"-", "0.8019377358048385`"}], 
+            RowBox[{"-", "1.1180339887498945`"}]}, 
+           {"3", RowBox[{"-", "0.610838708758257`"}], 
+            RowBox[{"-", "1.0962912017836266`"}]}, 
+           {"4", RowBox[{"-", "0.4811943040920156`"}], 
+            RowBox[{"-", "1.0811388300841895`"}]}}, RowSpacings -> 1, 
+          ColumnSpacings -> 3, RowAlignments -> Baseline, 
+          ColumnAlignments -> Left, GridBoxDividers -> 
+           {"Columns" -> {{False}}, "Rows" -> {False, True, {False}, False}}, 
+          ColumnAlignments -> Left], {None, OutputFormsDump`HeadedColumns}], 
+        Function[BoxForm`e$, TableForm[BoxForm`e$, TableHeadings -> 
+           {None, {"U", "Lowest Sz = 0", "Lowest Sz = 1/2"}}]]]], "Output", 
+      CellLabel -> "Out[7]//TableForm="]}, Open]], 
+  Cell[TextData[{"The ordering reverses between ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "=", "0"}], TraditionalForm]], 
+      "InlineFormula"], " and ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "=", "1"}], TraditionalForm]], 
+      "InlineFormula"], ". States in the two columns have opposite fermion \
+parity and may cross without mixing. The energies include the constant in the \
+symmetric charging term ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "(", SubscriptBox["n", "d"], "-", "1", 
+          SuperscriptBox[")", "2"], "/", "2"}], TraditionalForm]], 
+      "InlineFormula"], "."}], "Text"], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Singlet and doublet in a superconducting dot"]

@@ -1,0 +1,36 @@
+Notebook[{Cell["Bonding and antibonding spectral weight", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 14", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"A bonding and an antibonding orbital contribute with \
+opposite signs to propagation from site 2 to site 1. The integrated \
+off-diagonal weight is zero:"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", "c", "]"}], 
+          ";"}], "\n", RowBox[{RowBox[{"h", " ", "=", " ", 
+            RowBox[{"-", RowBox[{"hop", "[", RowBox[{RowBox[{"c", "[", "1", 
+                    "]"}], ",", " ", RowBox[{"c", "[", "2", "]"}]}], 
+                "]"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"l", " ", "=", " ", RowBox[{"lehmann", "[", 
+              RowBox[{RowBox[{"c", "[", RowBox[{"AN", ",", " ", "1", ",", 
+                    " ", "UP"}], "]"}], ",", " ", RowBox[{"c", "[", 
+                  RowBox[{"CR", ",", " ", "2", ",", " ", "UP"}], "]"}], ",", 
+                " ", "h", ",", " ", RowBox[{"{", RowBox[{RowBox[{"c", "[", 
+                      "1", "]"}], ",", " ", RowBox[{"c", "[", "2", "]"}]}], 
+                  "}"}], ",", " ", "0"}], "]"}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{"l", ",", " ", RowBox[{"Chop", "[", 
+              RowBox[{"Total", "[", RowBox[{"l", "[", RowBox[{"[", 
+                    RowBox[{"All", ",", " ", "2"}], "]"}], "]"}], "]"}], 
+              "]"}]}], "}"}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{"{", RowBox[{RowBox[{"{", RowBox[{RowBox[{"-", 
+                     "0.999999999999998`"}], ",", "0.5`"}], "}"}], ",", 
+               RowBox[{"{", RowBox[{"0.999999999999998`", ",", RowBox[
+                    {"-", "0.5`"}]}], "}"}]}], "}"}], ",", "0"}], "}"}]], 
+      "Output", CellLabel -> "Out[4]="]}, Open]], 
+  Cell["Source: Second Quantization with SNEG, SNEG documentation project. \
+Licensed under Creative Commons Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Bonding and antibonding spectral weight"]

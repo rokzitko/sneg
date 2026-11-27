@@ -1,0 +1,98 @@
+\chapter{Superconductivity}
+\setwlchapter{superconductivity}
+\section{From a Cooper pair to the gap equation}
+Above an inert Fermi sea two electrons with opposite momenta can
+scatter repeatedly within a shell of width $\omega_D$. For a constant
+attraction $-g$ (with the volume absorbed in the normalization of the
+sum), their binding energy $E_b>0$ satisfies
+$1=g\sum_{0<\xi_k<\omega_D}(2\xi_k+E_b)^{-1}$. A nonzero one-spin
+density of states at the Fermi surface makes this sum logarithmic as
+$E_b\to0$. The instability is at arbitrarily weak attraction; its
+binding energy is not a power series in $g$.
+
+In a condensate one instead decouples the reduced interaction with
+$\Delta=g\sum_k\langle c_{-k\downarrow}c_{k\uparrow}\rangle$.
+For real positive $\Delta$ the pair-creation term has coefficient
+$-\Delta$. Diagonalizing the particle--hole block gives
+\[
+ E_k=\sqrt{\xi_k^2+\Delta^2},\qquad
+ |v_k|^2=(1-\xi_k/E_k)/2,\qquad |u_k|^2=1-|v_k|^2 .
+\]
+The gap equation contains the thermal factor $1-2f(E_k)$.
+With the sum now covering both signs of $\xi_k$, the weak-coupling
+gap exponent differs by a factor of two from the isolated Cooper
+pair exponent. A band cutoff, the number of spin species in the
+density of states, and the normalization of $g$ must agree before
+comparing the two.
+\casestudy{gap}{Self-consistency from the anomalous average}
+
+\section{Nambu doubling and bound states}
+For a single spinful orbital there are two physical positive-energy
+quasiparticles, not four. The negative eigenvalues of the BdG matrix
+are their particle--hole partners. A bound state can cross zero as a
+function of phase or exchange coupling. Its occupation and the
+many-body ground-state parity then matter even if a plot only shows
+positive energies. In an interacting dot at large lead gap the
+induced pairing mixes $|0\rangle$ and $|2\rangle$; the two singly
+occupied states remain a spin doublet. Comparing the lower even
+eigenvalue to the odd one locates a crossing without broadening.
+\casestudy{andreev}{An interacting level with induced pairing}
+For an ideal short single-channel junction with normal transmission
+$\tau$ and equal lead gaps, $E_A=\Delta\sqrt{1-\tau\sin^2(\phi/2)}$.
+At zero temperature the even ground branch contributes
+$I=(2e/\hbar)\partial_\phi(-E_A)$; counting the two Nambu partners
+as independent filled levels would double this current. A local
+magnetic exchange can also bind a quasiparticle below the gap.
+The induced-pairing dot is a useful limiting model, but it does not
+retain the continuum at $|\omega|=\Delta$ or its gap-edge singularity.
+\subsection{Reading the current from the parity branches}
+For a dot in the infinite-gap limit, amplitudes for transferring a
+pair through the two contacts add coherently. In a gauge where the
+left contact is real, $\Gamma_\phi=\Gamma_L+\Gamma_R e^{i\phi}$.
+At particle--hole symmetry the lowest even energy is $-|\Gamma_\phi|$;
+the odd energy is $-U/2$ and has no phase dependence in this limit.
+The equilibrium current switches branches at a ground-state crossing.
+Fixing the parity experimentally instead follows one branch through
+the crossing. Here $\Gamma_L=1$, $\Gamma_R=3/5$ and $U=2$.
+\begin{wl}
+ee[p_] := -Sqrt[1+(3/5)^2+2 (3/5) Cos[p]];
+eo = -1;
+TableForm[Table[{p, N[ee[p]], eo,
+  If[ee[p] < eo, N[(3/5) Sin[p]/(-ee[p])], 0]}, {p,{0,Pi/3,2 Pi/3,Pi}}],
+ TableHeadings -> {None,{"Phase","Even","Odd","Current / I0"}}]
+\end{wl}
+The current scale is $I_0=2e\Gamma_L/\hbar$. At a crossing the
+ground energy need not have a derivative; take one-sided derivatives
+rather than averaging them. A nonzero odd-branch current at finite
+lead gap is not captured by the static model.
+\begin{furtherreading}
+For the role of the superconducting continuum in variational states
+and in Andreev spin qubits see Refs.~\cite{ilicin-variational,ilicin-qubit}.
+The residual quasiparticle in a strongly coupled junction is discussed
+in Ref.~\cite{pavesic-residual}.
+\end{furtherreading}
+
+\section{Odd-parity pairing and end modes}
+For a uniform spinless chain the particle--hole diagonal term is
+$-\mu-2t\cos k$ and nearest-neighbour odd pairing has magnitude
+$2|\Delta\sin k|$. A bulk gap closes at $k=0$ or $\pi$ when
+$|\mu|=2|t|$ for nonzero $\Delta$. An open chain in the intervening
+phase has end Majoranas; finite chains generally have an exponentially
+small splitting, not an exactly protected zero eigenvalue at every
+length.
+\casestudy{kitaev}{The bulk closing at the topological transition}
+
+\section{Pair pseudospin on a bipartite lattice}
+The operator $\eta^+=\sum_j(-1)^j c^\dagger_{j\uparrow}c^\dagger_{j\downarrow}$
+creates an on-site pair with staggered phase. It commutes with nearest
+neighbour bipartite hopping: the two ends of a bond contribute with
+opposite signs. The local charge term gives
+$[H-\mu N,\eta^+]=(U-2\mu)\eta^+$, so at half filling it generates a
+charge SU(2) alongside ordinary spin SU(2). This exact symmetry of the
+Hubbard Hamiltonian is distinct from introducing a BCS anomalous
+average.
+\begin{exercise}[The atomic parity crossing]\label{ex:andreev}
+For one level with repulsion $U$ and induced pairing amplitude
+$\Gamma>0$, put $\epsilon=-U/2$. Find the two even energies and the
+odd energy. At what $U/\Gamma$ is the lowest state a doublet?
+\end{exercise}

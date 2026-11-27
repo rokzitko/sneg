@@ -1,0 +1,6 @@
+The SNEG documentation, stand-alone manual and teaching notebooks in this
+directory are licensed under Creative Commons Attribution 4.0 International:
+https://creativecommons.org/licenses/by/4.0/
+
+Attribution: SNEG documentation project, https://github.com/rokzitko/sneg.
+The SNEG software license is in LICENSE at the repository root.

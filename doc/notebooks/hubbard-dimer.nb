@@ -1,0 +1,259 @@
+Notebook[{Cell["Superexchange in the Hubbard dimer", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 10", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Declare the electron operators and real parameters. \
+Energies are measured relative to an empty site."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"Needs", "[", "\"sneg`\"", "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"snegfermionoperators", "[", 
+            RowBox[{"c", ",", " ", "d"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", RowBox[{"t", ",", " ", "U", 
+              ",", " ", "\[Epsilon]"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"atom", " ", "=", " ", RowBox[
+             {RowBox[{"\[Epsilon]", " ", RowBox[{"number", "[", RowBox[
+                   {"d", "[", "]"}], "]"}]}], " ", "+", " ", RowBox[{"U", 
+                " ", RowBox[{"hubbard", "[", RowBox[{"d", "[", "]"}], 
+                  "]"}]}]}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{RowBox[{"number", "[", RowBox[{"d", "[", "]"}], 
+              "]"}], ",", " ", RowBox[{"hubbard", "[", RowBox[{"d", "[", 
+                "]"}], "]"}]}], "}"}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{RowBox[{TagBox[StyleBox[TemplateBox[{"d", RowBox[
+                    {TagBox[StyleBox["\"\[DownArrow]\"", FontColor -> 
+                        RGBColor[0, 0, 1]], StyleForm[#1, FontColor -> 
+                         RGBColor[0, 0, 1]] & ]}], "\"\[Dagger]\""}, 
+                  "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                 ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+                DisplayForm], StyleBox["\[CenterDot]", FontColor -> 
+                 RGBColor[0, 1, 0]], TagBox[StyleBox[TemplateBox[
+                  {"d", RowBox[{TagBox[StyleBox["\"\[DownArrow]\"", 
+                       FontColor -> RGBColor[0, 0, 1]], StyleForm[#1, 
+                        FontColor -> RGBColor[0, 0, 1]] & ]}], "\"\""}, 
+                  "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                 ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+                DisplayForm]}], "+", RowBox[{TagBox[StyleBox[TemplateBox[
+                  {"d", RowBox[{TagBox[StyleBox["\"\[UpArrow]\"", 
+                       FontColor -> RGBColor[1, 0, 0]], StyleForm[#1, 
+                        FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                   "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                   SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                 ScriptBaselineShifts -> {1, 1}], DisplayForm], StyleBox[
+                "\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], TagBox[
+                StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                       "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                      StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                   "\"\""}, "Subsuperscript", SyntaxForm -> 
+                   SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                 ScriptBaselineShifts -> {1, 1}], DisplayForm]}]}], ",", 
+           RowBox[{"-", RowBox[{"(", RowBox[{TagBox[StyleBox[TemplateBox[
+                    {"d", RowBox[{TagBox[StyleBox["\"\[DownArrow]\"", 
+                         FontColor -> RGBColor[0, 0, 1]], StyleForm[#1, 
+                          FontColor -> RGBColor[0, 0, 1]] & ]}], 
+                     "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                        StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                     "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+                        StyleForm[#1, FontColor -> RGBColor[0, 0, 1]] & ]}], 
+                     "\"\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                        StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                     "\"\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm]}], 
+               ")"}]}]}], "}"}]], "Output", CellLabel -> "Out[5]="]}, Open]], 
+  Cell[TextData[{"Connect two sites by a single bond and check both charge \
+and spin conservation. The calculation reformulates Steeb and Hardy, Bose, \
+Spin and Fermi Systems: Problems and Solutions (2015), section 3.4, problem \
+84, in a total-spin basis."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"sites", " ", "=", " ", 
+            RowBox[{"{", RowBox[{RowBox[{"c", "[", "1", "]"}], ",", " ", 
+                RowBox[{"c", "[", "2", "]"}]}], "}"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"h0", " ", "=", " ", RowBox[{"U", " ", 
+              RowBox[{"Total", "[", RowBox[{"hubbard", "[", "sites", "]"}], 
+                "]"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"v", " ", "=", " ", RowBox[{RowBox[{"-", "t"}], " ", 
+              RowBox[{"hop", "[", RowBox[{RowBox[{"c", "[", "1", "]"}], ",", 
+                  " ", RowBox[{"c", "[", "2", "]"}]}], "]"}]}]}], ";"}], 
+        "\n", RowBox[{RowBox[{"hd", " ", "=", " ", RowBox[{"h0", " ", "+", 
+              " ", "v"}]}], ";"}], "\n", RowBox[{"Expand", "[", 
+          RowBox[{"{", RowBox[{RowBox[{"komutator", "[", RowBox[{"hd", ",", 
+                  " ", RowBox[{"Total", "[", RowBox[{"number", " ", "/@", 
+                      " ", "sites"}], "]"}]}], "]"}], ",", "\n", "  ", 
+              RowBox[{"komutator", "[", RowBox[{"hd", ",", " ", RowBox[
+                   {"Total", "[", RowBox[{"spinplus", " ", "/@", " ", 
+                      "sites"}], "]"}]}], "]"}]}], "}"}], "]"}]}], "Input", 
+      CellLabel -> "In[15]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{"0", ",", "0"}], "}"}]], "Output", 
+      CellLabel -> "Out[19]="]}, Open]], 
+  Cell[TextData[{"At half filling select the charge-zero subspace and \
+separate singlet and triplet."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"bd", " ", "=", " ", 
+            RowBox[{"qsbasisvc", "[", "sites", "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{RowBox[{"sector", "[", "s_", "]"}], " ", ":=", " ", 
+            RowBox[{"Select", "[", RowBox[{"bd", ",", " ", RowBox[
+                 {RowBox[{RowBox[{"First", "[", "#", "]"}], " ", "==", " ", 
+                    RowBox[{"{", RowBox[{"0", ",", " ", "s"}], "}"}]}], " ", 
+                  "&"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{RowBox[{"mat", "[", RowBox[{"h_", ",", " ", "b_"}], 
+              "]"}], " ", ":=", " ", RowBox[{RowBox[{"First", "[", 
+                RowBox[{"makematricesbzvc", "[", RowBox[{"h", ",", " ", 
+                    "b"}], "]"}], "]"}], "[", RowBox[{"[", "2", "]"}], 
+              "]"}]}], ";"}], "\n", RowBox[
+         {RowBox[{"hs", " ", "=", " ", RowBox[{"mat", "[", RowBox[{"hd", ",", 
+                " ", RowBox[{"sector", "[", "0", "]"}]}], "]"}]}], ";"}], 
+        "\n", RowBox[{"{", RowBox[{RowBox[{"Dimensions", "[", "hs", "]"}], 
+            ",", " ", RowBox[{"mat", "[", RowBox[{"hd", ",", " ", 
+                RowBox[{"sector", "[", "1", "]"}]}], "]"}]}], "}"}]}], 
+      "Input", CellLabel -> "In[20]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{RowBox[{"{", RowBox[{"3", ",", "3"}], 
+             "}"}], ",", RowBox[{"{", RowBox[{"{", "0", "}"}], "}"}]}], 
+         "}"}]], "Output", CellLabel -> "Out[24]="]}, Open]], 
+  Cell[TextData[{"The two ionic states couple to the covalent singlet but not \
+to the triplet."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[RowBox[{"hs", " ", "//", " ", "MatrixForm"}]], "Input", 
+      CellLabel -> "In[25]:="], 
+     Cell[BoxData[TagBox[RowBox[{"(", "\[NoBreak]", 
+          GridBox[{{"U", RowBox[{RowBox[{"-", SqrtBox["2"]}], " ", "t"}], 
+             "0"}, {RowBox[{RowBox[{"-", SqrtBox["2"]}], " ", "t"}], "0", 
+             RowBox[{RowBox[{"-", SqrtBox["2"]}], " ", "t"}]}, 
+            {"0", RowBox[{RowBox[{"-", SqrtBox["2"]}], " ", "t"}], "U"}}, 
+           RowSpacings -> 1, ColumnSpacings -> 1, RowAlignments -> Baseline, 
+           ColumnAlignments -> Center], "\[NoBreak]", ")"}], 
+        Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]], "Output", 
+      CellLabel -> "Out[25]//MatrixForm="]}, Open]], 
+  Cell[TextData[{"Factor the singlet characteristic polynomial. One doublon \
+state remains at energy ", Cell[BoxData[FormBox["U", TraditionalForm]], 
+      "InlineFormula"], "."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[RowBox[{"Factor", "[", RowBox[{"CharacteristicPolynomial", 
+           "[", RowBox[{"hs", ",", " ", "x"}], "]"}], "]"}]], "Input", 
+      CellLabel -> "In[26]:="], 
+     Cell[BoxData[RowBox[{"-", RowBox[{"(", RowBox[
+            {RowBox[{"(", RowBox[{"U", "-", "x"}], ")"}], " ", 
+             RowBox[{"(", RowBox[{RowBox[{"4", " ", SuperscriptBox["t", 
+                    "2"]}], "+", RowBox[{"U", " ", "x"}], "-", SuperscriptBox[
+                  "x", "2"]}], ")"}]}], ")"}]}]], "Output", 
+      CellLabel -> "Out[26]="]}, Open]], 
+  Cell[TextData[{"Half the derivative of the lowest energy with respect to ", 
+     Cell[BoxData[FormBox["U", TraditionalForm]], "InlineFormula"], 
+     " gives the double occupation per site."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"emin", " ", "=", " ", 
+            RowBox[{RowBox[{"(", RowBox[{"U", " ", "-", " ", RowBox[
+                   {"Sqrt", "[", RowBox[{RowBox[{"U", "^", "2"}], " ", "+", 
+                      " ", RowBox[{"16", " ", RowBox[{"t", "^", "2"}]}]}], 
+                    "]"}]}], ")"}], "/", "2"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"dsite", " ", "=", " ", RowBox[{"Simplify", "[", 
+              RowBox[{RowBox[{"D", "[", RowBox[{"emin", ",", " ", "U"}], 
+                  "]"}], "/", "2"}], "]"}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{"dsite", ",", " ", RowBox[{"dsite", " ", "/.", 
+              " ", RowBox[{"{", RowBox[{RowBox[{"U", " ", "->", " ", "0"}], 
+                  ",", " ", RowBox[{"t", " ", "->", " ", "1"}]}], "}"}]}]}], 
+          "}"}]}], "Input", CellLabel -> "In[27]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{RowBox[{FractionBox["1", "4"], " ", 
+             RowBox[{"(", RowBox[{"1", "-", FractionBox["U", SqrtBox[
+                   RowBox[{RowBox[{"16", " ", SuperscriptBox["t", "2"]}], 
+                     "+", SuperscriptBox["U", "2"]}]]]}], ")"}]}], ",", 
+           FractionBox["1", "4"]}], "}"}]], "Output", 
+      CellLabel -> "Out[29]="]}, Open]], 
+  Cell[TextData[{"Restrict to single occupancy and eliminate virtual charge \
+states through second order in hopping."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"p", " ", "=", " ", 
+            RowBox[{"nc", " ", "@@", " ", RowBox[{"(", RowBox[{"projector1", 
+                  " ", "/@", " ", "sites"}], ")"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"heff", " ", "=", " ", RowBox[{"schriefferwolff", 
+              "[", RowBox[{"h0", ",", " ", "v", ",", " ", "p", ",", " ", 
+                "2"}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegxoperators", "[", RowBox[{"X", ",", " ", 
+              "\"HubbardAtom\""}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegspinoperators", "[", 
+            RowBox[{"{", RowBox[{"S", ",", " ", RowBox[{"1", "/", "2"}]}], 
+              "}"}], "]"}], ";"}], "\n", RowBox[{"Expand", "[", 
+          RowBox[{"xtospin", "[", RowBox[{RowBox[{"fermionstox", "[", 
+                RowBox[{RowBox[{"heff", "[", RowBox[{"[", "3", "]"}], "]"}], 
+                  ",", " ", RowBox[{"c", " ", "->", " ", "X"}]}], "]"}], ",", 
+              " ", RowBox[{"X", " ", "->", " ", "S"}]}], "]"}], "]"}]}], 
+      "Input", CellLabel -> "In[30]:="], 
+     Cell[BoxData[RowBox[{RowBox[{"-", FractionBox[SuperscriptBox["t", "2"], 
+            "U"]}], "+", FractionBox[RowBox[{"4", " ", SuperscriptBox["t", 
+             "2"], " ", RowBox[{TagBox[StyleBox[TemplateBox[{"S", 
+                  RowBox[{"1"}], TagBox[StyleBox["\"z\"", FontColor -> 
+                     RGBColor[0, 0, 1]], StyleForm[#1, FontColor -> RGBColor[
+                       0, 0, 1]] & ]}, "Subsuperscript", SyntaxForm -> 
+                  SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+              StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+              TagBox[StyleBox[TemplateBox[{"S", RowBox[{"2"}], TagBox[
+                   StyleBox["\"z\"", FontColor -> RGBColor[0, 0, 1]], 
+                   StyleForm[#1, FontColor -> RGBColor[0, 0, 1]] & ]}, 
+                 "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+               DisplayForm]}]}], "U"], "+", FractionBox[
+          RowBox[{"2", " ", SuperscriptBox["t", "2"], " ", 
+            RowBox[{TagBox[StyleBox[TemplateBox[{"S", RowBox[{"1"}], 
+                  TagBox[StyleBox["\"+\"", FontColor -> RGBColor[0, 0, 1]], 
+                   StyleForm[#1, FontColor -> RGBColor[0, 0, 1]] & ]}, 
+                 "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+               DisplayForm], StyleBox["\[CenterDot]", FontColor -> 
+                RGBColor[0, 1, 0]], TagBox[StyleBox[TemplateBox[
+                 {"S", RowBox[{"2"}], TagBox[StyleBox["\"-\"", FontColor -> 
+                     RGBColor[0, 0, 1]], StyleForm[#1, FontColor -> RGBColor[
+                       0, 0, 1]] & ]}, "Subsuperscript", SyntaxForm -> 
+                  SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                ScriptBaselineShifts -> {1, 1}], DisplayForm]}]}], "U"], "+", 
+         FractionBox[RowBox[{"2", " ", SuperscriptBox["t", "2"], " ", 
+            RowBox[{TagBox[StyleBox[TemplateBox[{"S", RowBox[{"1"}], 
+                  TagBox[StyleBox["\"-\"", FontColor -> RGBColor[0, 0, 1]], 
+                   StyleForm[#1, FontColor -> RGBColor[0, 0, 1]] & ]}, 
+                 "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+               DisplayForm], StyleBox["\[CenterDot]", FontColor -> 
+                RGBColor[0, 1, 0]], TagBox[StyleBox[TemplateBox[
+                 {"S", RowBox[{"2"}], TagBox[StyleBox["\"+\"", FontColor -> 
+                     RGBColor[0, 0, 1]], StyleForm[#1, FontColor -> RGBColor[
+                       0, 0, 1]] & ]}, "Subsuperscript", SyntaxForm -> 
+                  SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                ScriptBaselineShifts -> {1, 1}], DisplayForm]}]}], "U"]}]], 
+      "Output", CellLabel -> "Out[34]="]}, Open]], 
+  Cell[TextData[{"Compare with the strong-coupling expansion of the exact \
+singlet-triplet gap for ", Cell[BoxData[FormBox[RowBox[{"U", ">", "0"}], 
+        TraditionalForm]], "InlineFormula"], "."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[RowBox[{RowBox[{"Normal", "[", RowBox[{"Series", "[", 
+             RowBox[{RowBox[{"-", "emin"}], ",", " ", RowBox[
+                {"{", RowBox[{"t", ",", " ", "0", ",", " ", "4"}], "}"}], 
+               ",", " ", RowBox[{"Assumptions", " ", "->", " ", 
+                 RowBox[{"U", " ", ">", " ", "0"}]}]}], "]"}], "]"}], " ", 
+         "//", "\n", "  ", RowBox[{RowBox[{"Simplify", "[", 
+             RowBox[{"#", ",", " ", RowBox[{"U", " ", ">", " ", "0"}]}], 
+             "]"}], " ", "&"}]}]], "Input", CellLabel -> "In[35]:="], 
+     Cell[BoxData[FractionBox[RowBox[{"4", " ", SuperscriptBox["t", "2"], 
+          " ", RowBox[{"(", RowBox[{RowBox[{RowBox[{"-", "4"}], " ", 
+                SuperscriptBox["t", "2"]}], "+", SuperscriptBox["U", "2"]}], 
+            ")"}]}], SuperscriptBox["U", "3"]]], "Output", 
+      CellLabel -> "Out[35]="]}, Open]], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Superexchange in the Hubbard dimer"]

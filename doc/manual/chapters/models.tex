@@ -1,0 +1,47 @@
+\chapter{Building Hamiltonians}
+\setwlchapter{models}
+\section{One bond at a time}
+For a real amplitude $t$, \fn{-t hop[c[i],c[j]]} includes both
+directions and both spins. The first term in a sum over distinct
+unordered bonds should therefore carry $-t$, not $-t/2$. On a finite
+open chain the last bond ends at $L$; on a periodic chain it joins
+$L$ to 1. The distinction is measurable already in the one-electron
+spectrum.
+\casestudy{hopping}{Standing waves and open ends}
+The open-chain wave function has nodes just outside the lattice at
+sites 0 and $L+1$. Its momentum denominator is consequently $L+1$.
+Periodic boundary conditions instead identify sites separated by $L$.
+For complex hopping write $v c_i^\dagger c_j+\hc$ explicitly or use
+\fn{matrixhop}; multiplying the entire Hermitian bond by complex $v$
+does not insert a Peierls phase.
+\casestudy{continuity}{Testing a bond by its current}
+
+\section{Local interactions and constraints}
+The number operator, the double-occupation projector and the spin
+Casimir give three distinct probes of a local shell. On one spinful
+orbital $D=n_\uparrow n_\downarrow$ is a projector, not $n^2$:
+$n^2=n+2D$. A penalty $\lambda(n-1)^2$ lifts both even charge states,
+whereas $UD$ acts only on the doublon. Only at fixed total charge
+can one freely trade a uniform term proportional to $n$ for a constant.
+\casestudy{projectors}{When does the orbital carry spin?}
+
+\section{Pairing and the Nambu representation}
+A source for a singlet pair is invariant under spin rotations but not
+under a change of electronic phase with its coefficient held fixed.
+The Hermitian conjugate of a pair \emph{reverses} the order of the
+two annihilators. A sign error at this step can turn real eigenvalues
+into imaginary ones rather than simply changing the sign of the gap.
+\casestudy{pairing}{A complex pairing amplitude}
+In a doubled basis $\Psi=(a,a^\dagger)^T$ one writes
+$H=\frac12\Psi^\dagger M\Psi+C$. The factor $1/2$ compensates for
+doubling; the constant resulting from commuting $a$ through
+$a^\dagger$ must be kept when comparing energies. For a short open
+Hubbard chain \fn{hamiltonian} is a convenient model constructor;
+its hopping parameter enters with a plus sign. The explicit bond sum
+is preferable for a ring or spatially varying coefficients.
+\begin{exercise}[Counting bonds]\label{ex:bond}
+Compare a two-site molecule with a periodic chain of length two whose
+unit-cell sum contains a forward hop and its conjugate at each site.
+Find both one-particle spectra for real $t>0$. Why is dividing by
+two not a general remedy for rings with $L>2$?
+\end{exercise}

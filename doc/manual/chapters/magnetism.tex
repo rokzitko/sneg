@@ -1,0 +1,66 @@
+\chapter{Magnetism}
+\setwlchapter{magnetism}
+\section{Exchange on a cluster}
+A positive $J$ in $J\vS_i\cdot\vS_j$ favours a singlet. Superexchange
+from a half-filled one-band model has this sign, whereas a direct
+Hund interaction favours alignment. In double exchange a mobile
+carrier aligned with local moments instead gains kinetic energy
+when neighbouring moments are parallel. These mechanisms need not
+produce the same dependence on filling or on bond angle.
+
+For three spins $1/2$ on an equilateral triangle all pair bonds are
+present, so the energy depends only on the total spin:
+$H=J[\mathbf S_\mathrm{tot}^2-9/4]/2$. Its two low-spin doublets
+have the same energy even though no state is a singlet on all three
+bonds at once. On a square ring not all pairs are neighbours;
+the Casimir alone no longer fixes each energy.
+\casestudy{frustration}{Resolving the four-site ring by magnetization}
+
+\section{Spin waves and their regime of validity}
+Expanding around a ferromagnet polarized along $+z$ gives
+$S^z=s-b^\dagger b$, $S^+\simeq\sqrt{2s}\,b$. In
+$-J\sum_i\vS_i\cdot\vS_{i+1}$ the quadratic magnon energy is
+$2Js(1-\cos k)$; the absent gap follows from the global spin-rotation
+symmetry. For a Néel reference state rotate one sublattice first.
+Opposite classical spins then become parallel local axes, and the
+transverse exchange generates \emph{pairs} of bosons. Diagonalizing
+the bosonic quadratic form requires the commutation metric with
+opposite signs on particles and holes; a unitary diagonalization of
+the Hermitian energy matrix does not give the magnon frequencies.
+\casestudy{magnons}{A staggered field as a gap regulator}
+The quadratic truncation assumes a small mean occupation relative to
+$2s$. A gapless antiferromagnetic chain of spin $1/2$ is particularly
+unfavourable for a broken-symmetry expansion; finite positive field
+in the example is part of the Hamiltonian, not just a numerical tolerance.
+
+\section{One dimension: strings and boundaries}
+The Jordan--Wigner string counts the occupied sites to the left of
+each spin flip. Adjacent strings cancel in the bulk. Long-range flips
+retain intervening density factors, and closing a chain into a ring
+introduces a boundary sign that depends on total fermion parity.
+The open XXZ chain is therefore a useful spectrum-level test before
+handling periodic boundary conditions.
+\casestudy{xxz}{The interacting spinless chain}
+
+\section{Itinerant and single-ion magnetism}
+In a uniform collinear Hartree state, an up electron feels $U n_\downarrow$.
+Linearizing the spin-density difference gives $m=U\rho(E_F)m$ at zero
+temperature for a smooth one-spin density of states. A finite cluster
+needs a thermal derivative rather than a continuum density at a
+single energy. Passing this uniform instability says nothing about
+the preferred ordering wave vector.
+\casestudy{stoner}{A fixed-density susceptibility test}
+For a magnetic ion with $s\ge1$, $D(S^z)^2$ can split a multiplet even
+in zero field. A term $E[(S^x)^2-(S^y)^2]$ mixes states whose $m_z$
+differs by two. Stevens operators preserve the connection between
+crystal symmetry and allowed tensor components. For a bond lacking
+inversion symmetry the antisymmetric exchange
+$\mathbf D_{ij}\cdot(\vS_i\times\vS_j)$ is allowed;
+$\mathbf D_{ji}=-\mathbf D_{ij}$ is required by reversing the bond.
+It is a two-site coupling, not a single-ion anisotropy.
+\casestudy{anisotropy}{Zero-field splitting of a spin one}
+\begin{exercise}[A frustrated triangle]\label{ex:triangle}
+Find the energies and degeneracies of the Heisenberg triangle at
+$J>0$. Reconstruct its zero-field partition function; the entropy
+at $T\to0$ counts the full manifold, not just highest-weight states.
+\end{exercise}

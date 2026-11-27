@@ -1,0 +1,69 @@
+\documentclass[paper=b5,fontsize=11pt,DIV=11,open=any,headinclude=true,numbers=noenddot]{scrbook}
+\usepackage{snegmanual}
+\addbibresource{references.bib}
+\hypersetup{pdftitle={Second Quantization with SNEG},pdfauthor={SNEG documentation project}}
+\begin{document}
+\frontmatter
+\title{Second Quantization with SNEG}
+\subtitle{A practical guide for solid-state theory}
+\author{SNEG documentation project}
+\date{Edition for SNEG 2.2}
+\publishers{\small Licensed under \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International}.}
+\maketitle
+\addchap{Preface}
+An electron hopping between two orbitals is described by a bilinear.
+The same bilinear becomes a current when differentiated with respect to
+a bond phase, and an exchange interaction when iterated through a
+high-energy charge state. Keeping the operators until the last step
+makes these connections visible. This book uses the Wolfram Language
+package SNEG~\cite{sneg} to do the operator algebra and small-system
+calculations that connect those descriptions.
+
+Part I follows the construction of a calculation from declarations to
+matrix elements. Part II can be read by subject: each worked calculation
+specifies its Hamiltonian, units and basis. Examples headed as case
+studies start an independent kernel session with SNEG loaded; evaluate
+the inputs within each study in sequence. Input labels restart accordingly.
+A final \fn{TableForm} or \fn{MatrixForm} formats an answer for display;
+store the underlying list or matrix before applying it. Part III gives
+the calling conventions of the documented symbols, with a page index
+at the back. Exercises and their solutions use the same conventions as
+the chapters. Energies include additive constants unless stated otherwise;
+$\hbar=k_{\mathrm B}=1$.
+\setcounter{tocdepth}{1}
+\tableofcontents
+\mainmatter
+\part{Tutorial}
+\input{chapters/getting-started}
+\input{chapters/algebra}
+\input{chapters/models}
+\input{chapters/momentum}
+\input{chapters/bases}
+\input{chapters/wick}
+\input{chapters/workflow}
+\part{Applications in solid-state theory}
+\input{chapters/crystals}
+\input{chapters/phonons}
+\input{chapters/correlated-electrons}
+\input{chapters/superconductivity}
+\input{chapters/magnetism}
+\input{chapters/impurities}
+\input{chapters/response}
+\part{Function reference}
+\chapter{Operators, algorithms and interfaces}
+Entries are grouped by subject. Each gives the usage and details of
+the corresponding help page and an evaluated example. Short operator
+identities and selected matrices are printed with their results. See the alphabetical
+index for symbols used in more than one subject.
+\input{generated/reference}
+\appendix
+\input{conventions}
+\input{chapters/extensions}
+\chapter{Solutions to the exercises}
+\input{chapters/tutorial-solutions}
+\input{chapters/correlated-solutions}
+\input{chapters/application-solutions}
+\printbibliography[heading=bibintoc]
+\addchap{Index of functions}
+\input{generated/symbol-index}
+\end{document}

@@ -62,12 +62,24 @@ See [`README_greens.md`](README_greens.md) for conventions and worked examples.
 - `eomclosure[A, H]` generates the closed set of operators of the equations of motion and the matrix of `[O_i, H]`; `greensfunction[A, B, H, z]` solves the closed equations with symbolic averages `avg[...]` or a given averaging function.
 - `thermalaverage` and `lehmann` give exact thermal averages and the Lehmann representation of finite fermion systems.
 
+### Documentation
+
+- Help pages integrated in the Wolfram Documentation Center (Mathematica 14 or newer): reference pages with details, caveats, developer notes, and evaluated examples, and the guide page `paclet:SNEG/guide/SNEG`. In notebooks, the startup message links to the guide page when the help pages are installed.
+- The help pages are generated from Markdown sources in `doc/src` (`doc/build-docs.wl`); the example outputs are cached in `doc/cache` and verified by `doc/test-docs.m`. See `doc/README.md`.
+- The stand-alone LaTeX manual combines a tutorial, worked solid-state models, an illustrated Hubbard-dimer calculation, a grouped function reference, exercises and solutions. Build it with `wolframscript -file doc/manual/build-manual.wl`. The downloadable chapter notebooks in `doc/notebooks` use the same evaluated examples as the manual. The documentation and teaching material are licensed under CC BY 4.0.
+- Usage messages no longer contain the "More..." buttons of the former help browser.
+
+### LaTeX output
+
+- `snegtex[expr]` returns a LaTeX string in physics notation, e.g. `c^\dagger_{1\uparrow} c_{2\uparrow}`, `S^+_1`, `\sum_k ...`, for expressions with fermion, boson, spin, Majorana, and X-operators.
+
 ### Matrix-valued hopping (released in 2.1.1)
 
 - `matrixhop[T, a[i], b[j]]` constructs the spin-dependent hopping `a^dagger T b + h.c.` for a dense or sparse 2 by 2 matrix `T`, with Pauli decomposition of symbolic matrices (including `MatrixExp` results). See [`README_matrixhop.md`](README_matrixhop.md).
 
 ## Behavior changes
 
+- Internal helper functions and the names of local and pattern variables moved from `` Sneg` `` to `` Sneg`Private` ``. Names such as `s`, `u`, `k`, `states`, or `energy` in user code therefore no longer trigger shadowing warnings or attach definitions to package symbols. All documented functions, the developer interface (`ordering`, `cmt`, `acmt`, `isnumericQ`, `operatorQ`, operator lists, constants such as `EMPTY`, `SEA`, `NONE`, `BASIS`), and the undocumented functions used in existing notebooks and in NRG Ljubljana (e.g. `qbasis`, `genhop`, `hopphi`, `bcs`, `der`, `projectorE`, `transformtoLRvc`, `quickDBL`) remain public. Code that called other internal helpers must use the qualified name, e.g. `` Sneg`Private`snegswdummies ``.
 - Summation indexes created by automatic renaming (for example `k1` when two sums over `k` are multiplied) now inherit the realness (`Conjugate[k] = k`) and the lattice or momentum declaration of the original index.
 - Spin operators commute with all other operators and are now moved to the left of bosons, Majorana and Dirac fermions in products; operators of different spin symbols are sorted. Mixed expressions are therefore printed in a different order, and identities such as the conservation laws of the Kondo model with an abstract impurity spin now reduce to zero.
 - `conj` is defined for spin operators (`(S^+)^dagger = S^-`).
@@ -91,6 +103,8 @@ See [`README_greens.md`](README_greens.md) for conventions and worked examples.
 - New regression groups for spin algebras: normal forms checked against spin matrices for s = 1/2 to 5/2, Kondo conservation laws, Heisenberg ring, bra-ket and direct matrices, Jordan-Wigner XXZ spectra, magnon dispersions, Stevens-operator tables, rotations, and the X-operator algebra against its fermion representation (t-J dimer).
 - New regression groups for quadratic forms: many-body spectra and thermal and ground-state averages of random BdG Hamiltonians compared with exact diagonalization, bosonic averages compared with truncated Fock spaces, Kitaev-chain zero modes and Bloch spectra, BCS coherence factors, antiferromagnetic magnons, the Wick consistency of mean-field Hamiltonians, the Hartree-Fock solutions of the Hubbard dimer, and the BCS gap equation on a ring.
 - New regression groups for the Schrieffer-Wolff transformation: exchange of the Hubbard dimer to fourth order against the exact solution, operator against matrix transformations, the fifth-order remainder of the block-off-diagonal part, the Kondo coupling of the Anderson model with momentum sums against a discrete bath, the Heisenberg and t-J models on a lattice against explicit clusters, and the convergence of three-site t-J spectra. `examples/schriefferwolff-plaquette.m` checks the fourth-order plaquette against exact diagonalization.
+- Tests of the public and private contexts, and of `snegtex`.
+- `doc/test-docs.m` re-evaluates examples for the help pages and LaTeX chapters and compares them with the cached outputs.
 - New regression group for equations of motion: the Hubbard atom, the resonant level, spins and bosons, and the closed equations of the interacting Hubbard dimer against the Lehmann representation and its moments at zero and finite temperature.
 
 ## Distribution

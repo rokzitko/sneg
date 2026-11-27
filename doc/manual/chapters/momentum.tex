@@ -1,0 +1,40 @@
+\chapter{Symbolic sums and momentum space}
+\setwlchapter{momentum}
+\section{An index belongs to its sum}
+In $\sum_k a_k^\dagger a_k$ the value of $k$ has no meaning outside
+the sum. Multiplying two copies requires two independent summation
+indices, even if the same letter was used to write both. Restricting
+them to be equal would throw away every term coupling two different
+levels. The symbolic head \fn{sum} preserves this distinction;
+\fn{Sum} with numerical limits instead enumerates a cluster.
+\casestudy{dummies}{Nested summations}
+
+\section{Momentum transfer and Fourier convention}
+For $N_s$ Bravais cells take
+\[
+ c_R=N_s^{-1/2}\sum_k e^{ik\cdot R}c_k,\qquad
+ c_k=N_s^{-1/2}\sum_R e^{-ik\cdot R}c_R .
+\]
+One independent sum supplies one factor $N_s$ when a lattice phase
+is constant. A density bilinear brings $1/N_s$ but its site sum brings
+$N_s$ back; a local quartic vertex retains $1/N_s$ and three independent
+momenta. Declare lattice and momentum indices with the \emph{same}
+lattice size. Keep \fn{blochphase} symbolic when combining deltas;
+convert to exponentials only for an explicit dispersion or geometry.
+\casestudy{transfer}{Following the transfer through a density operator}
+
+\section{Periodic clusters and boundary twists}
+In one dimension $c_{n+L}=e^{i\theta}c_n$ selects the grid
+$k_m=(2\pi m+\theta)/L$. Bilinears involve differences of two
+momenta: the twists cancel in a transferred momentum. Thus it is
+incorrect to shift \emph{every} momentum in a momentum-conservation
+delta by $\theta/L$. \fn{clusterhop} inserts the phase only when a
+real-space hop crosses the boundary; \fn{fourierrules} gives the
+explicit finite-dimensional change of basis. In a periodic untwisted
+cluster \fn{sumCluster} folds indices modulo each lattice dimension.
+\casestudy{twist}{Flux sensitivity of the spectrum}
+\begin{exercise}[Discrete unitarity]\label{ex:grid}
+Show that a common twist does not change the inner product of two
+columns of the finite Fourier matrix. Test $L=3$, $\theta=\pi/2$ and
+explain why a reversed sign in just the inverse transform fails.
+\end{exercise}

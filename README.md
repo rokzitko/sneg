@@ -137,7 +137,19 @@ Get["/absolute/path/to/sneg/sneg.m"]
 
 ## Documentation
 
-Function-reference notebooks are available in
+The paclet installs English help pages for Mathematica 14.0 and later in the Wolfram Documentation Center: search
+for a SNEG function or open the guide page `paclet:SNEG/guide/SNEG`, which is
+also linked from the startup message in notebooks. The help pages are
+generated from the sources in [`doc/src`](doc/src); see
+[`doc/README.md`](doc/README.md) for the source format and for building the
+help pages from a checkout.
+
+The [stand-alone tutorial and reference manual](doc/manual/sneg-manual.tex)
+includes worked solid-state models, exercises, and solutions. Build the PDF
+with `wolframscript -file doc/manual/build-manual.wl` or open one of its
+[chapter notebooks](doc/notebooks/) in Mathematica.
+
+Older function-reference notebooks are available in
 [`docs/Documentation/English`](docs/Documentation/English/), including a
 legacy [`quickstart.nb`](docs/Documentation/English/quickstart.nb). They
 were created for Mathematica's former help browser and should be opened

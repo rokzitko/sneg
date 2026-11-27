@@ -1,0 +1,54 @@
+\chapter{Extending the operator algebra}
+\setwlchapter{extensions}
+\section{Normal order as a reduction rule}
+To add an algebra, specify which pairs are out of order and what
+replaces such a pair. For odd $a,b$ the replacement is $ab=-ba+\{a,b\}$.
+For bosons use $ab=ba+[a,b]$. A scalar overlap on the right lowers
+the operator degree and can therefore be factored out of \fn{nc}.
+A new commutator rule without an ordering that eventually stops
+interchanging pairs can instead give infinite recursion. In particular
+do not define both directions of a swap to call each other.
+
+\fn{ordering} sets the reference convention per family;
+\fn{snegOrderedQ} is the predicate for canonical order.
+\fn{acmt} and \fn{cmt} supply the elementary brackets, whereas
+\fn{antikomutator} and \fn{komutator} construct brackets of arbitrary
+products from the algebra. Test a rule in the declared operator family
+first, preferably as an upvalue of its head; a broad downvalue on a
+public symbol can change every subsequent calculation in that kernel.
+\casestudy{custom}{A continuum field with a distributional overlap}
+
+\section{Scalars and linear maps}
+The predicate \fn{isnumericQ} is about commuting coefficients in
+SNEG, not just numbers evaluable to floating point. A real dispersion
+relation, a mesh weight and a distribution such as a Dirac delta
+may all be scalar factors. Declaring an operator-valued function a
+scalar would allow it to be commuted through its conjugate and
+silently lose a physical term. Grassmann numbers require their own
+exchange signs. When defining a linear map $F$, distinguish
+$F(zA)=zF(A)$ from the conjugate-linear first slot of an inner product.
+
+\section{Compatibility and tests}
+User models should call the public symbols in \texttt{Sneg`}.
+Internal helpers in \texttt{Sneg`Private`} are implementation details.
+To qualify an extension, check the single-mode bracket, a three-factor
+product that can be reduced at either adjacent pair, the adjoint of
+both results, and a cross-family product. Then specialize to a finite
+overlap or finite cluster with an independent matrix realization.
+For example a positive Hermitian overlap matrix $G$ can be realized by
+$d_i=\sum_j L_{ij}c_j$, $LL^\dagger=G$, using canonical fermions.
+This checks conjugation and the ordering of the indices as well as signs.
+
+Older interfaces can occur in existing research notebooks.
+\fn{ZeroMatrix} is an old matrix-utility name; construct a square
+zero matrix with \fn{ConstantArray[0,\{n,n\}]}. For package output in
+a paper use the public \fn{snegtex}; retain \fn{InputForm} alongside
+formatted output if another program must read index values. Numerical
+comparisons between SNEG and NRG Ljubljana must use the same impurity
+and chain-site order, parity convention and zero of energy.
+
+\section{Interfaces used by existing models}
+The following names may appear in a model file or in an extension to
+the algebra. When calling a basis or contraction routine directly,
+match the state representation and the normalization it expects.
+\input{generated/compatibility}

@@ -1,0 +1,77 @@
+Notebook[{Cell["The SSH chain", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 8", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Su-Schrieffer-Heeger chain. The intracell hopping ", 
+     Cell[BoxData[FormBox["v", TraditionalForm]], "InlineFormula"], 
+     " and the intercell hopping ", 
+     Cell[BoxData[FormBox["w", TraditionalForm]], "InlineFormula"], 
+     " give the off-diagonal Bloch matrix with ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["h", StyleBox["AB", 
+            FontSlant -> "Italic"]], "(", "k", ")", "=", "v", "+", "w", 
+          SuperscriptBox["e", RowBox[{"-", StyleBox["ik", FontSlant -> 
+               "Italic"]}]]}], TraditionalForm]], "InlineFormula"], ", ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["h", StyleBox["BA", 
+            FontSlant -> "Italic"]], "(", "k", ")", "=", SubscriptBox["h", 
+           StyleBox["AB", FontSlant -> "Italic"]], "(", "k", 
+          SuperscriptBox[")", "*"]}], TraditionalForm]], "InlineFormula"], 
+     ", and the bands ", 
+     Cell[BoxData[FormBox[RowBox[{"\[PlusMinus]", 
+          SqrtBox[RowBox[{SuperscriptBox["v", "2"], "+", SuperscriptBox["w", 
+              "2"], "+", "2", StyleBox["vw", FontSlant -> "Italic"], 
+             StyleBox["cos", FontSlant -> "Plain"], "k"}]]}], 
+        TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegspinlessfermionoperators", "[", 
+            RowBox[{"f", ",", " ", "fk"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", RowBox[{"v", ",", " ", 
+              "w"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"sneglatticeindexes", "[", 
+            RowBox[{RowBox[{"{", "R", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"snegmomentumindexes", "[", 
+            RowBox[{RowBox[{"{", "k", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"Hssh", " ", "=", " ", 
+            RowBox[{"fourier", "[", RowBox[{RowBox[{"sum", "[", RowBox[
+                   {RowBox[{RowBox[{"v", " ", RowBox[{"hop", "[", RowBox[
+                          {RowBox[{"f", "[", RowBox[{"R", ",", " ", 
+                          "\"A\""}], "]"}], ",", " ", RowBox[{"f", "[", 
+                          RowBox[{"R", ",", " ", "\"B\""}], "]"}]}], "]"}]}], 
+                      " ", "+", " ", RowBox[{"w", " ", RowBox[{"hop", "[", 
+                          RowBox[{RowBox[{"f", "[", RowBox[{RowBox[{"R", " ", 
+                          "+", " ", "1"}], ",", " ", "\"A\""}], "]"}], ",", 
+                          " ", RowBox[{"f", "[", RowBox[{"R", ",", " ", 
+                          "\"B\""}], "]"}]}], "]"}]}]}], ",", " ", 
+                    RowBox[{"{", "R", "}"}]}], "]"}], ",", " ", 
+                RowBox[{"f", " ", "->", " ", "fk"}], ",", " ", 
+                RowBox[{"R", " ", "->", " ", "k"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"h", " ", "=", " ", RowBox[{"blochhamiltonian", "[", 
+            RowBox[{"Hssh", ",", " ", RowBox[{"{", RowBox[
+                 {RowBox[{"fk", "[", "\"A\"", "]"}], ",", " ", RowBox[
+                   {"fk", "[", "\"B\"", "]"}]}], "}"}], ",", " ", "k"}], 
+            "]"}]}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{"{", RowBox[{"0", ",", RowBox[{"v", "+", RowBox[
+                  {"w", " ", TagBox[SuperscriptBox["e", RowBox[
+                      {"\[ImaginaryI]", RowBox[{"-", "k"}], "\[CenterDot]", 
+                       "1"}]], DisplayForm]}]}]}], "}"}], ",", 
+           RowBox[{"{", RowBox[{RowBox[{"v", "+", RowBox[{"w", " ", 
+                   TagBox[SuperscriptBox["e", RowBox[{"\[ImaginaryI]", "k", 
+                       "\[CenterDot]", "1"}]], DisplayForm]}]}], ",", "0"}], 
+             "}"}]}], "}"}]], "Output", CellLabel -> "Out[6]="]}, Open]], 
+  Cell[CellGroupData[
+    {Cell[BoxData[RowBox[{"Simplify", "[", RowBox[{"Eigenvalues", "[", 
+           RowBox[{"ExpToTrig", "[", RowBox[{"blochphaseexp", "[", "h", 
+               "]"}], "]"}], "]"}], "]"}]], "Input", CellLabel -> "In[7]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{"-", SqrtBox[RowBox[{SuperscriptBox["v", "2"], "+", 
+                SuperscriptBox["w", "2"], "+", RowBox[{"2", " ", "v", " ", 
+                  "w", " ", RowBox[{"Cos", "[", "k", "]"}]}]}]]}], ",", 
+           SqrtBox[RowBox[{SuperscriptBox["v", "2"], "+", SuperscriptBox["w", 
+               "2"], "+", RowBox[{"2", " ", "v", " ", "w", " ", 
+                RowBox[{"Cos", "[", "k", "]"}]}]}]]}], "}"}]], "Output", 
+      CellLabel -> "Out[7]="]}, Open]], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> "The SSH chain"]

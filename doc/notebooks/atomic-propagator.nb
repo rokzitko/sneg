@@ -1,0 +1,184 @@
+Notebook[{Cell["Spectral poles of the Hubbard atom", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 10", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Build the atomic Hamiltonian with a level energy measured \
+relative to the chemical potential."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"Needs", "[", "\"sneg`\"", "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"snegfermionoperators", "[", 
+            RowBox[{"c", ",", " ", "d"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", RowBox[{"t", ",", " ", "U", 
+              ",", " ", "\[Epsilon]"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"atom", " ", "=", " ", RowBox[
+             {RowBox[{"\[Epsilon]", " ", RowBox[{"number", "[", RowBox[
+                   {"d", "[", "]"}], "]"}]}], " ", "+", " ", RowBox[{"U", 
+                " ", RowBox[{"hubbard", "[", RowBox[{"d", "[", "]"}], 
+                  "]"}]}]}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{RowBox[{"number", "[", RowBox[{"d", "[", "]"}], 
+              "]"}], ",", " ", RowBox[{"hubbard", "[", RowBox[{"d", "[", 
+                "]"}], "]"}]}], "}"}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{RowBox[{TagBox[StyleBox[TemplateBox[{"d", RowBox[
+                    {TagBox[StyleBox["\"\[DownArrow]\"", FontColor -> 
+                        RGBColor[0, 0, 1]], StyleForm[#1, FontColor -> 
+                         RGBColor[0, 0, 1]] & ]}], "\"\[Dagger]\""}, 
+                  "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                 ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+                DisplayForm], StyleBox["\[CenterDot]", FontColor -> 
+                 RGBColor[0, 1, 0]], TagBox[StyleBox[TemplateBox[
+                  {"d", RowBox[{TagBox[StyleBox["\"\[DownArrow]\"", 
+                       FontColor -> RGBColor[0, 0, 1]], StyleForm[#1, 
+                        FontColor -> RGBColor[0, 0, 1]] & ]}], "\"\""}, 
+                  "Subsuperscript", SyntaxForm -> SubsuperscriptBox], 
+                 ScriptSizeMultipliers -> 1, ScriptBaselineShifts -> {1, 1}], 
+                DisplayForm]}], "+", RowBox[{TagBox[StyleBox[TemplateBox[
+                  {"d", RowBox[{TagBox[StyleBox["\"\[UpArrow]\"", 
+                       FontColor -> RGBColor[1, 0, 0]], StyleForm[#1, 
+                        FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                   "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                   SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                 ScriptBaselineShifts -> {1, 1}], DisplayForm], StyleBox[
+                "\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], TagBox[
+                StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                       "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                      StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                   "\"\""}, "Subsuperscript", SyntaxForm -> 
+                   SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                 ScriptBaselineShifts -> {1, 1}], DisplayForm]}]}], ",", 
+           RowBox[{"-", RowBox[{"(", RowBox[{TagBox[StyleBox[TemplateBox[
+                    {"d", RowBox[{TagBox[StyleBox["\"\[DownArrow]\"", 
+                         FontColor -> RGBColor[0, 0, 1]], StyleForm[#1, 
+                          FontColor -> RGBColor[0, 0, 1]] & ]}], 
+                     "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                        StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                     "\"\[Dagger]\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[DownArrow]\"", FontColor -> RGBColor[0, 0, 1]], 
+                        StyleForm[#1, FontColor -> RGBColor[0, 0, 1]] & ]}], 
+                     "\"\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm], 
+                 StyleBox["\[CenterDot]", FontColor -> RGBColor[0, 1, 0]], 
+                 TagBox[StyleBox[TemplateBox[{"d", RowBox[{TagBox[StyleBox[
+                         "\"\[UpArrow]\"", FontColor -> RGBColor[1, 0, 0]], 
+                        StyleForm[#1, FontColor -> RGBColor[1, 0, 0]] & ]}], 
+                     "\"\""}, "Subsuperscript", SyntaxForm -> 
+                     SubsuperscriptBox], ScriptSizeMultipliers -> 1, 
+                   ScriptBaselineShifts -> {1, 1}], DisplayForm]}], 
+               ")"}]}]}], "}"}]], "Output", CellLabel -> "Out[5]="]}, Open]], 
+  Cell[TextData[{"The opposite-spin occupation ", 
+     Cell[BoxData[FormBox["w", TraditionalForm]], "InlineFormula"], 
+     " assigns weights to the two addition energies. Keep it symbolic."}], 
+   "Text"], Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"gatom", " ", "=", " ", 
+            RowBox[{"greensfunction", "[", RowBox[{RowBox[{"d", "[", 
+                  RowBox[{"AN", ",", " ", "UP"}], "]"}], ",", " ", 
+                RowBox[{"d", "[", RowBox[{"CR", ",", " ", "UP"}], "]"}], ",", 
+                " ", "atom", ",", " ", "z"}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"g", " ", "=", " ", RowBox[{"gatom", " ", "/.", " ", 
+              RowBox[{RowBox[{"avg", "[", RowBox[{"number", "[", RowBox[
+                     {RowBox[{"d", "[", "]"}], ",", " ", "DO"}], "]"}], 
+                  "]"}], " ", "->", " ", "w"}]}]}], ";"}], "\n", 
+        RowBox[{"Apart", "[", RowBox[{"g", ",", " ", "z"}], "]"}]}], "Input", 
+      CellLabel -> "In[55]:="], 
+     Cell[BoxData[RowBox[{FractionBox[RowBox[{"1", "-", "w"}], 
+          RowBox[{"z", "-", "\[Epsilon]"}]], "+", FractionBox["w", 
+          RowBox[{RowBox[{"-", "U"}], "+", "z", "-", "\[Epsilon]"}]]}]], 
+      "Output", CellLabel -> "Out[57]="]}, Open]], 
+  Cell[TextData[{"At particle-hole symmetry the two poles have equal weight. \
+Check the high-frequency normalization."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"ph", " ", "=", " ", 
+            RowBox[{"Factor", "[", RowBox[{"g", " ", "/.", " ", 
+                RowBox[{"{", RowBox[{RowBox[{"\[Epsilon]", " ", "->", " ", 
+                      RowBox[{RowBox[{"-", "U"}], "/", "2"}]}], ",", " ", 
+                    RowBox[{"w", " ", "->", " ", RowBox[{"1", "/", "2"}]}]}], 
+                  "}"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{"ph", ",", " ", RowBox[{"Limit", "[", 
+              RowBox[{RowBox[{"z", " ", "ph"}], ",", " ", RowBox[{"z", " ", 
+                  "->", " ", "Infinity"}]}], "]"}]}], "}"}]}], "Input", 
+      CellLabel -> "In[58]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{FractionBox[RowBox[{"4", " ", "z"}], 
+            RowBox[{RowBox[{"(", RowBox[{RowBox[{"-", "U"}], "+", 
+                  RowBox[{"2", " ", "z"}]}], ")"}], " ", RowBox[{"(", 
+                RowBox[{"U", "+", RowBox[{"2", " ", "z"}]}], ")"}]}]], ",", 
+           "1"}], "}"}]], "Output", CellLabel -> "Out[59]="]}, Open]], 
+  Cell[TextData[{"Move away from symmetry and calculate the transition \
+energies and thermal weights independently by a Lehmann sum."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"asym", " ", "=", " ", 
+            RowBox[{"atom", " ", "/.", " ", RowBox[{"{", RowBox[
+                 {RowBox[{"\[Epsilon]", " ", "->", " ", RowBox[
+                     {RowBox[{"-", "1"}], "/", "4"}]}], ",", " ", 
+                  RowBox[{"U", " ", "->", " ", "2"}]}], "}"}]}]}], ";"}], 
+        "\n", RowBox[{RowBox[{"poles", " ", "=", " ", 
+            RowBox[{"lehmann", "[", RowBox[{RowBox[{"d", "[", RowBox[
+                   {"AN", ",", " ", "UP"}], "]"}], ",", " ", RowBox[
+                 {"d", "[", RowBox[{"CR", ",", " ", "UP"}], "]"}], ",", " ", 
+                "asym", ",", " ", RowBox[{"{", "d", "}"}], ",", " ", 
+                RowBox[{"1", "/", "2"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"TableForm", "[", RowBox[{RowBox[{"N", "[", RowBox[{"Round", 
+                "[", RowBox[{"poles", ",", " ", RowBox[{"1", "/", "1000"}]}], 
+                "]"}], "]"}], ",", " ", RowBox[{"TableHeadings", " ", "->", 
+              " ", RowBox[{"{", RowBox[{"None", ",", " ", RowBox[
+                   {"{", RowBox[{"\"Frequency\"", ",", " ", "\"Residue\""}], 
+                    "}"}]}], "}"}]}]}], "]"}]}], "Input", 
+      CellLabel -> "In[60]:="], 
+     Cell[BoxData[TagBox[TagBox[GridBox[{{TagBox["\"Frequency\"", HoldForm], 
+            TagBox["\"Residue\"", HoldForm]}, {RowBox[{"-", "0.25`"}], 
+            "0.609`"}, {"1.75`", "0.391`"}}, RowSpacings -> 1, 
+          ColumnSpacings -> 3, RowAlignments -> Baseline, 
+          ColumnAlignments -> Left, GridBoxDividers -> 
+           {"Columns" -> {{False}}, "Rows" -> {False, True, {False}, False}}, 
+          ColumnAlignments -> Left], {None, OutputFormsDump`HeadedColumns}], 
+        Function[BoxForm`e$, TableForm[BoxForm`e$, TableHeadings -> 
+           {None, {"Frequency", "Residue"}}]]]], "Output", 
+      CellLabel -> "Out[62]//TableForm="]}, Open]], 
+  Cell[TextData[{"At a complex test frequency compare the Lehmann result with \
+the equation of motion using the exact thermal occupation."}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"wth", " ", "=", " ", 
+            RowBox[{"thermalaverage", "[", RowBox[{RowBox[{"number", "[", 
+                  RowBox[{RowBox[{"d", "[", "]"}], ",", " ", "DO"}], "]"}], 
+                ",", " ", "asym", ",", " ", RowBox[{"{", "d", "}"}], ",", 
+                " ", RowBox[{"1", "/", "2"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"z0", " ", "=", " ", RowBox[{RowBox[{"1", "/", "3"}], 
+              " ", "+", " ", RowBox[{"I", "/", "4"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"gtrace", " ", "=", " ", RowBox[{"Total", "[", 
+              RowBox[{RowBox[{"poles", "[", RowBox[{"[", RowBox[{"All", ",", 
+                      " ", "2"}], "]"}], "]"}], "/", RowBox[{"(", 
+                  RowBox[{"z0", " ", "-", " ", RowBox[{"poles", "[", 
+                      RowBox[{"[", RowBox[{"All", ",", " ", "1"}], "]"}], 
+                      "]"}]}], ")"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"{", RowBox[{RowBox[{RowBox[{"Abs", "[", RowBox[{"1", " ", 
+                  "-", " ", RowBox[{"Total", "[", RowBox[{"poles", "[", 
+                      RowBox[{"[", RowBox[{"All", ",", " ", "2"}], "]"}], 
+                      "]"}], "]"}]}], "]"}], " ", "<", " ", RowBox[{"10", 
+                "^", RowBox[{"-", "12"}]}]}], ",", "\n", " ", 
+            RowBox[{RowBox[{"Abs", "[", RowBox[{"gtrace", " ", "-", " ", 
+                  RowBox[{"(", RowBox[{"g", " ", "/.", " ", RowBox[{"{", 
+                        RowBox[{RowBox[{"z", " ", "->", " ", "z0"}], ",", 
+                          " ", RowBox[{"\[Epsilon]", " ", "->", " ", RowBox[
+                          {RowBox[{"-", "1"}], "/", "4"}]}], ",", " ", 
+                          RowBox[{"U", " ", "->", " ", "2"}], ",", " ", 
+                          RowBox[{"w", " ", "->", " ", "wth"}]}], "}"}]}], 
+                    ")"}]}], "]"}], " ", "<", " ", RowBox[{"10", "^", 
+                RowBox[{"-", "12"}]}]}]}], "}"}]}], "Input", 
+      CellLabel -> "In[63]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{"True", ",", "True"}], "}"}]], 
+      "Output", CellLabel -> "Out[66]="]}, Open]], 
+  Cell["Source: Second Quantization with SNEG, SNEG documentation project. \
+Licensed under Creative Commons Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Spectral poles of the Hubbard atom"]

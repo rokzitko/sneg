@@ -1,0 +1,80 @@
+\chapter{Quantum impurities and nanostructures}
+\setwlchapter{impurities}
+\section{A local level embedded in a band}
+For one spinful impurity the Anderson Hamiltonian reads
+\[
+ H=\sum_{k\sigma}\epsilon_k n_{k\sigma}+\epsilon_d n_d+U D_d+
+ \sum_{k\sigma}(V_k c^\dagger_{k\sigma}d_\sigma+\hc).
+\]
+At $V_k=0$ the local moment exists for $\epsilon_d<0<\epsilon_d+U$.
+A bath adds infinitely many low-energy configurations; it cannot in
+general be represented by a constant shift of the impurity level.
+Already at $U=0$ the retarded hybridization is
+$\Delta(z)=\sum_k|V_k|^2/(z-\epsilon_k)$, whose imaginary part
+describes the widths of levels only in the continuum limit.
+\casestudy{leads}{Hybridization to a local lattice orbital}
+\casestudy{resonance}{Frequency-dependent hybridization with one bath level}
+
+\section{From valence fluctuations to Kondo exchange}
+For initial and final bath states close to the Fermi level, eliminate
+empty and doubly occupied impurity states in second order. For real
+constant $V$ the exchange multiplying $\vS_d\cdot\mathbf s(0)$ is
+$J=2V^2[1/(-\epsilon_d)+1/(\epsilon_d+U)]$. Both virtual paths favour
+the impurity--bath singlet. Their \emph{difference} controls potential
+scattering, which vanishes at $\epsilon_d=-U/2$. The spin density here
+uses Pauli matrices divided by two; changing that definition changes
+the quoted $J$. This elimination is controlled when both charge
+excitation energies are large on the hybridization scale. It does not
+directly compute the nonperturbative Kondo scale.
+\casestudy{anderson}{Checking exchange against exact diagonalization}
+
+\section{Wilson chain and NRG Ljubljana}
+A uniform finite bath has a lowest level spacing that competes with
+the screening scale. NRG instead divides the band into logarithmic
+intervals and transforms the retained combinations into a chain.
+Only the first chain orbital couples to the impurity. Far along a
+metallic Wilson chain the hopping typically decays as
+$\Lambda^{-n/2}$ for logarithmic discretization parameter $\Lambda>1$.
+Successive diagonalizations can then discard high-energy states relative
+to the next hopping. Check a discretization and truncation sequence;
+a two-site singlet in an untruncated test is a normalization check,
+not evidence by itself of continuum screening.
+
+In the public \href{https://github.com/rokzitko/nrgljubljana}{NRG Ljubljana}
+tree, \path{test/c++/test42_model_1orb/model.m} and its companion
+\texttt{param} give a complete one-channel initializer example.
+\fn{def1ch[1]} sets up the impurity and bath end; the local term uses
+\fn{number[d[]]} and \fn{hubbard[d[]]}, the contact uses
+\fn{hop[f[0],d[]]}, and the host term is included once. The initializer
+derives the contact normalization from the discretized bath; inserting
+the continuum width $\Gamma$ as the hopping would have the wrong
+normalization. The setting \texttt{symtype=QS} assumes charge U(1) and
+spin SU(2) invariance; choose different
+quantum numbers if the model has pairing, spin anisotropy or a magnetic
+field. Specify measured observables too: an energy spectrum contains
+no information about matrix elements of a local spin flip.
+
+\section{Charge stability and superconducting islands}
+In a double dot the electrostatic term $U_{12}n_1 n_2$ competes
+with the on-site $U$; near the $(1,1)$ configuration the virtual
+charge-transfer cost is $U-U_{12}$ for equivalent sites. The same
+second-order hopping that mixes $(2,0)$ and $(0,2)$ with a singlet
+therefore controls the singlet--triplet splitting. Close to a charge
+degeneracy both charge configurations must be retained.
+For multi-orbital dots a high-spin atomic multiplet can replace the
+spin-$1/2$ moment (see Chapter~10 and Ref.~\cite{horvat}).
+
+A superconducting island brings both pairing and charging energy
+$E_C(N-N_g)^2$. A static pair field can model proximity to a bulk
+reservoir but is not a number-conserving description of a floating
+island. Compare even and odd \emph{total} parity sectors, include
+the energy of a residual quasiparticle, and distinguish a spin's
+local response from its total-spin quantum number. The latter
+distinction enters the impurity Knight shift~\cite{pavesic-knight};
+crystal fields provide another way of altering the impurity response
+without changing its charge~\cite{zitko-anisotropic}.
+\begin{exercise}[Where does the pole weight go?]\label{ex:resonance}
+Hybridize a noninteracting level at zero energy with one bath level
+also at zero energy by a real $V>0$. Find both poles of the impurity
+propagator, their residues per spin, and the limit as $V\to0$.
+\end{exercise}

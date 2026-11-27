@@ -1,0 +1,43 @@
+\chapter{Conventions at a glance}
+\section*{Levels and indices}
+\begin{tabular}{@{}ll@{}}\toprule
+Input & Meaning\\\midrule
+\fn{c[i]} & a spinful level, without operator-type or spin index\\
+\fn{c[CR,i,UP]} & creation of its up electron\\
+\fn{c[AN,i,DO]} & annihilation of its down electron\\
+\fn{number[c[i]]} & sum over spin of the occupations\\
+\fn{hubbard[c[i]]} & $n_{i\uparrow}n_{i\downarrow}$ without $U$\\
+\fn{spinplus[c[i]]} & $c^\dagger_{i\uparrow}c_{i\downarrow}$\\
+\fn{S[i,4]}, \fn{S[i,5]} & raising and lowering of a declared spin\\
+\bottomrule\end{tabular}
+\par\medskip
+The internal type indices are \fn{CR}=0 and \fn{AN}=1; spin-$1/2$
+labels are \fn{UP}=1, \fn{DO}=0. Do not infer bit order by sorting
+these integers: consult the current \fn{BASIS}. A bare boson normally
+needs no spin index. For spinless fermions use the mode convention of
+the constructor in question; the generated explicit operator may
+carry a trailing zero.
+
+\section*{Order, charge and conjugation}
+Normal ordering is a rule for reducing an operator, not an expectation
+value. \fn{conj} reverses the order of factors and changes their type.
+Complex coefficients must be conjugated too. The empty state has
+$Q=-L$ for $L$ spin-degenerate levels; half filling has $Q=0$.
+Highest-weight spin bases represent each complete spin multiplet once.
+Reflection parity acts on states including the fermionic permutation
+sign. Fermion parity $(-1)^N$ and spatial-reflection parity need not
+agree. Energy gaps must specify which quantum numbers are held fixed.
+
+\section*{Bloch, Nambu and retarded conventions}
+An annihilator in real space has Fourier phase $+ikR$ and normalization
+$N_s^{-1/2}$. Ordered orbitals within a cell fix the rows of $h(k)$.
+Including their positions changes the phases of off-diagonal elements,
+but neither the eigenvalues nor gauge-invariant observables. In the
+particle-first Nambu spinor the hole block uses $-h^T(-k)$ for fermions;
+the prefactor is $1/2$ when summing the full doubled basis.
+
+For $\operatorname{Im}z>0$ the transform $e^{izt}$ of the retarded
+kernel gives poles at $E_n-E_m$, with denominator $z-(E_n-E_m)$.
+Fermionic diagonal spectral density integrates to one per canonical
+mode including both signs of frequency. Use $\mathcal L A=[A,H]$;
+exchanging the order of the commutator reflects all pole frequencies.

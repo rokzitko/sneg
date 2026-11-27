@@ -80,7 +80,7 @@ with rows and columns ordered `{UP, DO}`. Commutators with symbolic sums use
 the same momentum algebra, e.g.
 
 ```wl
-snegsumreduce[komutator[ck[AN, p, UP], sum[nc[ck[CR, k + q, UP], ck[AN, k, UP]], {k}]]]
+sumSimplifyKD[komutator[ck[AN, p, UP], sum[nc[ck[CR, k + q, UP], ck[AN, k, UP]], {k}]]]
 (* ck[AN, p - q, UP] *)
 ```
 

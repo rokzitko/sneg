@@ -1,0 +1,731 @@
+\chapter{Correlated electrons}
+\setwlchapter{correlated-electrons}
+
+What does it cost to move one electron between two hydrogen-like atoms?
+At large separation and with one electron on each atom, the final state
+contains an empty orbital and a doubly occupied one. Creating this pair
+costs the local repulsion $U$. Yet a virtual excursion into precisely the
+same state lowers the energy of a spin singlet. A charge excitation at
+energy $U$ and a spin excitation at energy of order $t^2/U$ thus have
+a common origin. The two-site Hubbard model lets us follow both without
+making an approximation. We will use its exact spectrum to judge two
+quite different approximations: eliminating charge fluctuations, and
+replacing the interaction by a self-consistent field.
+
+The examples form one session. Start a fresh kernel with the SNEG paclet
+installed and evaluate the inputs in order. The convention for a level
+is \fn{c[i]}; a single electron operator carries two additional indices,
+as in \fn{c[CR,i,UP]}. Spin projections are in units of $\hbar$, and
+$k_{\mathrm B}=1$.
+
+\section{One orbital: charge, spin and particle--hole symmetry}
+For one Wannier orbital on each of $L$ sites we use
+\begin{equation}
+ H=-t\sum_{\langle ij\rangle,\sigma}
+ (c^\dagger_{i\sigma}c_{j\sigma}+c^\dagger_{j\sigma}c_{i\sigma})
+ +U\sum_i D_i,\qquad D_i=n_{i\uparrow}n_{i\downarrow}.
+ \label{eq:hubbard}
+\end{equation}
+Here $n_{i\sigma}=c^\dagger_{i\sigma}c_{i\sigma}$,
+$\sigma=\uparrow,\downarrow$, and a bond occurs once in the sum.
+Throughout this chapter $t$ is real and $U>0$. In a crystal $U$ is the
+interaction screened by degrees of freedom excluded from this orbital
+model; it need not equal an isolated-atom Coulomb integral.
+Our starting point is the atomic-limit construction in
+Ref.~\cite{hubbard}.
+
+\begin{wl}
+Needs["sneg`"];
+snegfermionoperators[c, d];
+snegrealconstants[t, U, \[Epsilon]];
+atom = \[Epsilon] number[d[]] + U hubbard[d[]];
+{number[d[]], hubbard[d[]]}
+\end{wl}
+
+The minus sign that may appear when $D_i$ is printed in normal order is
+not an attractive interaction. Moving an annihilator through a creator
+of the other spin costs one interchange. A sign-independent way to read
+the result is to act on states. The following basis is labelled by
+$Q=N-1$ and total spin $S$. Each sector of this atom contains a single
+multiplet; its energy is the sole entry of the block.
+\begin{wl}
+ba = qsbasisvc[{d[]}];
+rows = {Sequence @@ First[#], #[[2, 1, 1]]} & /@ makematricesbzvc[atom, ba];
+TableForm[rows, TableHeadings -> {None, {"Q", "S", "Energy"}}]
+\end{wl}
+
+The empty state has energy zero, the two spin states have energy
+$\epsilon$, and $\ket{2}=d^\dagger_\uparrow d^\dagger_\downarrow\ket{0}$
+has energy $2\epsilon+U$. \fn{qsbasisvc} stores one representative of
+each spin multiplet: the dimension of a block counts copies of the
+representation, not its $2S+1$ magnetic substates.
+With $\epsilon$ measured relative to the chemical potential, the atom
+has a spin-doublet ground state for $-U<\epsilon<0$. At either
+endpoint two charge sectors cross; differentiating a single eigenvalue
+through such a crossing would give the wrong ground-state occupation.
+
+At half filling a particle--hole transformation on a bipartite lattice
+takes $c_{i\sigma}\mapsto\eta_i c^\dagger_{i\sigma}$, with $\eta_i=+1$
+on one sublattice and $-1$ on the other. Hopping is invariant because
+neighbours have opposite $\eta$ and distinct fermions anticommute.
+Locally $n_i\mapsto2-n_i$ and $D_i\mapsto1-n_i+D_i$. Thus the
+grand Hamiltonian with $\epsilon=-U/2$ is invariant. Equivalently,
+\[
+ U(n_{i\uparrow}-\tfrac12)(n_{i\downarrow}-\tfrac12)
+ =U D_i-\tfrac U2 n_i+\tfrac U4 .
+\]
+Dropping the last term changes the energy origin; dropping the term
+linear in $n_i$ also changes the chemical potential. Neither affects
+splittings at fixed $N$, but only a constant can be ignored when
+comparing absolute addition and removal energies at a specified $\mu$.
+
+\subsection{A free spin without a static polarization}
+At $\epsilon=-U/2$ the empty and doubly occupied states both have
+energy zero and the two singly occupied states each have energy $-U/2$.
+For $T>0$ the grand partition function is $2(1+e^{U/(2T)})$. It
+follows that the mean occupation is exactly one at \emph{any}
+temperature; it tells us nothing about moment formation. A more
+discriminating observable is $4\langle(S^z)^2\rangle$, which equals
+the probability of single occupation. The complementary observable,
+$\langle(n-1)^2\rangle$, counts empty and doubly occupied sites.
+Test the two in a thermal trace over all four charge and spin states:
+\begin{wl}
+sz2 = pow[number[d[], UP] - number[d[], DO], 2];
+q2 = pow[number[d[]] - 1, 2];
+Expand[sz2 + q2]
+\end{wl}
+\begin{wl}
+hat = atom /. {\[Epsilon] -> -1, U -> 2};
+rows = Table[Prepend[Round[thermalaverage[#, hat, {d}, temp], 1/1000] & /@
+    {number[d[]], sz2, q2}, temp], {temp, {0, 1, 4}}];
+TableForm[N[rows], TableHeadings -> {None, {"T", "Charge", "Moment", "Charge variance"}}]
+\end{wl}
+The columns are $T$, $\langle n\rangle$, $4\langle(S^z)^2\rangle$ and
+$\langle(n-1)^2\rangle$, for $U=2$ in the energy units used here.
+At zero temperature \fn{thermalaverage} averages equally over the two
+ground states, so $\langle S^z\rangle=0$ although the spin moment is
+maximal. A field term $-h S^z$ lifts that degeneracy. Since $S^z$
+commutes with the atomic Hamiltonian, the static susceptibility at
+$h=0$ is $\chi=\langle(S^z)^2\rangle/T$ (the magnetic moment multiplying
+the field is set to one). At low nonzero $T$ the free-spin contribution
+$1/(4T)$ survives; at high $T$ the two spinless states halve its
+coefficient. Taking $T\to0$ at fixed $h>0$ selects a pure spin state
+with a different magnetization from the zero-field mixture.
+
+\section{Exact solution of the Hubbard dimer}
+Connect two sites by \emph{one} bond. The empty and doubly occupied
+local states have spin zero, so each can mix with a two-site singlet
+but not with a triplet. Build the full Hamiltonian before restricting
+the basis. Products of operators are made with \fn{nc}; ordinary
+multiplication suffices for a scalar times an operator.
+This construction recasts the two-site symmetry problem of Steeb and
+Hardy~\cite[Sec.~3.4, problem 84]{steeb} in a basis of total spin
+instead of fixed spin projection.
+\begin{wl}
+sites = {c[1], c[2]};
+h0 = U Total[hubbard[sites]];
+v = -t hop[c[1], c[2]];
+hd = h0 + v;
+Expand[{komutator[hd, Total[number /@ sites]],
+  komutator[hd, Total[spinplus /@ sites]]}]
+\end{wl}
+The second zero checks more than conservation of $S^z$: together with
+Hermiticity it establishes invariance under spin rotations. At $L=2$,
+$Q=N-2$, so the half-filled blocks are those with $Q=0$.
+\begin{wl}
+bd = qsbasisvc[sites];
+sector[s_] := Select[bd, First[#] == {0, s} &];
+mat[h_, b_] := First[makematricesbzvc[h, b]][[2]];
+hs = mat[hd, sector[0]];
+{Dimensions[hs], mat[hd, sector[1]]}
+\end{wl}
+\begin{wl}
+hs // MatrixForm
+\end{wl}
+In this phase convention the diagonal states, in order, are a doublon
+on one site, the spin singlet with one electron on each site, and a
+doublon on the other site. Each amplitude $-\sqrt{2}\,t$ is the sum of
+two indistinguishable hopping paths out of the normalized singlet.
+Rephasing one basis vector flips a row and the corresponding column;
+it cannot change an eigenvalue. With $P(x)=\det(H_{S=0}-xI)$:
+\begin{wl}
+Factor[CharacteristicPolynomial[hs, x]]
+\end{wl}
+The antisymmetric doublon combination decouples at energy $U$. The
+symmetric combination couples to the singly occupied singlet by $-2t$.
+The other two singlet energies and the singlet--triplet splitting are
+\begin{equation}
+ E_\pm=\frac{U\pm\sqrt{U^2+16t^2}}2,\qquad
+ \Delta_s=E_T-E_-=-E_- .
+ \label{eq:dimer}
+\end{equation}
+At $U=0$ the singlet fills the bonding orbital with both spins and has
+energy $-2|t|$. At $t=0$ the singly occupied singlet and the triplet
+are degenerate. Turning on hopping at large $U$ leaves the triplet at
+zero but lowers the singlet. This is the simplest example of kinetic
+energy selecting antiferromagnetic correlations.
+
+\subsection{What remains of double occupation?}
+The derivative $\partial E_-/\partial U=\langle D_1+D_2\rangle$
+counts the doublons in the exact ground state. The equality follows by
+differentiating the eigenvalue equation for a normalized eigenvector;
+terms involving its derivative cancel. It is valid away from a crossing.
+\begin{wl}
+emin = (U - Sqrt[U^2 + 16 t^2])/2;
+dsite = Simplify[D[emin, U]/2];
+{dsite, dsite /. {U -> 0, t -> 1}}
+\end{wl}
+For $U\gg |t|$ the probability per site is $2t^2/U^2$ to leading order.
+It is small but cannot be set to zero before evaluating the energy.
+In fact $\langle v\rangle=t\,\partial E_-/\partial t$, and at this order
+the kinetic gain is twice the interaction cost. Setting $U=4t$ gives
+an instructive intermediate case: the exact singlet still has no local
+magnetization, even though its local moment
+$\langle(n_{i\uparrow}-n_{i\downarrow})^2\rangle=1-2\langle D_i\rangle$
+already substantially exceeds the free-electron value $1/2$.
+
+\begin{pitfall}
+Occupation vectors refer to the current list of modes. A new call to a
+basis generator can change it. Construct the matrix before creating a
+basis on different sites, or regenerate the original basis first.
+The numerical matrix, once constructed, is independent of that list.
+\end{pitfall}
+
+\section{Eliminating virtual charge excitations}
+Let $P$ select one electron per site and $\bar P=1-P$. In the half-filled
+dimer $P H_0 P=P v P=0$. Every intermediate state connected to $P$ by
+one hop has energy $U$, so to second order
+\[
+ H^{(2)}=-P v\bar P vP/U .
+\]
+It is negative semidefinite. In a spin triplet there is no accessible
+doublon, hence no shift. For a singlet the squared norm of $\bar P v
+\ket{s}$ is $4t^2$. Since the singlet projector is
+$1/4-\vS_1\cdot\vS_2$, this already fixes the entire spin Hamiltonian.
+
+\begin{wl}
+p = nc @@ (projector1 /@ sites);
+heff = schriefferwolff[h0, v, p, 2];
+snegxoperators[X, "HubbardAtom"];
+snegspinoperators[{S, 1/2}];
+Expand[xtospin[fermionstox[heff[[3]], c -> X], X -> S]]
+\end{wl}
+
+Read the transverse terms with
+$S_1^xS_2^x+S_1^yS_2^y=(S_1^+S_2^-+S_1^-S_2^+)/2$.
+The result is $J(\vS_1\cdot\vS_2-1/4)$ with $J=4t^2/U$.
+\fn{heff[[3]]} is order two: the returned list starts with
+order zero. The constant $-J/4$ matters when comparing energies
+rather than splittings. A controlled expansion requires $|t|/U\ll1$.
+The exact dimer shows both the sign and scale of the first omitted term:
+\begin{wl}
+Normal[Series[-emin, {t, 0, 4}, Assumptions -> U > 0]] //
+  Simplify[#, U > 0] &
+\end{wl}
+Figure~\ref{fig:dimer-exchange} compares the two truncations. The
+fourth-order correction lowers the second-order splitting. At $U=2t$
+it cancels the entire leading term, although the exact gap is positive.
+The relevant scale is visible already in Eq.~\eqref{eq:dimer}: the
+Taylor series of the square root about $t=0$ converges for
+$|4t/U|<1$, not throughout the range in the figure.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.95\linewidth,height=53mm,xmin=2,xmax=12,ymin=0,ymax=2.05,
+  xlabel={$U/t$},ylabel={$\Delta_s/t$},tick label style={font=\small},
+  legend cell align=left,legend style={font=\small,draw=none,fill=none},
+  samples=100,domain=2:12]
+\addplot[very thick,snegblue] {8/(sqrt(x*x+16)+x)};
+\addlegendentry{exact}
+\addplot[black,dashed,thick] {4/x};
+\addlegendentry{second order}
+\addplot[black,densely dotted,thick] {4/x-16/(x*x*x)};
+\addlegendentry{fourth order}
+\end{axis}
+\end{tikzpicture}
+\caption{Singlet--triplet gap of a half-filled dimer, $t>0$. All
+curves use the same one-bond hopping. At large $U/t$ the remaining
+error after the fourth-order correction is of order $(t/U)^5$ in
+the plotted units.}\label{fig:dimer-exchange}
+\end{figure}
+
+\subsection{Doping: when the first-order term survives}
+Remove an electron. The low-energy subspace must now include holes, so
+use $P_G=\prod_i(1-D_i)$ rather than the projector onto exactly one
+electron per site. A hop onto an empty neighbour need not leave $P_G$.
+With $\tilde c_{i\sigma}=c_{i\sigma}(1-n_{i\bar\sigma})$, the
+usual nearest-neighbour $t$--$J$ Hamiltonian is
+\begin{align}
+ H_{tJ}={}&-t\sum_{\langle ij\rangle\sigma}
+  (\tilde c^\dagger_{i\sigma}\tilde c_{j\sigma}+\hc)\nonumber\\
+ &+J\sum_{\langle ij\rangle}
+   (\vS_i\cdot\vS_j-\tfrac14 n_i n_j).
+\end{align}
+The density factor makes the exchange vanish if either site is empty.
+On three or more sites this expression does \emph{not} exhaust
+order $t^2/U$. A hop $k\to j$ can create a doublon, followed by a hop
+$j\to i$ that removes it with $i\ne k$. If $i$ was initially empty,
+the final state is in $P_G$, but the hole has moved from $i$ to $k$.
+For real nearest-neighbour hopping the extra term can be written
+\[
+ -\frac{t^2}{U}\!
+ \sum_{j,\;i\ne k\in\mathcal{N}(j),\;\sigma}
+ P_G\big(c^\dagger_{i\sigma}n_{j\bar\sigma}c_{k\sigma}
+ -c^\dagger_{i\sigma}c^\dagger_{j\bar\sigma}
+ c_{j\sigma}c_{k\bar\sigma}\big)P_G .
+\]
+The neighbours $(i,k)$ are ordered; the reverse path is already in
+the sum. The minus sign inside the parentheses distinguishes the two
+possible spin transfers. At half filling both transfers to a third site
+are blocked by the final projector. Away from half filling, neglecting
+them is an additional modelling decision, not a higher-order truncation.
+
+\paragraph{Isolating the three-site matrix element.}
+Take an open chain $1$--$2$--$3$ with two electrons in a spin singlet.
+There are three states with the electrons on different sites and three
+with both electrons on one site. A singlet shared by sites 1 and 2 can
+turn into a singlet on 2 and 3 in two hops through a doublon on site 2.
+In contrast, exchange on either individual bond cannot change the hole
+position. This makes the off-diagonal element of $H^{(2)}$ between
+the two bond singlets a diagnostic for the three-site term.
+\begin{wl}
+line3 = c /@ Range[3];
+b3 = Select[qsbasisvc[line3], First[#] == {-1, 0} &];
+nd = Diagonal[mat[Total[hubbard[line3]], b3]];
+lo = Flatten[Position[nd, 0]]; hi = Flatten[Position[nd, 1]];
+v3 = mat[-hop[c[1], c[2]] - hop[c[2], c[3]], b3];
+k3 = -v3[[lo, hi]] . v3[[hi, lo]];
+k3 // MatrixForm
+\end{wl}
+The printed matrix is in units of $t^2/U$; the dimensionless entries
+are exact. A pair occupying sites 1 and 3 has no virtual doublon one
+hop away, hence a zero row. The two adjacent singlets have diagonal
+shift $-4$ and mutual coupling of magnitude $2$: only the intermediate
+doublon on the shared site connects them. Which row is zero and the
+sign of the coupling depend on the chosen basis. The eigenvalues do
+not. Removing the three-site term from this matrix gives a
+spurious degeneracy:
+\begin{wl}
+{Sort[Eigenvalues[k3]], Sort[Diagonal[k3]]}
+\end{wl}
+These numbers diagnose the second-order \emph{operator}, not the full
+energy shifts of the doped chain. To obtain the low-energy spectrum
+through this order, add the first-order block $t\,v_{3,\mathrm{lo},\mathrm{lo}}$
+to $(t^2/U)\,k_3$ and diagonalize. At half filling the first-order
+block would be zero.
+
+\subsection{Four sites: a process with no dimer counterpart}
+Four successive hops around a square can restore single occupation
+while permuting all four spins. On a bipartite plaquette, returning to
+single occupation requires an even number of hops, so the first
+corrections to superexchange occur at order $t^4/U^3$. They include
+both pair exchanges and a cyclic permutation plus its inverse
+\cite{macdonald}. Renormalizing $J$ alone cannot describe an entire
+plaquette spectrum. A coefficient quoted for a four-spin product is
+not directly the coefficient of a permutation: expanding a spin-$1/2$
+swap, $P_{ij}=2\vS_i\cdot\vS_j+1/2$, generates lower-body terms too.
+
+The plaquette example compares the lowest sixteen half-filled energies
+with the sixteen energies in the projected spin space. From the
+checkout run:
+\begin{lstlisting}[style=wl]
+wolframscript -file examples/schriefferwolff-plaquette.m
+\end{lstlisting}
+Keeping $t$ fixed and doubling large $U$ reduces the leading
+absolute spectral error by about eight at second order ($t^4/U^3$)
+and by about thirty-two at fourth order ($t^6/U^5$). Matching the
+dimension and the energy origin is essential in this comparison.
+
+\begin{furtherreading}
+For the passage from electrons to spins see Auerbach~\cite{auerbach}.
+In a junction the virtual states can include superconducting
+quasiparticles; their energies replace the single denominator $U$ of
+the dimer. An application is the Josephson harmonic expansion of
+Bácsi, Iličin and Žitko~\cite{bacsi}.
+\end{furtherreading}
+
+\section{Measuring a charge gap on a finite cluster}
+Define $E_0(N)$ as the lowest energy among \emph{all} spin sectors
+at particle number $N$. At zero temperature that charge sector is stable
+over a chemical-potential interval of width
+\begin{equation}
+ \Delta_c=\mu_+-\mu_-
+ = E_0(N+1)+E_0(N-1)-2E_0(N).
+ \label{eq:chargegap}
+\end{equation}
+This second difference eliminates every term linear in $N$. It is
+not the energy of the lowest neutral excitation: the dimer, for
+instance, admits an arbitrarily soft spin excitation as $t^2/U\to0$,
+even as its charge gap grows.
+
+Take four sites on a ring, count each bond once, and measure energies in
+units of $t>0$. Here we keep $S^z$, rather than total $S$, and use all
+magnetic substates. The blocks are larger but their dimensions now sum
+directly to the Fock-space dimension $4^4$.
+\begin{wl}
+ring = c /@ Range[4];
+hr = -Sum[hop[c[i], c[Mod[i, 4] + 1]], {i, 4}] +
+  U Total[hubbard[ring]];
+br = qszbasisvc[ring];
+blocks = makematricesbzvc[hr, br];
+{Length[blocks], Total[Length /@ blocks[[All, 2]]]}
+\end{wl}
+\begin{wl}
+e0[q_, u_] := Min[Flatten[Eigenvalues[N[#[[2]] /. U -> u]] & /@
+  Select[blocks, #[[1, 1]] == q &]]];
+gap[u_] := e0[1, u] + e0[-1, u] - 2 e0[0, u];
+rows = Table[{u, N[Round[gap[u], 1/1000]]}, {u, {0, 2, 4, 8, 16}}];
+TableForm[rows, TableHeadings -> {None, {"U/t", "Charge gap / t"}}]
+\end{wl}
+Each row gives $(U/t,\Delta_c/t)$ rounded to three decimal places.
+At $U=0$ the allowed momenta are $0,\pm\pi/2,\pi$ (lattice spacing
+one). The two zero-energy orbitals make this an open shell, so adding
+and removing an electron have identical one-particle thresholds.
+The same calculation on a closed-shell cluster can yield a nonzero
+gap in a metal. Inferring a bulk gap requires a sequence of sizes
+and control of such shell effects.
+
+For comparison, at $U=0$ alternate the hopping amplitudes
+$t_1,t_2>0$ in a chain with two sites per cell. The Bloch energies are
+$\pm|t_1+t_2 e^{ik}|$, where $k$ is in inverse cell lengths. The
+half-filled band gap $2|t_1-t_2|$ persists in the thermodynamic limit,
+without an interaction. In the large-$U$ uniform Hubbard chain charge
+motion instead costs a doublon energy even in the absence of a
+one-particle band gap. The charge-gap measurement alone cannot tell
+these mechanisms apart; compare the noninteracting spectrum, double
+occupancy and spin response.
+
+\subsection{A shell-effect check without many-body diagonalization}
+The noninteracting uniform ring is a useful calibration. Sort its
+$L$ one-particle levels \emph{per spin}; at half filling each spin
+occupies $L/2$ levels. The finite-size addition gap is the difference
+of two consecutive levels at the Fermi surface.
+\begin{wl}
+shell[l_] := With[{band = SortBy[Table[-2 Cos[2 Pi j/l], {j, 0, l-1}], N]},
+  band[[l/2 + 1]] - band[[l/2]]];
+TableForm[Table[{l, N[shell[l]]}, {l, {4, 6, 8, 10}}],
+  TableHeadings -> {None, {"Sites", "Charge gap / t"}}]
+\end{wl}
+For $L=4p$, both Fermi points lie on the grid and the gap is zero.
+For $L=4p+2$, the grid misses each Fermi point by $\pi/L$, so
+$\Delta_c/t=4\sin(\pi/L)$: a finite gap at \emph{every} size on this
+subsequence tends to zero as $1/L$. In an interacting calculation one
+cannot simply subtract this formula; the velocities and the many-body
+levels have changed. But treating the two subsequences separately
+prevents an alternation of boundary-condition effects from masquerading
+as an interaction threshold.
+
+\section{The atomic propagator and Hubbard-I}
+Consider the retarded one-electron Green's function
+$G_\sigma(z)=\langle\!\langle d_\sigma;d^\dagger_\sigma
+\rangle\!\rangle_z$, where $z=\omega+i0^+$. Its spectral density
+$A_\sigma(\omega)=-\operatorname{Im}G_\sigma(\omega+i0^+)/\pi$
+has unit integral \emph{per spin}. Use the same grand Hamiltonian
+as in the atomic spectrum. Since $n_{\bar\sigma}$ commutes with it,
+the two operators $d_\sigma(1-n_{\bar\sigma})$ and
+$d_\sigma n_{\bar\sigma}$ evolve at fixed frequencies $\epsilon$ and
+$\epsilon+U$, respectively. The equation-of-motion hierarchy closes:
+\begin{align*}
+ (z-\epsilon)G_\sigma &= 1+U F_\sigma,\\
+ (z-\epsilon-U)F_\sigma &= \langle n_{\bar\sigma}\rangle ,
+\end{align*}
+where $F_\sigma=\langle\!\langle d_\sigma n_{\bar\sigma};
+d^\dagger_\sigma\rangle\!\rangle_z$. These are operator identities;
+no factorization of an average was used.
+\begin{wl}
+gatom = greensfunction[d[AN, UP], d[CR, UP], atom, z];
+g = gatom /. avg[number[d[], DO]] -> w;
+Apart[g, z]
+\end{wl}
+Writing $w=\langle n_{\downarrow}\rangle$, the poles and their weights
+are transparent in
+\begin{equation}
+ G_\uparrow(z)=\frac{1-w}{z-\epsilon}
+              +\frac{w}{z-\epsilon-U}.
+ \label{eq:atomicG}
+\end{equation}
+The upper pole exists only when a down electron is available on the
+site. With $\epsilon=-U/2$ and a spin-symmetric ensemble, $w=1/2$;
+the spectral peaks then have equal weight and are separated by $U$.
+A pure member of the atomic doublet has the same energy but different
+spin-resolved weights. Substituting $w=1/2$ is a specification of the
+state, not a step in the equation-of-motion calculation.
+\begin{wl}
+ph = Factor[g /. {\[Epsilon] -> -U/2, w -> 1/2}];
+{ph, Limit[z ph, z -> Infinity]}
+\end{wl}
+
+\paragraph{Checking both residues against a trace.}
+The half-filled atom is a poor test of thermal weights: symmetry
+forces them both to $1/2$ regardless of temperature. Instead take
+$\epsilon=-1/4$, $U=2$, and $T=1/2$. Removing or adding one spin-up
+electron still gives only the two transition frequencies $\epsilon$
+and $\epsilon+U$, but their residues differ. The Lehmann representation
+sums matrix elements between exact many-body eigenstates. Each row
+below is $(E_n-E_m,w_{mn})$ after collecting equal frequencies:
+\begin{wl}
+asym = atom /. {\[Epsilon] -> -1/4, U -> 2};
+poles = lehmann[d[AN, UP], d[CR, UP], asym, {d}, 1/2];
+TableForm[N[Round[poles, 1/1000]], TableHeadings -> {None, {"Frequency", "Residue"}}]
+\end{wl}
+For a retarded anticommutator the factor in the residue is the
+\emph{sum} of the two Boltzmann probabilities, not their difference.
+The atomic partition function is
+$Z=1+2e^{-\epsilon/T}+e^{-(2\epsilon+U)/T}$.
+The upper peak has weight $w=(e^{-\epsilon/T}+e^{-(2\epsilon+U)/T})/Z$.
+These facts give two independent checks: the total weight is one,
+and the upper weight equals the mean down-spin occupation. Compare the
+full complex propagators at a frequency off the real axis, where a
+pole neither diverges nor needs artificial broadening:
+\begin{wl}
+wth = thermalaverage[number[d[], DO], asym, {d}, 1/2];
+z0 = 1/3 + I/4;
+gtrace = Total[poles[[All, 2]]/(z0 - poles[[All, 1]])];
+{Abs[1 - Total[poles[[All, 2]]]] < 10^-12,
+ Abs[gtrace - (g /. {z -> z0, \[Epsilon] -> -1/4, U -> 2, w -> wth})] < 10^-12}
+\end{wl}
+
+\subsection{What changes when the atom is put back in the lattice?}
+Define the local self-energy by
+$G_\mathrm{at}^{-1}(z)=z-\epsilon-\Sigma_\mathrm{at}(z)$. Inverting
+Eq.~\eqref{eq:atomicG} gives
+\[
+ \Sigma_\mathrm{at}(z)=Uw+
+ \frac{U^2 w(1-w)}{z-\epsilon-U(1-w)} .
+\]
+The static term is the Hartree shift. The pole in the second term is
+what opens a correlation gap in this approximation. Hubbard-I inserts
+this atomic self-energy into the lattice propagator, or equivalently
+uses $G_k(z)=[G_\mathrm{at}^{-1}(z)-\varepsilon_k]^{-1}$, with
+$\varepsilon_k$ the dispersion of the hopping term alone.
+\begin{wl}
+gk = Together[ph/(1 - ek ph)];
+Factor[Denominator[gk]]
+\end{wl}
+At particle--hole symmetry its poles are
+$z_\pm=(\varepsilon_k\pm\sqrt{\varepsilon_k^2+U^2})/2$.
+For $U>0$ they lie on opposite sides of zero. For $U=0$ the apparent
+additional pole cancels against a zero in the numerator, leaving
+$1/(z-\varepsilon_k)$. Checking residues as well as pole locations
+prevents a spurious flat band. The construction is exact in the atomic
+limit and recovers free propagation at $U=0$. It omits intersite
+spin correlations and has no coherent Fermi-liquid resonance. Its
+half-filled gap at arbitrarily small $U>0$ does not establish a Mott
+transition for a general lattice.
+
+\section{Can a static field account for the singlet energy?}
+In a collinear Hartree state, write $n_{i\sigma}=\bar n_{i\sigma}
++\delta n_{i\sigma}$ and discard
+$\delta n_{i\uparrow}\delta n_{i\downarrow}$. The remaining interaction is
+\begin{equation}
+ U\sum_i(\bar n_{i\downarrow} n_{i\uparrow}+
+          \bar n_{i\uparrow} n_{i\downarrow}-
+          \bar n_{i\uparrow}\bar n_{i\downarrow}).
+\end{equation}
+The last term does not change the orbitals, but omitting it counts
+the interaction energy twice. In a translationally invariant metal,
+a small uniform polarization $m=\bar n_\uparrow-\bar n_\downarrow$
+splits the two spin bands by $Um$. For a smooth one-spin density of
+states $\rho(E_F)$ per site, the induced polarization at zero
+temperature is $\rho(E_F)Um$ to first order. Thus the unpolarized
+solution is unstable to \emph{uniform} magnetization for
+$U\rho(E_F)>1$ (Stoner criterion). It need not be the first
+instability: the susceptibility at nonzero wave vector can be larger.
+
+On the dimer, try staggered polarization instead:
+$m_1=-m_2=m$, with one electron per site on average. Apart from the
+common Hartree shift, each spin sees diagonal potentials $\pm Um/2$
+and off-diagonal hopping $-t$. Filling the lower eigenstate for each
+spin gives
+\[
+ m=\frac{Um/2}{\sqrt{t^2+(Um/2)^2}} .
+\]
+Besides $m=0$, for $U>2|t|$ there are two solutions related by spin
+reversal with $m=\pm\sqrt{1-(2t/U)^2}$. Below we seed one branch;
+the solver adjusts the chemical potential for two particles.
+\begin{wl}
+hf = meanfield[hd /. {t -> 1, U -> 4}, "Hartree"];
+seed = {avg[number[c[1], UP]] -> 0.9, avg[number[c[2], DO]] -> 0.9};
+sol = meanfieldsolve[hf, sites, seed, "ParticleNumber" -> 2];
+m1 = avg[number[c[1], UP]] - avg[number[c[1], DO]];
+{sol["Converged"], Round[sol["Energy"], 1/1000],
+  Round[m1 /. sol["Averages"], 1/1000] // N}
+\end{wl}
+At these parameters the unpolarized determinant has energy
+$-2t+U/2=0$, the staggered determinant has energy $-t/2$, and the
+exact energy is $(2-2\sqrt{2})t$. Improving the variational energy by
+allowing a staggered field has introduced a false broken symmetry on a
+finite dimer. In particular $m_1$ is not the local fluctuating moment
+calculated in the singlet. At large $U$, Hartree theory yields
+$-2t^2/U$ for this determinant; the exact singlet gains twice as much
+through transverse spin exchange. Convergence of the iteration is not
+a test of either the symmetry or the accuracy of the state.
+
+\section{Local constraints: Hubbard operators and auxiliary particles}
+Operator projection is easiest to understand on one site. For
+$a,b\in\{0,\uparrow,\downarrow,2\}$ let $X^{ab}=\ket{a}\bra{b}$.
+Then $X^{ab}X^{cd}=\delta_{bc}X^{ad}$ and $\sum_a X^{aa}=1$.
+The creation operator $d^\dagger_\uparrow$ is the sum of the transitions
+$X^{\uparrow0}+X^{2\downarrow}$. For down spin the second transition
+has a minus sign because $\ket{2}$ was defined with the up creator
+on the left. Work with the corresponding fermionic polynomials to
+test the projected algebra:
+\begin{wl}
+xi = xoperator[d[], "0", "UP"];
+Expand[antikomutator[xi, conj[xi]]]
+\end{wl}
+The anticommutator is $X^{00}+X^{\uparrow\uparrow}
+=1-n_\downarrow$, not the identity. The missing weight is precisely
+the transition at the upper Hubbard pole. At distinct sites, odd
+transitions anticommute: ordinary commuting site matrices would lose
+the fermion sign.
+\begin{wl}
+pg = 1 - hubbard[d[]];
+Expand[{nc[pg, pg] - pg, nc[pg, d[AN, UP], pg] - xi}]
+\end{wl}
+
+One can instead keep canonical auxiliary fields at the price of a
+constraint. In the no-doublon space introduce a boson $b$ for
+$\ket0$ and fermions $f_\sigma$ for $\ket\sigma$. Identify
+$X^{0\sigma}=b^\dagger f_\sigma$ and impose
+\[
+ b^\dagger b+\sum_\sigma f^\dagger_\sigma f_\sigma=1
+ \quad\text{on every site}.
+\]
+The three physical states are precisely the states with one auxiliary
+particle. The substitutions $b\to e^{i\theta}b$ and
+$f_\sigma\to e^{i\theta}f_\sigma$ leave $X^{0\sigma}$ invariant:
+the common phase is redundant. Discarding the constraint introduces,
+among others, an auxiliary vacuum and a two-spinon state with no
+counterparts in the projected atom. Enforcing it only on average is
+a mean-field approximation. The idempotent $P_G$ and the Hubbard
+operators above implement the projection exactly and offer local
+tests for any auxiliary-particle calculation.
+
+\subsection{Partial projection as a variational wave function}
+What is lost if one discards doublons altogether? Return to the dimer,
+with $t>0$ and exactly two particles. The free bonding determinant is
+an equal-amplitude superposition of the singly occupied singlet
+$\ket{s}$ and the symmetric doublon $\ket{D_+}$, in phases chosen
+so that $\langle s|H|D_+\rangle=-2t$. Multiply each configuration
+with a doublon by $g$, $0\le g\le1$. This is a small-system version
+of a Gutzwiller variational state:
+\[
+ \ket{\psi(g)}=\frac{\ket{s}+g\ket{D_+}}{\sqrt{1+g^2}},
+ \qquad E(g)=\frac{-4tg+Ug^2}{1+g^2}.
+\]
+There is no approximation in evaluating this expectation value.
+More unusually, on the dimer this one-parameter family contains the
+exact ground state. Stationarity gives $2tg^2+Ug-2t=0$, whose
+positive root can be written without subtracting nearly equal numbers:
+\begin{wl}
+gopt = 4 t/(U + Sqrt[U^2 + 16 t^2]);
+energy[y_] := (-4 t y + U y^2)/(1 + y^2);
+FullSimplify[{energy[gopt] - emin,
+  gopt^2/(2 (1 + gopt^2)) - dsite}, U > 0 && t > 0]
+\end{wl}
+The second check is the probability of finding a doublon on one
+specified site. At $t/U\ll1$ the optimum has $g\simeq2t/U$, whereas
+strict projection $g=0$ gives $E=0$ when evaluated with the original
+Hamiltonian. A nonzero admixture of \emph{amplitude} $t/U$ produces
+exchange energy of order $t^2/U$. The projected spin Hamiltonian
+recovers that energy by transforming the Hamiltonian, rather than
+by retaining the doublon in the state. For larger clusters inequivalent
+hole--doublon separations generally require different amplitudes; one
+scalar $g$ is no longer enough to make the trial state exact.
+
+\section{A three-orbital atom: Hund's rule from the spectrum}
+Distinguish a single-particle level index from a site index: now
+$a_{m\sigma}$ removes an electron in orbital $m=1,2,3$ of \emph{one}
+atom. Set all three orbital energies to zero. For a rotationally
+invariant Kanamori interaction the repulsion in distinct orbitals is
+$U'=U-2J$ for opposite spin and $U'-J$ for equal spin. Density terms
+alone would give different energies to the three components of a spin
+triplet. Two additional processes restore the multiplet structure:
+\begin{align}
+ H_K={}&U\sum_m D_m+
+ (U-2J)\sum_{m\ne n} n_{m\uparrow}n_{n\downarrow}
+ +(U-3J)\sum_{m<n,\sigma} n_{m\sigma}n_{n\sigma}\nonumber\\
+ &-J\sum_{m\ne n} S_m^+ S_n^-
+ +J\sum_{m\ne n} B_m^\dagger B_n,\qquad
+ B_m=a_{m\downarrow}a_{m\uparrow}.
+ \label{eq:kanamori}
+\end{align}
+The ordered last sums already contain their Hermitian conjugates. The
+pair convention matters: reversing only the two annihilators would
+reverse the pair-hopping amplitude. To make all factors explicit,
+construct the terms for each unordered orbital pair:
+\begin{wl}
+snegfermionoperators[a];
+snegrealconstants[J];
+orb = a /@ Range[3];
+n[m_, s_] := number[a[m], s];
+pair[m_] := nc[a[AN, m, DO], a[AN, m, UP]];
+hkpair[m_, k_] := (U - 2 J) (nc[n[m, UP], n[k, DO]] +
+    nc[n[m, DO], n[k, UP]]) +
+  (U - 3 J) Total[nc[n[m, #], n[k, #]] & /@ {UP, DO}] -
+  J (nc[spinplus[a[m]], spinminus[a[k]]] +
+     nc[spinminus[a[m]], spinplus[a[k]]]) +
+  J (nc[conj[pair[m]], pair[k]] + nc[conj[pair[k]], pair[m]]);
+hk = U Total[hubbard[orb]] + Total[hkpair @@@ Subsets[Range[3], {2}]];
+Expand[{hk - conj[hk], komutator[hk, Total[spinplus /@ orb]]}]
+\end{wl}
+
+Put two electrons in six spin-orbitals. Here $Q=N-3=-1$. The
+following rows give $S$, the energy (in symbolic $U,J$), and the
+number of \emph{multiplets} at that energy. We keep the multiplicities;
+distinct eigenvalues alone cannot diagnose a missing state.
+\begin{wl}
+bk = qsbasisvc[orb];
+k2 = makematricesbzvc[hk, Select[bk, #[[1, 1]] == -1 &]];
+levels = Flatten[Table[{b[[1, 2]], #[[1]], #[[2]]} & /@
+    Tally[Expand /@ Eigenvalues[b[[2]]]], {b, k2}], 1];
+TableForm[Sort[levels], TableHeadings -> {None, {"Spin", "Energy", "Multiplets"}}]
+\end{wl}
+For $J>0$ the lowest energy is $U-3J$. The two electrons occupy
+different orbitals with parallel spins; three choices of orbital pair
+give three triplets. Among singlets, each distinct-orbital pair gives
+one state at $U-J$. The three intra-orbital pairs form a matrix with
+diagonal $U$ and off-diagonal $J$. Its symmetric vector has energy
+$U+2J$, and the two orthogonal vectors have energy $U-J$. Thus the
+dimensions are $9+5+1=\binom62$. Dropping pair hopping would leave
+three degenerate states at $U$ instead of this $1+2$ splitting.
+\begin{wl}
+Total[(2 #[[1]] + 1) #[[3]] & /@ levels] == Binomial[6, 2]
+\end{wl}
+\begin{furtherreading}
+The atomic splittings determine which spin and orbital degrees of
+freedom survive when the shell couples to a bath. For the three-orbital
+impurity with this interaction see Horvat, Žitko and Mravlje~\cite{horvat}.
+The \href{https://auger.ijs.si/nano/biblio/biblio.html}{authors' publication list}
+provides access to the paper.
+\end{furtherreading}
+
+\section*{Exercises}
+\addcontentsline{toc}{section}{Exercises}
+\begin{exercise}[Counting charge defects]\label{ex:defects}
+At $t=0$ count the half-filled ground states and the states exactly
+$U$ higher on $L\ge2$ sites. How many states must a charge-only basis
+contain at each energy for $L=4$?
+\end{exercise}
+
+\begin{exercise}[Detuned sites]\label{ex:detuned}
+Add $\delta(n_2-n_1)/2$ to the half-filled dimer. Derive the exchange
+$J(\delta)$ to second order in $t$ and state the condition on
+$U,\delta,t$ for this spin-only description. Compare with a singlet
+eigenvalue, taking $U=10$, $\delta=6$ and $t=1/10$ in common energy units.
+\end{exercise}
+
+\begin{exercise}[Addition versus spin gap]\label{ex:gaps}
+At half filling find the dimer charge gap for all $U\ge0$, $t>0$.
+Why does it remain positive at $U=0$? Compare it with the spin gap
+at $U=0$ and at $U/t\gg1$.
+\end{exercise}
+
+\begin{exercise}[A spectral sum rule]\label{ex:moments}
+Derive the first three high-frequency coefficients of the atomic
+propagator at general filling. Which of them distinguish the two
+Hubbard poles from a single Hartree pole? Verify with nested
+commutators without extracting the poles a second time.
+\end{exercise}

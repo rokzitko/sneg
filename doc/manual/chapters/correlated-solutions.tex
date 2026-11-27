@@ -1,0 +1,105 @@
+\setwlchapter{correlated-solutions}
+
+\section*{Correlated electrons}
+The checks below form a fresh session. In each case the calculation uses
+a different representation or route from the analytical argument.
+
+\begin{solution}{ex:defects}
+At fixed $N=L$, a state with no doublons has one electron on every
+site. The spins can be chosen independently, giving $2^L$ ground
+states. A state at energy $U$ has precisely one doublon and one hole.
+Choose the doublon site in $L$ ways and the hole site in $L-1$ ways.
+There is no spin choice on either of these two sites, giving
+$L(L-1)2^{L-2}$ states. For four sites the two counts are 16 and 48.
+The other six half-filled states have two doublons and two holes.
+Their inclusion gives $\binom84=70$ as required. With $U$ as the
+energy unit the full half-filled matrix is diagonal:
+\begin{wl}
+Needs["sneg`"];
+snegfermionoperators[c, d];
+sites4 = c /@ Range[4];
+b4 = Select[qbasisvc[sites4], First[#] == {0} &];
+atomic4 = First[makematricesbzvc[Total[hubbard[sites4]], b4]][[2]];
+TableForm[Sort[Tally[Eigenvalues[atomic4]]],
+  TableHeadings -> {None, {"Energy / U", "States"}}]
+\end{wl}
+\end{solution}
+
+\begin{solution}{ex:detuned}
+The singly occupied configurations have zero site energy. The two
+intermediate doublons cost $U-\delta$ and $U+\delta$. Each is reached
+from the singlet with squared amplitude $2t^2$, while the triplet
+cannot hop. Consequently
+\[
+ J(\delta)=2t^2\left(\frac1{U-\delta}+\frac1{U+\delta}\right)
+ =\frac{4t^2 U}{U^2-\delta^2}.
+\]
+Positive excitation costs require $|\delta|<U$, and we need
+$|t|\ll U-|\delta|$. The divergence as $|\delta|\to U$ signals
+that a charge state must be retained in the low-energy subspace.
+It is not a physical divergence of the exchange energy. Verify at
+finite detuning by diagonalizing the full singlet matrix; the two
+answers are printed in the same energy units:
+\begin{wl}
+snegrealconstants[t, U, delta];
+sites2 = {c[1], c[2]};
+hd = U Total[hubbard[sites2]] - t hop[c[1], c[2]];
+biased = hd + delta (number[c[2]] - number[c[1]])/2;
+bs = Select[qsbasisvc[sites2], First[#] == {0, 0} &];
+hs = First[makematricesbzvc[biased, bs]][[2]];
+par = {U -> 10, delta -> 6, t -> 1/10};
+j2 = 4 t^2 U/(U^2 - delta^2);
+N[{-Min[Eigenvalues[hs /. par]], j2 /. par}, 6]
+\end{wl}
+The triplet energy is exactly zero even at finite detuning. The
+difference between the two printed splittings is the contribution of
+fourth and higher even orders.
+\end{solution}
+
+\begin{solution}{ex:gaps}
+One electron occupies a bonding orbital of energy $-t$. A three-electron
+state contains exactly one doublon, so its lowest energy is $U-t$.
+The half-filled ground-state energy is $E_-$ of Eq.~\eqref{eq:dimer}.
+Substitution in Eq.~\eqref{eq:chargegap} gives
+\[
+ \Delta_c=\sqrt{U^2+16t^2}-2t,\qquad
+ \Delta_s=(\sqrt{U^2+16t^2}-U)/2.
+\]
+For $U=0$ both are $2t$: the bonding level forms a closed shell, and
+the antibonding level lies $2t$ higher. At $U\gg t$,
+$\Delta_c=U-2t+8t^2/U+\cdots$, while $\Delta_s=4t^2/U+\cdots$.
+As a direct check, set $(t,U)=(1,4)$, use charge \emph{only}, and
+take the lowest eigenvalue separately in each particle-number sector:
+\begin{wl}
+bc = qbasisvc[sites2];
+mc = makematricesbzvc[hd /. {t -> 1, U -> 4}, bc];
+e[q_] := Min[Eigenvalues[First[Select[mc, First[#] == {q} &]][[2]]]];
+Simplify[e[1] + e[-1] - 2 e[0] == Sqrt[32] - 2]
+\end{wl}
+\end{solution}
+
+\begin{solution}{ex:moments}
+Expand $G_\sigma$ in inverse powers of $z$:
+\[
+ G_\sigma(z)=\sum_{\ell\ge0}M_\ell/z^{\ell+1}.
+\]
+Equation~\eqref{eq:atomicG} then gives
+$M_\ell=(1-w)\epsilon^\ell+w(\epsilon+U)^\ell$. Thus
+\[
+ M_0=1,\quad M_1=\epsilon+Uw,\quad
+ M_2=\epsilon^2+(2\epsilon U+U^2)w.
+\]
+A single pole at the Hartree energy reproduces $M_0$ and $M_1$,
+but has $M_2=M_1^2$. The exact variance $M_2-M_1^2=U^2w(1-w)$
+vanishes only when the peaks coincide or one carries zero weight.
+For an independent computation \fn{spectralmoments} evaluates
+$M_\ell=\langle\{ \mathcal{L}^\ell d_\uparrow,d^\dagger_\uparrow\}\rangle$
+with $\mathcal{L}A=[A,H]$:
+\begin{wl}
+snegrealconstants[\[Epsilon]];
+ha = \[Epsilon] number[d[]] + U hubbard[d[]];
+mom = spectralmoments[d[AN, UP], d[CR, UP], ha, 2] /.
+  avg[number[d[], DO]] -> w;
+Expand[mom - {1, \[Epsilon] + U w, \[Epsilon]^2 + (2 \[Epsilon] U + U^2) w}]
+\end{wl}
+\end{solution}

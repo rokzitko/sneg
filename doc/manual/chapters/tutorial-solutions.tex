@@ -1,0 +1,91 @@
+\section*{Tutorial}
+\setwlchapter{tutorial-solutions}
+\begin{solution}{ex:first}
+At $\epsilon=-U/3$ the empty, spin-doublet, and double energies
+are $0,-U/3,U/3$. Starting from the doublet, removing costs $U/3$,
+adding costs $2U/3$. Both excitations change charge and therefore
+disappear in the restricted calculation. The spin degeneracy costs
+no energy but does not supply a one-electron transition.
+\begin{wl}
+snegfermionoperators[d];
+ha = hubbard[d[]] - number[d[]]/3;
+en = #[[2,1,1]] & /@ makematricesbzvc[ha, qsbasisvc[{d[]}]];
+TableForm[{{First[en]-en[[2]], Last[en]-en[[2]]}},
+  TableHeadings -> {None, {"Removal / U", "Addition / U"}}]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:majorana}
+The mixed terms cancel in $f^2$ and the equal squares enter with
+opposite signs. In the anticommutator they add. In the number there is
+an interference term $i\gamma_1\gamma_2$, which is Hermitian because
+the two Majoranas anticommute. Direct reduction gives the results:
+\begin{wl}
+snegmajoranaoperators[gm];
+f = (gm[1] + I gm[2])/Sqrt[2];
+Expand[{nc[f,f], antikomutator[f,conj[f]], nc[conj[f],f]}]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:bond}
+The molecule has one off-diagonal element $-t$, hence energies $\pm t$.
+On the two-site ring the two translates contribute to the same matrix
+element, giving $\pm2t$. For $L>2$ the two neighbours of a site are
+distinct. Halving the hopping would halve the physical bandwidth.
+\begin{wl}
+snegfermionoperators[c];
+bm = Select[qszbasisvc[{c[1],c[2]}], First[#] == {-1,1/2} &];
+hy = -hop[c[1],c[2]];
+Sort[Eigenvalues[#[[1,2]]]] & /@
+  (makematricesbzvc[#,bm] & /@ {hy,2 hy}) // MatrixForm
+\end{wl}
+\end{solution}
+\begin{solution}{ex:grid}
+In the inner product the twist factors cancel pointwise. For column
+indices $m,m'$ the remaining sum is $L^{-1}\sum_{n=0}^{L-1}
+e^{2\pi i(m-m')n/L}=\delta_{mm'}$. The inverse is the adjoint, not a
+second forward transform:
+\begin{wl}
+ff = Table[Exp[I n (2 Pi j + Pi/2)/3]/Sqrt[3], {n,0,2}, {j,0,2}];
+FullSimplify[ConjugateTranspose[ff].ff] // MatrixForm
+\end{wl}
+\end{solution}
+\begin{solution}{ex:multiplet}
+With $x=e^{-J/T}$ the triplet carries probability $3x/(1+3x)$.
+Thus $\langle\vS_1\cdot\vS_2\rangle=3(x-1)/[4(1+3x)]$, tending
+to $-3/4$ at zero temperature and zero at infinite temperature.
+Weighting the two energies equally would give a nonzero infinite-temperature
+result. As a check evaluate the trace of the Boltzmann-weighted spin
+matrix for $J/T=1$:
+\begin{wl}
+snegspinoperators[{s,1/2}];
+eb = Flatten[Eigenvalues[Normal[Last[#]]] & /@
+  spinclustermatrices[spinspin[s[1],s[2]], {s[1],s[2]}]];
+FullSimplify[(eb.Exp[-eb])/Total[Exp[-eb]] == 3 (1-E)/(4 (E+3))]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:wick}
+In the fixed-charge ensemble each spin has probability $1/2$, but
+the two spins never occur together. Independent half-filled modes
+have joint probability $1/4$. The difference is the connected
+two-particle correlator. It can be checked by diagonal matrix elements
+in the four Fock states:
+\begin{wl}
+bb = qbasisvc[{d[]}];
+ddm = makematricesbzvc[hubbard[d[]],bb];
+TableForm[{First[First[#]],Tr[Last[#]]/Length[Last[#]]} & /@ ddm,
+  TableHeadings -> {None, {"Charge Q","Mean doublons"}}]
+\end{wl}
+The $Q=0$ row gives zero. Including the other sectors with their full
+dimensions gives $(0+0+0+1)/4$.
+\end{solution}
+\begin{solution}{ex:trace}
+Exactly one of the four local states is doubly occupied. At each site
+there are $4^{L-1}$ such configurations; the trace is $U L4^{L-1}$.
+Hopping has no diagonal element. $\mathrm{Tr}(H_t^2)$ sums squared
+hopping matrix elements and reveals a missing bond, though not its
+sign. For two spinful sites of unit hopping:
+\begin{wl}
+bb = qbasisvc[{c[1],c[2]}];
+mm = Last /@ makematricesbzvc[hy,bb];
+{Total[Tr /@ mm], Total[Tr[#.#] & /@ mm]}
+\end{wl}
+\end{solution}

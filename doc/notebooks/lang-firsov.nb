@@ -1,0 +1,93 @@
+Notebook[{Cell["The displaced impurity oscillator", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 9", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Take ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "=", SubscriptBox["\[Omega]", "0"], 
+          "=", "1"}], TraditionalForm]], "InlineFormula"], " and ", 
+     Cell[BoxData[FormBox[RowBox[{"g", "=", "1", "/", "2"}], 
+        TraditionalForm]], "InlineFormula"], " in the Anderson--Holstein \
+atom. In the empty sector the predicted lowest energy is ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "/", "2", "-", SuperscriptBox["g", 
+           "2"], "/", SubscriptBox["\[Omega]", "0"], "=", "1", "/", "4"}], 
+        TraditionalForm]], "InlineFormula"], ". With a cutoff of two phonons \
+inspect this sector alone. The off-diagonal elements should be ", 
+     Cell[BoxData[FormBox[RowBox[{"-", "g"}], TraditionalForm]], 
+      "InlineFormula"], " and ", 
+     Cell[BoxData[FormBox[RowBox[{"-", SqrtBox["2"], "g"}], 
+        TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", "d", "]"}], 
+          ";"}], "\n", RowBox[{RowBox[{RowBox[{"ham", "[", "n_", "]"}], " ", 
+            ":=", " ", RowBox[{RowBox[{RowBox[{"isozsq", "[", RowBox[
+                   {"d", "[", "]"}], "]"}], "/", "2"}], " ", "+", " ", 
+              RowBox[{"phononnumber", "[", "n", "]"}], " ", "+", "\n", "  ", 
+              RowBox[{RowBox[{"nc", "[", RowBox[{RowBox[{RowBox[{"number", 
+                        "[", RowBox[{"d", "[", "]"}], "]"}], "-", "1"}], ",", 
+                    " ", RowBox[{"phononx", "[", "n", "]"}]}], "]"}], "/", 
+                "2"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{RowBox[{"empty", "[", "n_", "]"}], " ", ":=", " ", 
+            RowBox[{RowBox[{"First", "[", RowBox[{"keyselect", "[", 
+                  RowBox[{RowBox[{"makematricesbzvc", "[", RowBox[
+                       {RowBox[{"ham", "[", "n", "]"}], ",", "\n", "  ", 
+                        RowBox[{"transformtoPH", "[", RowBox[{RowBox[
+                          {"qsbasisvc", "[", RowBox[{"{", RowBox[{"d", "[", 
+                          "]"}], "}"}], "]"}], ",", RowBox[{"{", "n", 
+                          "}"}]}], "]"}]}], "]"}], ",", " ", RowBox[
+                     {"{", RowBox[{RowBox[{"-", "1"}], ",", "0"}], "}"}]}], 
+                  "]"}], "]"}], "[", RowBox[{"[", "2", "]"}], "]"}]}], ";"}], 
+        "\n", RowBox[{RowBox[{"empty", "[", "2", "]"}], " ", "//", " ", 
+          "MatrixForm"}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[TagBox[RowBox[{"(", "\[NoBreak]", 
+          GridBox[{{FractionBox["1", "2"], RowBox[{"-", FractionBox["1", 
+                "2"]}], "0"}, {RowBox[{"-", FractionBox["1", "2"]}], 
+             FractionBox["3", "2"], RowBox[{"-", FractionBox["1", 
+                SqrtBox["2"]]}]}, {"0", RowBox[{"-", FractionBox["1", 
+                SqrtBox["2"]]}], FractionBox["5", "2"]}}, RowSpacings -> 1, 
+           ColumnSpacings -> 1, RowAlignments -> Baseline, 
+           ColumnAlignments -> Center], "\[NoBreak]", ")"}], 
+        Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]], "Output", 
+      CellLabel -> "Out[4]//MatrixForm="]}, Open]], 
+  Cell[TextData[{"Increasing the cutoff grows the variational space, so its \
+lowest energy approaches the exact answer from above. High precision resolves \
+a small truncation error that a rounded energy would hide:"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"rows", " ", "=", " ", 
+            RowBox[{"Table", "[", RowBox[{RowBox[{"With", "[", RowBox[
+                   {RowBox[{"{", RowBox[{"e", " ", "=", " ", RowBox[{"Min", 
+                          "[", RowBox[{"Eigenvalues", "[", RowBox[{"N", "[", 
+                          RowBox[{RowBox[{"empty", "[", "n", "]"}], ",", 
+                          "35"}], "]"}], "]"}], "]"}]}], "}"}], ",", "\n", 
+                    "  ", RowBox[{"{", RowBox[{"n", ",", " ", RowBox[
+                         {"N", "[", RowBox[{"e", ",", "8"}], "]"}], ",", " ", 
+                        RowBox[{"N", "[", RowBox[{RowBox[{"-", RowBox[{"Log", 
+                          "[", RowBox[{"10", ",", RowBox[{"e", "-", RowBox[
+                          {"1", "/", "4"}]}]}], "]"}]}], ",", "5"}], "]"}]}], 
+                      "}"}]}], "]"}], ",", " ", RowBox[{"{", RowBox[
+                   {"n", ",", RowBox[{"{", RowBox[{"1", ",", "2", ",", "4", 
+                        ",", "8"}], "}"}]}], "}"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"TableForm", "[", RowBox[{"rows", ",", " ", 
+            RowBox[{"TableHeadings", " ", "->", " ", RowBox[{"{", 
+                RowBox[{"None", ",", RowBox[{"{", RowBox[{"\"Cutoff\"", ",", 
+                      "\"Energy\"", ",", "\"-log10(error)\""}], "}"}]}], 
+                "}"}]}]}], "]"}]}], "Input", CellLabel -> "In[5]:="], 
+     Cell[BoxData[TagBox[TagBox[GridBox[{{TagBox["\"Cutoff\"", HoldForm], 
+            TagBox["\"Energy\"", HoldForm], TagBox["\"-log10(error)\"", 
+             HoldForm]}, {"1", "0.2928932188134524756`8.", 
+            "1.3676113620036885471`5."}, {"2", "0.2553557140949606186`8.", 
+            "2.271182615060907412`5."}, {"4", "0.2500296612665070367`8.", 
+            "4.5278103089625882003`5."}, {"8", "0.2500000000713693274`8.", 
+            "10.1464883962541565122`5."}}, RowSpacings -> 1, 
+          ColumnSpacings -> 3, RowAlignments -> Baseline, 
+          ColumnAlignments -> Left, GridBoxDividers -> 
+           {"Columns" -> {{False}}, "Rows" -> {False, True, {False}, False}}, 
+          ColumnAlignments -> Left], {None, OutputFormsDump`HeadedColumns}], 
+        Function[BoxForm`e$, TableForm[BoxForm`e$, TableHeadings -> 
+           {None, {"Cutoff", "Energy", "-log10(error)"}}]]]], "Output", 
+      CellLabel -> "Out[6]//TableForm="]}, Open]], 
+  Cell["Source: Second Quantization with SNEG, SNEG documentation project. \
+Licensed under Creative Commons Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "The displaced impurity oscillator"]

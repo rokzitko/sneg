@@ -134,6 +134,9 @@ test[MemberQ[$Packages, "sneg`"], True];
 test[MemberQ[$ContextPath, "Sneg`"], True];
 test[Context[number], "Sneg`"];
 test[Check[Needs["sneg`"]; True, False, Needs::nocont], True];
+test[Map[Context, {"qbasis", "genhop", "UP", "CR", "VACUUM", "Hubbard", "snegtex", "isnumericQ"}], ConstantArray["Sneg`", 8]];
+test[Map[Names["Sneg`" <> #] &, {"s", "u", "states", "energy", "snegswdummies", "snegtexop"}], ConstantArray[{}, 6]];
+test[Names["Sneg`Private`snegswdummies"], {"Sneg`Private`snegswdummies"}];
 
 Print["** Listable functions **"];
 test[nc[{a, b}, c], {nc[a, c], nc[b, c]}];
@@ -187,7 +190,7 @@ test[twohop[{a[1], a[2]}, {b[1], b[2]}],
   {twohop[a[1], b[1]], twohop[a[2], b[2]]}];
 test[twohop[{a[1], a[3]}, a[2]], {twohop[a[1], a[2]], twohop[a[3], a[2]]}];
 test[invertspin[{a, b}], {invertspin[a], invertspin[b]}];
-test[mbfunc[{a, b}], {mbfunc[a], mbfunc[b]}];
+test[Sneg`Private`mbfunc[{a, b}], {Sneg`Private`mbfunc[a], Sneg`Private`mbfunc[b]}];
 test[op2ndx[{a, b}], {op2ndx[a], op2ndx[b]}];
 test[ndx2op[{n1, n2}], {ndx2op[n1], ndx2op[n2]}];
 test[ap[{a, b}, {c, d}], {ap[a, c], ap[b, d]}];
@@ -1080,14 +1083,14 @@ test[ number[c[]], nc[c[0, 0], c[1, 0]] + nc[c[0, 1], c[1, 1]]];
 snegbosonoperators[simplifyNumberBoson];
 test[
   MatchQ[
-    SnegSimplifyNumber[
+    Sneg`Private`SnegSimplifyNumber[
       nc[simplifyNumberBoson[CR], simplifyNumberBoson[AN]]],
     HoldPattern[HoldForm[number[simplifyNumberBoson[]]]]],
   True
 ];
 test[
   MatchQ[
-    SnegSimplifyNumber[
+    Sneg`Private`SnegSimplifyNumber[
       nc[simplifyNumberBoson[CR, 2, 3],
         simplifyNumberBoson[AN, 2, 3]]],
     HoldPattern[HoldForm[number[simplifyNumberBoson[2, 3]]]]],
@@ -1102,7 +1105,7 @@ test[
 ];
 test[
   MatchQ[
-    SnegSimplifyNumber[nc[c[CR, 4, UP], c[AN, 4, UP]]],
+    Sneg`Private`SnegSimplifyNumber[nc[c[CR, 4, UP], c[AN, 4, UP]]],
     HoldPattern[HoldForm[number[c[4], 1]]]],
   True
 ];
@@ -1347,12 +1350,12 @@ test[
   True
 ];
 test[
-  MatchQ[SnegSimplifyHop[Expand[3 hop[c[3], d[4]]]],
+  MatchQ[Sneg`Private`SnegSimplifyHop[Expand[3 hop[c[3], d[4]]]],
     HoldPattern[3 HoldForm[hop[c[3], d[4]]]]],
   True
 ];
 test[
-  MatchQ[SnegSimplifyHop[Expand[-2 twohop[c[3], d[4]]]],
+  MatchQ[Sneg`Private`SnegSimplifyHop[Expand[-2 twohop[c[3], d[4]]]],
     HoldPattern[-2 HoldForm[twohop[c[3], d[4]]]]],
   True
 ];
@@ -1598,7 +1601,7 @@ Module[{alphaQ},
   test[ alphaQ[basis[c[#]] &, Sneg`i], True ];
   test[ alphaQ[basis[c[#]] &, Sneg`j], True ];
   test[ alphaQ[basis[captureSpinA[#]] &, Sneg`s], True ];
-  test[ alphaQ[mbfunc[captureSpinA[#]] &, Sneg`s], True ];
+  test[ alphaQ[Sneg`Private`mbfunc[captureSpinA[#]] &, Sneg`s], True ];
 
   test[ alphaQ[spinfliphop[c[#], d[captureFixed]] &,
     Sneg`sigma], True ];
@@ -1804,8 +1807,8 @@ Print["*** Orthogonalisation ***"];
 test[ snegorthog[{{0, 1}}] =!= {}, True ];
 test[ snegorthog[{{0, 1}, {0, 0}}] =!= {}, True ];
 test[ snegorthog[{{Sin[x]^2 + Cos[x]^2 - 1}}], {} ];
-test[ snegzeroarrayQ[{orthogUnknown, 0}], False ];
-test[ snegzeroarrayQ[{Sin[x]^2 + Cos[x]^2 - 1, 0}], True ];
+test[ Sneg`Private`snegzeroarrayQ[{orthogUnknown, 0}], False ];
+test[ Sneg`Private`snegzeroarrayQ[{Sin[x]^2 + Cos[x]^2 - 1, 0}], True ];
 
 snegrealconstants[orthogPhase];
 Module[{phaseVC, phaseOP},
@@ -2170,9 +2173,9 @@ test[ transformQStoIS[bvc],
 
 Print["* LR Z_2 symmetry *"];
 
-test[mbfunc[c[]], {c[0, 1], c[0, 0]}];
-test[mbfunc[{c[]}], {{c[0, 1], c[0, 0]}}];
-test[mbfunc[{{c[]}}], {{{c[0, 1], c[0, 0]}}}];
+test[Sneg`Private`mbfunc[c[]], {c[0, 1], c[0, 0]}];
+test[Sneg`Private`mbfunc[{c[]}], {{c[0, 1], c[0, 0]}}];
+test[Sneg`Private`mbfunc[{{c[]}}], {{{c[0, 1], c[0, 0]}}}];
 
 test[ lrmap[{c[]}],
 {c[0, 1] -> c[0, 1], c[0, 0] -> c[0, 0]}
@@ -2245,21 +2248,21 @@ test[ pairpattern[{Null, 1}, {Null, Null}], False ];
 test[ pairpattern[{1, 1}, {Null, Null}], False ];
 test[ pairpattern[{Null, Null, x, Null}, {Null, Null, y, 1}], False ];
 
-test[ nonnullpos[{Null, 1, 2, Null, 5}], {{2}, {3}, {5}} ];
+test[ Sneg`Private`nonnullpos[{Null, 1, 2, Null, 5}], {{2}, {3}, {5}} ];
 
-test[ nonnullpattern[{a, b, Null, d, e, Null}], 
+test[ Sneg`Private`nonnullpattern[{a, b, Null, d, e, Null}],
   {True, True, False, True, True, False} ];
 
-test[ compatiblepattern[{Null}, {Null}], True ];
-test[ compatiblepattern[{Null}, {a}], True ];
-test[ compatiblepattern[{b}, {Null}], True ];
+test[ Sneg`Private`compatiblepattern[{Null}, {Null}], True ];
+test[ Sneg`Private`compatiblepattern[{Null}, {a}], True ];
+test[ Sneg`Private`compatiblepattern[{b}, {Null}], True ];
 
-test[ compatiblepattern[{b}, {b}], False ];
-test[ compatiblepattern[{a, b, Null}, {c, d, Null}], False];
+test[ Sneg`Private`compatiblepattern[{b}, {b}], False ];
+test[ Sneg`Private`compatiblepattern[{a, b, Null}, {c, d, Null}], False];
 
-test[ bkcombine[{Null}, {Null}], {Null} ];
-test[ bkcombine[{Null}, {a}], {a} ];
-test[ bkcombine[{a}, {Null}], {a} ];
+test[ Sneg`Private`bkcombine[{Null}, {Null}], {Null} ];
+test[ Sneg`Private`bkcombine[{Null}, {a}], {a} ];
+test[ Sneg`Private`bkcombine[{a}, {Null}], {a} ];
 
 Print["* Simple bra-kets *"];
 
@@ -2489,17 +2492,17 @@ Module[{expr = nc[grassVevBoson[AN], z1, grassVevBoson[CR]]},
 ];
 
 Print["* acmtcount *"];
-test[acmtcount[{}], 0];
-test[acmtcount[{2}], 0];
-test[acmtcount[{Exp[zz]}], 0];
-test[acmtcount[{zz}], 1];
-test[acmtcount[{zz, conj[zz]}], 2];
-test[acmtcount[{c[CR]}], 1];
-test[acmtcount[{c[CR], c[AN]}], 2];
-test[acmtcount[{m1}], 1];
-test[acmtcount[{m1[1]}], 1];
-test[acmtcount[{c[CR], c[AN], zz}], 3];
-test[acmtcount[{c[CR], c[AN], zz, conj[zz]}], 4];
+test[Sneg`Private`acmtcount[{}], 0];
+test[Sneg`Private`acmtcount[{2}], 0];
+test[Sneg`Private`acmtcount[{Exp[zz]}], 0];
+test[Sneg`Private`acmtcount[{zz}], 1];
+test[Sneg`Private`acmtcount[{zz, conj[zz]}], 2];
+test[Sneg`Private`acmtcount[{c[CR]}], 1];
+test[Sneg`Private`acmtcount[{c[CR], c[AN]}], 2];
+test[Sneg`Private`acmtcount[{m1}], 1];
+test[Sneg`Private`acmtcount[{m1[1]}], 1];
+test[Sneg`Private`acmtcount[{c[CR], c[AN], zz}], 3];
+test[Sneg`Private`acmtcount[{c[CR], c[AN], zz, conj[zz]}], 4];
 
 Print["* Berezin integral *"];
 test[nc[int[z1]], 0];
@@ -2884,7 +2887,7 @@ test[ sumCollect[2 sum[expr1[ka], {ka}] + 3 sum[expr2[ka], {ka}]],
     
 Print["* Utility functions *"];
 
-test[ allpairs[{1,2}, {3,4}], {{1,3}, {1,4}, {2,3}, {2,4}} ];
+test[ Sneg`Private`allpairs[{1,2}, {3,4}], {{1,3}, {1,4}, {2,3}, {2,4}} ];
 
 expr = nc[c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma],
   c[AN, k3, alpha, sigma], c[AN, k4, alpha, sigma]];
@@ -2892,18 +2895,18 @@ expr = nc[c[CR, k1, alpha, sigma], c[CR, k2, alpha, sigma],
 test[ indecesCR[expr], {1,2} ];
 test[ indecesAN[expr], {3,4} ];
 test[ maxcran[expr], 2 ];
-test[ disjointQ[{{1,2}}], True ];
-test[ disjointQ[{{1,2},{3,4}}], True ];
-test[ disjointQ[{{1,2},{1,3}}], False ];
-test[ disjointQ[{{1,2},{1,3},{1,4}}], False ];
-test[ disjointQ[{{1,3},{1,4},{2,3}}], False ];
+test[ Sneg`Private`disjointQ[{{1,2}}], True ];
+test[ Sneg`Private`disjointQ[{{1,2},{3,4}}], True ];
+test[ Sneg`Private`disjointQ[{{1,2},{1,3}}], False ];
+test[ Sneg`Private`disjointQ[{{1,2},{1,3},{1,4}}], False ];
+test[ Sneg`Private`disjointQ[{{1,3},{1,4},{2,3}}], False ];
 test[ dropzeros[{0, 1, 2, 3, 0, 2, 3, {1}, 0}], 
   {1, 2, 3, 2, 3, {1}} ];
-test[ contractedpairs[1, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
+test[ Sneg`Private`contractedpairs[1, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
   {{{1, 3}}, {{1, 4}}, {{2, 3}}, {{2, 4}}} ];
-test[ contractedpairs[2, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
+test[ Sneg`Private`contractedpairs[2, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
   {{{1, 3}, {2, 4}}, {{1, 4}, {2, 3}}} ];
-test[ contractedpairs[3, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
+test[ Sneg`Private`contractedpairs[3, {{1, 3}, {1, 4}, {2, 3}, {2, 4}}],
   {} ];
 
 Print["* Contractions *"];
@@ -2984,7 +2987,7 @@ test[
   noneWickHook[noneWickI, noneWickJ]
 ];
 
-test[ contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
+test[ Sneg`Private`contractone[{1, 1, {aa, bb, cc, dd}}, {1, 3}],
       {2, contraction[aa, cc], {1, bb, 1, dd}} ];
 
 test[ contraction[c[CR, k, alpha, sigma], c[AN, k1, alpha1, sigma1]],
@@ -2998,11 +3001,11 @@ test[ contraction[c[AN, k, alpha, sigma], c[CR, k1, alpha1, sigma1]]
    KroneckerDelta[{alpha, sigma}, {alpha1, sigma1}] UnitStep[-k1])//Simplify
 ];
 
-test[ contractone[{1, 1, {c[CR, k, alpha, sigma], c[AN, k, alpha, sigma]}}, 
+test[ Sneg`Private`contractone[{1, 1, {c[CR, k, alpha, sigma], c[AN, k, alpha, sigma]}},
   {1, 2}], {2, UnitStep[-k], {1, 1}} ];
-test[ contractone[{1, 1,
+test[ Sneg`Private`contractone[{1, 1,
     {noneBosonA[AN], aa, noneBosonA[CR]}}, {1, 3}],
-  {2, 1, {wickslot[1, 0], aa, wickslot[1, 0]}} ];
+  {2, 1, {Sneg`Private`wickslot[1, 0], aa, Sneg`Private`wickslot[1, 0]}} ];
 
 test[ remainder[{2, 2, a[CR, sigma], 1, 1}], dd[a[0, sigma]] ];
 test[ remainder[{2,1}], -1 ];
@@ -3010,10 +3013,10 @@ test[ remainder[{1,1}], 1 ];
 test[ remainder[{2,2,1,1}], 1 ];
 test[ remainder[{2,1,1}], 1 ];
 test[ remainder[{4,3,2,1}], 1 ];
-test[ remainder[{wickslot[2, 0], wickslot[1, 0],
-    wickslot[2, 0], wickslot[1, 0]}], 1 ];
-test[ remainder[{wickslot[2, 1], wickslot[1, 1],
-    wickslot[2, 1], wickslot[1, 1]}], -1 ];
+test[ remainder[{Sneg`Private`wickslot[2, 0], Sneg`Private`wickslot[1, 0],
+    Sneg`Private`wickslot[2, 0], Sneg`Private`wickslot[1, 0]}], 1 ];
+test[ remainder[{Sneg`Private`wickslot[2, 1], Sneg`Private`wickslot[1, 1],
+    Sneg`Private`wickslot[2, 1], Sneg`Private`wickslot[1, 1]}], -1 ];
 
 test[ contract[{a[AN, sigma], a[CR, sigma]}, {{1,2}}], 1 ];
 test[ contract[{c[CR, k], c[AN, k]}, {{1,2}}], UnitStep[-k] ];
@@ -3303,13 +3306,13 @@ testgroup["Numeric zero matrix records", Block[{BASIS}, Module[
       matrixrepresentationvc[qd, left, right]]]]] < 10^-13, True]
 ]]];
 
-test[ disjointQ[{{1, 2}}], True ];
-test[ disjointQ[{{1, 2}, {3, 4}}], True ];
-test[ disjointQ[{{1, 2}, {1, 3}}], False ];
-test[ disjointQ[{{1, 2}, {1, 3}, {1, 4}}], False ];
-test[ disjointQ[{{1, 3}, {1, 4}, {2, 3}}], False ];
+test[ Sneg`Private`disjointQ[{{1, 2}}], True ];
+test[ Sneg`Private`disjointQ[{{1, 2}, {3, 4}}], True ];
+test[ Sneg`Private`disjointQ[{{1, 2}, {1, 3}}], False ];
+test[ Sneg`Private`disjointQ[{{1, 2}, {1, 3}, {1, 4}}], False ];
+test[ Sneg`Private`disjointQ[{{1, 3}, {1, 4}, {2, 3}}], False ];
 
-test[ allpairs[{1,2}, {3,4}], {{1,3},{1,4},{2,3},{2,4}} ];
+test[ Sneg`Private`allpairs[{1,2}, {3,4}], {{1,3},{1,4},{2,3},{2,4}} ];
 
 test[ dropzeros[{0, 1, 2, 3, 0, 2, 3, {1}, 0}], {1, 2, 3, 2, 3, {1}} ];
 
@@ -3462,7 +3465,7 @@ testgroup["Independent operator and rectangular matrices",
     testcase["Fast occupation matrix", matrixrepresentationvcfast[op, states], mat];
     testcase["Sparse occupation matrix", Normal[matrixrepresentationvcsparse[op, states]], mat];
     testcase["Operator-form matrix", matrixrepresentationop[op, vc2ops[states]], mat];
-    dispatch = opdispatch[op];
+    dispatch = Sneg`Private`opdispatch[op];
     testcase["Dispatch action", states /. dispatch, Transpose[mat].states];
     zerotest["Matrix adjoint", matrixrepresentationvc[conj[op], states] - ConjugateTranspose[mat]],
     {j, Length[ops]}];
@@ -3835,7 +3838,7 @@ testgroup["Hamiltonian constructors and observables",
   testcase["Pair transfer matrices", matrixrepresentationvc[#, states] & /@ {outofdiag02[f[1]], outofdiag20[f[1]]},
     {Transpose[pair], pair}];
   testcase["Single-particle equation of motion",
-    extracteps[f[AN, 1, UP], f[AN, 1, UP], 3 number[f[1]]], 3];
+    Sneg`Private`extracteps[f[AN, 1, UP], f[AN, 1, UP], 3 number[f[1]]], 3];
   testcase["Noncommutative cross product", mcross[{f[CR, 1, UP], 0, 0}, {0, f[CR, 2, UP], 0}],
     {0, 0, nc[f[CR, 1, UP], f[CR, 2, UP]]}];
  ]];
@@ -3894,7 +3897,7 @@ testgroup["Operator exponentials and power series",
   Do[testcase["Fast operator powers", fastpow[x, k], If[EvenQ[k], 1, x]], {k, 0, 8}];
   testcase["Negative power message", Quiet[pow[x, -1], pow::negativepower], Null];
   With[{savedPower = DownValues[Power]},
-    definencPower[];
+    Sneg`Private`definencPower[];
     testcase["Optional nc power syntax", n^3, n];
     testcase["Numeric powers retain their meaning", 3^4, 81];
     Unprotect[Power]; DownValues[Power] = savedPower; Protect[Power]];
@@ -3913,12 +3916,12 @@ testgroup["Scalar declarations and masking",
   testcase["Scalar function extraction", nc[rf[argument], f[CR, UP], cf[argument]], rf[argument] cf[argument] f[CR, UP]];
   testcase["Undeclared scalar is not inferred", isnumericQ[argument], False];
   testcase["Explicit scalar wrapper", vev[nc[scalar[argument], f[AN, UP], f[CR, UP]]], argument];
-  testcase["Constants are registered", And @@ (MemberQ[getallconstants[], #] & /@ {real, complex, integer}), True];
+  testcase["Constants are registered", And @@ (MemberQ[Sneg`Private`getallconstants[], #] & /@ {real, complex, integer}), True];
   testcase["Masking suppresses real upvalue", maskOp[SameQ[Conjugate[real], real]], False];
   testcase["Masking function interface", maskOp[Function[v, SameQ[Conjugate[v], v]], real], False];
   testcase["Masking restores parameters", maskOp[Function[v, v^2+2 v], real], real^2+2 real];
   testcase["Masking preserves declarations", Conjugate[real], real];
-  {rules, inverse} = maskconstants[];
+  {rules, inverse} = Sneg`Private`maskconstants[];
   testcase["Mask rules invert", {real, complex, integer} /. rules /. inverse, {real, complex, integer}];
   With[{savedPower = DownValues[Power]},
     snegpositiveconstants[positive];
@@ -3965,15 +3968,15 @@ testgroup["Symbolic sums and simplification",
     testcase["Nested sums without automatic renaming",
       sum[sum[f[i, j], {i}] + g[j], {j}], sum[f[i, j], {i, j}] + sum[g[j], {j}]];
     testcase["Overlapping indexes are reported",
-      Quiet[Check[nc[sum[op[CR, i], {i}], sum[op[AN, i], {i}]], warned, snegsumJoin::overlap],
-        snegsumJoin::overlap], warned]];
+      Quiet[Check[nc[sum[op[CR, i], {i}], sum[op[AN, i], {i}]], warned, Sneg`Private`snegsumJoin::overlap],
+        Sneg`Private`snegsumJoin::overlap], warned]];
 
   expr = Expand[number[op[]] + 2 hubbard[op[]] + 3 spinz[op[]]];
   result = SnegFullSimplify[expr];
   zerotest["High-level simplification preserves algebra", (result /. HoldForm[a_] :> a) - expr];
   testcase["High-level simplification actually rewrites", !FreeQ[result, _HoldForm], True];
   testcase["Hubbard recognition",
-    MatchQ[SnegSimplifyHubbard[-hubbard[op[]]], HoldPattern[-HoldForm[hubbard[op[]]]]], True];
+    MatchQ[Sneg`Private`SnegSimplifyHubbard[-hubbard[op[]]], HoldPattern[-HoldForm[hubbard[op[]]]]], True];
   testcase["Vacuum projection under symbolic sums",
     Zeroonvac[sum[op[AN, i], {i}] + op[CR, 2]], op[CR, 2]];
  ]];
@@ -3990,7 +3993,7 @@ testgroup["Scoped assumptions and orbital transformations",
     snegAssuming[p /: p > 0 = True,
       {snegAssuming[p /: p > 0 = False, p > 0], p > 0}], {False, True}];
   testcase["Held assumption result",
-    MatchQ[snegAssumingHoldForm[p /: p > 0 = True, p > 0], HoldPattern[HoldForm[True]]], True];
+    MatchQ[Sneg`Private`snegAssumingHoldForm[p /: p > 0 = True, p > 0], HoldPattern[HoldForm[True]]], True];
   value = snegAssuming[p /: p > 0 = True, (p[1] = 9; p > 0)];
   testcase["Assumption body ran", value, True];
   testcase["Body definitions restored", DownValues[p], savedDown];
@@ -4047,8 +4050,8 @@ testgroup["Higher-spin and spinless occupation bases",
     testcase["Generic spin Z", matrixrepresentationvc[spinz[f[]], states], sz];
     testcase["Single-site operator basis dimension", Length[basis[f[]]], 2^modes],
     {spin, {0, 1, 3/2}}];
-  testcase["Subset generator boundary", {KSubsets[{1, 2, 3}, 0], KSubsets[{1, 2, 3}, 4]}, {{{}}, {}}];
-  testcase["General subset generator", KSubsets[{1, 2, 3, 4, 5}, 3],
+  testcase["Subset generator boundary", {Sneg`Private`KSubsets[{1, 2, 3}, 0], Sneg`Private`KSubsets[{1, 2, 3}, 4]}, {{{}}, {}}];
+  testcase["General subset generator", Sneg`Private`KSubsets[{1, 2, 3, 4, 5}, 3],
     {{1, 2, 3}, {1, 2, 4}, {1, 2, 5}, {1, 3, 4}, {1, 3, 5},
      {1, 4, 5}, {2, 3, 4}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}}];
  ]];
@@ -4094,7 +4097,7 @@ testgroup["State and basis utilities",
     testcase["Sparse matrix honors ket overlaps", Normal[matrixrepresentationvcsparse[1, aux]], gram]];
   testcase["Ket-overlap definitions restored", DownValues[braketrule], savedBrakets];
   testcase["Default ket overlap", braketrule[bra[1], ket[2]], 0];
-  testcase["Spin-threaded number operator", snegSpinThread[nc[f[CR], f[AN]], {UP, DO}], number[f[]]];
+  testcase["Spin-threaded number operator", Sneg`Private`snegSpinThread[nc[f[CR], f[AN]], {UP, DO}], number[f[]]];
 
   cr = {fockcreate[2, 1], fockcreate[2, 2]};
   numberMatrix = cr[[1]].Transpose[cr[[1]]] + cr[[2]].Transpose[cr[[2]]];
@@ -4123,7 +4126,7 @@ testgroup["Momentum-space deltas and lattice sums",
  Module[{expr, renamed, prod},
   testcase["Index declarations",
     {latticeindexQ[momi], momentumindexQ[momk], latticeindexQ[momk],
-     latticesize[momk], Conjugate[momk], TrueQ[latticevectorQ[moma1]]},
+     latticesize[momk], Conjugate[momk], TrueQ[Sneg`Private`latticevectorQ[moma1]]},
     {True, True, False, momN, momk, True}];
   testcase["Shifted momentum delta",
     sumSimplifyKD[sum[KroneckerDelta[momp, momk + momq] momg[momk], {momk}]],
@@ -4148,7 +4151,7 @@ testgroup["Momentum-space deltas and lattice sums",
   testcase["Number of unit cells", sum[momg[momq], {momk}], momN momg[momq]];
   testcase["Number of unit cells for two indexes", sum[1, {momk, momi}], momN^2];
   testcase["Density commutator",
-    snegsumreduce[komutator[momc[AN, momp, UP],
+    Sneg`Private`snegsumreduce[komutator[momc[AN, momp, UP],
       sum[nc[momc[CR, momk + momq, UP], momc[AN, momk, UP]], {momk}]]],
     momc[AN, momp - momq, UP]];
   prod = nc[sum[momc[CR, momk, UP], {momk}], sum[momc[AN, momk, UP], {momk}]];
@@ -4193,7 +4196,7 @@ testgroup["Fourier transformation and Bloch Hamiltonians",
   testcase["Bloch Hamiltonian with a different summation index",
     blochhamiltonian[fourier[H, momc -> momck, momi -> momq], {momck}, momk], expected];
   (* Independent route: h(k) = Sum_R e^(-i k R) {c_0, [H, c_R^dag]}. *)
-  hR = snegsumreduce[sum[blochphase[-momk, momj] antikomutator[momc[AN, 0, UP],
+  hR = Sneg`Private`snegsumreduce[sum[blochphase[-momk, momj] antikomutator[momc[AN, 0, UP],
      komutator[H, momc[CR, momj, UP]]], {momj}]];
   testcase["Real-space matrix-element route", hR, expected[[1, 1]]];
   testcase["Parseval identity",
@@ -4203,7 +4206,7 @@ testgroup["Fourier transformation and Bloch Hamiltonians",
     fourier[sum[number[momck[momk]], {momk}], momc -> momck, momi -> momk, "Inverse" -> True],
     sum[number[momc[momi]], {momi}]];
   testcase["Transformed operators keep canonical anticommutators",
-    snegsumreduce[antikomutator[
+    Sneg`Private`snegsumreduce[antikomutator[
       fourier[momc[AN, momi, UP], momc -> momck, momi -> momk],
       fourier[momc[CR, momj, UP], momc -> momck, momi -> momp]]],
     KroneckerDelta[momi, momj]];
@@ -4261,7 +4264,7 @@ testgroup["Fourier transformation and Bloch Hamiltonians",
 testgroup["Momentum shifts",
  Module[{rho, cm, x, savedOrdering},
   rho[qq_] := sum[nc[momck[CR, momp + qq, UP], momck[AN, momp, UP]], {momp}];
-  cm = snegsumreduce[komutator[rho[momq], rho[-momq]]];
+  cm = Sneg`Private`snegsumreduce[komutator[rho[momq], rho[-momq]]];
   testcase["Lattice density operators commute",
     sumCollect[sumMomentumCanonical[sumExpand[cm]]], 0];
   x = sum[number[momck[momk + momq]], {momk}] - sum[number[momck[momk]], {momk}];
@@ -4351,7 +4354,7 @@ testgroup["Momentum-space options and diagnostics",
   pr = nc[sum[momc[CR, momgr, UP], {momgr}], sum[momc[AN, momgr, UP], {momgr}]];
   renamed = First[Complement[Cases[pr, sum[_, l_] :> l, {0, Infinity}][[1]], {momgr}]];
   testcase["Renamed generic indexes inherit realness",
-    {Conjugate[renamed], latticetypedQ[renamed]}, {renamed, False}];
+    {Conjugate[renamed], Sneg`Private`latticetypedQ[renamed]}, {renamed, False}];
 
   testcase["Bare lattice delta", sumSimplifyKD[sum[KroneckerDelta[momi, momj + moma1] momg[momi], {momi}]],
     momg[momj + moma1]];
@@ -4447,10 +4450,10 @@ testgroup["Momentum-space options and diagnostics",
     momentumbasis[{{{0}, {nc[momfk[CR, "x", 1, 0], momfk[CR, "x", 2, 0]]}}}, {4}, "IndexPosition" -> 2],
     {{{0, 3}, {nc[momfk[CR, "x", 1, 0], momfk[CR, "x", 2, 0]]}}}];
   testcase["Non-unitary transformations are reported",
-    Quiet[Check[snegcheckunitary[{{1, 0}, {0, 2}}], "msg", fourierrules::unitary],
+    Quiet[Check[Sneg`Private`snegcheckunitary[{{1, 0}, {0, 2}}], "msg", fourierrules::unitary],
       fourierrules::unitary], "msg"];
   testcase["Unitary transformations pass silently",
-    Check[snegcheckunitary[{{1, 1}, {1, -1}}/Sqrt[2]], "msg"], True];
+    Check[Sneg`Private`snegcheckunitary[{{1, 1}, {1, -1}}/Sqrt[2]], "msg"], True];
   testcase["Fourier rules are unitary for numeric twists",
     Check[Length[fourierrules[momc -> momck, {3}, "Twist" -> 7/10]], "msg"], 1];
   testcase["Symbolic twists skip the numerical check",
@@ -4494,7 +4497,7 @@ testgroup["Spin conjugation, ordering, and declarations",
   testcase["Spins move left of Majoranas", nc[spm[1], spG[1, 4]], nc[spG[1, 4], spm[1]]];
   testcase["Grassmann numbers move left of spins", nc[spG[1, 4], spz], nc[spz, spG[1, 4]]];
   testcase["Different spin symbols are sorted", nc[spH[1, 3], spG[2, 5]], nc[spG[2, 5], spH[1, 3]]];
-  testcase["Sizes", {spinof[spS], spinof[spT], spinof[spQ], snegspinsizeQ[spG], Conjugate[sps]},
+  testcase["Sizes", {spinof[spS], spinof[spT], spinof[spQ], Sneg`Private`snegspinsizeQ[spG], Conjugate[sps]},
     {1/2, 1, sps, False, sps}];
   testcase["Invalid spin size",
     Quiet[Check[snegspinoperators[{spBad, -1}], "msg", snegspinoperators::size], snegspinoperators::size], "msg"];
@@ -4525,7 +4528,7 @@ testgroup["Spin size reductions against spin matrices",
       MapThread[spinclustermatrices[#1, {h[1]}, "Blocks" -> False] - Dot @@ Map[spmat[s, #] &, #2] &,
         {e, words}]];
     testcase["Normal form for spin " <> ToString[s, InputForm],
-      And @@ Map[snegspinnormalQ[s, List @@ #[[All, -1]]] &,
+      And @@ Map[Sneg`Private`snegspinnormalQ[s, List @@ #[[All, -1]]] &,
         Cases[e, HoldPattern[nc[a__]] :> {a}, Infinity]], True];
     monos = Flatten[Table[Join[ConstantArray[3, b], ConstantArray[t, a]],
       {t, {4, 5}}, {a, If[t == 4, 0, 1], 2 s}, {b, 0, 2 s - a}], 2];
@@ -4607,13 +4610,13 @@ testgroup["Spin exact diagonalization",
     Sort[Flatten[Eigenvalues /@ (makematricesbzvc[spS[2, 3] /. spinketbrarules[{spS[1], spS[2]}], bz][[All, 2]])]],
     Sort[Flatten[ConstantArray[{-1/2, -1/2, 1/2, 1/2}, 4]]]];
   testcase["Undeclared spin size",
-    Quiet[spinclustermatrices[spG[1, 3], {spG[1]}], snegspinsites::size], $Failed];
+    Quiet[spinclustermatrices[spG[1, 3], {spG[1]}], Sneg`Private`snegspinsites::size], $Failed];
   testcase["S^z must be conserved",
     Quiet[spinclustermatrices[spS[1, 1], {spS[1]}], spinclustermatrices::sz], $Failed];
   testcase["Operators of other sites",
     Quiet[spinclustermatrices[spS[2, 3], {spS[1]}], spinclustermatrices::op], $Failed];
   testcase["Invalid site specification",
-    Quiet[spinketbrarules[{spc[1]}], snegspinsites::spec], $Failed];
+    Quiet[spinketbrarules[{spc[1]}], Sneg`Private`snegspinsites::spec], $Failed];
  ]];
 
 testgroup["Spin representations",
@@ -4824,7 +4827,7 @@ testgroup["Spin and X-operator branches and diagnostics",
   testcase["Sums over component and site indexes",
     spincomponents[sum[nc[spG[spi, spa], spG[spi + 1, spa]], {spa, spi}]],
     spincomponents[sum[spinspin[spG[spi], spG[spi + 1]], {spi}]]];
-  testcase["Commutator for explicit components", snegspincmt[spG, {1}, 1, 2], I spG[1, 3]];
+  testcase["Commutator for explicit components", Sneg`Private`snegspincmt[spG, {1}, 1, 2], I spG[1, 3]];
 
   testcase["Multi-index sites",
     Sort[Eigenvalues[spinclustermatrices[spinspin[spS[1, "a"], spS[1, "b"]], {spS -> {{1, "a"}, {1, "b"}}}, "Blocks" -> False]]],
@@ -4842,16 +4845,16 @@ testgroup["Spin and X-operator branches and diagnostics",
   testcase["Cluster matrices reject other operators",
     Quiet[spinclustermatrices[spc[CR, 1, UP], {spS[1]}], spinclustermatrices::op], $Failed];
   testcase["Cluster matrices check the sites",
-    Quiet[spinclustermatrices[spS[1, 3], {spc[1]}], snegspinsites::spec], $Failed];
+    Quiet[spinclustermatrices[spS[1, 3], {spc[1]}], Sneg`Private`snegspinsites::spec], $Failed];
   testcase["Holstein-Primakoff needs bosons",
     Quiet[holsteinprimakoff[spQ[1, 3], spQ -> spc, 2], holsteinprimakoff::op], $Failed];
   testcase["Schwinger bosons need bosons",
     Quiet[schwingerbosons[spQ[1, 3], spQ -> {spc, spbo}], schwingerbosons::op], $Failed];
   testcase["Bra-ket rules need a size",
-    Quiet[spinketbrarules[{spG[1]}], snegspinsites::size], $Failed];
+    Quiet[spinketbrarules[{spG[1]}], Sneg`Private`snegspinsites::size], $Failed];
   testcase["Rank-zero Stevens operator", stevens[0, 0, spS[1]], 1];
   testcase["Stevens rank check", Quiet[stevens[1, 2, spS[1]], spintensor::range], $Failed];
-  testcase["Spherical tensors check the site", Quiet[spintensor[1, 0, spc[1]], snegspinsites::spec], $Failed];
+  testcase["Spherical tensors check the site", Quiet[spintensor[1, 0, spc[1]], Sneg`Private`snegspinsites::spec], $Failed];
   testcase["Non-half-integer size",
     Quiet[Check[snegspinoperators[{spBad1, 1/3}], "msg", snegspinoperators::size], snegspinoperators::size], "msg"];
   testcase["Size without symbols",
@@ -5307,7 +5310,7 @@ testgroup["Mean-field decoupling",
   rules = Map[# -> gaussianaverage[First[#], q, modes, 1/2] &, Union[Cases[r, _avg, Infinity]]];
   testcase["Mean-field energy equals the Wick average",
     qfnear[gaussianaverage[r /. rules, q, modes, 1/2], gaussianaverage[h, q, modes, 1/2]], True];
-  testcase["Mean-field Hamiltonian is quadratic", Max[Map[Length[snegtermops[#][[2]]] &, sum2list[r]]], 2];
+  testcase["Mean-field Hamiltonian is quadratic", Max[Map[Length[Sneg`Private`snegtermops[#][[2]]] &, sum2list[r]]], 2];
   hb = qfU nc[qfb[CR, 1], qfb[CR, 2], qfb[AN, 2], qfb[AN, 1]] + qfU nc[qfb[CR, 1], qfb[CR, 1], qfb[AN, 1], qfb[AN, 1]];
   r = meanfield[hb /. qfU -> 1];
   q = quadraticform[3 number[qfb[1]] + 2 number[qfb[2]] + (nc[qfb[CR, 1], qfb[CR, 2]] + nc[qfb[AN, 2], qfb[AN, 1]])/2 +
@@ -5368,7 +5371,7 @@ testgroup["Self-consistent mean-field solutions",
       qfnear[dl, Abs[FindRoot[1 == g/4 Sum[Tanh[Sqrt[(-2 Cos[k] - mu)^2 + d^2]/(2 tt)]/(2 Sqrt[(-2 Cos[k] - mu)^2 + d^2]),
         {k, {0, Pi/2, Pi, 3 Pi/2}}], {d, 1}][[1, 2]]], 10^-6]}, {True, True, True}];
   testcase["Initial values in canonical form and conjugates",
-    snegmfinit[{xr[[1]] -> 3/10, 2 avg[number[qfc[1], UP]] -> 1}],
+    Sneg`Private`snegmfinit[{xr[[1]] -> 3/10, 2 avg[number[qfc[1], UP]] -> 1}],
     {xr[[1]] -> 3/10, avg[number[qfc[1], UP]] -> 1/2, -Conjugate[xr[[1]]] -> -3/10}];
   testcase["Conjugate initial values are optional",
     qfnear[xr /. meanfieldsolve[mf, Table[qfc[i], {i, 4}], Map[# -> 0.3 &, xr], "Temperature" -> tt]["Averages"],
@@ -5492,7 +5495,7 @@ swfock[nm_, k_] := swfock[nm, k] = SparseArray[fockcreate[nm, k]];
 swmat[e_, modes_List] := Module[{nm = Length[modes], om},
   om[o_] := With[{m = swfock[nm, Position[modes, {Head[o], Rest[List @@ o]}][[1, 1]]]},
     If[First[o] === CR, m, Transpose[m]]];
-  Normal[Total[Map[Function[tt, Module[{l = snegtermops[tt]},
+  Normal[Total[Map[Function[tt, Module[{l = Sneg`Private`snegtermops[tt]},
     l[[1]] If[l[[2]] === {}, IdentityMatrix[2^nm, SparseArray], Dot @@ Map[om, l[[2]]]]]], sum2list[Expand[e]]]]]];
 swmodes[sites_List] := Flatten[Table[{swc, {i, s}}, {i, sites}, {s, {UP, DO}}], 1];
 swspin[e_] := Expand[xtospin[fermionstox[e, swc -> swX], swX -> swS]];
@@ -5685,7 +5688,7 @@ testgroup["Schrieffer-Wolff options and diagnostics",
         {swc, projector1}, 2, "Generator" -> True]},
       {Length[g[[2]]], sumSimplifyKD[Expand[sumExpand[g[[2, 1]] + conj[g[[2, 1]]]]]]}], {2, 0}];
   testcase["Index names that would collide are kept",
-    snegswdummies[sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]], sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]];
+    Sneg`Private`snegswdummies[sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]], sum[nc[swc[CR, swk, UP], swc[AN, swk2, UP]], {swk2}]];
   testcase["Fermions to X-operators and back",
     Map[Expand[xtofermions[fermionstox[#, swc -> swX], swX -> swc] - #] &,
       {swc[CR, 1, UP], swc[AN, 1, DO], nc[swc[CR, 1, UP], swc[CR, 1, DO]], number[swc[1], UP], swc[CR, 1, DO]}], {0, 0, 0, 0, 0}];
@@ -5789,6 +5792,33 @@ testgroup["Equations of motion and Green's functions",
   testcase["Exact diagonalization needs fermion modes",
     {Quiet[lehmann[gfb[AN], gfb[CR], number[gfb[]], {gfb}, 1], lehmann::mode],
      Quiet[thermalaverage[number[gfc[3]], gfdimer, {gfc[1], gfc[2]}, 1], lehmann::mode]}, {$Failed, $Failed}];
+ ]];
+
+testgroup["LaTeX output",
+ Block[{},
+  snegfermionoperators[ltc, w];
+  snegspinlessfermionoperators[ltf];
+  snegbosonoperators[ltb];
+  snegspinoperators[{ltS, 1/2}];
+  snegmajoranaoperators[ltg];
+  snegrealconstants[ltt, ltU];
+  snegfreeindexes[ltk];
+  testcase["Single-letter names", {snegtex[w[CR, 1, UP]], snegtex[w[AN, DO]]}, {"w^\\dagger_{1\\uparrow}", "w_{\\downarrow}"}];
+  testcase["Fermion operators with spin", {snegtex[ltc[CR, 1, UP]], snegtex[ltc[AN, 1, 2, DO]]},
+   {"\\mathrm{ltc}^\\dagger_{1\\uparrow}", "\\mathrm{ltc}_{1,2\\downarrow}"}];
+  testcase["Spinless fermions", snegtex[nc[ltf[CR, 1], ltf[AN, 2]]], "\\mathrm{ltf}^\\dagger_{1} \\mathrm{ltf}_{2}"];
+  testcase["Bosons", {snegtex[ltb[CR]], snegtex[ltb[AN, 3]]}, {"\\mathrm{ltb}^\\dagger", "\\mathrm{ltb}_{3}"}];
+  testcase["Spin components", Map[snegtex, {ltS[1, 4], ltS[1, 5], ltS[1, 3], ltS[1]}],
+   {"\\mathrm{ltS}^{+}_{1}", "\\mathrm{ltS}^{-}_{1}", "\\mathrm{ltS}^{z}_{1}", "\\mathrm{ltS}^{x}"}];
+  testcase["Majorana operators", snegtex[ltg[1]], "\\mathrm{ltg}_{1}"];
+  testcase["Hopping with coefficient",
+   With[{tex = snegtex[-ltt hop[w[1], w[2]]]},
+    {StringTake[tex, 14], StringTake[tex, -2], Sort[StringSplit[StringTake[tex, {15, -3}], "+"]]}],
+   {"-(\\text{ltt} (", "))", Sort[{"w^\\dagger_{1\\downarrow} w_{2\\downarrow}", "w^\\dagger_{1\\uparrow} w_{2\\uparrow}",
+     "w^\\dagger_{2\\downarrow} w_{1\\downarrow}", "w^\\dagger_{2\\uparrow} w_{1\\uparrow}"}]}];
+  testcase["Sums", snegtex[sum[number[ltc[ltk], UP], {ltk}]],
+   "\\sum_{\\text{ltk}} \\mathrm{ltc}^\\dagger_{\\text{ltk}\\uparrow} \\mathrm{ltc}_{\\text{ltk}\\uparrow}"];
+  testcase["Expressions without operators", snegtex[ltU/2], "\\frac{\\text{ltU}}{2}"];
  ]];
 
 

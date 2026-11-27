@@ -1,0 +1,68 @@
+\chapter{Operators and their algebra}
+\setwlchapter{algebra}
+\section{What a declaration fixes}
+The algebra of an operator is specified by its head, not its printed
+letter. For fermions a mode is the tuple of indices \emph{after}
+the type \fn{CR} or \fn{AN}. Changing any member of this tuple gives
+an orthogonal mode. For spinful electrons the last index denotes spin;
+an orbital, site, band or channel index belongs before it. Thus
+$c^\dagger_{2a\uparrow}c_{2b\uparrow}$ transfers charge between
+orbitals at fixed site and spin. SNEG keeps the same mode ordering
+under conjugation and reverses the order of factors in a product.
+\casestudy{spin-three-halves}{Changing the local spin multiplicity}
+
+\section{Products, scalars and Hermitian conjugation}
+With $\{c_i,c_j^\dagger\}=\delta_{ij}$, transposing neighbouring
+factors generates a lower-degree term as well as a sign. Ordinary
+Wolfram Language multiplication sorts its arguments and cannot encode
+this operation. Use \fn{nc[a,b,c]} and \fn{pow[a,n]} for operator
+products and their powers; use ordinary multiplication for commuting
+coefficients. Declare real constants with \fn{snegrealconstants} and
+complex amplitudes with \fn{snegcomplexconstants}. If a hopping
+amplitude can carry flux, its conjugate is a different coefficient.
+Real functions and real-valued indices are separate declarations:
+$\epsilon(k)$ may be real even if its functional form is unknown.
+\begin{wl}
+snegfermionoperators[c];
+snegcomplexconstants[v];
+a = v nc[c[CR, 1, UP], c[AN, 2, UP]];
+h = a + conj[a];
+Expand[{h - conj[h], komutator[h, number[c[1]] + number[c[2]]]}]
+\end{wl}
+The two zeros answer different questions: the reverse hop is present
+with the conjugate amplitude, and every term removes as many particles
+as it creates. Hermitian pairing would pass the first test but generally
+fail the second.
+
+\section{Reference states}
+In \fn{EMPTY} order an annihilator kills the vacuum. In \fn{SEA} order
+the filled modes have negative energy or momentum index relative to
+the chosen Fermi point. A creator below the surface therefore kills
+the sea. At the Fermi point one must specify the state or resolve the
+degeneracy; changing the order alone does not determine its physical
+occupation. \fn{NONE} preserves products within a family and is useful
+when explicitly comparing before and after a contraction. Changing
+the ordering cannot undo simplifications of an already evaluated product.
+\casestudy{sea}{A particle and a hole above the reference sea}
+
+\section{Bosons, Majoranas and spin operators}
+For a boson $[b,b^\dagger]=1$ replaces the fermion anticommutator.
+A self-adjoint SNEG Majorana obeys $\{\gamma_i,\gamma_j\}=\delta_{ij}$:
+its square is $1/2$, rather than one. A spin of size $s$, declared with
+\fn{snegspinoperators}, acts in dimension $2s+1$ and commutes with
+operators at other sites. Local products can be reduced using
+$S^+S^-=s(s+1)-(S^z)^2+S^z$; a spin raising operator is not a
+canonical boson. A Grassmann coefficient is yet another object:
+it anticommutes with odd fermionic quantities but supplies no
+creation--annihilation contraction.
+\casestudy{pair-algebra}{Does a local fermion pair behave as a boson?}
+\section{Transitions between many-body states}
+Hubbard operators obey $X^{ab}X^{cd}=\delta_{bc}X^{ad}$ on the
+same site. On different sites the parity of the transition matters:
+moving an electron from one site to another still carries a Fermi
+sign even if individual orbital operators have been eliminated.
+\casestudy{graded}{Grading local transitions}
+\begin{exercise}[Majorana normalization]\label{ex:majorana}
+Write $f=(\gamma_1+i\gamma_2)/\sqrt2$. Determine $f^2$,
+$\{f,f^\dagger\}$ and $f^\dagger f$ using the SNEG normalization.
+\end{exercise}

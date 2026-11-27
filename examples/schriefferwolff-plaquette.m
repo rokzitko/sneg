@@ -24,7 +24,7 @@ nm = Length[modes];
 fc[k_] := fc[k] = SparseArray[KroneckerProduct @@ Table[
   Which[j < k, {{1, 0}, {0, -1}}, j == k, {{0, 0}, {1, 0}}, True, IdentityMatrix[2]], {j, nm}]];
 om[o_] := With[{m = fc[Position[modes, {o[[2]], o[[3]]}][[1, 1]]]}, If[o[[1]] === CR, m, Transpose[m]]];
-mat[e_] := Normal[Total[Map[Function[term, Module[{l = snegtermops[term]},
+mat[e_] := Normal[Total[Map[Function[term, Module[{l = Sneg`Private`snegtermops[term]},
   l[[1]] If[l[[2]] === {}, IdentityMatrix[2^nm, SparseArray], Dot @@ Map[om, l[[2]]]]]],
   sum2list[Expand[e]]]]];
 

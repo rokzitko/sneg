@@ -1,0 +1,51 @@
+\chapter{States, bases and exact diagonalization}
+\setwlchapter{bases}
+\section{Fix the mode order first}
+Let $|n_1\ldots n_M\rangle=(a^\dagger_1)^{n_1}\cdots
+(a^\dagger_M)^{n_M}|0\rangle$. An annihilator acting on slot $j$
+picks up $(-1)^{\sum_{i<j}n_i}$ before it reaches that slot. Neither
+the binary occupation vector nor the site labels alone determine this
+sign: the associated \fn{BASIS} is part of the representation. Keep
+the mode order when moving a matrix into another numerical code.
+An operator-form state instead retains the creators explicitly and
+can be inspected without decoding bit positions.
+\begin{wl}
+snegfermionoperators[d];
+makebasis[{d[]}];
+{BASIS, ap[d[AN, DO], vc[1, 1]]}
+\end{wl}
+
+\section{Block labels versus degeneracies}
+Use charge and spin projection if $[H,N]=[H,S^z]=0$. Use total spin
+only if $H$ commutes with all components. A transverse field can break
+$S^z$; a pairing term breaks $N$ but may preserve spin and fermion
+parity. Projecting onto a non-invariant block loses couplings rather
+than proving that they vanish. One diagnostic for a projector $P$ is
+$(1-P)HP=0$. A second is to compare the reconstructed full spectrum
+for a cluster small enough that symmetries are unnecessary.
+\casestudy{multiplets}{Counting states in a highest-weight basis}
+\casestudy{reflection}{Separating mirror-even and mirror-odd states}
+Reflection exchanges sites, not just occupation numbers. A permutation
+of creators must be reordered into the reference order. This can supply
+a minus sign even when the \emph{pattern} of occupied sites is invariant.
+Likewise particle--hole conjugation maps $Q$ to $-Q$ and interchanges
+local double occupation and the vacuum. On a bipartite lattice at
+particle--hole symmetry one can use a continuous charge isospin
+instead of just pairing states of opposite charge.
+\casestudy{isospin}{Spin and charge multiplets on a bipartite dimer}
+
+\section{Matrix elements, eigenstates and thermal traces}
+In each invariant sector the matrix element is $\langle i|H|j\rangle$,
+with the ket indexed by the column. Wolfram Language
+\fn{Eigensystem} returns eigenvectors as a list of vectors. For a
+numerical normalized eigenvector $v$ compute an expectation as
+$v^\dagger A v$, not $v^T A v$. For an operator changing quantum
+numbers, such as $c^\dagger$, a matrix with both indices in the same
+sector may be identically zero. Use \fn{makeallmatricesbzvc} to obtain
+the rectangular blocks between sectors.
+\casestudy{thermal}{A partition function from reduced spin blocks}
+\begin{exercise}[Weight of a multiplet]\label{ex:multiplet}
+The two-spin Heisenberg dimer has one singlet at $-3J/4$ and one
+triplet at $J/4$. Derive $\langle\vS_1\cdot\vS_2\rangle_T$ and
+check both temperature limits for $J>0$.
+\end{exercise}

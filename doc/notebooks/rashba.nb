@@ -1,0 +1,70 @@
+Notebook[{Cell["Spin splitting in the Rashba chain", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 8", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Rashba chain. With ", 
+     Cell[BoxData[FormBox[RowBox[{"T", "=", "-", "t", "\[ThinSpace]", 
+          StyleBox["1", FontWeight -> "Bold", FontSlant -> "Plain"], "+", 
+          StyleBox["i\[Alpha]", FontSlant -> "Italic"], 
+          SubscriptBox["\[Sigma]", "y"]}], TraditionalForm]], 
+      "InlineFormula"], " on every bond, the Bloch Hamiltonian is ", 
+     Cell[BoxData[FormBox[RowBox[{"h", "(", "k", ")", "=", "-", "2", "t", 
+          StyleBox["cos", FontSlant -> "Plain"], "k", "-", "2", "\[Alpha]", 
+          StyleBox["sin", FontSlant -> "Plain"], "k", "\[ThinSpace]", 
+          SubscriptBox["\[Sigma]", "y"]}], TraditionalForm]], 
+      "InlineFormula"], ", and the bands ", 
+     Cell[BoxData[FormBox[RowBox[{"-", "2", "t", StyleBox["cos", 
+           FontSlant -> "Plain"], "k", "\[MinusPlus]", "2", "\[Alpha]", 
+          StyleBox["sin", FontSlant -> "Plain"], "k"}], TraditionalForm]], 
+      "InlineFormula"], " are spin split:"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", 
+            RowBox[{"c", ",", " ", "ck"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", RowBox[{"t", ",", " ", 
+              "alpha"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"sneglatticeindexes", "[", 
+            RowBox[{RowBox[{"{", "R", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"snegmomentumindexes", "[", 
+            RowBox[{RowBox[{"{", "k", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"H", " ", "=", " ", RowBox[{"sum", "[", 
+              RowBox[{RowBox[{"matrixhop", "[", RowBox[{RowBox[
+                     {RowBox[{RowBox[{"-", "t"}], " ", RowBox[
+                         {"IdentityMatrix", "[", "2", "]"}]}], " ", "+", " ", 
+                      RowBox[{"I", " ", "alpha", " ", "PauliY"}]}], ",", " ", 
+                    RowBox[{"c", "[", "R", "]"}], ",", " ", RowBox[{"c", "[", 
+                      RowBox[{"R", " ", "+", " ", "1"}], "]"}]}], "]"}], ",", 
+                " ", RowBox[{"{", "R", "}"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{"hk", " ", "=", " ", RowBox[{"ExpToTrig", "[", 
+            RowBox[{"blochphaseexp", "[", RowBox[{"blochhamiltonian", "[", 
+                RowBox[{RowBox[{"fourier", "[", RowBox[{"H", ",", " ", 
+                      RowBox[{"c", " ", "->", " ", "ck"}], ",", " ", 
+                      RowBox[{"R", " ", "->", " ", "k"}]}], "]"}], ",", " ", 
+                  RowBox[{"{", "ck", "}"}], ",", " ", "k"}], "]"}], "]"}], 
+            "]"}]}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{"{", RowBox[{RowBox[{RowBox[{"-", "2"}], " ", "t", " ", 
+                 RowBox[{"Cos", "[", "k", "]"}]}], ",", RowBox[{"2", " ", 
+                 "\[ImaginaryI]", " ", "alpha", " ", RowBox[{"Sin", "[", "k", 
+                   "]"}]}]}], "}"}], ",", RowBox[
+            {"{", RowBox[{RowBox[{RowBox[{"-", "2"}], " ", "\[ImaginaryI]", 
+                 " ", "alpha", " ", RowBox[{"Sin", "[", "k", "]"}]}], ",", 
+               RowBox[{RowBox[{"-", "2"}], " ", "t", " ", RowBox[{"Cos", "[", 
+                   "k", "]"}]}]}], "}"}]}], "}"}]], "Output", 
+      CellLabel -> "Out[6]="]}, Open]], 
+  Cell[CellGroupData[{Cell[BoxData[RowBox[{"Eigenvalues", "[", "hk", "]"}]], 
+      "Input", CellLabel -> "In[7]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[
+          {RowBox[{"2", " ", RowBox[{"(", RowBox[{RowBox[{RowBox[{"-", "t"}], 
+                   " ", RowBox[{"Cos", "[", "k", "]"}]}], "-", RowBox[
+                  {"alpha", " ", RowBox[{"Sin", "[", "k", "]"}]}]}], ")"}]}], 
+           ",", RowBox[{"2", " ", RowBox[{"(", RowBox[
+                {RowBox[{RowBox[{"-", "t"}], " ", RowBox[{"Cos", "[", "k", 
+                     "]"}]}], "+", RowBox[{"alpha", " ", RowBox[{"Sin", "[", 
+                     "k", "]"}]}]}], ")"}]}]}], "}"}]], "Output", 
+      CellLabel -> "Out[7]="]}, Open]], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Spin splitting in the Rashba chain"]

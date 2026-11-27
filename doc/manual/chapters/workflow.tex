@@ -1,0 +1,48 @@
+\chapter{Working efficiently}
+\setwlchapter{workflow}
+\section{Expand at the step that needs it}
+For a four-fermion interaction written as $U D$ the compact notation
+hides the number of terms obtained after a transformation of orbitals.
+Replacing every creator by a sum of $M$ creators can produce $M^4$
+terms before momentum selection. Apply Kronecker deltas while the
+indices to be eliminated are still visible. A good intermediate
+observable is often a commutator or a scalar matrix element rather
+than the expanded Hamiltonian itself.
+\casestudy{collect}{Separating expansion from collection of sums}
+\casestudy{recognize}{Recovering the physical spin coupling}
+
+\section{How large is the matrix?}
+For $L$ spinful orbitals the unrestricted basis has $4^L$ states, so
+a dense matrix contains $16^L$ entries. At $L=8$ a dense complex
+double-precision array already requires 64 GiB just for its elements.
+A sparse hopping Hamiltonian instead connects each Fock state to at
+most a number of others proportional to the number of bonds. Symmetry
+reduction and sparse storage address different parts of this cost.
+For a spectral line one often needs only the initial sector and the
+sectors connected by the probe, rather than all transitions.
+
+\section{Tests before a long run}
+Start with one bond. Check Hermiticity, a conserved quantity and
+one matrix element whose sign is known. Next check a limiting value:
+does the hopping spectrum reduce to on-site levels at $t=0$? Only
+then increase the cluster. For degenerate eigenvalues compare spectral
+projectors or subspace weights; two diagonalizers may choose different
+orthonormal vectors inside the same eigenspace.
+
+A short export example checks that the energy symbol and spin label
+survive conversion to LaTeX:
+\begin{wl}
+snegfermionoperators[c];
+snegrealconstants[\[Epsilon]];
+tex = snegtex[\[Epsilon] number[c[], UP]];
+StringContainsQ[tex, "\\epsilon"] && StringContainsQ[tex, "\\uparrow"]
+\end{wl}
+Save the mode list with any exported numerical matrix and record
+whether additive constants and chemical-potential terms are included.
+A sorted eigenvalue list alone cannot detect a reversed site order.
+\begin{exercise}[An independent matrix test]\label{ex:trace}
+Find the trace of $U\sum_i D_i$ over the unrestricted Fock space of
+$L$ spinful orbitals. Would checking only that trace detect an
+incorrect sign in the hopping? Give a second trace that would
+distinguish missing bonds.
+\end{exercise}

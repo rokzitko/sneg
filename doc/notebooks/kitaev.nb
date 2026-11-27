@@ -1,0 +1,72 @@
+Notebook[{Cell["Gap closings of the Kitaev chain", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 11", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell["Topological phase transition of the Kitaev chain", "Subsubsection"], 
+  Cell[TextData[{"The bulk gap of the Kitaev chain closes at ", 
+     Cell[BoxData[FormBox[RowBox[{"k", "=", "0"}], TraditionalForm]], 
+      "InlineFormula"], " for ", 
+     Cell[BoxData[FormBox[RowBox[{"\[Mu]", "=", "-", "2", "t"}], 
+        TraditionalForm]], "InlineFormula"], " and at ", 
+     Cell[BoxData[FormBox[RowBox[{"k", "=", "\[Pi]"}], TraditionalForm]], 
+      "InlineFormula"], " for ", 
+     Cell[BoxData[FormBox[RowBox[{"\[Mu]", "=", "2", "t"}], 
+        TraditionalForm]], "InlineFormula"], 
+     "; these are the boundaries of the topological phase ", 
+     Cell[BoxData[FormBox[RowBox[{"|", "\[Mu]", "|", "<", "2", "t"}], 
+        TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegspinlessfermionoperators", "[", 
+            RowBox[{"f", ",", " ", "fk"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", RowBox[{"t", ",", " ", 
+              "mu", ",", " ", "Dl"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"sneglatticeindexes", "[", 
+            RowBox[{RowBox[{"{", "R", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"snegmomentumindexes", "[", 
+            RowBox[{RowBox[{"{", "k", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"H", " ", "=", " ", RowBox[{"sum", "[", 
+              RowBox[{RowBox[{RowBox[{RowBox[{"-", "t"}], " ", RowBox[
+                     {"hop", "[", RowBox[{RowBox[{"f", "[", "R", "]"}], ",", 
+                        " ", RowBox[{"f", "[", RowBox[{"R", " ", "+", " ", 
+                          "1"}], "]"}]}], "]"}]}], " ", "-", " ", 
+                  RowBox[{"mu", " ", RowBox[{"number", "[", RowBox[{"f", "[", 
+                        "R", "]"}], "]"}]}], " ", "+", " ", RowBox[
+                   {"Dl", " ", RowBox[{"(", RowBox[{RowBox[{"nc", "[", 
+                          RowBox[{RowBox[{"f", "[", RowBox[{"CR", ",", " ", 
+                          "R", ",", " ", "0"}], "]"}], ",", " ", RowBox[
+                          {"f", "[", RowBox[{"CR", ",", " ", RowBox[{"R", 
+                          " ", "+", " ", "1"}], ",", " ", "0"}], "]"}]}], 
+                          "]"}], " ", "+", " ", RowBox[{"nc", "[", RowBox[
+                          {RowBox[{"f", "[", RowBox[{"AN", ",", " ", RowBox[
+                          {"R", " ", "+", " ", "1"}], ",", " ", "0"}], "]"}], 
+                          ",", " ", RowBox[{"f", "[", RowBox[{"AN", ",", " ", 
+                          "R", ",", " ", "0"}], "]"}]}], "]"}]}], ")"}]}]}], 
+                ",", " ", RowBox[{"{", "R", "}"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"hk", " ", "=", " ", RowBox[{"First", "[", 
+              RowBox[{"bdghamiltonian", "[", RowBox[{RowBox[{"fourier", "[", 
+                    RowBox[{"H", ",", " ", RowBox[{"f", " ", "->", " ", 
+                        "fk"}], ",", " ", RowBox[{"R", " ", "->", " ", 
+                        "k"}]}], "]"}], ",", " ", RowBox[{"{", "fk", "}"}], 
+                  ",", " ", "k"}], "]"}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"e2", " ", "=", " ", RowBox[{"Simplify", "[", 
+              RowBox[{"ExpToTrig", "[", RowBox[{"blochphaseexp", "[", 
+                  RowBox[{RowBox[{RowBox[{"Max", "[", RowBox[{"Eigenvalues", 
+                          "[", "hk", "]"}], "]"}], "^", "2"}], ",", " ", 
+                    RowBox[{"{", RowBox[{"k", " ", "->", " ", "q"}], "}"}]}], 
+                  "]"}], "]"}], "]"}]}], ";"}], "\n", 
+        RowBox[{"Factor", "[", RowBox[{"{", RowBox[{RowBox[{"e2", " ", "/.", 
+                " ", RowBox[{"q", " ", "->", " ", "0"}]}], ",", " ", 
+              RowBox[{"e2", " ", "/.", " ", RowBox[{"q", " ", "->", " ", 
+                  "Pi"}]}]}], "}"}], "]"}]}], "Input", 
+      CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{SuperscriptBox[
+            RowBox[{"(", RowBox[{"mu", "+", RowBox[{"2", " ", "t"}]}], ")"}], 
+            "2"], ",", SuperscriptBox[RowBox[{"(", RowBox[{"mu", "-", 
+                RowBox[{"2", " ", "t"}]}], ")"}], "2"]}], "}"}]], "Output", 
+      CellLabel -> "Out[8]="]}, Open]], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Gap closings of the Kitaev chain"]

@@ -1,0 +1,102 @@
+Notebook[{Cell["The finite-temperature BCS gap equation", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 11", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell["BCS gap equation at finite temperature", "Subsubsection"], 
+  Cell[TextData[{"The thermal anomalous average ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["F", "k"], "=", 
+          "\[LeftAngleBracket]", SubscriptBox["c", 
+           RowBox[{"-", "k", "\[DownArrow]"}]], SubscriptBox["c", 
+           RowBox[{"k", "\[UpArrow]"}]], "\[RightAngleBracket]", "=", 
+          FractionBox["\[CapitalDelta]", RowBox[{"2", SubscriptBox["E", 
+              "k"]}]], StyleBox["tanh", FontSlant -> "Plain"], 
+          FractionBox[SubscriptBox["E", "k"], RowBox[{"2", "T"}]]}], 
+        TraditionalForm]], "InlineFormula"], " gives the gap equation ", 
+     Cell[BoxData[FormBox[RowBox[{"\[CapitalDelta]", "=", 
+          FractionBox["g", SubscriptBox["N", "s"]], UnderscriptBox["\[Sum]", 
+           "k"], SubscriptBox["F", "k"]}], TraditionalForm]], 
+      "InlineFormula"], ". Here it is solved for a band with four momenta, ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["\[Xi]", "k"], "=", "-", "2", 
+          StyleBox["cos", FontSlant -> "Plain"], "k", "+", "1", "/", "2"}], 
+        TraditionalForm]], "InlineFormula"], ", and ", 
+     Cell[BoxData[FormBox[RowBox[{"g", "=", "3"}], TraditionalForm]], 
+      "InlineFormula"], ", at ", 
+     Cell[BoxData[FormBox[RowBox[{"T", "=", "1", "/", "10"}], 
+        TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", "ck", "]"}], 
+          ";"}], "\n", RowBox[{RowBox[{"snegrealconstants", "[", 
+            RowBox[{"Dl", ",", " ", "x", ",", " ", "T"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealfunctions", "[", "xi", "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegmomentumindexes", "[", 
+            RowBox[{RowBox[{"{", "k", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"hk", " ", "=", " ", 
+            RowBox[{RowBox[{"First", "[", RowBox[{"bdghamiltonian", "[", 
+                  RowBox[{RowBox[{"sum", "[", RowBox[{RowBox[{RowBox[
+                          {RowBox[{"xi", "[", "k", "]"}], " ", RowBox[
+                          {"number", "[", RowBox[{"ck", "[", "k", "]"}], 
+                          "]"}]}], " ", "-", " ", RowBox[{"Dl", " ", RowBox[
+                          {"(", RowBox[{RowBox[{"nc", "[", RowBox[{RowBox[
+                          {"ck", "[", RowBox[{"CR", ",", " ", "k", ",", " ", 
+                          "UP"}], "]"}], ",", " ", RowBox[{"ck", "[", RowBox[
+                          {"CR", ",", " ", RowBox[{"-", "k"}], ",", " ", 
+                          "DO"}], "]"}]}], "]"}], " ", "+", " ", RowBox[
+                          {"nc", "[", RowBox[{RowBox[{"ck", "[", RowBox[
+                          {"AN", ",", " ", RowBox[{"-", "k"}], ",", " ", 
+                          "DO"}], "]"}], ",", " ", RowBox[{"ck", "[", RowBox[
+                          {"AN", ",", " ", "k", ",", " ", "UP"}], "]"}]}], 
+                          "]"}]}], ")"}]}]}], ",", " ", RowBox[{"{", "k", 
+                          "}"}]}], "]"}], ",", " ", RowBox[{"{", "ck", "}"}], 
+                    ",", " ", "k"}], "]"}], "]"}], " ", "/.", " ", 
+              RowBox[{RowBox[{"xi", "[", RowBox[{"-", "k"}], "]"}], " ", 
+                "->", " ", RowBox[{"xi", "[", "k", "]"}]}]}]}], ";"}], "\n", 
+        RowBox[{"F", " ", "=", " ", RowBox[{"FullSimplify", "[", 
+            RowBox[{RowBox[{"ExpToTrig", "[", RowBox[{RowBox[
+                   {"gaussianaverage", "[", RowBox[{RowBox[{"nc", "[", 
+                        RowBox[{RowBox[{"ck", "[", RowBox[{"AN", ",", " ", 
+                          RowBox[{"-", "k"}], ",", " ", "DO"}], "]"}], ",", 
+                          " ", RowBox[{"ck", "[", RowBox[{"AN", ",", " ", 
+                          "k", ",", " ", "UP"}], "]"}]}], "]"}], ",", " ", 
+                      "hk", ",", " ", RowBox[{"{", "ck", "}"}], ",", " ", 
+                      "T", ",", " ", RowBox[{"\"Momentum\"", " ", "->", " ", 
+                        "k"}]}], "]"}], " ", "/.", " ", RowBox[
+                   {RowBox[{"xi", "[", "k", "]"}], " ", "->", " ", "x"}]}], 
+                "]"}], ",", " ", RowBox[{RowBox[{"Dl", " ", ">", " ", "0"}], 
+                " ", "&&", " ", RowBox[{"T", " ", ">", " ", "0"}], " ", "&&", 
+                " ", RowBox[{"Element", "[", RowBox[{"x", ",", " ", 
+                    "Reals"}], "]"}]}]}], "]"}]}]}], "Input", 
+      CellLabel -> "In[1]:="], 
+     Cell[BoxData[FractionBox[RowBox[{"Dl", " ", 
+          RowBox[{"Tanh", "[", FractionBox[SqrtBox[RowBox[{SuperscriptBox[
+                 "Dl", "2"], "+", SuperscriptBox["x", "2"]}]], 
+             RowBox[{"2", " ", "T"}]], "]"}]}], 
+        RowBox[{"2", " ", SqrtBox[RowBox[{SuperscriptBox["Dl", "2"], "+", 
+             SuperscriptBox["x", "2"]}]]}]]], "Output", 
+      CellLabel -> "Out[6]="]}, Open]], 
+  Cell[CellGroupData[
+    {Cell[BoxData[RowBox[{"FindRoot", "[", 
+         RowBox[{RowBox[{"Dl", " ", "==", " ", RowBox[{RowBox[{"3", "/", 
+                 "4"}], " ", RowBox[{"Sum", "[", RowBox[{RowBox[{"F", " ", 
+                     "/.", " ", RowBox[{"{", RowBox[{RowBox[{"x", " ", "->", 
+                          " ", RowBox[{RowBox[{RowBox[{"-", "2"}], " ", 
+                          RowBox[{"Cos", "[", "q", "]"}]}], " ", "+", " ", 
+                          RowBox[{"1", "/", "2"}]}]}], ",", " ", RowBox[
+                          {"T", " ", "->", " ", RowBox[{"1", "/", "10"}]}]}], 
+                       "}"}]}], ",", " ", RowBox[{"{", RowBox[{"q", ",", " ", 
+                       RowBox[{"{", RowBox[{"0", ",", " ", RowBox[{"Pi", "/", 
+                          "2"}], ",", " ", "Pi", ",", " ", RowBox[{"3", " ", 
+                          RowBox[{"Pi", "/", "2"}]}]}], "}"}]}], "}"}]}], 
+                 "]"}]}]}], ",", " ", RowBox[{"{", RowBox[{"Dl", ",", " ", 
+               "1"}], "}"}]}], "]"}]], "Input", CellLabel -> "In[7]:="], 
+     Cell[BoxData[RowBox[{"{", RowBox[{"Dl", "\[Rule]", 
+           "1.0296990620785584`"}], "}"}]], "Output", 
+      CellLabel -> "Out[7]="]}, Open]], 
+  Cell[TextData[{"The same gap follows from the self-consistent mean-field \
+solution of the attractive Hubbard ring with ", 
+     Cell[BoxData[StyleBox["meanfieldsolve", "TI"]], "InlineFormula"], "."}], 
+   "Text"], Cell["Source: Second Quantization with SNEG, SNEG documentation \
+project. Licensed under Creative Commons Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "The finite-temperature BCS gap equation"]

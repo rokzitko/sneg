@@ -1,0 +1,75 @@
+\chapter{Getting started}
+\setwlchapter{getting-started}
+If two electrons of opposite spin occupy a localized orbital,
+removing the up electron must leave a down electron. Changing the
+order in which the two creators were applied changes the sign of the
+resulting ket, but cannot change its occupation. This distinction
+between an amplitude and a probability is a good first test of an
+operator calculation.
+
+\section{Installation and a first session}
+Install the release paclet with \fn{PacletInstall} in Mathematica
+12.1 or later. The English help pages require Mathematica 14.0 or later.
+The installation command, which contacts the release server, is:
+\begin{lstlisting}[style=wl]
+PacletInstall[
+ "https://github.com/rokzitko/sneg/releases/latest/download/SNEG.paclet"]
+\end{lstlisting}
+Load the package \emph{before} entering a definition using its symbols.
+The lower-case loader also works on existing SNEG notebooks. In the
+Documentation Center open \texttt{paclet:SNEG/guide/SNEG}.
+\begin{wl}
+Needs["sneg`"];
+$SnegVersion
+\end{wl}
+Choose a new operator name and declare its algebra. In the following
+input \fn{d[]} means one spin-degenerate orbital, not an annihilator.
+The latter needs both a type and a spin index.
+\begin{wl}
+snegfermionoperators[d];
+u = d[AN, UP]; v = d[AN, DO];
+TableForm[{{antikomutator[u, conj[u]], antikomutator[u, conj[v]]},
+           {antikomutator[v, conj[u]], antikomutator[v, conj[v]]}},
+  TableHeadings -> {{"up", "down"}, {"up", "down"}}]
+\end{wl}
+The unit diagonal expresses Pauli exclusion for a single spin-orbital;
+the off-diagonal zeros express orthogonality. The rule says nothing
+about the occupation of the orbital. That information belongs to a
+state or density matrix.
+
+\section{From an operator to a spectrum}
+Give the level an energy $\epsilon$ and assign an extra cost $U$ when
+both spins are present. The algebra itself is independent of their
+values. A separate line declares the parameters real so that
+conjugation later has the intended meaning.
+\begin{wl}
+snegrealconstants[\[Epsilon], U];
+h = \[Epsilon] number[d[]] + U hubbard[d[]];
+blocks = makematricesbzvc[h, qsbasisvc[{d[]}]];
+TableForm[{#[[1, 1]], #[[1, 2]], #[[2, 1, 1]]} & /@ blocks,
+  TableHeadings -> {None, {"Q", "Spin", "Energy"}}]
+\end{wl}
+There are four states but only three rows. The middle row represents
+both projections of a spin $1/2$. The label $Q=N-1$ counts electrons
+relative to one electron per site. If $U>0$, changing $\epsilon$ from
+positive to negative first makes the spin doublet the ground state.
+Only below $\epsilon=-U$ is it favourable to add the second electron.
+Chapter~10 revisits these two addition thresholds as poles of a
+Green's function.
+
+\section{Reading operator output}
+A dagger distinguishes creation from annihilation in the formatted
+output. To inspect the actual expression, request \fn{InputForm};
+use \fn{FullForm} to see every head and argument. Both are views.
+For instance, the occupation polynomial represented by
+\fn{hubbard[d[]]} is unchanged if its displayed product acquires a
+minus sign from putting all creators on the left. Use \fn{snegtex}
+when the result is needed as a formula in a paper. A useful final
+step before export is to compare a matrix element, rather than a
+particular ordering of symbols.
+\casestudy{moment}{Local moment as an occupation measurement}
+\begin{exercise}[Parity spectroscopy]\label{ex:first}
+At $\epsilon=-U/3$, $U>0$, determine the addition and removal costs
+from the ground multiplet. Which excited level would be invisible in
+a calculation restricted to the same charge sector?
+\end{exercise}

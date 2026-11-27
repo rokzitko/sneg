@@ -1,0 +1,76 @@
+\section*{Further applications}
+\setwlchapter{application-solutions}
+\begin{solution}{ex:harper}
+The antisymmetric combination of sites 1 and 2 has energy 2 in
+units of $t$. In the remaining subspace the trace is $-2$ and the
+product of eigenvalues is $-2$, giving $-1\pm\sqrt3$. The sum of
+all energies is zero, as is the sum of the diagonal potential in a
+magnetic cell. The sum of their squares is $6+6=12$: six from the
+on-site potentials and six from oriented links.
+\begin{wl}
+hm = {{-2,-1,-1},{-1,1,-1},{-1,-1,1}};
+{Eigenvalues[hm], Tr[hm], Tr[hm.hm]}
+\end{wl}
+\end{solution}
+\begin{solution}{ex:jt}
+Minimize the lower-surface energy in the nonnegative radius $r$.
+Its stationary point is $|g|/K$ with energy $-g^2/(2K)$ measured
+from the undistorted crossing. For $K=M\omega^2$ the coefficient
+of $b+b^\dagger$ is $g/\sqrt{2M\omega}$; the square divided by
+$\omega$ is precisely the relaxation energy. Diagonalize the electronic
+part on a circle with the same radius in two different directions:
+\begin{wl}
+el[x_,y_] := x PauliZ + y PauliX;
+Sort[Eigenvalues[el[3,4]]] == Sort[Eigenvalues[el[0,5]]]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:andreev}
+At particle--hole symmetry both diagonal even energies vanish.
+Pair transfer splits this subspace into levels $-\Gamma,\Gamma$,
+while each odd state is at $-U/2$. The doublet wins for $U>2\Gamma$;
+at equality it is degenerate with the lower singlet. Test the crossing
+at $\Gamma=1$ without imposing charge symmetry:
+\begin{wl}
+snegfermionoperators[d];
+hp = 2 hubbard[d[]] - number[d[]] - bcs[d[]];
+mm = makematricesbzvc[hp, nonebasisvc[{d[]}]];
+Sort[Eigenvalues[First[mm][[2]]]]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:triangle}
+Addition of three spins $1/2$ gives one $S=3/2$ quartet and two
+$S=1/2$ doublets. Their energies are $3J/4$ and $-3J/4$, respectively.
+Hence $Z=8\cosh(3J/4T)$ and the residual entropy is $\ln4$ in units
+of $k_{\mathrm B}$. No choice of quantization axis changes that count:
+\begin{wl}
+snegspinoperators[{s,1/2}];
+tri = Total[spinspin @@@ Subsets[s /@ Range[3], {2}]];
+ev = Flatten[Eigenvalues[Normal[Last[#]]] & /@
+  spinclustermatrices[tri,{s -> Range[3]}]];
+TableForm[Sort[Tally[ev]], TableHeadings -> {None, {"Energy / J","States"}}]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:resonance}
+Here $G_{dd}(z)=z/(z^2-V^2)$: each of the bonding and antibonding
+orbitals has impurity probability $1/2$. The two half-weight poles
+merge to the original unit-weight pole as $V\to0$. This limit is
+not obtained by discarding one of the two levels.
+\begin{wl}
+snegfermionoperators[c];
+snegrealconstants[V];
+Apart[greensfunction[d[AN,UP],d[CR,UP],V hop[c[],d[]],z],z]
+\end{wl}
+\end{solution}
+\begin{solution}{ex:response}
+The occupation commutes with the free Hamiltonian, so its retarded
+commutator vanishes identically. At thermal equilibrium
+$\partial_\epsilon f=-f(1-f)/T$; changing the level energy changes
+the Gibbs weights. For an isolated system a commuting probe cannot
+redistribute them dynamically. At $T=1,\epsilon=0$ check the derivative
+by a centred difference:
+\begin{wl}
+occ[e_] := thermalaverage[number[d[],UP], e number[d[]], {d}, 1];
+{komutator[number[d[],UP],number[d[]]],
+ Round[(occ[1/1000]-occ[-1/1000])/(2/1000),1/10000]}
+\end{wl}
+\end{solution}

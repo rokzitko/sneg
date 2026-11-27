@@ -34,15 +34,17 @@ BeginPackage["Sneg`"];
 snegidstring = "sneg.m 2.2.0 Nov 2026";
 snegcopyright = "Copyright (C) 2002-2026 Rok Zitko";
 
-$SnegVersion = Module[{pos, p1, p2},
-  pos = StringPosition[snegidstring, " "];
-  p1 = pos[[1,1]]+1;
-  p2 = pos[[2,1]]-1;
-  StringTake[snegidstring, {p1, p2}]
-];
+$SnegVersion = StringSplit[snegidstring][[2]];
 $SnegVersion::usage = "$SnegVersion is the version of sneg package used.";
 
-Print["sneg " <> $SnegVersion <> " " <> snegcopyright];
+(* In notebooks, the startup message links to the help pages if they are
+installed (paclet installation or a checkout with built documentation). *)
+If[TrueQ[$Notebooks] &&
+   StringQ[Quiet[Documentation`ResolveLink["paclet:SNEG/guide/SNEG"]]],
+  Print[Row[{"sneg " <> $SnegVersion <> " " <> snegcopyright <> "  ",
+    Hyperlink["Documentation \[RightGuillemet]", "paclet:SNEG/guide/SNEG"]}]],
+  Print["sneg " <> $SnegVersion <> " " <> snegcopyright]
+];
 
 (*
 A few NAMING CONVENTIONS (that I try to follow most of the time)
@@ -71,15 +73,20 @@ it is by convention always the last index!
 
 
 (**** Usage messages ****)
-(* Add a link to the relevant documentation page. *)
+(* Set a usage message. The help pages are linked from the usage messages by
+the front end. The third argument (formerly the target of the "More..."
+button of the old help browser) is ignored. The pattern names are kept in the
+private context. *)
+UsageWithMore;
+Begin["`Private`"];
 SetAttributes[UsageWithMore, HoldFirst];
-UsageWithMore[symbol_, string_, tag_:Null] := (symbol::usage = string <>
-"\!\(\*ButtonBox[\(More...\),ButtonStyle->\"AddOnsLink\",ButtonData:>\"" <>
-     If[tag === Null, ToString[symbol], tag] <> "\"]\)");
+UsageWithMore[symbol_, string_, tag_:Null] := (symbol::usage = string);
+End[];
 
 UsageWithMore[snegfermionoperators,
-"snegfermionoperators[a, b, c] declares a, b, and c to be
-fermionic operators. They obey canonical anti-commutation relations."];
+"snegfermionoperators[a, b, ...] declares a, b, ... as spin-1/2 fermion
+operators with canonical anticommutation relations.
+snegfermionoperators[{a, s}] declares a fermion operator with spin s."];
 UsageWithMore[snegbosonoperators,
 "snegbosonoperators[a, b, c] declares a, b, and c to be
 bosonic operators. They obey canonical commutation relations."];
@@ -100,7 +107,7 @@ UsageWithMore[snegfreeindexes,
 "snegfreeindexes[k, sigma] declares k and sigma to be indexes. This is
 taken into account when simplifying sum[] blocks."];
 UsageWithMore[nc,
-"nc[...] represents non-commutative multiplication."];
+"nc[a, b, ...] is the noncommutative product of the operators a, b, ...."];
 UsageWithMore[fermionQ,
 "fermionQ[c] returns True if c is a fermionic operator."];
 UsageWithMore[bosonQ,
@@ -127,13 +134,13 @@ commutator for bosonic operators."];
 UsageWithMore[grassmanQ,
 "grassmanQ[z] returns True if z is a Grassman constant or variable."];
 UsageWithMore[komutator,
-"komutator[a, b] = nc[a, b] - nc[b,a]"];
+"komutator[a, b] gives the commutator nc[a, b] - nc[b, a]."];
 UsageWithMore[commutator,
-"commutator[a, b] = nc[a, b] - nc[b,a]", "komutator"];
+"commutator[a, b] gives the commutator nc[a, b] - nc[b, a]."];
 UsageWithMore[antikomutator,
-"antikomutator[a, b] = nc[a, b] + nc[b, a]"];
+"antikomutator[a, b] gives the anticommutator nc[a, b] + nc[b, a]."];
 UsageWithMore[anticommutator,
-"anticommutator[a, b] = nc[a, b] + nc[b, a]", "antikomutator"];
+"anticommutator[a, b] gives the anticommutator nc[a, b] + nc[b, a]."];
 UsageWithMore[superkomutator,
 "superkomutator[a, b, n] = [a, [a, ... [a, b]]], this is order-n nested
 commutator."];
@@ -190,8 +197,8 @@ UsageWithMore[number,
 c[i]. number[c[i], sigma] with sigma=UP | DO returns the number operator
 for a given spin projection only."];
 UsageWithMore[hubbard,
-"hubbard[c[i]] returns the local (Hubbard) electron-electron repulsion
-operator corresponding to operator c[i]."];
+"hubbard[c[i]] gives the on-site Hubbard interaction n_up n_down of the
+fermion level c[i]."];
 UsageWithMore[hamiltonian,
 "hamiltonian[type, ...] is a stub: it returns the Hamiltonian 'type'."];
 UsageWithMore[chargecharge,
@@ -519,11 +526,9 @@ in the bra-ket representation.", "spinketbraX"];
 UsageWithMore[spinbasis,
 "spinbasis[S] returns the basis for spin S in the ket representation.", "spinbra"];
 UsageWithMore[transformfunc,
-"transformfunc[list, rule] applies a rule to the states 'list' in the
-occupation number representation and orthogonalizes the result."];
+"transformfunc[states, op] applies op to the occupation-vector states, projects back onto their span, and orthonormalizes."];
 UsageWithMore[transformbasis,
-"transformbasis[basis, rule] applies a rule to the states in the full
-basis (occupation number representation) and orthogonalizes the result."];
+"transformbasis[basis, op] applies transformfunc to each sector of an occupation-vector basis and drops empty sectors."];
 UsageWithMore[mergebasis,
 "mergebasis[{basis1, basis2,...}] merges several sets of basis states."];
 UsageWithMore[applybasis,
@@ -564,9 +569,9 @@ UsageWithMore[vevwick,
 "vevwick[expr] calculates the vacuum expectation value of an operator
 expression using Wick's theorem.", "vev"];
 UsageWithMore[isozsq,
-"isoqsz[op[j]] gives the z-component of the on-site isospin operator squared.
-This term appears in the expression for e-e repulsion in the Anderson model.",
-"hubbard"];
+"isozsq[c[i]] gives (n - 1)^2, four times the square of the z-component of
+the isospin of the level c[i], the particle-hole symmetric form of the
+on-site interaction."];
 UsageWithMore[spinspinsymmetric,
 "spinspinsymmetric[{a,b,...}] returns the symmetrized spin-spin
 scalar product 1/N Sum(S_a . S_b) between pairs of S=1/2 spin
@@ -916,6 +921,53 @@ lehmann::usage =
 <<A; B>>_z = Sum_j w_j/(z - omega_j), by exact diagonalization in the Fock
 space of the fermion modes.";
 
+(* Public symbols without usage messages: the developer interface, constants,
+and functions used in existing notebooks and in NRG Ljubljana. All other
+symbols defined below are in the private context Sneg`Private`. *)
+{
+  ADD, addto, allcombinations, AN, anhop, antisym, appendquantumnumber,
+  applytocr, BASIS, basistensorproduct, bcs, block, braket, bzQ, coh,
+  contract, CR, current, currentphi, der, directproductbasis, DO, dropzeros,
+  EMPTY, FactorSeparableSumCustom, fastpow, fixspin, fixspinket, free,
+  FreeOfIndexQ, FullSimplifyKD, genanhop, genhop, hopphi, Hubbard, indecesAN,
+  indecesCR, indexvalue2list, int, interleave, isospinx1, isospinx2,
+  ketbratensorproduct, keymerge, keyselect, KS, latticeindextype,
+  listbosonoperators, listcomplexconstants, listfermionoperators,
+  listfreeindexes, listgrassmanconstants, listintegerconstants,
+  listlatticeindexes, listlatticevectors, listmajoranaoperators,
+  listmomentumindexes, listofpairs, listrealconstants,
+  listspincomponentindexes, listspinoperators, listxoperators, mambpair,
+  mapbasis, maxcran, NONE, nonebasis, nonebasisvc, ops2vc, orthogbasisop,
+  orthogbasisvc, outofdiag02, outofdiag20, pairpattern, phononbasis,
+  phononid, PrettyInput, PrettyOutput, Problem, PROJ0, PROJ02, PROJ1, PROJ2,
+  PROJDO, projectorE, projectorEphi, projectorO, projectorOphi, PROJUP,
+  qbasis, qbasisvc, qscombinefnc, qsspincombinefnc, QSZaddspinket, quickDBL,
+  quickDBLSZ, quickISOSZbasis, quickSU2basis, remainder, remove1state,
+  removestates, ruleAbs, ruleExpandUnderSum, ruleFullSimplifyUnderSum,
+  rulesimplifyscalar, rulestripscalar, rulesumDistribute, rulesumFactor,
+  sbasis, sbasisvc, scalar, scalarproduct, SEA, showbzmat, snegaddop,
+  snegcomplexfunctions, SnegFullSimplify, snegintegerconstants,
+  sneglinearoperator, sneglinearoperatorFirst, snegnonopQ, snegorthog,
+  snegpositiveconstants, snegrealfunctions, snegsesquilinearoperator,
+  SnegSimplifySpin, snegspinlessfermionoperators, snegsumJoinWithRenaming,
+  SnegTeXForm, snegxparity, spincomponentindexQ, spindown, spindownvc,
+  spinflip, spinfliphopphi, SPININDEXm, SPININDEXp, SPININDEXx, SPININDEXy,
+  SPININDEXz, spinketbraI, spinketbraOPS, spinketbraspinspin, spinketbraXYZ,
+  spinlessbasis, spinof, spinQ, spinspinx, spinspiny, spinxyzgen,
+  ssJWRnewname, SU2basistensorproduct, SU2combine, SU2merge, su3g, su3t,
+  sum2list, sumAbstractIndex, sumAutoRename, sumCollectSimplifyKD,
+  sumNameIndex, sumSimplify, szbasis, szbasisvc, TeXString, Tminus,
+  transform1, transformtoLRvc, UP, vccolor, vccolorDefault, vccolorSimple,
+  vevwick2, vevwicknew, wickorder, xoperatorQ, xparities, xstates,
+  ZeroMatrix, Zeroonvac
+};
+
+snegtex::usage =
+"snegtex[expr] returns a LaTeX string for an expression with operators,
+using the notation c^\\dagger_{i\\uparrow}, S^+_j, ... .";
+
+Begin["`Private`"];
+
 (** Load required packages **)
 
 (* We need KSubsets from Combinatorica by Sriram V. Pemmaraju
@@ -1018,8 +1070,7 @@ SnegPPoperator[x_, spin_:1/2] := Block[{},
                    True, Null];
        sgm = Which[
            spin == 1/2 && sigma === UP,
-              (* XXX: TEMPORARY FIX: Should be \[UpArrow] *)
-              StyleForm["\[DoubleUpArrow]", FontColor -> Red],
+              StyleForm["\[UpArrow]", FontColor -> Red],
            spin == 1/2 && sigma === DO,
               StyleForm["\[DownArrow]", FontColor -> Blue],
            spin == 0 && sigma === 0,
@@ -3681,8 +3732,7 @@ keyselect[l_, key_] := Select[l, First[#] == key &];
 (* Below there is another implementation mergebasis[] which does the same! *)
 
 keymerge::usage =
-"keymerge[list1, list2] merges two lists, so that the sublists with
-the same first element are combined.";
+"keymerge[list] joins the values of entries {key, values} with the same key.";
 keymerge[l_] := Module[{keys, sublists},
   keys = Union[ l[[All,1]] ];
   sublists = Map[keyselect[l, #]&, keys];
@@ -7535,6 +7585,54 @@ lehmann[a_, b_, h_, specs_List, temp_, opts:OptionsPattern[]] := Catch[Module[
   l = Map[{Mean[#[[All, 1]]], Total[#[[All, 2]]]} &, Gather[SortBy[l, First], Abs[#1[[1]] - #2[[1]]] < tol &]];
   Chop[Select[l, Abs[#[[2]]] > tol &]]
 ], snegeom];
+
+(**** LaTeX output ****)
+
+(* snegtex: operators and operator products are typeset directly; the
+remaining expression is converted with TeXForm, in which every operator
+product is represented by a placeholder symbol that is substituted
+afterwards. *)
+snegtexindex[j_] := ToString[TeXForm[j]];
+snegtexspin[s_, op_] := Which[
+  spinof[op] == 1/2 && s === UP, "\\uparrow",
+  spinof[op] == 1/2 && s === DO, "\\downarrow",
+  spinof[op] == 0, "",
+  True, snegtexindex[s]];
+snegtexsub[l_List] := If[l === {}, "", "_{" <> StringRiffle[l, ","] <> "}"];
+snegtexname[op_] := With[{n = SymbolName[op]},
+  If[StringLength[n] == 1, n, "\\mathrm{" <> n <> "}"]];
+
+snegtexop[o:op_?fermionQ[t_, j___]] := Module[{l = {j}, sp},
+  If[spinof[op] == 0,
+    sp = ""; l = Map[snegtexindex, l],
+    sp = If[l === {}, "", snegtexspin[Last[l], op]];
+    l = If[l === {}, {}, Map[snegtexindex, Most[l]]]];
+  snegtexname[op] <> If[t === CR, "^\\dagger", ""] <>
+    snegtexsub[If[sp === "", l, If[l === {}, {sp}, {StringRiffle[l, ","] <> sp}]]]];
+snegtexop[o:op_?bosonQ[t_, j___]] :=
+  snegtexname[op] <> If[t === CR, "^\\dagger", ""] <> snegtexsub[Map[snegtexindex, {j}]];
+snegtexop[o:op_?spinQ[j___, c_]] := snegtexname[op] <>
+  "^{" <> Switch[c, 1, "x", 2, "y", 3, "z", 4, "+", 5, "-", _, snegtexindex[c]] <> "}" <>
+  snegtexsub[Map[snegtexindex, {j}]];
+snegtexop[o:op_?majoranaQ[j___]] := snegtexname[op] <> snegtexsub[Map[snegtexindex, {j}]];
+snegtexop[o:op_[j___, a_, b_]] /; TrueQ[xoperatorQ[op]] := snegtexname[op] <>
+  "^{" <> ToString[a] <> ToString[b] <> "}" <> snegtexsub[Map[snegtexindex, {j}]];
+snegtexop[x_] := snegtex[x];
+
+snegtexfactor[x_] := If[Head[x] === Plus, "\\left(" <> snegtex[x] <> "\\right)", snegtexop[x]];
+
+snegtex[expr_] := Module[{e = expr, tab = {}, ph, n = 0, s},
+  ph[str_] := (n++; AppendTo[tab, "\\text{snegtexph" <> ToString[n] <> "}" -> str];
+    "snegtexph" <> ToString[n]);
+  e = e /. {
+    HoldPattern[sum[a_, it_List]] :> ph["\\sum_{" <> StringRiffle[Map[snegtexindex, it], ","] <> "} " <>
+      If[Head[a] === Plus, "\\left(" <> snegtex[a] <> "\\right)", snegtex[a]]],
+    HoldPattern[nc[a__]] :> ph[StringRiffle[Map[snegtexfactor, {a}], " "]],
+    o:(h_Symbol[___]) /; TrueQ[operatorQ[h]] :> ph[snegtexop[o]]};
+  s = ToString[TeXForm[e]];
+  StringReplace[s, tab]];
+
+End[]; (* `Private` *)
 
 EndPackage[];
 

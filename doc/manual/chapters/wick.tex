@@ -1,0 +1,39 @@
+\chapter{Expectation values and Wick's theorem}
+\setwlchapter{wick}
+\section{An average needs a state}
+Normal ordering is an algebraic operation, whereas contraction depends
+on the reference state. For a number-conserving Slater determinant the
+only nonzero two-point functions in its natural-orbital basis are
+$\langle c_i^\dagger c_j\rangle=\delta_{ij}n_i$ and
+$\langle c_i c_j^\dagger\rangle=\delta_{ij}(1-n_i)$. In a paired
+state the anomalous contractions need not vanish. Specifying the
+occupations alone is then insufficient. In an interacting thermal
+state even the complete set of two-point functions need not determine
+a four-point function.
+
+\section{Direct and exchange contractions}
+For $c_i^\dagger c_j^\dagger c_l c_k$ in a determinant the contraction
+of $i$ with $k$ and $j$ with $l$ has positive sign. Pairing $i$ with
+$l$ and $j$ with $k$ requires one extra exchange. For $i=j$ these
+terms cancel exactly. The same minus sign makes the exchange energy
+negative for a repulsive density interaction. The case study keeps
+the spin labels distinct until the contraction has been taken.
+\casestudy{exchange}{The exchange energy of a filled sea}
+In an oscillator vacuum each interchange contributes a plus sign.
+The number of pairings now appears explicitly in higher moments.
+\casestudy{oscillator}{Gaussian moments of a displacement}
+
+\section{Finite-temperature and anomalous averages}
+For a quadratic fermion Hamiltonian the exact thermal state remains
+Gaussian. Diagonalizing its Nambu matrix gives a covariance matrix;
+Wick contractions with that matrix recover the expectation of any
+polynomial in the fermions. This route avoids a trace over $2^M$
+many-body states for $M$ spin-orbitals. A number projector on the full
+state generally destroys this simple Gaussian structure.
+\casestudy{gaussian}{Checking the anomalous contraction}
+\begin{exercise}[Wick versus a fixed-charge state]\label{ex:wick}
+Compare an equal mixture of the two one-electron states of an atom
+with a free spin-degenerate level at half occupation per spin.
+Show that all normal one-body averages coincide but the two double
+occupations differ. What information has been lost?
+\end{exercise}

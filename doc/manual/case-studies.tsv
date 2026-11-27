@@ -1,0 +1,44 @@
+# identifier	reference page	example section	distinctive words in introductory text
+pair-algebra	nc	Applications	not a boson
+moment	nc	Applications	n - 2
+sea	ordering	Applications	particle-hole excitation
+spin-three-halves	snegfermionoperators	Scope	spin 3/2
+graded	snegxoperators	Scope	different sites
+hopping	hop	Applications	open tight-binding chain
+continuity	hop	Applications	Continuity equation
+projectors	projector	Applications	square of the spin
+pairing	conj	Applications	BCS pairing term
+dummies	sum	Scope	Nested sums
+transfer	sumSimplifyKD	Applications	Momentum conservation
+twist	clusterhop	Applications	Persistent current
+multiplets
+reflection
+isospin
+thermal	makematricesbzvc	Applications	Thermodynamics
+exchange	vevwick	Applications	Hartree-Fock energy
+oscillator	vevwick	Applications	harmonic-oscillator coordinate
+gaussian	gaussianaverage	Scope	Anomalous averages
+recognize
+collect	sum	Properties & Relations	distribute over sums
+ssh	blochhamiltonian	Applications	Su-Schrieffer-Heeger chain
+graphene
+rashba	matrixhop	Applications	Rashba chain
+square	blochhamiltonian	Scope	Square lattice
+holstein
+lang-firsov
+squeezing	bogoliubov	Applications	Two-mode squeezing
+gap	gaussianaverage	Applications	BCS gap equation
+andreev
+kitaev	bdghamiltonian	Applications	bulk gap
+frustration
+xxz	jordanwigner	Applications	XXZ chain
+magnons	bogoliubov	Applications	Spin waves
+anisotropy	stevens	Applications	rhombic
+stoner	meanfieldsolve	Applications	Stoner criterion
+anderson
+resonance	greensfunction	Applications	hybridized
+leads	fourier	Applications	host lattice
+propagation	eomclosure	Applications	propagate
+lehmann	lehmann	Applications	antibonding
+moments	spectralmoments	Properties & Relations	thermal Lehmann
+custom	acmt	Applications	continuum

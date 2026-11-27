@@ -1,0 +1,88 @@
+\chapter{Fermi liquids, Green's functions and response}
+\setwlchapter{response}
+\section{Resolvent or thermal trace?}
+There are two ways to compute a retarded propagator on a finite
+cluster. Commuting $A$ with $H$ generates a space of operators.
+If it closes with $[O_i,H]=\sum_j M_{ij}O_j$, solving a linear
+system at $z=\omega+i\eta$, $\eta>0$, sums all nested commutators.
+Alternatively, a Lehmann sum uses the many-body energies and
+transition matrix elements. The first route can remain symbolic;
+the second is a numerical reference that includes correlations
+without a factorization.
+\casestudy{propagation}{How large an operator space does a chain require?}
+\casestudy{lehmann}{Positive diagonal weight versus signed cross weight}
+\section{High-frequency checks}
+For an electron the anticommutator fixes the $1/z$ coefficient of
+the diagonal propagator to one. The next moment probes the mean
+addition energy, and a higher moment can distinguish a single pole
+from a pair of poles with the same centroid. For a conserved density
+the ordinary commutator with itself is zero: a nonzero thermal
+fluctuation need not produce a nonzero dynamical retarded response.
+\casestudy{moments}{An independent sum rule without finding the poles}
+
+\section{A static limit is a prescription}
+Define $\chi^R_{AB}(t)=-i\theta(t)\langle[A(t),B]\rangle$.
+With a perturbation $+h B$, $\delta\langle A\rangle=\chi^R_{AB} h$
+in this convention; the common Zeeman coupling is instead $-h S^z$.
+For the density of a free band the retarded bubble (spin sum included)
+is
+\[
+ \chi^0(q,z)=\frac{1}{N_s}\sum_{k\sigma}
+ \frac{f(\epsilon_k)-f(\epsilon_{k+q})}{z+\epsilon_k-\epsilon_{k+q}} .
+\]
+At $q=0$ and finite $z$ the numerator vanishes. Taking the static
+long-wavelength limit instead gives the negative thermodynamic density
+of states for a perturbation raising the level energy. In the random
+phase approximation a repulsive density interaction $v_q$ induces an
+additional potential $v_q\delta n$, giving
+$\chi=\chi^0/(1-v_q\chi^0)$. This argument fixes the denominator sign
+without importing a convention for a positively defined polarization.
+A current response to a vector potential also has a diamagnetic term:
+the current itself depends on the field. Omitting it can produce a
+spurious response to a pure gauge~\cite{vucicevic}.
+\subsection{A two-level susceptibility by two independent routes}
+For one electron of fixed spin on a dimer with hopping $-t$, the
+bonding state has energy $-t$. The imbalance $D=n_1-n_2$ connects
+it to the antibonding state at $+t$ with unit matrix element. Thus
+$\chi^R_{DD}(z)=1/(z-2t)-1/(z+2t)$. Unlike total charge, this density
+does not commute with the hopping. Check the static value at $t=1$
+by applying the field directly. In the site basis $+hD$ changes the
+diagonal energies in opposite directions:
+\begin{wl}
+dop = DiagonalMatrix[{1,-1}];
+hd[h_] := {{h,-1},{-1,-h}};
+{vals,vecs} = Eigensystem[hd[0]];
+j = First[Ordering[vals,1]]; l = 3-j;
+delta = vals[[l]]-vals[[j]];
+wgt = Abs[Conjugate[Normalize[vecs[[j]]]].dop.Normalize[vecs[[l]]]]^2;
+TableForm[{{delta,wgt,-2 wgt/delta,D[-Sqrt[1+h^2],{h,2}] /. h -> 0}},
+ TableHeadings -> {None,{"Gap","Weight","Retarded limit","Curvature"}}]
+\end{wl}
+The last column is the second derivative of the exact lower eigenvalue
+of $H+hD$. Its agreement with the retarded limit uses a nondegenerate
+ground state and a probe independent of field. A thermal mixture
+also changes its populations, as the exercise below illustrates.
+
+\section{Quasiparticle parameters and available phase space}
+Write $G^{-1}=z-\epsilon_k+\mu-\Sigma(k,z)$. For a normal Fermi
+liquid at a regular point of its Fermi surface, the pole strength is
+$Z=[1-\partial_\omega\operatorname{Re}\Sigma(k_F,0)]^{-1}$.
+The Fermi velocity is $Z[\nabla_k\epsilon_k+
+\nabla_k\operatorname{Re}\Sigma(k,0)]_{k_F}$ in units $\hbar=1$.
+Only for a momentum-independent self-energy can the entire mass
+enhancement of an isotropic parabolic band be read off from $1/Z$.
+At first order a static Hartree shift changes the Fermi energy but
+gives no decay. At second order a particle can excite a particle--hole
+pair; thermal factors restrict all three final quasiparticles to a
+shell about the Fermi surface. Two independent low-energy integrations
+remain after energy conservation. With nonsingular phase space in
+three dimensions the retarded imaginary part is negative and of order
+$-\big[\omega^2+(\pi T)^2\big]$. In two dimensions logarithms can
+modify this law. Broadening the discrete lines of a small cluster is
+not a measurement of that lifetime.
+\begin{exercise}[Fixed frequency or static field?]\label{ex:response}
+For a single free level of energy $\epsilon$ at temperature $T>0$,
+find the retarded density commutator and the isothermal derivative
+$\partial\langle n\rangle/\partial\epsilon$ for one spin. Explain why
+the two answers differ.
+\end{exercise}

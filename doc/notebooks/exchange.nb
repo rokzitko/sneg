@@ -1,0 +1,78 @@
+Notebook[{Cell["Direct and exchange contractions", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 6", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Hartree-Fock energy. In a Slater determinant, the \
+expectation value of the two-particle operator splits into the direct \
+(Hartree) and the exchange (Fock) terms, ", 
+     Cell[BoxData[FormBox[RowBox[{"\[LeftAngleBracket]", SubsuperscriptBox[
+           "c", RowBox[{"1", "\[Sigma]"}], "\[Dagger]"], SubsuperscriptBox[
+           "c", RowBox[{"2", SuperscriptBox["\[Sigma]", "\[Prime]"]}], 
+           "\[Dagger]"], SubscriptBox["c", RowBox[{"3", SuperscriptBox[
+              "\[Sigma]", "\[Prime]"]}]], SubscriptBox["c", 
+           RowBox[{"4", "\[Sigma]"}]], "\[RightAngleBracket]", "=", 
+          SubscriptBox["n", "1"], SubscriptBox["n", "2"], "(", 
+          SubscriptBox["\[Delta]", "14"], SubscriptBox["\[Delta]", "23"], 
+          "-", SubscriptBox["\[Delta]", RowBox[{"\[Sigma]", 
+             SuperscriptBox["\[Sigma]", "\[Prime]"]}]], 
+          SubscriptBox["\[Delta]", "13"], SubscriptBox["\[Delta]", "24"], 
+          ")"}], TraditionalForm]], "InlineFormula"], ":"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", "c", "]"}], 
+          ";"}], "\n", RowBox[{RowBox[{RowBox[{"ordering", "[", "c", "]"}], 
+            " ", "=", " ", "SEA"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegfreeindexes", "[", RowBox[{"k1", ",", " ", "k2", 
+              ",", " ", "k3", ",", " ", "k4", ",", " ", "s1", ",", " ", 
+              "s2"}], "]"}], ";"}], "\n", RowBox[{"SimplifyKD", "[", 
+          RowBox[{"vevwick", "[", RowBox[{"nc", "[", RowBox[{RowBox[
+                 {"c", "[", RowBox[{"CR", ",", " ", "k1", ",", " ", "s1"}], 
+                  "]"}], ",", " ", RowBox[{"c", "[", RowBox[{"CR", ",", " ", 
+                    "k2", ",", " ", "s2"}], "]"}], ",", " ", RowBox[
+                 {"c", "[", RowBox[{"AN", ",", " ", "k3", ",", " ", "s2"}], 
+                  "]"}], ",", " ", RowBox[{"c", "[", RowBox[{"AN", ",", " ", 
+                    "k4", ",", " ", "s1"}], "]"}]}], "]"}], "]"}], "]"}]}], 
+      "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[
+        {RowBox[{"(", RowBox[{RowBox[{TemplateBox[{RowBox[{"k1", ",", 
+                   "k4"}]}, "KroneckerDeltaSeq"], " ", TemplateBox[
+                {RowBox[{"k2", ",", "k3"}]}, "KroneckerDeltaSeq"]}], "-", 
+             RowBox[{TemplateBox[{RowBox[{"k1", ",", "k3"}]}, 
+                "KroneckerDeltaSeq"], " ", TemplateBox[{RowBox[{"k2", ",", 
+                   "k4"}]}, "KroneckerDeltaSeq"], " ", TemplateBox[
+                {RowBox[{"s1", ",", "s2"}]}, "KroneckerDeltaSeq"]}]}], ")"}], 
+         " ", TagBox[RowBox[{TagBox[StyleBox["\"\[Theta]\"", 
+              FontColor -> RGBColor[0, 1, 0]], StyleForm[#1, FontColor -> 
+                RGBColor[0, 1, 0]] & ], "(", RowBox[{"-", "k1"}], ")"}], 
+          DisplayForm], " ", TagBox[RowBox[{TagBox[StyleBox["\"\[Theta]\"", 
+              FontColor -> RGBColor[0, 1, 0]], StyleForm[#1, FontColor -> 
+                RGBColor[0, 1, 0]] & ], "(", RowBox[{"-", "k2"}], ")"}], 
+          DisplayForm]}]], "Output", CellLabel -> "Out[4]="]}, Open]], 
+  Cell[TextData[{"For the electron gas with ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["H", StyleBox["int", 
+            FontSlant -> "Plain"]], "=", FractionBox["1", 
+           RowBox[{"2", "V"}]], UnderscriptBox["\[Sum]", 
+           RowBox[{StyleBox["kpq\[Sigma]", FontSlant -> "Italic"], 
+             SuperscriptBox["\[Sigma]", "\[Prime]"]}]], SubscriptBox["V", 
+           "q"], SubsuperscriptBox["c", RowBox[{"k", "+", "q", 
+             "\[ThinSpace]", "\[Sigma]"}], "\[Dagger]"], SubsuperscriptBox[
+           "c", RowBox[{"p", "-", "q", "\[ThinSpace]", SuperscriptBox[
+              "\[Sigma]", "\[Prime]"]}], "\[Dagger]"], SubscriptBox["c", 
+           RowBox[{"p", SuperscriptBox["\[Sigma]", "\[Prime]"]}]], 
+          SubscriptBox["c", StyleBox["k\[Sigma]", FontSlant -> "Italic"]]}], 
+        TraditionalForm]], "InlineFormula"], ", the direct term requires ", 
+     Cell[BoxData[FormBox[RowBox[{"q", "=", "0"}], TraditionalForm]], 
+      "InlineFormula"], " (it cancels against the positive background), and \
+the exchange term gives ", 
+     Cell[BoxData[FormBox[RowBox[{SubscriptBox["E", StyleBox["x", 
+            FontSlant -> "Plain"]], "=", "-", FractionBox["1", 
+           RowBox[{"2", "V"}]], UnderscriptBox["\[Sum]", 
+           StyleBox["kq\[Sigma]", FontSlant -> "Italic"]], 
+          SubscriptBox["V", "q"], SubscriptBox["n", "k"], 
+          SubscriptBox["n", RowBox[{"k", "+", "q"}]]}], TraditionalForm]], 
+      "InlineFormula"], "."}], "Text"], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "Direct and exchange contractions"]

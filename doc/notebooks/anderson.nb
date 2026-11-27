@@ -1,0 +1,92 @@
+Notebook[{Cell["From the Anderson model to exchange", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 13", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"For a particle-hole symmetric dot and a single bath level \
+at zero energy the half-filled singlet hybridizes with two virtual charge \
+states. Tabulate the energies at ", 
+     Cell[BoxData[FormBox[RowBox[{"U", "=", "4"}], TraditionalForm]], 
+      "InlineFormula"], ", ", 
+     Cell[BoxData[FormBox[RowBox[{"V", "=", "1", "/", "2"}], 
+        TraditionalForm]], "InlineFormula"], 
+     " using one row per multiplet. Here ", 
+     Cell[BoxData[FormBox[RowBox[{"Q", "=", "N", "-", "2"}], 
+        TraditionalForm]], "InlineFormula"], 
+     " and the energy zero is the empty system:"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegfermionoperators", "[", 
+            RowBox[{"d", ",", "c"}], "]"}], ";", " ", 
+          RowBox[{"snegrealconstants", "[", RowBox[{"U", ",", "V"}], "]"}], 
+          ";"}], "\n", RowBox[{RowBox[{"h", " ", "=", " ", 
+            RowBox[{RowBox[{RowBox[{"-", "U"}], " ", RowBox[
+                 {RowBox[{"number", "[", RowBox[{"d", "[", "]"}], "]"}], "/", 
+                  "2"}]}], " ", "+", " ", RowBox[{"U", " ", RowBox[
+                 {"hubbard", "[", RowBox[{"d", "[", "]"}], "]"}]}], " ", "+", 
+              " ", RowBox[{"V", " ", RowBox[{"hop", "[", RowBox[
+                   {RowBox[{"d", "[", "]"}], ",", RowBox[{"c", "[", "]"}]}], 
+                  "]"}]}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"b", " ", "=", " ", RowBox[{"Select", "[", 
+              RowBox[{RowBox[{"qsbasisvc", "[", RowBox[{"{", RowBox[
+                     {RowBox[{"d", "[", "]"}], ",", RowBox[{"c", "[", 
+                        "]"}]}], "}"}], "]"}], ",", " ", RowBox[
+                 {RowBox[{RowBox[{"#", "[", RowBox[{"[", RowBox[{"1", ",", 
+                          "1"}], "]"}], "]"}], " ", "==", " ", "0"}], " ", 
+                  "&"}]}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"m", " ", "=", " ", RowBox[{"makematricesbzvc", "[", 
+              RowBox[{"h", ",", "b"}], "]"}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"rows", " ", "=", " ", RowBox[{"Flatten", "[", 
+              RowBox[{RowBox[{"Table", "[", RowBox[{RowBox[{RowBox[
+                       {RowBox[{"{", RowBox[{RowBox[{"blockdata", "[", 
+                          RowBox[{"[", RowBox[{"1", ",", "2"}], "]"}], "]"}], 
+                          ",", "#"}], "}"}], " ", "&"}], " ", "/@", "\n", 
+                      "  ", RowBox[{"Sort", "[", RowBox[{"Eigenvalues", "[", 
+                          RowBox[{RowBox[{"Last", "[", "blockdata", "]"}], 
+                          " ", "/.", " ", RowBox[{"{", RowBox[{RowBox[{"U", 
+                          " ", "->", " ", "4"}], ",", RowBox[{"V", " ", "->", 
+                          " ", RowBox[{"1", "/", "2"}]}]}], "}"}]}], "]"}], 
+                        "]"}]}], ",", "\n", "  ", RowBox[{"{", RowBox[
+                       {"blockdata", ",", "m"}], "}"}]}], "]"}], ",", "1"}], 
+              "]"}]}], ";"}], "\n", RowBox[{"TableForm", "[", 
+          RowBox[{"rows", ",", RowBox[{"TableHeadings", " ", "->", " ", 
+              RowBox[{"{", RowBox[{"None", ",", RowBox[{"{", RowBox[
+                     {"\"Total spin\"", ",", "\"Energy\""}], "}"}]}], 
+                "}"}]}]}], "]"}]}], "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[TagBox[TagBox[GridBox[{{TagBox["\"Total spin\"", HoldForm], 
+            TagBox["\"Energy\"", HoldForm]}, {"0", "0"}, 
+           {"0", RowBox[{RowBox[{"-", "1"}], "-", SqrtBox["2"]}]}, 
+           {"0", RowBox[{RowBox[{"-", "1"}], "+", SqrtBox["2"]}]}, 
+           {"1", RowBox[{"-", "2"}]}}, RowSpacings -> 1, ColumnSpacings -> 3, 
+          RowAlignments -> Baseline, ColumnAlignments -> Left, 
+          GridBoxDividers -> {"Columns" -> {{False}}, "Rows" -> 
+             {False, True, {False}, False}}, ColumnAlignments -> Left], 
+         {None, OutputFormsDump`HeadedColumns}], Function[BoxForm`e$, 
+         TableForm[BoxForm`e$, TableHeadings -> {None, {"Total spin", 
+             "Energy"}}]]]], "Output", CellLabel -> "Out[6]//TableForm="]}, 
+    Open]], Cell[TextData[{"The isolated triplet has energy ", 
+     Cell[BoxData[FormBox[RowBox[{"-", "U", "/", "2"}], TraditionalForm]], 
+      "InlineFormula"], ". The lower singlet is ", 
+     Cell[BoxData[FormBox[RowBox[{"-", "(", "U", "+", 
+          SqrtBox[RowBox[{SuperscriptBox["U", "2"], "+", "64", 
+             SuperscriptBox["V", "2"]}]], ")", "/", "4"}], TraditionalForm]], 
+      "InlineFormula"], ". Check the leading difference against an \
+antiferromagnetic exchange rather than using the entire singlet energy as the \
+exchange:"}], "Text"], 
+  Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"gap", " ", "=", " ", 
+            RowBox[{RowBox[{RowBox[{"-", "U"}], "/", "2"}], " ", "+", " ", 
+              RowBox[{RowBox[{"(", RowBox[{"U", "+", RowBox[{"Sqrt", "[", 
+                      RowBox[{RowBox[{"U", "^", "2"}], "+", RowBox[{"64", 
+                          " ", RowBox[{"V", "^", "2"}]}]}], "]"}]}], ")"}], 
+                "/", "4"}]}]}], ";"}], "\n", 
+        RowBox[{"Limit", "[", RowBox[{RowBox[{"gap", "/", RowBox[{"V", "^", 
+                "2"}]}], ",", " ", RowBox[{"V", " ", "->", " ", "0"}], ",", 
+            " ", RowBox[{"Assumptions", " ", "->", " ", RowBox[{"U", " ", 
+                ">", " ", "0"}]}]}], "]"}]}], "Input", 
+      CellLabel -> "In[7]:="], Cell[BoxData[FractionBox["8", "U"]], "Output", 
+      CellLabel -> "Out[8]="]}, Open]], Cell["Source: Second Quantization \
+with SNEG, SNEG documentation project. Licensed under Creative Commons \
+Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "From the Anderson model to exchange"]

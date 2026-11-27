@@ -1,0 +1,96 @@
+\chapter{Lattice vibrations and electron--phonon coupling}
+\setwlchapter{phonons}
+\section{Quantizing a displacement}
+For a monatomic chain with spring constant $K$ and mass $M$,
+$\omega_q=2\sqrt{K/M}\,|\sin(qa/2)|$. For $\omega_q>0$ the normal
+coordinate is proportional to $(b_q+b^\dagger_{-q})/\sqrt{2M\omega_q}$;
+the adjoint momentum involves their difference. Pairing $q$ with $-q$
+keeps the real-space displacement Hermitian. The centre-of-mass
+translation at $q=0$ is a free coordinate, not an oscillator for which
+one may substitute $\omega=0$ into this normalization.
+
+\section{Density and bond couplings}
+A local Holstein term $g(n_i-n_0)(b_i+b_i^\dagger)$ describes a change
+of site energy. On a bond, modulation of the hopping instead gives
+$\alpha(u_{i+1}-u_i)\sum_\sigma(c^\dagger_{i\sigma}c_{i+1,\sigma}+\hc)$.
+Uniform displacement drops out of the bond coupling. Fourier transforming
+it supplies a factor $e^{iqa}-1$ that a local optical-mode vertex does
+not have. In either case a phonon carries the momentum transferred
+between electron states.
+\casestudy{holstein}{Checking the momentum of the emitted phonon}
+
+\section{Displaced oscillator and induced attraction}
+For a fixed electronic occupation put $B=b+g(n-n_0)/\omega_0$. Then
+\[
+ \omega_0 b^\dagger b+g(n-n_0)(b+b^\dagger)
+ =\omega_0 B^\dagger B-g^2(n-n_0)^2/\omega_0 .
+\]
+The ground energy depends on charge even when the bare phonon has no
+dispersion. The second difference between energies of charge 2, 1, 0
+receives a shift $-2g^2/\omega_0$. In a hopping system a change of
+occupation also changes the displacement; the transformed hopping
+carries displacement operators. Replacing them by their phonon-vacuum
+expectations is an approximation. In an atomic charge sector the
+completion of the square is exact.
+\casestudy{lang-firsov}{Convergence with the number of phonon quanta}
+The displaced vacuum contains a Poisson distribution in the original
+oscillator basis with mean $[g(n-n_0)/\omega_0]^2$. The largest
+occupied number in a truncated eigenvector is a useful convergence
+diagnostic in addition to its energy. On a dimer check the convergence
+of the bonding--antibonding splitting itself: it can be much smaller
+than the shift in an individual energy.
+
+\subsection{How a phonon cloud changes the hopping}
+Take one spinless electron and two local Einstein oscillators on a
+symmetric dimer. In the absence of tunnelling the two localized
+ground states are degenerate. Moving the electron interchanges which
+oscillator is displaced. Their phonon wave functions have overlap
+$e^{-(g/\omega_0)^2}$: each of two oscillators contributes
+$e^{-(g/\omega_0)^2/2}$. Degenerate perturbation theory gives a
+splitting $2t e^{-(g/\omega_0)^2}$ to first order in $t$, with coupling
+$g n_j(b_j+b_j^\dagger)$ and real positive hopping. This splitting is
+a different observable from the single-site relaxation energy.
+
+Build the matrix directly as a check on the phonon convention. The
+tensor order is electron site, phonon on the left, phonon on the
+right; $t$ and $g$ are in units of $\omega_0$.
+\begin{wl}
+split[n_,t_,g_] := Module[{id,nop,x,ph,h},
+  id = IdentityMatrix[n+1]; nop = DiagonalMatrix[Range[0,n]];
+  x = Normal[SparseArray[{Band[{1,2}] -> Sqrt[Range[n]],
+                  Band[{2,1}] -> Sqrt[Range[n]]},{n+1,n+1}]];
+  ph = KroneckerProduct[nop,id] + KroneckerProduct[id,nop];
+  h = KroneckerProduct[IdentityMatrix[2],ph] -
+      t KroneckerProduct[PauliX,id,id] +
+      g (KroneckerProduct[DiagonalMatrix[{1,0}],x,id] +
+         KroneckerProduct[DiagonalMatrix[{0,1}],id,x]);
+  Differences[Take[Sort[Eigenvalues[N[h]]],2]][[1]]];
+TableForm[Table[{n,split[n,0.01,0.6]/0.02, Exp[-0.6^2]}, {n,{2,4,6}}],
+ TableHeadings -> {None,{"Cutoff","Splitting / 2t","Overlap"}}]
+\end{wl}
+Converging the cutoff at fixed $t$ approaches the finite-hopping
+answer. Reducing $t$ at fixed converged cutoff is the separate test
+of first-order perturbation theory.
+
+\section{Virtual phonons and coupled modes}
+At imaginary transferred frequency $\nu$, eliminating a harmonic
+phonon coupled linearly to density yields
+$V(q,i\nu)=-2|g_q|^2\omega_q/(\nu^2+\omega_q^2)$ for the dimensionless
+coordinate $b+b^\dagger$. Only for $|\nu|\ll\omega_q$ can this be
+replaced by a static attraction. A canonical transformation in powers
+of $g$ must also avoid resonances between real electronic transitions
+and a phonon; there the eliminated state belongs in the active space.
+\casestudy{squeezing}{Stability of two coupled harmonic modes}
+
+For an orbital doublet coupled to two degenerate distortions the
+linear Jahn--Teller Hamiltonian at fixed coordinates contains
+$g(Q_1\tau_z+Q_2\tau_x)$. Its lower adiabatic surface is
+$K(Q_1^2+Q_2^2)/2-|g|\sqrt{Q_1^2+Q_2^2}$. The continuum of classical
+minima does not imply a static symmetry-breaking expectation value in
+a finite quantum molecule: the kinetic energy of the nuclei mixes
+distortions. A finite two-mode Fock calculation can retain both.
+\begin{exercise}[Relaxation energy]\label{ex:jt}
+Find the Jahn--Teller minimum radius and lowering of the energy.
+Relate the latter to the displaced-oscillator result for a single
+distortion quantized with $Q=(b+b^\dagger)/\sqrt{2M\omega}$.
+\end{exercise}

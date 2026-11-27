@@ -1,0 +1,104 @@
+Notebook[{Cell["The Dirac point of graphene", "Title"], 
+  Cell["Second Quantization with SNEG | Chapter 8", "Subtitle"], 
+  Cell["Start a fresh Mathematica kernel with SNEG installed. Evaluate the \
+cells in order.", "Text"], 
+  Cell[BoxData[RowBox[{"Needs", "[", "\"sneg`\"", "]"}]], "Input"], 
+  Cell[TextData[{"Each A orbital has B neighbours in cells ", 
+     Cell[BoxData[FormBox["R", TraditionalForm]], "InlineFormula"], ", ", 
+     Cell[BoxData[FormBox[RowBox[{"R", "-", SubscriptBox["a", "1"]}], 
+        TraditionalForm]], "InlineFormula"], ", and ", 
+     Cell[BoxData[FormBox[RowBox[{"R", "-", SubscriptBox["a", "2"]}], 
+        TraditionalForm]], "InlineFormula"], 
+     ". Extract the structure factor ", 
+     Cell[BoxData[FormBox[RowBox[{"-", SubscriptBox["h", StyleBox["AB", 
+            FontSlant -> "Italic"]], "/", "t"}], TraditionalForm]], 
+      "InlineFormula"], "; the other off-diagonal entry is its conjugate:"}], 
+   "Text"], Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{"snegspinlessfermionoperators", "[", 
+            RowBox[{"f", ",", " ", "fk"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"snegrealconstants", "[", "t", "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"sneglatticeindexes", "[", 
+            RowBox[{RowBox[{"{", "R", "}"}], ",", " ", "Ns"}], "]"}], ";", 
+          " ", RowBox[{"snegmomentumindexes", "[", 
+            RowBox[{RowBox[{"{", "k", "}"}], ",", " ", "Ns"}], "]"}], ";"}], 
+        "\n", RowBox[{RowBox[{"sneglatticevectors", "[", 
+            RowBox[{"a1", ",", " ", "a2"}], "]"}], ";"}], "\n", 
+        RowBox[{RowBox[{"hg", " ", "=", " ", RowBox[{RowBox[{"-", "t"}], " ", 
+              RowBox[{"sum", "[", RowBox[{RowBox[{RowBox[{"hop", "[", 
+                      RowBox[{RowBox[{"f", "[", RowBox[{"R", ",", "\"A\""}], 
+                          "]"}], ",", " ", RowBox[{"f", "[", RowBox[{"R", 
+                          ",", "\"B\""}], "]"}]}], "]"}], " ", "+", " ", 
+                    RowBox[{"hop", "[", RowBox[{RowBox[{"f", "[", RowBox[
+                          {"R", ",", "\"A\""}], "]"}], ",", " ", RowBox[
+                         {"f", "[", RowBox[{RowBox[{"R", "-", "a1"}], ",", 
+                          "\"B\""}], "]"}]}], "]"}], " ", "+", "\n", "  ", 
+                    RowBox[{"hop", "[", RowBox[{RowBox[{"f", "[", RowBox[
+                          {"R", ",", "\"A\""}], "]"}], ",", " ", RowBox[
+                         {"f", "[", RowBox[{RowBox[{"R", "-", "a2"}], ",", 
+                          "\"B\""}], "]"}]}], "]"}]}], ",", " ", 
+                  RowBox[{"{", "R", "}"}]}], "]"}]}]}], ";"}], "\n", 
+        RowBox[{RowBox[{"h", " ", "=", " ", RowBox[{"blochhamiltonian", "[", 
+              RowBox[{RowBox[{"fourier", "[", RowBox[{"hg", ",", RowBox[
+                     {"f", " ", "->", " ", "fk"}], ",", RowBox[{"R", " ", 
+                      "->", " ", "k"}]}], "]"}], ",", " ", RowBox[
+                 {"{", RowBox[{RowBox[{"fk", "[", "\"A\"", "]"}], ",", 
+                    RowBox[{"fk", "[", "\"B\"", "]"}]}], "}"}], ",", " ", 
+                "k"}], "]"}]}], ";"}], "\n", RowBox[{"Expand", "[", 
+          RowBox[{RowBox[{"-", RowBox[{"h", "[", RowBox[{"[", RowBox[
+                   {"1", ",", "2"}], "]"}], "]"}]}], "/", "t"}], "]"}]}], 
+      "Input", CellLabel -> "In[1]:="], 
+     Cell[BoxData[RowBox[{"1", "+", TagBox[SuperscriptBox["e", 
+           RowBox[{"\[ImaginaryI]", RowBox[{"-", "k"}], "\[CenterDot]", 
+             "a1"}]], DisplayForm], "+", TagBox[SuperscriptBox["e", 
+           RowBox[{"\[ImaginaryI]", RowBox[{"-", "k"}], "\[CenterDot]", 
+             "a2"}]], DisplayForm]}]], "Output", CellLabel -> "Out[7]="]}, 
+    Open]], Cell[TextData[{"Evaluate the spectrum at the zone centre, a \
+valley and an edge midpoint, in units of ", 
+     Cell[BoxData[FormBox[RowBox[{"t", ">", "0"}], TraditionalForm]], 
+      "InlineFormula"], 
+     ". The bands touch at the valley. The Bravais lattice constant is one:"}]\
+, "Text"], Cell[CellGroupData[
+    {Cell[BoxData[{RowBox[{RowBox[{RowBox[{"bands", "[", "p_", "]"}], " ", 
+            ":=", " ", RowBox[{"Sort", "[", RowBox[{"Eigenvalues", "[", 
+                RowBox[{"Simplify", "[", RowBox[{RowBox[{"blochphaseexp", 
+                      "[", RowBox[{"h", ",", "\n", "  ", RowBox[{"{", 
+                          RowBox[{RowBox[{"k", " ", "->", " ", "p"}], ",", 
+                          " ", RowBox[{"a1", " ", "->", " ", RowBox[{"{", 
+                          RowBox[{"1", ",", "0"}], "}"}]}], ",", " ", RowBox[
+                          {"a2", " ", "->", " ", RowBox[{"{", RowBox[
+                          {RowBox[{"1", "/", "2"}], ",", RowBox[{RowBox[
+                          {"Sqrt", "[", "3", "]"}], "/", "2"}]}], "}"}]}]}], 
+                          "}"}]}], "]"}], " ", "/.", " ", RowBox[{"t", " ", 
+                      "->", " ", "1"}]}], "]"}], "]"}], "]"}]}], ";"}], "\n", 
+        RowBox[{"TableForm", "[", RowBox[{RowBox[{"bands", " ", "/@", " ", 
+              RowBox[{"{", RowBox[{RowBox[{"{", RowBox[{"0", ",", "0"}], 
+                    "}"}], ",", RowBox[{"{", RowBox[{RowBox[{"4", " ", 
+                        RowBox[{"Pi", "/", "3"}]}], ",", "0"}], "}"}], ",", 
+                  RowBox[{"{", RowBox[{"0", ",", RowBox[{"2", " ", RowBox[
+                         {"Pi", "/", RowBox[{"Sqrt", "[", "3", "]"}]}]}]}], 
+                    "}"}]}], "}"}]}], ",", "\n", " ", 
+            RowBox[{"TableHeadings", " ", "->", " ", RowBox[{"{", 
+                RowBox[{RowBox[{"{", RowBox[{"\"Centre\"", ",", "\"Valley\"", 
+                      ",", "\"Midpoint\""}], "}"}], ",", RowBox[{"{", 
+                    RowBox[{"\"Lower / t\"", ",", "\"Upper / t\""}], "}"}]}], 
+                "}"}]}]}], "]"}]}], "Input", CellLabel -> "In[8]:="], 
+     Cell[BoxData[TagBox[TagBox[GridBox[{{StyleBox["\[Null]", 
+             ShowStringCharacters -> False], TagBox["\"Lower / t\"", 
+             HoldForm], TagBox["\"Upper / t\"", HoldForm]}, 
+           {TagBox["\"Centre\"", HoldForm], RowBox[{"-", "3"}], "3"}, 
+           {TagBox["\"Valley\"", HoldForm], "0", "0"}, 
+           {TagBox["\"Midpoint\"", HoldForm], RowBox[{"-", "1"}], "1"}}, 
+          RowSpacings -> 1, ColumnSpacings -> 3, RowAlignments -> Baseline, 
+          ColumnAlignments -> Left, GridBoxDividers -> 
+           {"Columns" -> {False, True, {False}, False}, 
+            "Rows" -> {False, True, {False}, False}}, ColumnAlignments -> 
+           Left], {OutputFormsDump`HeadedRows, 
+          OutputFormsDump`HeadedColumns}], Function[BoxForm`e$, 
+         TableForm[BoxForm`e$, TableHeadings -> {{"Centre", "Valley", 
+             "Midpoint"}, {"Lower / t", "Upper / t"}}]]]], "Output", 
+      CellLabel -> "Out[9]//TableForm="]}, Open]], 
+  Cell["Source: Second Quantization with SNEG, SNEG documentation project. \
+Licensed under Creative Commons Attribution 4.0 International \
+(https://creativecommons.org/licenses/by/4.0/).", "Text"]}, 
+ StyleDefinitions -> "Default.nb", WindowTitle -> 
+  "The Dirac point of graphene"]
